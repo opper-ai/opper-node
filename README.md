@@ -3,8 +3,8 @@
 ## Example
 
 ```typescript
-import Client from 'opper';
 import { Message, ChatPayload } from 'opper/types';
+import Client from 'opper';
 
 const client = new Client("op-xxx");
 
