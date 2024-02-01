@@ -1,0 +1,36 @@
+# Dependency directories
+node_modules/
+
+# Compiled JavaScript
+dist/
+*.js
+*.js.map
+
+# TypeScript v1 declaration files
+*.d.ts
+
+# Optional TypeScript cache
+*.tsbuildinfo
+
+# dotenv environment variable files
+.env
+.env.local
+
+# IDEs and editors
+/.idea
+*.sw*
+*~.nib
+local.properties
+/.vscode
+/.atom
+/.sublime
+/.history
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+*.tscache
