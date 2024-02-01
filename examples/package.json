@@ -1,0 +1,17 @@
+{
+  "name": "opper-examples",
+  "version": "1.0.0",
+  "description": "Examples of using the Opper SDK",
+  "scripts": {
+    "dev": "tsc && node index.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.1",
+    "opper": "file:../dist"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.15",
+    "typescript": "^5.3.3",
+    "ts-node": "^10.9.2"
+  }
+}
