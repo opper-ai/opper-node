@@ -10,3 +10,10 @@ export interface ChatPayload {
 export interface OpperResponse {
     message: string;
 }
+
+export interface SSEStreamCallbacks {
+    onMessage: (data: any) => void;
+    onComplete: () => void;
+    onError: (error: Error) => void;
+    onCancel?: () => void;
+}
