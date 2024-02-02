@@ -63,6 +63,8 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
+          registry-url: 'https://npm.pkg.github.com'
+          scope: '@opperai'
       
       - name: Download build artifact
         uses: actions/download-artifact@v4
