@@ -29,12 +29,6 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Upload node_modules
-        uses: actions/upload-artifact@v4
-        with:
-          name: node-modules
-          path: node_modules/
-
       - name: Build
         run: npm run build
 
@@ -47,6 +41,13 @@ jobs:
         with:
           name: build-artifact
           path: dist/
+
+      - name: Upload node_modules
+        if: matrix.node-version == '21.x'
+        uses: actions/upload-artifact@v4
+        with:
+          name: node-modules
+          path: node_modules/  
 
   publish-npm:
     if: startsWith(github.ref, 'refs/tags/')
