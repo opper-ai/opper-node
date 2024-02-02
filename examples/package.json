@@ -7,7 +7,7 @@
   },
   "dependencies": {
     "dotenv": "^16.4.1",
-    "opper": "file:../dist"
+    "opperai": "file:../dist"
   },
   "devDependencies": {
     "@types/node": "^20.11.15",

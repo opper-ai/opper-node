@@ -1,6 +1,6 @@
 import { config } from 'dotenv';
-import { Message, ChatPayload, SSEStreamCallbacks } from 'opper/types';
-import { SSEClient } from 'opper/ssestream';
+import { Message, ChatPayload, SSEStreamCallbacks } from 'opperai/types';
+import { SSEClient } from 'opperai/ssestream';
 
 config();
 const sseClient = new SSEClient(process.env.OPPER_API_KEY);

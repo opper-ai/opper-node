@@ -1,6 +1,6 @@
 import { config } from 'dotenv';
-import { Message, ChatPayload } from 'opper/types';
-import Client from 'opper';
+import { Message, ChatPayload } from 'opperai/types';
+import Client from 'opperai';
 
 config();
 const client = new Client(process.env.OPPER_API_KEY);
