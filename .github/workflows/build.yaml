@@ -29,6 +29,12 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Upload node_modules
+        uses: actions/upload-artifact@v4
+        with:
+          name: node-modules
+          path: node_modules/
+
       - name: Build
         run: npm run build
 
@@ -56,12 +62,18 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-
+      
       - name: Download build artifact
         uses: actions/download-artifact@v4
         with:
           name: build-artifact
           path: dist/
+
+      - name: Download node_modules
+        uses: actions/download-artifact@v4
+        with:
+          name: node-modules
+          path: node_modules/
 
       - name: Publish to NPM
         run: npm publish
@@ -72,6 +84,9 @@ jobs:
     if: startsWith(github.ref, 'refs/tags/')
     needs: build
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write
     steps:
       - uses: actions/checkout@v4
       
