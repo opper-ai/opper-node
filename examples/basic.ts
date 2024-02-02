@@ -1,16 +1,16 @@
 import { config } from 'dotenv';
-import { Message, ChatPayload } from 'opperai/types';
+import { types } from 'opperai';
 import Client from 'opperai';
 
 config();
 const client = new Client(process.env.OPPER_API_KEY);
 
-const message: Message = {
+const message: types.Message = {
     role: "user",
     content: "Hello world! This is a test message."
 };
 
-const payload: ChatPayload = {
+const payload: types.ChatPayload = {
     messages: [message]
 };
 

@@ -1,20 +1,20 @@
 import { config } from 'dotenv';
-import { Message, ChatPayload, SSEStreamCallbacks } from 'opperai/types';
-import { SSEClient } from 'opperai/ssestream';
+import { types } from 'opperai';
+import { ssestream } from 'opperai';
 
 config();
-const sseClient = new SSEClient(process.env.OPPER_API_KEY);
+const sseClient = new ssestream.SSEClient(process.env.OPPER_API_KEY);
 
-const message: Message = {
+const message: types.Message = {
     role: "user",
     content: "Hello world! This is a test message."
 };
 
-const payload: ChatPayload = {
+const payload: types.ChatPayload = {
     messages: [message]
 };
 
-const callbacks: SSEStreamCallbacks = {
+const callbacks: types.SSEStreamCallbacks = {
     onMessage: (data: any) => {
         console.log('Received message:', data);
     },

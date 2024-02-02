@@ -25,11 +25,11 @@ Run the examples:
 `basic.ts`: Simple example of how to use the Opper TypeScript SDK to send a message to a function and receive a response.
 
 ```shell
-npx ts-node basic.ts
+npm run basic
 ```
 
 `streaming.ts`: Example of how to use the Opper TypeScript SDK to start a streaming connection to a function and receive messages.
 
 ```shell
-npx ts-node streaming.ts
+npm run streaming
 ```

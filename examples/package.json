@@ -3,11 +3,12 @@
   "version": "1.0.0",
   "description": "Examples of using the Opper SDK",
   "scripts": {
-    "dev": "tsc && node index.js"
+    "basic": "npx ts-node basic.ts",
+    "streaming": "npx ts-node streaming.ts"
   },
   "dependencies": {
     "dotenv": "^16.4.1",
-    "opperai": "file:../dist"
+    "opperai": "^0.1.1"
   },
   "devDependencies": {
     "@types/node": "^20.11.15",
