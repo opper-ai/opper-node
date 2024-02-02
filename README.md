@@ -1,3 +1,3 @@
 # Opper TypeScript SDK
 
-See [examples](./examples/README.md) for example of how to use this module.
+See [examples](./examples/README.md) for examples of how to use this module.
