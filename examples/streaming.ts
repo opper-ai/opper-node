@@ -1,6 +1,5 @@
 import { config } from 'dotenv';
-import { types } from 'opperai';
-import { ssestream } from 'opperai';
+import { types, ssestream } from 'opperai';
 
 config();
 const sseClient = new ssestream.SSEClient(process.env.OPPER_API_KEY);

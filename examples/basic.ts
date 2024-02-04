@@ -1,6 +1,5 @@
 import { config } from 'dotenv';
-import { types } from 'opperai';
-import Client from 'opperai';
+import { types, Client } from 'opperai';
 
 config();
 const client = new Client(process.env.OPPER_API_KEY);

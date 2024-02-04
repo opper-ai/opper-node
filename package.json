@@ -1,9 +1,9 @@
 {
   "name": "opperai",
-  "version": "0.1.1",
+  "version": "0.1.3",
   "description": "",
-  "main": "dist/index",
-  "types": "dist/types",
+  "main": "dist/index.js",
+  "types": "dist/index.js",
   "scripts": {
     "prepare": "npm run build",
     "build": "tsc",
@@ -14,6 +14,11 @@
     "api",
     "sdk",
     "typescript"
+  ],
+  "files": [
+    "README.md",
+    "index.js",
+    "dist/*"
   ],
   "author": "Opper Technology AB",
   "license": "ISC",
