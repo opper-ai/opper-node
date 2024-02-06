@@ -5,14 +5,19 @@ config();
 
 const functions = new Functions(process.env.OPPER_API_KEY);
 
-const newfunc: types.FunctionDescription = {
-    path: "joch/newtest",
-    description: "An example function",
-    instructions: "This function is for testing purposes only.",
-};
+// Get all functions
+functions.getFunctions()
+    .then(response => console.log(response))
+    .catch(error => console.error(error));
 
-let savedResponseId: number | undefined;
 
+// const newfunc: types.FunctionDescription = {
+//     path: "joch/newtest",
+//     description: "An example function",
+//     instructions: "This function is for testing purposes only.",
+// };
+
+// let savedResponseId: number | undefined;
 
 // Create a new function
 // functions.createFunction(newfunc)

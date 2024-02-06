@@ -67,4 +67,8 @@ export class Functions {
     async deleteFunction(functionPath: string): Promise<void> {
         await this.doRequest('DELETE', `/functions/by_path/${functionPath}`);
     }
+
+    async getFunctions(): Promise<FunctionDescription[]> {
+        return this.doRequest('GET', '/functions/for_org');
+    }
 }
