@@ -4,11 +4,12 @@
   "description": "Examples of using the Opper SDK",
   "scripts": {
     "basic": "npx ts-node basic.ts",
-    "streaming": "npx ts-node streaming.ts"
+    "streaming": "npx ts-node streaming.ts",
+    "function": "npx ts-node function.ts"
   },
   "dependencies": {
     "dotenv": "^16.4.1",
-    "opperai": "^0.1.2"
+    "opperai": "file:.."
   },
   "devDependencies": {
     "@types/node": "^20.11.15",
