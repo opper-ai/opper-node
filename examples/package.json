@@ -5,7 +5,8 @@
   "scripts": {
     "basic": "npx ts-node basic.ts",
     "streaming": "npx ts-node streaming.ts",
-    "function": "npx ts-node function.ts"
+    "function": "npx ts-node function.ts",
+    "indexes": "npx ts-node indexes.ts"
   },
   "dependencies": {
     "dotenv": "^16.4.1",

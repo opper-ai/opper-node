@@ -50,3 +50,16 @@ export interface FunctionDescription {
     instructions: string;
     datasetIds?: number[] | null;
 }
+
+export interface IndexDescription {
+    id?: number | null;
+    name: string;
+    description: string;
+    datasetIds?: number[] | null;
+    functionIds?: number[] | null;
+}
+
+export interface IndexResponse {
+    index: IndexDescription[];
+}
+
