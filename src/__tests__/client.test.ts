@@ -1,19 +1,19 @@
-import { Client } from '../index';
+import OpperClient from '../index';
 
-describe('Client', () => {
-  let client: Client;
+describe('OpperClient', () => {
+  let client: OpperClient;
 
   beforeEach(() => {
-    client = new Client('test-api-key');
+    client = new OpperClient('test-api-key');
   });
 
   it('should be instantiated with an API key', () => {
-    expect(client).toBeInstanceOf(Client);
+    expect(client).toBeInstanceOf(OpperClient);
     expect(client.getApiKey()).toBe('test-api-key');
   });
 
   it('should throw an error if instantiated without an API key', () => {
-    expect(() => new Client(undefined as unknown as string)).toThrow(
+    expect(() => new OpperClient(undefined as unknown as string)).toThrow(
       'The apiKey is missing or empty.'
     );
   });
@@ -21,8 +21,6 @@ describe('Client', () => {
   describe('functions', () => {
     it('should have a functions property that is an instance of Functions', () => {
       expect(client.functions).toBeDefined();
-      // Assuming Functions is a class that would be imported if we were to test its instance
-      // expect(client.functions).toBeInstanceOf(Functions);
     });
 
     it('should be able to call chat function', async () => {

@@ -1,12 +1,12 @@
-import type { Client } from './index';
+import type OpperClient from './index';
 
 class APIResource {
-  protected _client: Client;
+  protected _client: OpperClient;
 
   protected baseURL: string;
   protected baseURLInternal: string;
 
-  constructor(client: Client) {
+  constructor(client: OpperClient) {
     this._client = client;
 
     this.baseURL = 'https://api.opper.ai/v1';

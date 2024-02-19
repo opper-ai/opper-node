@@ -1,7 +1,7 @@
 import { OpperError } from './error';
 import Functions from './functions';
 
-export class Client {
+class OpperClient {
   /**
    * Opper [API key](https://docs.opper.ai/api-keys)
    */
@@ -22,4 +22,4 @@ export class Client {
   };
 }
 
-export default Client;
+export default OpperClient;

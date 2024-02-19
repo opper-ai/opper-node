@@ -56,7 +56,7 @@ class Functions extends APIResource {
    * @throws {OpperError} If the response has an error.
    */
   public stream({ path, message }: OpperAiChat): ReadableStream<unknown> {
-    const url = `${this.baseURL}/chat/${path}`;
+    const url = `${this.baseURL}/chat/${path}?stream=True`;
     const body = this.calcMessageForPost(message);
 
     const iterator = this.urlStreamIterator(url, body);

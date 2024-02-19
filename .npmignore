@@ -1,0 +1,32 @@
+# Dependency directories
+node_modules/
+
+# Optional TypeScript cache
+*.tsbuildinfo
+
+# dotenv environment variable files
+.env
+.env.local
+
+# IDEs and editors
+/.idea
+*.sw*
+*~.nib
+local.properties
+/.vscode
+/.atom
+/.sublime
+/.history
+/.github
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+*.tscache
+
+# Other
+examples/package-lock.json
