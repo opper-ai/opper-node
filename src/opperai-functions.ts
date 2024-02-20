@@ -1,10 +1,10 @@
-import { OpperAPIError, OpperError } from './error';
+import { OpperError } from './error';
 import APIResource from './api-resource';
-import { OpperAiChat, OpperAiChatResponse, OpperAiStream } from './types';
+import { OpperAIChat, OpperAIChatResponse, OpperAIStream } from './types';
 
-class Functions extends APIResource {
+class OpperAIFunctions extends APIResource {
   /**
-   * This method is used to initiate a chat with the OpperAi API.
+   * This method is used to initiate a chat with the OpperAI API.
    * It sends a POST request to the chat endpoint with the provided path and message.
    * The response is a promise that resolves to an object with the message and context.
    * @param path - The path to the chat endpoint.
@@ -13,25 +13,11 @@ class Functions extends APIResource {
    * @throws {OpperAPIError} If the response status is not 200.
    * @throws {OpperError} If the response has an error.
    */
-  public async chat({ path, message }: OpperAiChat): Promise<OpperAiChatResponse> {
+  public async chat({ path, message }: OpperAIChat): Promise<OpperAIChatResponse> {
     const url = `${this.baseURL}/chat/${path}`;
     const body = this.calcMessageForPost(message);
 
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'X-OPPER-API-KEY': this._client.getApiKey(),
-        'Content-Type': 'application/json',
-      },
-      body: body,
-    });
-
-    if (!response.ok) {
-      throw new OpperAPIError(
-        response.status,
-        `Failed to send chat request to ${url}: ${response.statusText}`
-      );
-    }
+    const response = await this.post(url, body);
 
     const data = await response.json();
 
@@ -47,7 +33,7 @@ class Functions extends APIResource {
 
   /**
    * This method is a helper which can be used in node middleware
-   * to pipe the OpperAi chat stream directly to the client. See examples.
+   * to pipe the OpperAI chat stream directly to the client. See examples.
    * It sends a POST request to the chat endpoint with the provided path and message.
    * The response is a promise that resolves to a ReadableStream.
    * @param path - The path to the chat endpoint.
@@ -56,7 +42,7 @@ class Functions extends APIResource {
    * @throws {OpperAPIError} If the response status is not 200.
    * @throws {OpperError} If the response has an error.
    */
-  public pipe({ path, message }: OpperAiChat): ReadableStream<unknown> {
+  public pipe({ path, message }: OpperAIChat): ReadableStream<unknown> {
     const url = `${this.baseURL}/chat/${path}?stream=True`;
     const body = this.calcMessageForPost(message);
 
@@ -83,27 +69,12 @@ class Functions extends APIResource {
    * @param callbacks.onCancel      - if the fetch request is aborted.
    * @returns A promise that resolves when the stream is finished or an error occurs.
    */
-  public async stream({ path, message, callbacks }: OpperAiStream): Promise<void> {
+  public async stream({ path, message, callbacks }: OpperAIStream): Promise<void> {
     const url = `${this.baseURL}/chat/${path}`;
     const body = this.calcMessageForPost(message);
 
     try {
-      const response = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'X-OPPER-API-KEY': this._client.getApiKey(),
-          'Content-Type': 'application/json',
-        },
-        body: body,
-        signal: callbacks.controller?.signal,
-      });
-
-      if (!response.ok) {
-        throw new OpperAPIError(
-          response.status,
-          `Failed to send stream request to ${url}: ${response.statusText}`
-        );
-      }
+      const response = await this.post(url, body, callbacks.controller);
 
       const reader = response.body?.getReader();
       if (reader) {
@@ -122,4 +93,4 @@ class Functions extends APIResource {
   }
 }
 
-export default Functions;
+export default OpperAIFunctions;

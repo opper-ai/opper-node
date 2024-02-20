@@ -1,14 +1,14 @@
-export type OpperAiChatConversation = {
+export type OpperAIChatConversation = {
   role: string;
   content: string;
 };
 
-export interface OpperAiChat {
+export interface OpperAIChat {
   path: string;
-  message: string | OpperAiChatConversation[];
+  message: string | OpperAIChatConversation[];
 }
 
-export interface OpperAiSSEStreamCallbacks {
+export interface OpperAISSEStreamCallbacks {
   controller?: AbortController | null;
   onMessage: (json: unknown) => void;
   onComplete: () => void;
@@ -16,13 +16,13 @@ export interface OpperAiSSEStreamCallbacks {
   onCancel?: () => void;
 }
 
-export interface OpperAiStream {
+export interface OpperAIStream {
   path: string;
-  message: string | OpperAiChatConversation[];
-  callbacks: OpperAiSSEStreamCallbacks;
+  message: string | OpperAIChatConversation[];
+  callbacks: OpperAISSEStreamCallbacks;
 }
 
-export interface OpperAiChatResponse {
+export interface OpperAIChatResponse {
   message: string;
   context: unknown;
 }

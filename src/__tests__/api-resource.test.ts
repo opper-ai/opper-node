@@ -1,13 +1,13 @@
 import APIResource from '../api-resource';
 
-import OpperClient from '../index';
+import OpperAIClient from '../index';
 
 describe('APIResource', () => {
-  let client: OpperClient;
+  let client: OpperAIClient;
   let apiResource: APIResource;
 
   beforeEach(() => {
-    client = new OpperClient('test-api-key');
+    client = new OpperAIClient('test-api-key');
     apiResource = new APIResource(client);
   });
 

@@ -1,19 +1,19 @@
-import OpperClient from '../index';
+import OpperAIClient from '../index';
 
-describe('OpperClient', () => {
-  let client: OpperClient;
+describe('OpperAIClient', () => {
+  let client: OpperAIClient;
 
   beforeEach(() => {
-    client = new OpperClient('test-api-key');
+    client = new OpperAIClient('test-api-key');
   });
 
   it('should be instantiated with an API key', () => {
-    expect(client).toBeInstanceOf(OpperClient);
+    expect(client).toBeInstanceOf(OpperAIClient);
     expect(client.getApiKey()).toBe('test-api-key');
   });
 
   it('should throw an error if instantiated without an API key', () => {
-    expect(() => new OpperClient(undefined as unknown as string)).toThrow(
+    expect(() => new OpperAIClient(undefined as unknown as string)).toThrow(
       'The apiKey is missing or empty.'
     );
   });

@@ -1,5 +1,5 @@
 import { OpperAPIError } from '../error';
-import Functions from '../functions';
+import OpperAIFunctions from '../opperai-functions';
 
 // Mocking the global fetch to avoid actual API calls
 // @ts-expect-error Mocking global fetch
@@ -9,14 +9,14 @@ global.fetch = jest.fn(() =>
   })
 );
 
-describe('Functions', () => {
-  let functions: Functions;
+describe('OpperAIFunctions', () => {
+  let functions: OpperAIFunctions;
   const mockApiKey = 'test-api-key';
   const mockClient = { getApiKey: () => mockApiKey };
 
   beforeEach(() => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    functions = new Functions(mockClient as any);
+    functions = new OpperAIFunctions(mockClient as any);
     // Clear all instances and calls to constructor and all methods:
     (global.fetch as jest.Mock).mockClear();
   });
@@ -50,7 +50,7 @@ describe('Functions', () => {
       });
 
       await expect(functions.chat({ path: 'hello', message: 'Hi there!' })).rejects.toThrow(
-        'Failed to send chat request to'
+        '404 Failed to send request to https://api.opper.ai/v1/chat/hello: Not Found'
       );
     });
   });

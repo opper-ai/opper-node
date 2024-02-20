@@ -1,15 +1,15 @@
-import { OpperAiChatConversation, OpperAiSSEStreamCallbacks } from './types';
+import { OpperAIChatConversation, OpperAISSEStreamCallbacks } from './types';
 
-import type OpperClient from './index';
-import { OpperError } from './error';
+import type OpperAIClient from './index';
+import { OpperAPIError, OpperError } from './error';
 
 class APIResource {
-  protected _client: OpperClient;
+  protected _client: OpperAIClient;
 
   protected baseURL: string;
   protected baseURLInternal: string;
 
-  constructor(client: OpperClient) {
+  constructor(client: OpperAIClient) {
     this._client = client;
 
     this.baseURL = 'https://api.opper.ai/v1';
@@ -88,7 +88,7 @@ class APIResource {
    */
   protected async processSSEStream(
     reader: ReadableStreamDefaultReader<Uint8Array>,
-    callbacks: OpperAiSSEStreamCallbacks
+    callbacks: OpperAISSEStreamCallbacks
   ): Promise<void> {
     let buffer = '';
 
@@ -126,32 +126,63 @@ class APIResource {
   }
 
   /**
+   * This method sends a POST request to the specified URL with the provided body.
+   * If an AbortController is provided, it will be used to cancel the request.
+   * The response is a promise that resolves to the fetch response.
+   * @param url - The URL to send the POST request to.
+   * @param body - The body of the POST request.
+   * @param controller - Optional AbortController to cancel the request.
+   * @returns A promise that resolves to the fetch response.
+   * @throws {OpperAPIError} If the response status is not 200.
+   */
+  protected async post(url: string, body: string, controller?: AbortController | null | undefined) {
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'X-OPPER-API-KEY': this._client.getApiKey(),
+        'Content-Type': 'application/json',
+      },
+      body: body,
+      signal: controller?.signal,
+    });
+
+    if (!response.ok) {
+      throw new OpperAPIError(
+        response.status,
+        `Failed to send request to ${url}: ${response.statusText}`
+      );
+    }
+
+    return response;
+  }
+
+  /**
    * This method calculates the message for the POST request.
    * If the message is a string, it is formatted as a user message.
-   * If the message is an array of OpperAiChatConversation, it is formatted as a conversation.
+   * If the message is an array of OpperAIChatConversation, it is formatted as a conversation.
    * @param message - The message to be formatted.
    * @returns The formatted message as a JSON string.
-   * @throws {OpperError} If the message is not a string or an array of OpperAiChatConversation.
+   * @throws {OpperError} If the message is not a string or an array of OpperAIChatConversation.
    */
-  protected calcMessageForPost(message: string | OpperAiChatConversation[]) {
+  protected calcMessageForPost(message: string | OpperAIChatConversation[]) {
     if (typeof message === 'string') {
       return this.stringifyMessage([{ role: 'user', content: message }]);
     }
 
-    if (Array.isArray(message) && message.every(this.isOpperAiChatConversation)) {
+    if (Array.isArray(message) && message.every(this.isOpperAIChatConversation)) {
       return this.stringifyMessage(message);
     }
 
     throw new OpperError('The message is incorrect.');
   }
 
-  // Safe type test for the OpperAiChatConversation type
-  protected isOpperAiChatConversation(m: unknown): m is OpperAiChatConversation {
+  // Safe type test for the OpperAIChatConversation type
+  protected isOpperAIChatConversation(m: unknown): m is OpperAIChatConversation {
     return m !== null && typeof m === 'object' && 'role' in m && 'content' in m;
   }
 
   // Format post body
-  protected stringifyMessage(messages: OpperAiChatConversation[]) {
+  protected stringifyMessage(messages: OpperAIChatConversation[]) {
     return JSON.stringify({ messages });
   }
 }

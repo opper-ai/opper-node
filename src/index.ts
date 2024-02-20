@@ -1,9 +1,9 @@
 import { OpperError } from './error';
-import Functions from './functions';
+import OpperAIFunctions from './opperai-functions';
 
-class OpperClient {
+class OpperAIClient {
   /**
-   * Opper [API key](https://docs.opper.ai/api-keys)
+   * OpperAI [API key](https://docs.opper.ai/api-keys)
    */
   private apiKey: string;
 
@@ -15,11 +15,11 @@ class OpperClient {
     this.apiKey = apiKey;
   }
 
-  functions = new Functions(this);
+  functions = new OpperAIFunctions(this);
 
   getApiKey = () => {
     return this.apiKey;
   };
 }
 
-export default OpperClient;
+export default OpperAIClient;
