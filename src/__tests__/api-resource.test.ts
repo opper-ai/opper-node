@@ -20,6 +20,54 @@ describe('APIResource', () => {
     expect(apiResource.baseURLInternal).toBe('https://api.opper.ai/v1');
   });
 
+  describe('processSSEStream', () => {
+    it('should process a Server-Sent Events (SSE) stream from the server', async () => {
+      // Mock SSE stream
+      const stream = new ReadableStream({
+        start(controller) {
+          controller.enqueue(new TextEncoder().encode('data: {"test": "message"}\n\n'));
+          controller.close();
+        },
+      });
+
+      const reader = stream.getReader();
+      const callbacks = {
+        onMessage: jest.fn(),
+        onComplete: jest.fn(),
+        onError: jest.fn(),
+        onCancel: jest.fn(),
+      };
+
+      // @ts-expect-error Testing protected method
+      await apiResource.processSSEStream(reader, callbacks);
+
+      expect(callbacks.onMessage).toHaveBeenCalledWith({ test: 'message' });
+      expect(callbacks.onComplete).toHaveBeenCalled();
+    });
+
+    it('should handle errors thrown by the SSE stream', async () => {
+      // Mock SSE stream that throws an error
+      const stream = new ReadableStream({
+        start(controller) {
+          controller.error(new Error('Test Error'));
+        },
+      });
+
+      const reader = stream.getReader();
+      const callbacks = {
+        onMessage: jest.fn(),
+        onComplete: jest.fn(),
+        onError: jest.fn(),
+        onCancel: jest.fn(),
+      };
+
+      // @ts-expect-error Testing protected method
+      await apiResource.processSSEStream(reader, callbacks);
+
+      expect(callbacks.onError).toHaveBeenCalledWith(new Error('Test Error'));
+    });
+  });
+
   describe('iteratorToStream', () => {
     it('should convert an async generator to a readable stream', async () => {
       // Mock async generator

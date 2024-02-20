@@ -119,7 +119,6 @@ class APIResource {
       if (error?.name === 'AbortError') {
         callbacks.onCancel ? callbacks.onCancel() : callbacks.onComplete();
       } else {
-        console.error('Error reading stream:', error);
         callbacks.onError(error as Error);
       }
     }
