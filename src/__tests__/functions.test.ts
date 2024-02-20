@@ -54,7 +54,7 @@ describe('Functions', () => {
     });
   });
 
-  describe('stream', () => {
+  describe('pipe', () => {
     it('should call fetch with correct parameters and return a ReadableStream', async () => {
       const mockStream = new ReadableStream();
       (global.fetch as jest.Mock).mockResolvedValueOnce({
@@ -62,7 +62,7 @@ describe('Functions', () => {
         body: mockStream,
       });
 
-      const stream = functions.stream({ path: 'stream', message: 'Streaming data' });
+      const stream = functions.pipe({ path: 'stream', message: 'Streaming data' });
 
       expect(stream).toBeInstanceOf(ReadableStream);
     });

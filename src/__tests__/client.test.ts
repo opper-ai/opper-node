@@ -49,12 +49,10 @@ describe('OpperClient', () => {
 
     it('should be able to call stream function', () => {
       // Mocking the stream function to test if it can be called correctly
-      const streamSpy = jest
-        .spyOn(client.functions, 'stream')
-        .mockReturnValue(new ReadableStream());
+      const streamSpy = jest.spyOn(client.functions, 'pipe').mockReturnValue(new ReadableStream());
 
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const stream = client.functions.stream({
+      const stream = client.functions.pipe({
         path: 'test-path',
         message: 'test message',
       });
