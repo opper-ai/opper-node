@@ -1,6 +1,7 @@
+import { OpperAIChat, OpperAIChatResponse, OpperAIStream } from './types';
+
 import { OpperError } from './error';
 import APIResource from './api-resource';
-import { OpperAIChat, OpperAIChatResponse, OpperAIStream } from './types';
 
 class OpperAIFunctions extends APIResource {
   /**

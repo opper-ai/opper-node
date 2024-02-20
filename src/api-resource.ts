@@ -157,6 +157,32 @@ class APIResource {
   }
 
   /**
+   * This method sends a GET request to the specified URL.
+   * The response is a promise that resolves to the fetch response.
+   * @param url - The URL to send the GET request to.
+   * @returns A promise that resolves to the fetch response.
+   * @throws {OpperAPIError} If the response status is not 200.
+   */
+  protected async get(url: string) {
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'X-OPPER-API-KEY': this._client.getApiKey(),
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      throw new OpperAPIError(
+        response.status,
+        `Failed to fetch request ${url}: ${response.statusText}`
+      );
+    }
+
+    return response;
+  }
+
+  /**
    * This method calculates the message for the POST request.
    * If the message is a string, it is formatted as a user message.
    * If the message is an array of OpperAIChatConversation, it is formatted as a conversation.

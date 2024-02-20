@@ -26,3 +26,27 @@ export interface OpperAIChatResponse {
   message: string;
   context: unknown;
 }
+
+export type OpperAIIndexFileData = {
+  id: number;
+  original_filename: string;
+  size: number;
+  index_status:
+    | 'init'
+    | 'pending'
+    | 'uploading'
+    | 'indexing'
+    | 'success'
+    | 'indexed'
+    | 'error'
+    | 'failed'
+    | 'invalid';
+  n_vectors: number;
+};
+
+export type OpperAIIndex = {
+  id: number;
+  name: string;
+  created_at: Date;
+  files: OpperAIIndexFileData[];
+};

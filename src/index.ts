@@ -1,5 +1,6 @@
 import { OpperError } from './error';
 import OpperAIFunctions from './opperai-functions';
+import OpperAIIndexes from './opperai-indexes';
 
 class OpperAIClient {
   /**
@@ -16,6 +17,7 @@ class OpperAIClient {
   }
 
   functions = new OpperAIFunctions(this);
+  indexes = new OpperAIIndexes(this);
 
   getApiKey = () => {
     return this.apiKey;
