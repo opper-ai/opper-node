@@ -142,3 +142,20 @@ async function main() {
 
 main();
 ```
+
+## Indexes
+
+### Indexes List
+
+```typescript
+import OpperAIClient from 'opperai';
+// Initialize the client with your API key
+const client = new OpperAIClient('your-api-key');
+
+async function main() {
+  const indexes = await client.indexes.list();
+
+  console.log(indexes);
+}
+main();
+```
