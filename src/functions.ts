@@ -46,7 +46,8 @@ class Functions extends APIResource {
   }
 
   /**
-   * This method is used to initiate a chat stream with the OpperAi API.
+   * This method is a helper which can be used in node middleware
+   * to pipe the OpperAi chat stream directly to the client. See examples.
    * It sends a POST request to the chat endpoint with the provided path and message.
    * The response is a promise that resolves to a ReadableStream.
    * @param path - The path to the chat endpoint.
@@ -55,14 +56,14 @@ class Functions extends APIResource {
    * @throws {OpperAPIError} If the response status is not 200.
    * @throws {OpperError} If the response has an error.
    */
-  public stream({ path, message }: OpperAiChat): ReadableStream<unknown> {
+  public pipe({ path, message }: OpperAiChat): ReadableStream<unknown> {
     const url = `${this.baseURL}/chat/${path}?stream=True`;
     const body = this.calcMessageForPost(message);
 
     const iterator = this.urlStreamIterator(url, body);
-    const stream = this.iteratorToStream(iterator);
+    const pipe = this.iteratorToStream(iterator);
 
-    return stream;
+    return pipe;
   }
 }
 
