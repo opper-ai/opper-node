@@ -1,4 +1,5 @@
 import OpperAIClient from '../index';
+import { OpperAIIndex } from '../types';
 
 describe('OpperAIClient', () => {
   let client: OpperAIClient;
@@ -63,6 +64,36 @@ describe('OpperAIClient', () => {
       });
 
       streamSpy.mockRestore();
+    });
+  });
+
+  describe('indexes', () => {
+    it('should have an indexes property that is an instance of OpperAIIndexes', () => {
+      expect(client.indexes).toBeDefined();
+    });
+
+    it('should be able to list indexes', async () => {
+      const mockIndexes: OpperAIIndex[] = [
+        {
+          id: 1,
+          name: 'Test Index 1',
+          created_at: new Date(),
+          files: [],
+        },
+        {
+          id: 2,
+          name: 'Test Index 2',
+          created_at: new Date(),
+          files: [],
+        },
+      ];
+
+      // Mocking the list method to test if it can be called correctly
+      const listSpy = jest.spyOn(client.indexes, 'list').mockResolvedValue(mockIndexes);
+
+      await client.indexes.list();
+
+      expect(listSpy).toHaveBeenCalled();
     });
   });
 });

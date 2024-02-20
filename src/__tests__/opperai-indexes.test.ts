@@ -1,6 +1,5 @@
 import OpperAIIndexes from '../opperai-indexes';
 import { OpperAIIndex } from '../types';
-// import { OpperAPIError } from '../error';
 
 // Mocking the global fetch to avoid actual API calls
 // @ts-expect-error Mocking global fetch
