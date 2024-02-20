@@ -2,6 +2,7 @@
 import APIResource from '../api-resource';
 
 import OpperAIClient from '../index';
+import { OpperAIChatConversation } from '../types';
 
 describe('APIResource', () => {
   let client: OpperAIClient;
@@ -73,6 +74,63 @@ describe('APIResource', () => {
       // Read from stream and expect an error
       const reader = stream.getReader();
       await expect(reader.read()).rejects.toThrow('Test Error');
+    });
+  });
+
+  describe('calcMessageForPost', () => {
+    it('should format a string message as a user message', () => {
+      const message = 'Hello, world!';
+      // @ts-expect-error Testing protected prop
+      const formattedMessage = apiResource.calcMessageForPost(message);
+      expect(formattedMessage).toBe('{"messages":[{"role":"user","content":"Hello, world!"}]}');
+    });
+
+    it('should format an array of OpperAIChatConversation as a conversation', () => {
+      const message = [
+        { role: 'user', content: 'Hello, world!' },
+        { role: 'bot', content: 'Hi there!' },
+      ];
+      // @ts-expect-error Testing protected prop
+      const formattedMessage = apiResource.calcMessageForPost(message);
+      expect(formattedMessage).toBe(
+        '{"messages":[{"role":"user","content":"Hello, world!"},{"role":"bot","content":"Hi there!"}]}'
+      );
+    });
+
+    it('should throw an error if the message is not a string or an array of OpperAIChatConversation', () => {
+      const message = 123;
+      // @ts-expect-error Testing protected prop
+      expect(() => apiResource.calcMessageForPost(message)).toThrow('The message is incorrect.');
+    });
+  });
+
+  describe('isOpperAIChatConversation', () => {
+    it('should return true for a valid OpperAIChatConversation object', () => {
+      const conversation: OpperAIChatConversation = { role: 'user', content: 'Hello, world!' };
+      // @ts-expect-error Testing protected prop
+      const result = apiResource.isOpperAIChatConversation(conversation);
+      expect(result).toBe(true);
+    });
+
+    it('should return false for an invalid OpperAIChatConversation object', () => {
+      const conversation = { role: 'user', something: 'Hello, world!' };
+      // @ts-expect-error Testing protected prop
+      const result = apiResource.isOpperAIChatConversation(conversation);
+      expect(result).toBe(false);
+    });
+  });
+
+  describe('stringifyMessage', () => {
+    it('should format an array of OpperAIChatConversation as a JSON string', () => {
+      const messages = [
+        { role: 'user', content: 'Hello, world!' },
+        { role: 'bot', content: 'Hi there!' },
+      ];
+      // @ts-expect-error Testing protected prop
+      const formattedMessage = apiResource.stringifyMessage(messages);
+      expect(formattedMessage).toBe(
+        '{"messages":[{"role":"user","content":"Hello, world!"},{"role":"bot","content":"Hi there!"}]}'
+      );
     });
   });
 });
