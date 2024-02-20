@@ -1,4 +1,4 @@
-import { OpperAiChatConversation } from './types';
+import { OpperAiChatConversation, OpperAiSSEStreamCallbacks } from './types';
 
 import type OpperClient from './index';
 import { OpperError } from './error';
@@ -68,6 +68,61 @@ class APIResource {
         }
       },
     });
+  }
+
+  /**
+   * This method processes a Server-Sent Events (SSE) stream from the server.
+   * It reads the stream using a ReadableStreamDefaultReader, decodes the Uint8Array chunks to text,
+   * and splits the text into messages based on double newline characters.
+   * Each message is expected to be in the format "data: <json>", where <json> is a JSON string.
+   * The method parses each JSON string and passes the resulting object to the onMessage callback.
+   * If the stream ends or an error occurs (including an abort signal), appropriate callbacks are called.
+   *
+   * @param reader - The ReadableStreamDefaultReader<Uint8Array> to read the stream from.
+   * @param callbacks - An object containing callback functions for different events:
+   * @param callbacks.onMessage     - for each message received,
+   * @param callbacks.onComplete    - when the stream is finished,
+   * @param callbacks.onError       - for any error that occurs,
+   * @param callbacks.onCancel      - if the fetch request is aborted.
+   * @returns A promise that resolves when the stream is finished or an error occurs.
+   */
+  protected async processSSEStream(
+    reader: ReadableStreamDefaultReader<Uint8Array>,
+    callbacks: OpperAiSSEStreamCallbacks
+  ): Promise<void> {
+    let buffer = '';
+
+    try {
+      // eslint-disable-next-line no-constant-condition
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) {
+          callbacks.onComplete();
+          break;
+        }
+
+        buffer += new TextDecoder('utf-8').decode(value);
+
+        const messages = buffer.split(/\r?\n\r?\n/);
+        buffer = messages.pop() || '';
+
+        for (const message of messages) {
+          const match = message.match(/^data: (.*)$/);
+          if (match) {
+            const json = JSON.parse(match[1]);
+            callbacks.onMessage(json);
+          }
+        }
+      }
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      if (error?.name === 'AbortError') {
+        callbacks.onCancel ? callbacks.onCancel() : callbacks.onComplete();
+      } else {
+        console.error('Error reading stream:', error);
+        callbacks.onError(error as Error);
+      }
+    }
   }
 
   /**

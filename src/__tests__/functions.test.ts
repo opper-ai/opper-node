@@ -1,3 +1,4 @@
+import { OpperAPIError } from '../error';
 import Functions from '../functions';
 
 // Mocking the global fetch to avoid actual API calls
@@ -65,6 +66,103 @@ describe('Functions', () => {
       const stream = functions.pipe({ path: 'stream', message: 'Streaming data' });
 
       expect(stream).toBeInstanceOf(ReadableStream);
+    });
+  });
+
+  describe('stream', () => {
+    it('should call fetch with correct parameters and process the stream correctly', async () => {
+      const mockStreamResponse = new ReadableStream({
+        start(controller) {
+          controller.enqueue(new TextEncoder().encode('data: {"message":"Hello, stream!"}\n\n'));
+          controller.close();
+        },
+      });
+
+      const mockCallbacks = {
+        controller: new AbortController(),
+        onMessage: jest.fn(),
+        onComplete: jest.fn(),
+        onError: jest.fn(),
+        onCancel: jest.fn(),
+      };
+
+      (global.fetch as jest.Mock).mockResolvedValueOnce({
+        ok: true,
+        body: mockStreamResponse,
+      });
+
+      await functions.stream({
+        path: 'stream',
+        message: 'Streaming data',
+        callbacks: mockCallbacks,
+      });
+
+      expect(global.fetch).toHaveBeenCalledWith(expect.stringContaining('/chat/stream'), {
+        method: 'POST',
+        headers: {
+          'X-OPPER-API-KEY': mockApiKey,
+          'Content-Type': 'application/json',
+        },
+        body: expect.any(String),
+        signal: mockCallbacks.controller.signal,
+      });
+      expect(mockCallbacks.onMessage).toHaveBeenCalledWith({ message: 'Hello, stream!' });
+      expect(mockCallbacks.onComplete).toHaveBeenCalled();
+      expect(mockCallbacks.onError).not.toHaveBeenCalled();
+      expect(mockCallbacks.onCancel).not.toHaveBeenCalled();
+    });
+
+    it('should call onError callback if fetch response is not ok', async () => {
+      const mockCallbacks = {
+        controller: new AbortController(),
+        onMessage: jest.fn(),
+        onComplete: jest.fn(),
+        onError: jest.fn(),
+        onCancel: jest.fn(),
+      };
+
+      (global.fetch as jest.Mock).mockResolvedValueOnce({
+        ok: false,
+        status: 404,
+        statusText: 'Not Found',
+      });
+
+      await functions.stream({
+        path: 'stream',
+        message: 'Streaming data',
+        callbacks: mockCallbacks,
+      });
+
+      expect(mockCallbacks.onError).toHaveBeenCalledWith(expect.any(OpperAPIError));
+      expect(mockCallbacks.onMessage).not.toHaveBeenCalled();
+      expect(mockCallbacks.onComplete).not.toHaveBeenCalled();
+      expect(mockCallbacks.onCancel).not.toHaveBeenCalled();
+    });
+
+    it('should call onCancel callback if the fetch request is aborted', async () => {
+      const mockCallbacks = {
+        controller: new AbortController(),
+        onMessage: jest.fn(),
+        onComplete: jest.fn(),
+        onError: jest.fn(),
+        onCancel: jest.fn(),
+      };
+
+      const mockError = new Error('AbortError');
+      mockError.name = 'AbortError';
+
+      (global.fetch as jest.Mock).mockRejectedValueOnce(mockError);
+
+      await functions.stream({
+        path: 'stream',
+        message: 'Streaming data',
+        callbacks: mockCallbacks,
+      });
+
+      expect(mockCallbacks.onCancel).toHaveBeenCalled();
+      expect(mockCallbacks.onMessage).not.toHaveBeenCalled();
+      expect(mockCallbacks.onComplete).not.toHaveBeenCalled();
+      expect(mockCallbacks.onError).not.toHaveBeenCalled();
     });
   });
 });
