@@ -25,14 +25,14 @@ class OpperAIAPIResource {
    * @returns An async generator that yields the values of the response body.
    */
   protected urlStreamIterator(url: string, body: string) {
-    const apiKey = this._client.getApiKey();
+    const headers = this._client.calcAuthorizationHeaders();
 
     return (async function* () {
       const response = await fetch(url, {
         method: 'POST',
         headers: {
-          'X-OPPER-API-KEY': apiKey,
           'Content-Type': 'application/json',
+          ...headers,
         },
         body: body,
       });
@@ -135,11 +135,13 @@ class OpperAIAPIResource {
    * @throws {OpperAIAPIError} If the response status is not 200.
    */
   protected async post(url: string, body: string, controller?: AbortController | null | undefined) {
+    const headers = this._client.calcAuthorizationHeaders();
+
     const response = await fetch(url, {
       method: 'POST',
       headers: {
-        'X-OPPER-API-KEY': this._client.getApiKey(),
         'Content-Type': 'application/json',
+        ...headers,
       },
       body: body,
       signal: controller?.signal,
@@ -163,11 +165,13 @@ class OpperAIAPIResource {
    * @throws {OpperAIAPIError} If the response status is not 200.
    */
   protected async get(url: string) {
+    const headers = this._client.calcAuthorizationHeaders();
+
     const response = await fetch(url, {
       method: 'GET',
       headers: {
-        'X-OPPER-API-KEY': this._client.getApiKey(),
         'Content-Type': 'application/json',
+        ...headers,
       },
     });
 

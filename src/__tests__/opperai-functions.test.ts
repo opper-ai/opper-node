@@ -1,3 +1,4 @@
+import OpperAIClient from '../index';
 import { OpperAIAPIError } from '../opperai-error';
 import OpperAIFunctions from '../opperai-functions';
 
@@ -12,11 +13,13 @@ global.fetch = jest.fn(() =>
 describe('OpperAIFunctions', () => {
   let functions: OpperAIFunctions;
   const mockApiKey = 'test-api-key';
-  const mockClient = { getApiKey: () => mockApiKey };
 
   beforeEach(() => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    functions = new OpperAIFunctions(mockClient as any);
+    const mockClient = new OpperAIClient({
+      apiKey: mockApiKey,
+    });
+
+    functions = new OpperAIFunctions(mockClient);
     // Clear all instances and calls to constructor and all methods:
     (global.fetch as jest.Mock).mockClear();
   });

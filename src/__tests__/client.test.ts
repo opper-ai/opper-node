@@ -1,24 +1,30 @@
-import OpperAIClient from '../index';
 import { OpperAIOptions, OpperAIIndex } from '../types';
+
+import OpperAIClient from '../index';
 
 describe('OpperAIClient', () => {
   let client: OpperAIClient;
 
   beforeEach(() => {
-    client = new OpperAIClient({ apiKey: 'test-api-key' });
+    client = new OpperAIClient({ apiKey: 'test-api-key', isUsingAuthorization: true });
   });
 
-  it('should be instantiated with an API key', () => {
+  it('should be instantiated with an API key and authorization enabled', () => {
     expect(client).toBeInstanceOf(OpperAIClient);
-    expect(client.getApiKey()).toBe('test-api-key');
+    // @ts-expect-error Testing protected prop
+    expect(client.apiKey).toBe('test-api-key');
+    // @ts-expect-error Testing protected prop
+    expect(client.isUsingAuthorization).toBe(true);
   });
+
   it('should throw an error if instantiated without an API key', () => {
     expect(() => new OpperAIClient(undefined as unknown as OpperAIOptions)).toThrow(
       'OpperAIClient: The apiKey is missing or empty.'
     );
   });
+
   describe('functions', () => {
-    it('should have a functions property that is an instance of Functions', () => {
+    it('should have a functions property that is an instance of OpperAIAPIResource', () => {
       expect(client.functions).toBeDefined();
     });
 
@@ -92,6 +98,20 @@ describe('OpperAIClient', () => {
       await client.indexes.list();
 
       expect(listSpy).toHaveBeenCalled();
+    });
+  });
+
+  describe('calcAuthorizationHeaders', () => {
+    it('should return correct headers when using authorization', () => {
+      client = new OpperAIClient({ apiKey: 'test-api-key', isUsingAuthorization: true });
+      const headers = client.calcAuthorizationHeaders();
+      expect(headers).toEqual({ Authorization: 'Bearer test-api-key' });
+    });
+
+    it('should return correct headers when not using authorization', () => {
+      client = new OpperAIClient({ apiKey: 'test-api-key', isUsingAuthorization: false });
+      const headers = client.calcAuthorizationHeaders();
+      expect(headers).toEqual({ 'X-OPPER-API-KEY': 'test-api-key' });
     });
   });
 });

@@ -1,5 +1,15 @@
 export type OpperAIOptions = {
+  /**
+   * OpperAI [API key](https://docs.opper.ai/api-keys)
+   */
   apiKey: string;
+
+  /**
+   * By default, client-side use of this library is not allowed, as it risks exposing your secret API credentials to attackers.
+   * Only set this option to `true` if you understand the risks and have appropriate mitigations in place.
+   */
+  dangerouslyAllowBrowser?: boolean;
+
   isUsingAuthorization?: boolean;
 };
 

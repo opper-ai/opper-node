@@ -1,5 +1,7 @@
-import OpperAIIndexes from '../opperai-indexes';
 import { OpperAIIndex } from '../types';
+
+import OpperAIClient from '../index';
+import OpperAIIndexes from '../opperai-indexes';
 
 // Mocking the global fetch to avoid actual API calls
 // @ts-expect-error Mocking global fetch
@@ -12,7 +14,7 @@ global.fetch = jest.fn(() =>
 describe('OpperAIIndexes', () => {
   let opperAIIndexes: OpperAIIndexes;
   const mockApiKey = 'test-api-key';
-  const mockClient = { getApiKey: () => mockApiKey };
+
   const mockIndexes: OpperAIIndex[] = [
     {
       id: 1,
@@ -29,8 +31,11 @@ describe('OpperAIIndexes', () => {
   ];
 
   beforeEach(() => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    opperAIIndexes = new OpperAIIndexes(mockClient as any);
+    const mockClient = new OpperAIClient({
+      apiKey: mockApiKey,
+    });
+
+    opperAIIndexes = new OpperAIIndexes(mockClient);
     // Clear all instances and calls to constructor and all methods:
     (global.fetch as jest.Mock).mockClear();
   });

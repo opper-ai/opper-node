@@ -13,7 +13,9 @@ npm install opper
 ```typescript
 import OpperAIClient from 'opperai';
 // Initialize the client with your API key
-const client = new OpperAIClient('your-api-key');
+const client = new OpperAIClient({
+  apiKey: 'your-api-key',
+});
 
 async function main() {
   const { message } = await client.functions.chat({
@@ -33,7 +35,9 @@ The message parameter can be a single message in the form of a string or a conve
 ```typescript
 import OpperAIClient from 'opperai';
 // Initialize the client with your API key
-const client = new OpperAIClient('your-api-key');
+const client = new OpperAIClient({
+  apiKey: 'your-api-key',
+});
 
 async function main() {
   const { message } = await client.functions.chat({
@@ -68,7 +72,9 @@ The `functions.chat` method allows you to send a message to the Opper API and re
 ```typescript
 import OpperAIClient from 'opperai';
 // Initialize the client with your API key
-const client = new OpperAIClient('your-api-key');
+const client = new OpperAIClient({
+  apiKey: 'your-api-key',
+});
 
 async function main() {
   try {
@@ -93,7 +99,9 @@ You can use the `functions.pipe` method to seamlessly integrate an Opper convers
 import OpperAIClient from 'opperai';
 
 // Initialize the client with your API key
-const client = new OpperAIClient('your-api-key');
+const client = new OpperAIClient({
+  apiKey: 'your-api-key',
+});
 
 export async function POST(req, res) {
   const data = await req.json();
@@ -116,7 +124,9 @@ The `functions.stream` method enables real-time communication with the Opper API
 import OpperAIClient from 'opperai';
 
 // Initialize the client with your API key
-const client = new OpperAIClient('your-api-key');
+const client = new OpperAIClient({
+  apiKey: 'your-api-key',
+});
 
 async function main() {
   // If the stream needs to be canceled use controller.abort();
