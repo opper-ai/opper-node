@@ -35,78 +35,23 @@ jobs:
       - name: Test
         run: npm test
 
-      - name: Upload build artifact
-        if: matrix.node-version == '21.x'
-        uses: actions/upload-artifact@v4
-        with:
-          name: build-artifact
-          path: dist/
-
-      - name: Upload node_modules
-        if: matrix.node-version == '21.x'
-        uses: actions/upload-artifact@v4
-        with:
-          name: node-modules
-          path: node_modules/  
-
-  publish-npm:
-    if: startsWith(github.ref, 'refs/tags/')
-    needs: build
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      id-token: write
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          registry-url: 'https://registry.npmjs.org'
-          scope: '@opperai'
-      
-      - name: Download build artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: build-artifact
-          path: dist/
-
-      - name: Download node_modules
-        uses: actions/download-artifact@v4
-        with:
-          name: node-modules
-          path: node_modules/
-
       - name: Publish to NPM
+        if: matrix.node-version == '21.x' && startsWith(github.ref, 'refs/tags/')
         run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
-
-  publish-github:
-    if: startsWith(github.ref, 'refs/tags/')
-    needs: build
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      id-token: write
-    steps:
-      - uses: actions/checkout@v4
       
-      - name: Download build artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: build-artifact
-          path: dist/
-
       - name: Create GitHub Release
+        if: matrix.node-version == '21.x' && startsWith(github.ref, 'refs/tags/')
         env:
           GITHUB_TOKEN: ${{ github.token }}
         run: >-
           gh release create '${{ github.ref_name }}' --repo '${{ github.repository }}' --notes ""
       
       - name: Upload artifact signatures to GitHub Release
+        if: matrix.node-version == '21.x' && startsWith(github.ref, 'refs/tags/')
         env:
           GITHUB_TOKEN: ${{ github.token }}
         run: >-
           gh release upload '${{ github.ref_name }}' dist/** --repo '${{ github.repository }}'
+  
