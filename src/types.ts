@@ -14,7 +14,7 @@ export type OpperAIOptions = {
 };
 
 export type OpperAIChatConversation = {
-  role: string;
+  role: 'user' | 'assistant';
   content: string;
 };
 
