@@ -13,6 +13,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write
 
     strategy:
       matrix:
@@ -25,6 +28,8 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
+          registry-url: 'https://registry.npmjs.org'
+          scope: '@opperai'
       
       - name: Install dependencies
         run: npm install
