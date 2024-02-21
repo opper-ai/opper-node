@@ -1,8 +1,8 @@
 import { OpperAIIndex } from './types';
 
-import APIResource from './api-resource';
+import OpperAIAPIResource from './opperai-api-resource';
 
-class OpperAIIndexes extends APIResource {
+class OpperAIIndexes extends OpperAIAPIResource {
   /**
    * This method retrieves a list of indexes from the OpperAI API.
    * It sends a GET request to the indexes endpoint and returns the response as an array of OpperAIIndex objects.

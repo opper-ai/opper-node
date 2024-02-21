@@ -1,4 +1,4 @@
-import { OpperAPIError } from '../error';
+import { OpperAIAPIError } from '../opperai-error';
 import OpperAIFunctions from '../opperai-functions';
 
 // Mocking the global fetch to avoid actual API calls
@@ -133,7 +133,7 @@ describe('OpperAIFunctions', () => {
         callbacks: mockCallbacks,
       });
 
-      expect(mockCallbacks.onError).toHaveBeenCalledWith(expect.any(OpperAPIError));
+      expect(mockCallbacks.onError).toHaveBeenCalledWith(expect.any(OpperAIAPIError));
       expect(mockCallbacks.onMessage).not.toHaveBeenCalled();
       expect(mockCallbacks.onComplete).not.toHaveBeenCalled();
       expect(mockCallbacks.onCancel).not.toHaveBeenCalled();

@@ -1,3 +1,8 @@
+export type OpperAIOptions = {
+  apiKey: string;
+  isUsingAuthorization?: boolean;
+};
+
 export type OpperAIChatConversation = {
   role: string;
   content: string;

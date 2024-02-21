@@ -1,9 +1,9 @@
 import { OpperAIChat, OpperAIChatResponse, OpperAIStream } from './types';
 
-import { OpperError } from './error';
-import APIResource from './api-resource';
+import { OpperAIError } from './opperai-error';
+import OpperAIAPIResource from './opperai-api-resource';
 
-class OpperAIFunctions extends APIResource {
+class OpperAIFunctions extends OpperAIAPIResource {
   /**
    * This method is used to initiate a chat with the OpperAI API.
    * It sends a POST request to the chat endpoint with the provided path and message.
@@ -12,7 +12,7 @@ class OpperAIFunctions extends APIResource {
    * @param message - The message to be sent.
    * @returns A promise that resolves to an object with the message and context.
    * @throws {OpperAPIError} If the response status is not 200.
-   * @throws {OpperError} If the response has an error.
+   * @throws {OpperAIError} If the response has an error.
    */
   public async chat({ path, message }: OpperAIChat): Promise<OpperAIChatResponse> {
     const url = `${this.baseURL}/chat/${path}`;
@@ -23,7 +23,7 @@ class OpperAIFunctions extends APIResource {
     const data = await response.json();
 
     if (data.error) {
-      throw new OpperError(`The response from ${url} has an error: ${data.error}`);
+      throw new OpperAIError(`The response from ${url} has an error: ${data.error}`);
     }
 
     return {
@@ -41,7 +41,7 @@ class OpperAIFunctions extends APIResource {
    * @param message - The message to be sent.
    * @returns A promise that resolves to a ReadableStream.
    * @throws {OpperAPIError} If the response status is not 200.
-   * @throws {OpperError} If the response has an error.
+   * @throws {OpperAIError} If the response has an error.
    */
   public pipe({ path, message }: OpperAIChat): ReadableStream<unknown> {
     const url = `${this.baseURL}/chat/${path}?stream=True`;
@@ -81,7 +81,7 @@ class OpperAIFunctions extends APIResource {
       if (reader) {
         await this.processSSEStream(reader, callbacks);
       } else {
-        throw new OpperError('Failed to get a stream reader');
+        throw new OpperAIError('Failed to get a stream reader');
       }
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {

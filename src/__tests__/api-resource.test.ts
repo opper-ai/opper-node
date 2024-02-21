@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import APIResource from '../api-resource';
+import APIResource from '../opperai-api-resource';
 
 import OpperAIClient from '../index';
 import { OpperAIChatConversation } from '../types';
@@ -9,7 +9,7 @@ describe('APIResource', () => {
   let apiResource: APIResource;
 
   beforeEach(() => {
-    client = new OpperAIClient('test-api-key');
+    client = new OpperAIClient({ apiKey: 'test-api-key' });
     apiResource = new APIResource(client);
   });
 
@@ -148,7 +148,9 @@ describe('APIResource', () => {
     it('should throw an error if the message is not a string or an array of OpperAIChatConversation', () => {
       const message = 123;
       // @ts-expect-error Testing protected prop
-      expect(() => apiResource.calcMessageForPost(message)).toThrow('The message is incorrect.');
+      expect(() => apiResource.calcMessageForPost(message)).toThrow(
+        'OpperAIClient: The message is not of type string or OpperAIChatConversation[].'
+      );
     });
   });
 

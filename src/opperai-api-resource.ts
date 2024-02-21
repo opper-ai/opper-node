@@ -1,9 +1,9 @@
 import { OpperAIChatConversation, OpperAISSEStreamCallbacks } from './types';
 
 import type OpperAIClient from './index';
-import { OpperAPIError, OpperError } from './error';
+import { OpperAIAPIError, OpperAIError } from './opperai-error';
 
-class APIResource {
+class OpperAIAPIResource {
   protected _client: OpperAIClient;
 
   protected baseURL: string;
@@ -132,7 +132,7 @@ class APIResource {
    * @param body - The body of the POST request.
    * @param controller - Optional AbortController to cancel the request.
    * @returns A promise that resolves to the fetch response.
-   * @throws {OpperAPIError} If the response status is not 200.
+   * @throws {OpperAIAPIError} If the response status is not 200.
    */
   protected async post(url: string, body: string, controller?: AbortController | null | undefined) {
     const response = await fetch(url, {
@@ -146,7 +146,7 @@ class APIResource {
     });
 
     if (!response.ok) {
-      throw new OpperAPIError(
+      throw new OpperAIAPIError(
         response.status,
         `Failed to send request to ${url}: ${response.statusText}`
       );
@@ -160,7 +160,7 @@ class APIResource {
    * The response is a promise that resolves to the fetch response.
    * @param url - The URL to send the GET request to.
    * @returns A promise that resolves to the fetch response.
-   * @throws {OpperAPIError} If the response status is not 200.
+   * @throws {OpperAIAPIError} If the response status is not 200.
    */
   protected async get(url: string) {
     const response = await fetch(url, {
@@ -172,7 +172,7 @@ class APIResource {
     });
 
     if (!response.ok) {
-      throw new OpperAPIError(
+      throw new OpperAIAPIError(
         response.status,
         `Failed to fetch request ${url}: ${response.statusText}`
       );
@@ -187,7 +187,7 @@ class APIResource {
    * If the message is an array of OpperAIChatConversation, it is formatted as a conversation.
    * @param message - The message to be formatted.
    * @returns The formatted message as a JSON string.
-   * @throws {OpperError} If the message is not a string or an array of OpperAIChatConversation.
+   * @throws {OpperAIError} If the message is not a string or an array of OpperAIChatConversation.
    */
   protected calcMessageForPost(message: string | OpperAIChatConversation[]) {
     if (typeof message === 'string') {
@@ -198,7 +198,7 @@ class APIResource {
       return this.stringifyMessage(message);
     }
 
-    throw new OpperError('The message is incorrect.');
+    throw new OpperAIError('The message is not of type string or OpperAIChatConversation[].');
   }
 
   // Safe type test for the OpperAIChatConversation type
@@ -212,4 +212,4 @@ class APIResource {
   }
 }
 
-export default APIResource;
+export default OpperAIAPIResource;
