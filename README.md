@@ -48,7 +48,7 @@ async function main() {
         content: 'this is the start',
       },
       {
-        role: 'opper',
+        role: 'assistant',
         content: 'this is response',
       },
       {

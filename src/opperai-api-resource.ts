@@ -207,7 +207,14 @@ class OpperAIAPIResource {
 
   // Safe type test for the OpperAIChatConversation type
   protected isOpperAIChatConversation(m: unknown): m is OpperAIChatConversation {
-    return m !== null && typeof m === 'object' && 'role' in m && 'content' in m;
+    const candidate = m as OpperAIChatConversation; // Type assertion to an intermediate type
+    return (
+      typeof m === 'object' &&
+      m !== null &&
+      typeof candidate.role === 'string' &&
+      ['assistant', 'user'].includes(candidate.role) &&
+      'content' in candidate
+    );
   }
 
   // Format post body

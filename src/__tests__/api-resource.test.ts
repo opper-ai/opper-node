@@ -136,12 +136,12 @@ describe('APIResource', () => {
     it('should format an array of OpperAIChatConversation as a conversation', () => {
       const message = [
         { role: 'user', content: 'Hello, world!' },
-        { role: 'bot', content: 'Hi there!' },
+        { role: 'assistant', content: 'Hi there!' },
       ];
       // @ts-expect-error Testing protected prop
       const formattedMessage = apiResource.calcMessageForPost(message);
       expect(formattedMessage).toBe(
-        '{"messages":[{"role":"user","content":"Hello, world!"},{"role":"bot","content":"Hi there!"}]}'
+        '{"messages":[{"role":"user","content":"Hello, world!"},{"role":"assistant","content":"Hi there!"}]}'
       );
     });
 
@@ -164,6 +164,13 @@ describe('APIResource', () => {
 
     it('should return false for an invalid OpperAIChatConversation object', () => {
       const conversation = { role: 'user', something: 'Hello, world!' };
+      // @ts-expect-error Testing protected prop
+      const result = apiResource.isOpperAIChatConversation(conversation);
+      expect(result).toBe(false);
+    });
+
+    it('should return false if the role is incorrect', () => {
+      const conversation = { role: 'wrong', content: 'Hello, world!' };
       // @ts-expect-error Testing protected prop
       const result = apiResource.isOpperAIChatConversation(conversation);
       expect(result).toBe(false);
