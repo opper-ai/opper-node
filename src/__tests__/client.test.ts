@@ -6,15 +6,28 @@ describe('OpperAIClient', () => {
   let client: OpperAIClient;
 
   beforeEach(() => {
-    client = new OpperAIClient({ apiKey: 'test-api-key', isUsingAuthorization: true });
+    client = new OpperAIClient({
+      apiKey: 'test-api-key',
+      isUsingAuthorization: true,
+    });
   });
 
-  it('should be instantiated with an API key and authorization enabled', () => {
+  it('should be instantiated with an API key, authorization enabled, and a base URL', () => {
     expect(client).toBeInstanceOf(OpperAIClient);
     // @ts-expect-error Testing protected prop
     expect(client.apiKey).toBe('test-api-key');
     // @ts-expect-error Testing protected prop
     expect(client.isUsingAuthorization).toBe(true);
+    expect(client.baseURL).toBe('https://api.opper.ai/v1');
+  });
+
+  it('should be able to override the baseURL', () => {
+    const example = new OpperAIClient({
+      apiKey: 'test-api-key',
+      baseURL: 'https://api.test.com',
+    });
+
+    expect(example.baseURL).toBe('https://api.test.com');
   });
 
   it('should throw an error if instantiated without an API key', () => {
@@ -103,13 +116,19 @@ describe('OpperAIClient', () => {
 
   describe('calcAuthorizationHeaders', () => {
     it('should return correct headers when using authorization', () => {
-      client = new OpperAIClient({ apiKey: 'test-api-key', isUsingAuthorization: true });
+      client = new OpperAIClient({
+        apiKey: 'test-api-key',
+        isUsingAuthorization: true,
+      });
       const headers = client.calcAuthorizationHeaders();
       expect(headers).toEqual({ Authorization: 'Bearer test-api-key' });
     });
 
     it('should return correct headers when not using authorization', () => {
-      client = new OpperAIClient({ apiKey: 'test-api-key', isUsingAuthorization: false });
+      client = new OpperAIClient({
+        apiKey: 'test-api-key',
+        isUsingAuthorization: false,
+      });
       const headers = client.calcAuthorizationHeaders();
       expect(headers).toEqual({ 'X-OPPER-API-KEY': 'test-api-key' });
     });

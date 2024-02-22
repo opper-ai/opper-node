@@ -10,7 +10,7 @@ class OpperAIIndexes extends OpperAIAPIResource {
    * @throws {OpperAPIError} If the response status is not 200.
    */
   public async list() {
-    const url = `${this.baseURL}/indexes`;
+    const url = this.calcURLIndexes();
 
     const response = await this.get(url);
 

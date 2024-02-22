@@ -5,11 +5,15 @@ import OpperAIFunctions from './opperai-functions';
 import OpperAIIndexes from './opperai-indexes';
 
 class OpperAIClient {
+  public baseURL: string;
+
   private apiKey: string;
   private isUsingAuthorization: boolean;
 
   constructor(
-    { apiKey, isUsingAuthorization, dangerouslyAllowBrowser }: OpperAIOptions = { apiKey: '' }
+    { apiKey, baseURL, isUsingAuthorization, dangerouslyAllowBrowser }: OpperAIOptions = {
+      apiKey: '',
+    }
   ) {
     if (apiKey === undefined || apiKey === '') {
       throw new OpperAIError('The apiKey is missing or empty.');
@@ -22,6 +26,7 @@ class OpperAIClient {
     }
 
     this.apiKey = apiKey;
+    this.baseURL = baseURL || 'https://api.opper.ai/v1';
     this.isUsingAuthorization = !!isUsingAuthorization;
   }
 
