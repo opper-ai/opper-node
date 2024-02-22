@@ -10,6 +10,12 @@ export type OpperAIOptions = {
    */
   dangerouslyAllowBrowser?: boolean;
 
+  /**
+   * Override the base url if needed
+   * Defaults to https://api.opper.ai/v1
+   */
+  baseURL?: string;
+
   isUsingAuthorization?: boolean;
 };
 

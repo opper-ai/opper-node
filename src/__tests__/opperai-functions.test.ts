@@ -34,7 +34,7 @@ describe('OpperAIFunctions', () => {
 
       const response = await functions.chat({ path: 'hello', message: 'Hi there!' });
 
-      expect(global.fetch).toHaveBeenCalledWith(expect.stringContaining('/chat/hello'), {
+      expect(global.fetch).toHaveBeenCalledWith('https://api.opper.ai/v1/chat/hello', {
         method: 'POST',
         headers: {
           'X-OPPER-API-KEY': mockApiKey,
@@ -100,7 +100,7 @@ describe('OpperAIFunctions', () => {
         callbacks: mockCallbacks,
       });
 
-      expect(global.fetch).toHaveBeenCalledWith(expect.stringContaining('/chat/stream'), {
+      expect(global.fetch).toHaveBeenCalledWith('https://api.opper.ai/v1/chat/stream', {
         method: 'POST',
         headers: {
           'X-OPPER-API-KEY': mockApiKey,

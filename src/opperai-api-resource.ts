@@ -6,14 +6,8 @@ import { OpperAIAPIError, OpperAIError } from './opperai-error';
 class OpperAIAPIResource {
   protected _client: OpperAIClient;
 
-  protected baseURL: string;
-  protected baseURLInternal: string;
-
   constructor(client: OpperAIClient) {
     this._client = client;
-
-    this.baseURL = 'https://api.opper.ai/v1';
-    this.baseURLInternal = 'https://api.opper.ai/v1';
   }
 
   /**
@@ -221,6 +215,14 @@ class OpperAIAPIResource {
   protected stringifyMessage(messages: OpperAIChatConversation[]) {
     return JSON.stringify({ messages });
   }
+
+  protected calcURLChat = (path: string) => {
+    return `${this._client.baseURL}/chat/${path}`;
+  };
+
+  protected calcURLIndexes = () => {
+    return `${this._client.baseURL}/indexes`;
+  };
 }
 
 export default OpperAIAPIResource;

@@ -15,7 +15,7 @@ class OpperAIFunctions extends OpperAIAPIResource {
    * @throws {OpperAIError} If the response has an error.
    */
   public async chat({ path, message }: OpperAIChat): Promise<OpperAIChatResponse> {
-    const url = `${this.baseURL}/chat/${path}`;
+    const url = this.calcURLChat(path);
     const body = this.calcMessageForPost(message);
 
     const response = await this.post(url, body);
@@ -44,7 +44,7 @@ class OpperAIFunctions extends OpperAIAPIResource {
    * @throws {OpperAIError} If the response has an error.
    */
   public pipe({ path, message }: OpperAIChat): ReadableStream<unknown> {
-    const url = `${this.baseURL}/chat/${path}?stream=True`;
+    const url = this.calcURLChat(`${path}?stream=True`);
     const body = this.calcMessageForPost(message);
 
     const iterator = this.urlStreamIterator(url, body);
@@ -71,7 +71,7 @@ class OpperAIFunctions extends OpperAIAPIResource {
    * @returns A promise that resolves when the stream is finished or an error occurs.
    */
   public async stream({ path, message, callbacks }: OpperAIStream): Promise<void> {
-    const url = `${this.baseURL}/chat/${path}`;
+    const url = this.calcURLChat(path);
     const body = this.calcMessageForPost(message);
 
     try {

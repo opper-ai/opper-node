@@ -13,13 +13,6 @@ describe('APIResource', () => {
     apiResource = new APIResource(client);
   });
 
-  it('should initialize with the correct base URLs', () => {
-    // @ts-expect-error Testing protected prop
-    expect(apiResource.baseURL).toBe('https://api.opper.ai/v1');
-    // @ts-expect-error Testing protected prop
-    expect(apiResource.baseURLInternal).toBe('https://api.opper.ai/v1');
-  });
-
   describe('processSSEStream', () => {
     it('should process a Server-Sent Events (SSE) stream from the server', async () => {
       // Mock SSE stream
@@ -188,6 +181,27 @@ describe('APIResource', () => {
       expect(formattedMessage).toBe(
         '{"messages":[{"role":"user","content":"Hello, world!"},{"role":"bot","content":"Hi there!"}]}'
       );
+    });
+  });
+
+  describe('calcURLChat', () => {
+    it('should calculate the correct URL for the chat path', () => {
+      const path = 'test-path';
+      // @ts-expect-error Testing protected prop
+      const expectedURL = `${apiResource._client.baseURL}/chat/${path}`;
+      // @ts-expect-error Testing protected prop
+      const calculatedURL = apiResource.calcURLChat(path);
+      expect(calculatedURL).toBe(expectedURL);
+    });
+  });
+
+  describe('calcURLIndexes', () => {
+    it('should calculate the correct URL for the indexes path', () => {
+      // @ts-expect-error Testing protected prop
+      const expectedURL = `${apiResource._client.baseURL}/indexes`;
+      // @ts-expect-error Testing protected prop
+      const calculatedURL = apiResource.calcURLIndexes();
+      expect(calculatedURL).toBe(expectedURL);
     });
   });
 });
