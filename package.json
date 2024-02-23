@@ -1,14 +1,19 @@
 {
   "name": "opperai",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "The official Node library for the OpperAi API",
   "main": "dist/index.js",
   "types": "dist/index.js",
   "scripts": {
-    "prepare": "npm run build",
     "build": "tsup",
-    "lint": "eslint src/**",
-    "test": "jest"
+    "check:lint": "eslint 'src/**/*.ts'",
+    "check:type": "tsc --noEmit --project './tsconfig.json'",
+    "check": "npm run check:type && npm run check:lint && npm run test",
+    "prepare": "npm run build",
+    "test": "jest",
+    "publish-patch": "npm run check && npm run build && npm version patch",
+    "publish-minor": "npm run check && npm run build && npm version minor",
+    "publish-major": "npm run check && npm run build && npm version major"
   },
   "keywords": [
     "opper",
