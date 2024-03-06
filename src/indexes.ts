@@ -1,4 +1,4 @@
-import { Document, Index } from './types';
+import { Document, Filter, Index } from './types';
 
 import APIResource from './api-resource';
 
@@ -13,14 +13,14 @@ class Indexes extends APIResource {
   public async list() {
     const url = this.calcURLIndexes();
 
-    const response = await this.get(url);
+    const response = await this.doGet(url);
 
     const indexes: Index[] = await response.json();
 
     return indexes;
   }
 
-  public async getID(name: string): Promise<number | null> {
+  public async get(name: string): Promise<Index | null> {
     const list = await this.list();
 
     const index = list.find((index) => index.name === name);
@@ -28,11 +28,11 @@ class Indexes extends APIResource {
     if (!index) {
       return null;
     }
-    return index.id;
+    return index;
   }
 
   public async create(name: string): Promise<Index> {
-    const response = await this.post(this.calcURLIndexes(), JSON.stringify({ "name": name }));
+    const response = await this.doPost(this.calcURLIndexes(), JSON.stringify({ "name": name }));
 
     const data = await response.json();
 
@@ -40,13 +40,19 @@ class Indexes extends APIResource {
   }
 
   public async delete(id: number): Promise<void> {
-    await this.post(this.calcURLIndex(id), JSON.stringify({}));
+    await this.doDelete(this.calcURLIndex(id));
   }
 
   public async add(index: Index, document: Document): Promise<void> {
-    await this.post(this.calcURLIndex(index.id), JSON.stringify(document));
+    await this.doPost(this.calcURLAddIndex(index.id), JSON.stringify(document));
   }
 
-}
+  public async retrieve(index: Index, query: string, k: number, filters: Filter[]): Promise<Document[]> {
+    const response = await this.doPost(this.calcURLQueryIndex(index.id), JSON.stringify({ q: query, k: k, filters: filters }));
 
+    const documents: Document[] = await response.json();
+
+    return documents;
+  }
+}
 export default Indexes;

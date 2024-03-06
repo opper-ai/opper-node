@@ -1,6 +1,7 @@
 import { Options } from './types';
 
 import { OpperError } from './errors';
+import Events from './events';
 import Functions from './functions';
 import Indexes from './indexes';
 
@@ -32,6 +33,7 @@ class Client {
 
   functions = new Functions(this);
   indexes = new Indexes(this);
+  events = new Events(this);
 
   calcAuthorizationHeaders = () => {
     const isUsingAuthorization = this.isUsingAuthorization;

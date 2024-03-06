@@ -1,7 +1,7 @@
 import { Chat, Function, OpperAIChatResponse, OpperAIStream } from './types';
 
 import APIResource from './api-resource';
-import { OpperError } from './errors';
+import { APIError, OpperError } from './errors';
 
 class Functions extends APIResource {
   /**
@@ -18,7 +18,7 @@ class Functions extends APIResource {
     const url = this.calcURLChat(path);
     const body = this.calcMessageForPost(message);
 
-    const response = await this.post(url, body);
+    const response = await this.doPost(url, body);
 
     const data = await response.json();
 
@@ -36,7 +36,7 @@ class Functions extends APIResource {
     if (!f.id) {
       throw new OpperError('Function id is required');
     }
-    const response = await this.post(this.calcURLUpdateFunction(f.id), JSON.stringify(f));
+    const response = await this.doPost(this.calcURLUpdateFunction(f.id), JSON.stringify(f));
     if (response.status !== 200) {
       throw new OpperError(`Failed to update function: ${response.statusText}`);
     }
@@ -45,15 +45,24 @@ class Functions extends APIResource {
 
 
   public async create(f: Function, update: boolean = false): Promise<Function> {
-    let response = await this.get(this.calcURLGetFunctionByPath(f.path));
-    if (response.status === 200) {
-      if (!update) {
-        throw new OpperError(`Function with path ${f.path} already exists`);
+    try {
+      let response = await this.doGet(this.calcURLGetFunctionByPath(f.path));
+      if (response.status === 200) {
+        if (!update) {
+          throw new OpperError(`Function with path ${f.path} already exists`);
+        }
+        return await this.update(f);
       }
-      return await this.update(f);
+
+    } catch (error) {
+      if (error instanceof APIError) {
+        if (error.status !== 404) {
+          throw error;
+        }
+      }
     }
 
-    response = await this.post(this.calcURLCreateFunction(), JSON.stringify(f));
+    const response = await this.doPost(this.calcURLCreateFunction(), JSON.stringify(f));
 
     if (response.status === 200) {
       const data = await response.json();
@@ -63,6 +72,7 @@ class Functions extends APIResource {
 
     throw new OpperError(`Failed to create function: ${response.statusText}`);
   }
+
 
   /**
    * This method is a helper which can be used in node middleware
@@ -107,7 +117,7 @@ class Functions extends APIResource {
     const body = this.calcMessageForPost(message);
 
     try {
-      const response = await this.post(url, body, callbacks.controller);
+      const response = await this.doPost(url, body, callbacks.controller);
 
       const reader = response.body?.getReader();
       if (reader) {

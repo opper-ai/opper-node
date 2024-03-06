@@ -72,6 +72,15 @@ export type Index = {
   files: IndexFileData[];
 };
 
+export type FilterOperation = '=' | '!=' | '>' | '<' | 'in';
+
+export interface Filter {
+  key: string;
+  operation: FilterOperation;
+  value: string | number | Array<string | number>;
+}
+
+
 export type Document = {
   id?: string;
   key?: string; // a unique key that one can use if you want to update the document
@@ -83,8 +92,8 @@ export type Function = {
   path: string;
   description: string;
   instructions: string;
-  model: string;
-  index_ids: number[];
+  model?: string;
+  index_ids?: number[];
 }
 
 export type Event = {

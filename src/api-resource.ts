@@ -128,7 +128,7 @@ class APIResource {
    * @returns A promise that resolves to the fetch response.
    * @throws {APIError} If the response status is not 200.
    */
-  protected async post(url: string, body: string, controller?: AbortController | null | undefined) {
+  protected async doPost(url: string, body: string, controller?: AbortController | null | undefined) {
     const headers = this._client.calcAuthorizationHeaders();
 
     const response = await fetch(url, {
@@ -142,14 +142,17 @@ class APIResource {
     });
 
     if (!response.ok) {
+      const resp = await response.json();
       throw new APIError(
         response.status,
-        `Failed to send request to ${url}: ${response.statusText}`
+        `Failed to send request to ${url}: ${response.statusText}. {body: ${JSON.stringify(resp) || response.text}}`
       );
     }
 
     return response;
   }
+
+
 
   /**
   * This method sends a PUT request to the specified URL with the provided body.
@@ -161,7 +164,7 @@ class APIResource {
   * @returns A promise that resolves to the fetch response.
   * @throws {APIError} If the response status is not 200.
   */
-  protected async put(url: string, body: string, controller?: AbortController | null | undefined) {
+  protected async doPut(url: string, body: string, controller?: AbortController | null | undefined) {
     const headers = this._client.calcAuthorizationHeaders();
 
     const response = await fetch(url, {
@@ -191,7 +194,7 @@ class APIResource {
    * @returns A promise that resolves to the fetch response.
    * @throws {APIError} If the response status is not 200.
    */
-  protected async get(url: string) {
+  protected async doGet(url: string) {
     const headers = this._client.calcAuthorizationHeaders();
 
     const response = await fetch(url, {
@@ -201,6 +204,35 @@ class APIResource {
         ...headers,
       },
     });
+
+    if (!response.ok) {
+      throw new APIError(
+        response.status,
+        `Failed to fetch request ${url}: ${response.statusText}`
+      );
+    }
+
+    return response;
+  }
+
+  /**
+ * This method sends a DELETE request to the specified URL.
+ * The response is a promise that resolves to the fetch response.
+ * @param url - The URL to send the `DELETE` request to.
+ * @returns A promise that resolves to the fetch response.
+ * @throws {APIError} If the response status is not 200.
+ */
+  protected async doDelete(url: string) {
+    const headers = this._client.calcAuthorizationHeaders();
+    console.log('headers', headers);
+    const response = await fetch(url, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        ...headers,
+      },
+    });
+    console.log('response', response);
 
     if (!response.ok) {
       throw new APIError(
@@ -258,6 +290,12 @@ class APIResource {
   };
   protected calcURLIndex = (id: number) => {
     return `${this._client.baseURL}/v1/indexes/${id}`;
+  }
+  protected calcURLAddIndex = (id: number) => {
+    return `${this._client.baseURL}/v1/indexes/${id}/index`;
+  }
+  protected calcURLQueryIndex = (id: number) => {
+    return `${this._client.baseURL}/v1/indexes/${id}/query`;
   }
   protected calcURLCreateFunction = () => {
     return `${this._client.baseURL}/api/v1/functions`;

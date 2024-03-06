@@ -11,7 +11,7 @@ class Events extends APIResource {
      * @throws {OpperError} If the response status is not 200.
      */
     public async create(event: Event): Promise<Event> {
-        const response = await this.post(this.calcURLEvents(), JSON.stringify(event));
+        const response = await this.doPost(this.calcURLEvents(), JSON.stringify(event));
 
         if (response.status !== 200) {
             throw new OpperError(`Failed to create event: ${response.statusText}`);
@@ -34,7 +34,7 @@ class Events extends APIResource {
             throw new OpperError('Event uuid is required for update');
         }
 
-        const response = await this.put(this.calcURLEvent(event.uuid), JSON.stringify(event));
+        const response = await this.doPut(this.calcURLEvent(event.uuid), JSON.stringify(event));
 
         if (response.status !== 200) {
             throw new OpperError(`Failed to update event: ${response.statusText}`);
