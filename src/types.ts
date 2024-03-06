@@ -1,4 +1,4 @@
-export type OpperAIOptions = {
+export type Options = {
   /**
    * OpperAI [API key](https://docs.opper.ai/api-keys)
    */
@@ -12,24 +12,24 @@ export type OpperAIOptions = {
 
   /**
    * Override the base url if needed
-   * Defaults to https://api.opper.ai/v1
+   * Defaults to https://api.opper.ai
    */
   baseURL?: string;
 
   isUsingAuthorization?: boolean;
 };
 
-export type OpperAIChatConversation = {
+export type Message = {
   role: 'user' | 'assistant';
   content: string;
 };
 
-export interface OpperAIChat {
+export interface Chat {
   path: string;
-  message: string | OpperAIChatConversation[];
+  message: string | Message[];
 }
 
-export interface OpperAISSEStreamCallbacks {
+export interface SSEStreamCallbacks {
   controller?: AbortController | null;
   onMessage: (json: unknown) => void;
   onComplete: () => void;
@@ -39,8 +39,8 @@ export interface OpperAISSEStreamCallbacks {
 
 export interface OpperAIStream {
   path: string;
-  message: string | OpperAIChatConversation[];
-  callbacks: OpperAISSEStreamCallbacks;
+  message: string | Message[];
+  callbacks: SSEStreamCallbacks;
 }
 
 export interface OpperAIChatResponse {
@@ -48,26 +48,56 @@ export interface OpperAIChatResponse {
   context: unknown;
 }
 
-export type OpperAIIndexFileData = {
+export type IndexFileData = {
   id: number;
   original_filename: string;
   size: number;
   index_status:
-    | 'init'
-    | 'pending'
-    | 'uploading'
-    | 'indexing'
-    | 'success'
-    | 'indexed'
-    | 'error'
-    | 'failed'
-    | 'invalid';
+  | 'init'
+  | 'pending'
+  | 'uploading'
+  | 'indexing'
+  | 'success'
+  | 'indexed'
+  | 'error'
+  | 'failed'
+  | 'invalid';
   n_vectors: number;
 };
 
-export type OpperAIIndex = {
+export type Index = {
   id: number;
   name: string;
   created_at: Date;
-  files: OpperAIIndexFileData[];
+  files: IndexFileData[];
+};
+
+export type Document = {
+  id?: string;
+  key?: string; // a unique key that one can use if you want to update the document
+  content: string;
+  metadata: Record<string, unknown>;
+}
+export type Function = {
+  id?: number;
+  path: string;
+  description: string;
+  instructions: string;
+  model: string;
+  index_ids: number[];
+}
+
+export type Event = {
+  uuid?: string;
+  project?: string;
+  name?: string;
+  input?: string;
+  output?: string;
+  start_time?: Date;
+  parent_uuid?: string;
+  end_time?: Date;
+  error?: string;
+  meta?: Record<string, unknown>;
+  evaluations?: Record<string, unknown>;
+  score?: number;
 };

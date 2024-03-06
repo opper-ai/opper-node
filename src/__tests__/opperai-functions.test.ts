@@ -1,6 +1,6 @@
-import OpperAIClient from '../index';
-import { OpperAIAPIError } from '../opperai-error';
-import OpperAIFunctions from '../opperai-functions';
+import { APIError } from '../errors';
+import Functions from '../functions';
+import Client from '../index';
 
 // Mocking the global fetch to avoid actual API calls
 // @ts-expect-error Mocking global fetch
@@ -11,15 +11,15 @@ global.fetch = jest.fn(() =>
 );
 
 describe('OpperAIFunctions', () => {
-  let functions: OpperAIFunctions;
+  let functions: Functions;
   const mockApiKey = 'test-api-key';
 
   beforeEach(() => {
-    const mockClient = new OpperAIClient({
+    const mockClient = new Client({
       apiKey: mockApiKey,
     });
 
-    functions = new OpperAIFunctions(mockClient);
+    functions = new Functions(mockClient);
     // Clear all instances and calls to constructor and all methods:
     (global.fetch as jest.Mock).mockClear();
   });
@@ -136,7 +136,7 @@ describe('OpperAIFunctions', () => {
         callbacks: mockCallbacks,
       });
 
-      expect(mockCallbacks.onError).toHaveBeenCalledWith(expect.any(OpperAIAPIError));
+      expect(mockCallbacks.onError).toHaveBeenCalledWith(expect.any(APIError));
       expect(mockCallbacks.onMessage).not.toHaveBeenCalled();
       expect(mockCallbacks.onComplete).not.toHaveBeenCalled();
       expect(mockCallbacks.onCancel).not.toHaveBeenCalled();

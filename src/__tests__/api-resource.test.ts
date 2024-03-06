@@ -1,15 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import APIResource from '../opperai-api-resource';
+import APIResource from '../api-resource';
 
-import OpperAIClient from '../index';
-import { OpperAIChatConversation } from '../types';
+import Client from '../index';
+import { Message } from '../types';
 
 describe('APIResource', () => {
-  let client: OpperAIClient;
+  let client: Client;
   let apiResource: APIResource;
 
   beforeEach(() => {
-    client = new OpperAIClient({ apiKey: 'test-api-key' });
+    client = new Client({ apiKey: 'test-api-key' });
     apiResource = new APIResource(client);
   });
 
@@ -88,7 +88,7 @@ describe('APIResource', () => {
 
     it('should close the stream when the generator is done', async () => {
       // Mock async generator that immediately finishes
-      async function* asyncGenerator() {}
+      async function* asyncGenerator() { }
 
       const iterator = asyncGenerator();
       // @ts-expect-error Testing protected prop
@@ -149,7 +149,7 @@ describe('APIResource', () => {
 
   describe('isOpperAIChatConversation', () => {
     it('should return true for a valid OpperAIChatConversation object', () => {
-      const conversation: OpperAIChatConversation = { role: 'user', content: 'Hello, world!' };
+      const conversation: Message = { role: 'user', content: 'Hello, world!' };
       // @ts-expect-error Testing protected prop
       const result = apiResource.isOpperAIChatConversation(conversation);
       expect(result).toBe(true);
@@ -188,7 +188,7 @@ describe('APIResource', () => {
     it('should calculate the correct URL for the chat path', () => {
       const path = 'test-path';
       // @ts-expect-error Testing protected prop
-      const expectedURL = `${apiResource._client.baseURL}/chat/${path}`;
+      const expectedURL = `${apiResource._client.baseURL}/v1/chat/${path}`;
       // @ts-expect-error Testing protected prop
       const calculatedURL = apiResource.calcURLChat(path);
       expect(calculatedURL).toBe(expectedURL);
@@ -198,7 +198,7 @@ describe('APIResource', () => {
   describe('calcURLIndexes', () => {
     it('should calculate the correct URL for the indexes path', () => {
       // @ts-expect-error Testing protected prop
-      const expectedURL = `${apiResource._client.baseURL}/indexes`;
+      const expectedURL = `${apiResource._client.baseURL}/v1/indexes`;
       // @ts-expect-error Testing protected prop
       const calculatedURL = apiResource.calcURLIndexes();
       expect(calculatedURL).toBe(expectedURL);

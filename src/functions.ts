@@ -1,9 +1,9 @@
-import { OpperAIChat, OpperAIChatResponse, OpperAIStream } from './types';
+import { Chat, Function, OpperAIChatResponse, OpperAIStream } from './types';
 
-import { OpperAIError } from './opperai-error';
-import OpperAIAPIResource from './opperai-api-resource';
+import APIResource from './api-resource';
+import { OpperError } from './errors';
 
-class OpperAIFunctions extends OpperAIAPIResource {
+class Functions extends APIResource {
   /**
    * This method is used to initiate a chat with the OpperAI API.
    * It sends a POST request to the chat endpoint with the provided path and message.
@@ -12,9 +12,9 @@ class OpperAIFunctions extends OpperAIAPIResource {
    * @param message - The message to be sent.
    * @returns A promise that resolves to an object with the message and context.
    * @throws {OpperAPIError} If the response status is not 200.
-   * @throws {OpperAIError} If the response has an error.
+   * @throws {OpperError} If the response has an error.
    */
-  public async chat({ path, message }: OpperAIChat): Promise<OpperAIChatResponse> {
+  public async chat({ path, message }: Chat): Promise<OpperAIChatResponse> {
     const url = this.calcURLChat(path);
     const body = this.calcMessageForPost(message);
 
@@ -23,13 +23,45 @@ class OpperAIFunctions extends OpperAIAPIResource {
     const data = await response.json();
 
     if (data.error) {
-      throw new OpperAIError(`The response from ${url} has an error: ${data.error}`);
+      throw new OpperError(`The response from ${url} has an error: ${data.error}`);
     }
 
     return {
       message: data.message,
       context: data.context,
     };
+  }
+
+  public async update(f: Function): Promise<Function> {
+    if (!f.id) {
+      throw new OpperError('Function id is required');
+    }
+    const response = await this.post(this.calcURLUpdateFunction(f.id), JSON.stringify(f));
+    if (response.status !== 200) {
+      throw new OpperError(`Failed to update function: ${response.statusText}`);
+    }
+    return f;
+  }
+
+
+  public async create(f: Function, update: boolean = false): Promise<Function> {
+    let response = await this.get(this.calcURLGetFunctionByPath(f.path));
+    if (response.status === 200) {
+      if (!update) {
+        throw new OpperError(`Function with path ${f.path} already exists`);
+      }
+      return await this.update(f);
+    }
+
+    response = await this.post(this.calcURLCreateFunction(), JSON.stringify(f));
+
+    if (response.status === 200) {
+      const data = await response.json();
+      f.id = data.id;
+      return f;
+    }
+
+    throw new OpperError(`Failed to create function: ${response.statusText}`);
   }
 
   /**
@@ -41,9 +73,9 @@ class OpperAIFunctions extends OpperAIAPIResource {
    * @param message - The message to be sent.
    * @returns A promise that resolves to a ReadableStream.
    * @throws {OpperAPIError} If the response status is not 200.
-   * @throws {OpperAIError} If the response has an error.
+   * @throws {OpperError} If the response has an error.
    */
-  public pipe({ path, message }: OpperAIChat): ReadableStream<unknown> {
+  public pipe({ path, message }: Chat): ReadableStream<unknown> {
     const url = this.calcURLChat(`${path}?stream=True`);
     const body = this.calcMessageForPost(message);
 
@@ -81,7 +113,7 @@ class OpperAIFunctions extends OpperAIAPIResource {
       if (reader) {
         await this.processSSEStream(reader, callbacks);
       } else {
-        throw new OpperAIError('Failed to get a stream reader');
+        throw new OpperError('Failed to get a stream reader');
       }
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
@@ -94,4 +126,4 @@ class OpperAIFunctions extends OpperAIAPIResource {
   }
 }
 
-export default OpperAIFunctions;
+export default Functions;
