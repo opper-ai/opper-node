@@ -142,10 +142,9 @@ class APIResource {
     });
 
     if (!response.ok) {
-      const resp = await response.json();
       throw new APIError(
         response.status,
-        `Failed to send request to ${url}: ${response.statusText}. {body: ${JSON.stringify(resp) || response.text}}`
+        `Failed to send request to ${url}: ${response.statusText}`
       );
     }
 
