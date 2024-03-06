@@ -1,14 +1,14 @@
-export class OpperAIError extends Error {
+export class OpperError extends Error {
   constructor(message: string | undefined) {
     super(`OpperAIClient: ${message}`);
   }
 }
 
-export class OpperAIAPIError extends OpperAIError {
+export class APIError extends OpperError {
   readonly status: number | undefined;
 
   constructor(status: number | undefined, message: string | undefined) {
-    super(`${OpperAIAPIError.calcMessage(status, message)}`);
+    super(`${APIError.calcMessage(status, message)}`);
 
     this.status = status;
   }

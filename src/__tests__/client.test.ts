@@ -1,28 +1,28 @@
-import { OpperAIOptions, OpperAIIndex } from '../types';
+import { Index, Options } from '../types';
 
-import OpperAIClient from '../index';
+import Client from '../index';
 
 describe('OpperAIClient', () => {
-  let client: OpperAIClient;
+  let client: Client;
 
   beforeEach(() => {
-    client = new OpperAIClient({
+    client = new Client({
       apiKey: 'test-api-key',
       isUsingAuthorization: true,
     });
   });
 
   it('should be instantiated with an API key, authorization enabled, and a base URL', () => {
-    expect(client).toBeInstanceOf(OpperAIClient);
+    expect(client).toBeInstanceOf(Client);
     // @ts-expect-error Testing protected prop
     expect(client.apiKey).toBe('test-api-key');
     // @ts-expect-error Testing protected prop
     expect(client.isUsingAuthorization).toBe(true);
-    expect(client.baseURL).toBe('https://api.opper.ai/v1');
+    expect(client.baseURL).toBe('https://api.opper.ai');
   });
 
   it('should be able to override the baseURL', () => {
-    const example = new OpperAIClient({
+    const example = new Client({
       apiKey: 'test-api-key',
       baseURL: 'https://api.test.com',
     });
@@ -31,7 +31,7 @@ describe('OpperAIClient', () => {
   });
 
   it('should throw an error if instantiated without an API key', () => {
-    expect(() => new OpperAIClient(undefined as unknown as OpperAIOptions)).toThrow(
+    expect(() => new Client(undefined as unknown as Options)).toThrow(
       'OpperAIClient: The apiKey is missing or empty.'
     );
   });
@@ -90,7 +90,7 @@ describe('OpperAIClient', () => {
     });
 
     it('should be able to list indexes', async () => {
-      const mockIndexes: OpperAIIndex[] = [
+      const mockIndexes: Index[] = [
         {
           id: 1,
           name: 'Test Index 1',
@@ -116,7 +116,7 @@ describe('OpperAIClient', () => {
 
   describe('calcAuthorizationHeaders', () => {
     it('should return correct headers when using authorization', () => {
-      client = new OpperAIClient({
+      client = new Client({
         apiKey: 'test-api-key',
         isUsingAuthorization: true,
       });
@@ -125,7 +125,7 @@ describe('OpperAIClient', () => {
     });
 
     it('should return correct headers when not using authorization', () => {
-      client = new OpperAIClient({
+      client = new Client({
         apiKey: 'test-api-key',
         isUsingAuthorization: false,
       });

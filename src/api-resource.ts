@@ -1,12 +1,12 @@
-import { OpperAIChatConversation, OpperAISSEStreamCallbacks } from './types';
+import { Message, SSEStreamCallbacks } from './types';
 
-import type OpperAIClient from './index';
-import { OpperAIAPIError, OpperAIError } from './opperai-error';
+import { APIError, OpperError } from './errors';
+import type Client from './index';
 
-class OpperAIAPIResource {
-  protected _client: OpperAIClient;
+class APIResource {
+  protected _client: Client;
 
-  constructor(client: OpperAIClient) {
+  constructor(client: Client) {
     this._client = client;
   }
 
@@ -82,7 +82,7 @@ class OpperAIAPIResource {
    */
   protected async processSSEStream(
     reader: ReadableStreamDefaultReader<Uint8Array>,
-    callbacks: OpperAISSEStreamCallbacks
+    callbacks: SSEStreamCallbacks
   ): Promise<void> {
     let buffer = '';
 
@@ -126,9 +126,9 @@ class OpperAIAPIResource {
    * @param body - The body of the POST request.
    * @param controller - Optional AbortController to cancel the request.
    * @returns A promise that resolves to the fetch response.
-   * @throws {OpperAIAPIError} If the response status is not 200.
+   * @throws {APIError} If the response status is not 200.
    */
-  protected async post(url: string, body: string, controller?: AbortController | null | undefined) {
+  protected async doPost(url: string, body: string, controller?: AbortController | null | undefined) {
     const headers = this._client.calcAuthorizationHeaders();
 
     const response = await fetch(url, {
@@ -142,7 +142,42 @@ class OpperAIAPIResource {
     });
 
     if (!response.ok) {
-      throw new OpperAIAPIError(
+      throw new APIError(
+        response.status,
+        `Failed to send request to ${url}: ${response.statusText}`
+      );
+    }
+
+    return response;
+  }
+
+
+
+  /**
+  * This method sends a PUT request to the specified URL with the provided body.
+  * If an AbortController is provided, it will be used to cancel the request.
+  * The response is a promise that resolves to the fetch response.
+  * @param url - The URL to send the PUT request to.
+  * @param body - The body of the PUT request.
+  * @param controller - Optional AbortController to cancel the request.
+  * @returns A promise that resolves to the fetch response.
+  * @throws {APIError} If the response status is not 200.
+  */
+  protected async doPut(url: string, body: string, controller?: AbortController | null | undefined) {
+    const headers = this._client.calcAuthorizationHeaders();
+
+    const response = await fetch(url, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        ...headers,
+      },
+      body: body,
+      signal: controller?.signal,
+    });
+
+    if (!response.ok) {
+      throw new APIError(
         response.status,
         `Failed to send request to ${url}: ${response.statusText}`
       );
@@ -156,9 +191,9 @@ class OpperAIAPIResource {
    * The response is a promise that resolves to the fetch response.
    * @param url - The URL to send the GET request to.
    * @returns A promise that resolves to the fetch response.
-   * @throws {OpperAIAPIError} If the response status is not 200.
+   * @throws {APIError} If the response status is not 200.
    */
-  protected async get(url: string) {
+  protected async doGet(url: string) {
     const headers = this._client.calcAuthorizationHeaders();
 
     const response = await fetch(url, {
@@ -170,7 +205,36 @@ class OpperAIAPIResource {
     });
 
     if (!response.ok) {
-      throw new OpperAIAPIError(
+      throw new APIError(
+        response.status,
+        `Failed to fetch request ${url}: ${response.statusText}`
+      );
+    }
+
+    return response;
+  }
+
+  /**
+ * This method sends a DELETE request to the specified URL.
+ * The response is a promise that resolves to the fetch response.
+ * @param url - The URL to send the `DELETE` request to.
+ * @returns A promise that resolves to the fetch response.
+ * @throws {APIError} If the response status is not 200.
+ */
+  protected async doDelete(url: string) {
+    const headers = this._client.calcAuthorizationHeaders();
+    console.log('headers', headers);
+    const response = await fetch(url, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        ...headers,
+      },
+    });
+    console.log('response', response);
+
+    if (!response.ok) {
+      throw new APIError(
         response.status,
         `Failed to fetch request ${url}: ${response.statusText}`
       );
@@ -185,9 +249,9 @@ class OpperAIAPIResource {
    * If the message is an array of OpperAIChatConversation, it is formatted as a conversation.
    * @param message - The message to be formatted.
    * @returns The formatted message as a JSON string.
-   * @throws {OpperAIError} If the message is not a string or an array of OpperAIChatConversation.
+   * @throws {OpperError} If the message is not a string or an array of OpperAIChatConversation.
    */
-  protected calcMessageForPost(message: string | OpperAIChatConversation[]) {
+  protected calcMessageForPost(message: string | Message[]) {
     if (typeof message === 'string') {
       return this.stringifyMessage([{ role: 'user', content: message }]);
     }
@@ -196,12 +260,12 @@ class OpperAIAPIResource {
       return this.stringifyMessage(message);
     }
 
-    throw new OpperAIError('The message is not of type string or OpperAIChatConversation[].');
+    throw new OpperError('The message is not of type string or OpperAIChatConversation[].');
   }
 
   // Safe type test for the OpperAIChatConversation type
-  protected isOpperAIChatConversation(m: unknown): m is OpperAIChatConversation {
-    const candidate = m as OpperAIChatConversation; // Type assertion to an intermediate type
+  protected isOpperAIChatConversation(m: unknown): m is Message {
+    const candidate = m as Message; // Type assertion to an intermediate type
     return (
       typeof m === 'object' &&
       m !== null &&
@@ -212,17 +276,41 @@ class OpperAIAPIResource {
   }
 
   // Format post body
-  protected stringifyMessage(messages: OpperAIChatConversation[]) {
+  protected stringifyMessage(messages: Message[]) {
     return JSON.stringify({ messages });
   }
 
   protected calcURLChat = (path: string) => {
-    return `${this._client.baseURL}/chat/${path}`;
+    return `${this._client.baseURL}/v1/chat/${path}`;
   };
 
   protected calcURLIndexes = () => {
-    return `${this._client.baseURL}/indexes`;
+    return `${this._client.baseURL}/v1/indexes`;
   };
+  protected calcURLIndex = (id: number) => {
+    return `${this._client.baseURL}/v1/indexes/${id}`;
+  }
+  protected calcURLAddIndex = (id: number) => {
+    return `${this._client.baseURL}/v1/indexes/${id}/index`;
+  }
+  protected calcURLQueryIndex = (id: number) => {
+    return `${this._client.baseURL}/v1/indexes/${id}/query`;
+  }
+  protected calcURLCreateFunction = () => {
+    return `${this._client.baseURL}/api/v1/functions`;
+  }
+  protected calcURLGetFunctionByPath = (path: string) => {
+    return `${this._client.baseURL}/api/v1/functions/by_path/${path}`;
+  }
+  protected calcURLUpdateFunction = (id: number) => {
+    return `${this._client.baseURL}/api/v1/functions/${id}`;
+  }
+  protected calcURLEvents = () => {
+    return `${this._client.baseURL}/v1/events`;
+  }
+  protected calcURLEvent = (uuid: string) => {
+    return `${this.calcURLEvents()}/${uuid}`;
+  }
 }
 
-export default OpperAIAPIResource;
+export default APIResource;
