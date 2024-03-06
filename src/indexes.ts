@@ -2,7 +2,6 @@ import { Document, Filter, Index } from './types';
 
 import APIResource from './api-resource';
 
-
 class Indexes extends APIResource {
   /**
    * This method retrieves a list of indexes from the OpperAI API.
@@ -32,7 +31,7 @@ class Indexes extends APIResource {
   }
 
   public async create(name: string): Promise<Index> {
-    const response = await this.doPost(this.calcURLIndexes(), JSON.stringify({ "name": name }));
+    const response = await this.doPost(this.calcURLIndexes(), JSON.stringify({ name: name }));
 
     const data = await response.json();
 
@@ -47,8 +46,16 @@ class Indexes extends APIResource {
     await this.doPost(this.calcURLAddIndex(index.id), JSON.stringify(document));
   }
 
-  public async retrieve(index: Index, query: string, k: number, filters: Filter[]): Promise<Document[]> {
-    const response = await this.doPost(this.calcURLQueryIndex(index.id), JSON.stringify({ q: query, k: k, filters: filters }));
+  public async retrieve(
+    index: Index,
+    query: string,
+    k: number,
+    filters: Filter[]
+  ): Promise<Document[]> {
+    const response = await this.doPost(
+      this.calcURLQueryIndex(index.id),
+      JSON.stringify({ q: query, k: k, filters: filters })
+    );
 
     const documents: Document[] = await response.json();
 

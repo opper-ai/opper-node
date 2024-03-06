@@ -53,15 +53,15 @@ export type IndexFileData = {
   original_filename: string;
   size: number;
   index_status:
-  | 'init'
-  | 'pending'
-  | 'uploading'
-  | 'indexing'
-  | 'success'
-  | 'indexed'
-  | 'error'
-  | 'failed'
-  | 'invalid';
+    | 'init'
+    | 'pending'
+    | 'uploading'
+    | 'indexing'
+    | 'success'
+    | 'indexed'
+    | 'error'
+    | 'failed'
+    | 'invalid';
   n_vectors: number;
 };
 
@@ -80,21 +80,20 @@ export interface Filter {
   value: string | number | Array<string | number>;
 }
 
-
 export type Document = {
   id?: string;
   key?: string; // a unique key that one can use if you want to update the document
   content: string;
   metadata: Record<string, unknown>;
-}
-export type Function = {
+};
+export type AIFunction = {
   id?: number;
   path: string;
   description: string;
   instructions: string;
   model?: string;
   index_ids?: number[];
-}
+};
 
 export type Event = {
   uuid?: string;

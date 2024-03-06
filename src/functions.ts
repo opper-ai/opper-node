@@ -1,4 +1,4 @@
-import { Chat, Function, OpperAIChatResponse, OpperAIStream } from './types';
+import { AIFunction, Chat, OpperAIChatResponse, OpperAIStream } from './types';
 
 import APIResource from './api-resource';
 import { APIError, OpperError } from './errors';
@@ -32,7 +32,7 @@ class Functions extends APIResource {
     };
   }
 
-  public async update(f: Function): Promise<Function> {
+  public async update(f: AIFunction): Promise<AIFunction> {
     if (!f.id) {
       throw new OpperError('Function id is required');
     }
@@ -43,17 +43,15 @@ class Functions extends APIResource {
     return f;
   }
 
-
-  public async create(f: Function, update: boolean = false): Promise<Function> {
+  public async create(f: AIFunction, update: boolean = false): Promise<AIFunction> {
     try {
-      let response = await this.doGet(this.calcURLGetFunctionByPath(f.path));
+      const response = await this.doGet(this.calcURLGetFunctionByPath(f.path));
       if (response.status === 200) {
         if (!update) {
           throw new OpperError(`Function with path ${f.path} already exists`);
         }
         return await this.update(f);
       }
-
     } catch (error) {
       if (error instanceof APIError) {
         if (error.status !== 404) {
@@ -72,7 +70,6 @@ class Functions extends APIResource {
 
     throw new OpperError(`Failed to create function: ${response.statusText}`);
   }
-
 
   /**
    * This method is a helper which can be used in node middleware

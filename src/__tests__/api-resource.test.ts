@@ -88,7 +88,7 @@ describe('APIResource', () => {
 
     it('should close the stream when the generator is done', async () => {
       // Mock async generator that immediately finishes
-      async function* asyncGenerator() { }
+      async function* asyncGenerator() {}
 
       const iterator = asyncGenerator();
       // @ts-expect-error Testing protected prop

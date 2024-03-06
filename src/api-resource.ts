@@ -128,7 +128,11 @@ class APIResource {
    * @returns A promise that resolves to the fetch response.
    * @throws {APIError} If the response status is not 200.
    */
-  protected async doPost(url: string, body: string, controller?: AbortController | null | undefined) {
+  protected async doPost(
+    url: string,
+    body: string,
+    controller?: AbortController | null | undefined
+  ) {
     const headers = this._client.calcAuthorizationHeaders();
 
     const response = await fetch(url, {
@@ -151,19 +155,21 @@ class APIResource {
     return response;
   }
 
-
-
   /**
-  * This method sends a PUT request to the specified URL with the provided body.
-  * If an AbortController is provided, it will be used to cancel the request.
-  * The response is a promise that resolves to the fetch response.
-  * @param url - The URL to send the PUT request to.
-  * @param body - The body of the PUT request.
-  * @param controller - Optional AbortController to cancel the request.
-  * @returns A promise that resolves to the fetch response.
-  * @throws {APIError} If the response status is not 200.
-  */
-  protected async doPut(url: string, body: string, controller?: AbortController | null | undefined) {
+   * This method sends a PUT request to the specified URL with the provided body.
+   * If an AbortController is provided, it will be used to cancel the request.
+   * The response is a promise that resolves to the fetch response.
+   * @param url - The URL to send the PUT request to.
+   * @param body - The body of the PUT request.
+   * @param controller - Optional AbortController to cancel the request.
+   * @returns A promise that resolves to the fetch response.
+   * @throws {APIError} If the response status is not 200.
+   */
+  protected async doPut(
+    url: string,
+    body: string,
+    controller?: AbortController | null | undefined
+  ) {
     const headers = this._client.calcAuthorizationHeaders();
 
     const response = await fetch(url, {
@@ -205,22 +211,19 @@ class APIResource {
     });
 
     if (!response.ok) {
-      throw new APIError(
-        response.status,
-        `Failed to fetch request ${url}: ${response.statusText}`
-      );
+      throw new APIError(response.status, `Failed to fetch request ${url}: ${response.statusText}`);
     }
 
     return response;
   }
 
   /**
- * This method sends a DELETE request to the specified URL.
- * The response is a promise that resolves to the fetch response.
- * @param url - The URL to send the `DELETE` request to.
- * @returns A promise that resolves to the fetch response.
- * @throws {APIError} If the response status is not 200.
- */
+   * This method sends a DELETE request to the specified URL.
+   * The response is a promise that resolves to the fetch response.
+   * @param url - The URL to send the `DELETE` request to.
+   * @returns A promise that resolves to the fetch response.
+   * @throws {APIError} If the response status is not 200.
+   */
   protected async doDelete(url: string) {
     const headers = this._client.calcAuthorizationHeaders();
     console.log('headers', headers);
@@ -234,10 +237,7 @@ class APIResource {
     console.log('response', response);
 
     if (!response.ok) {
-      throw new APIError(
-        response.status,
-        `Failed to fetch request ${url}: ${response.statusText}`
-      );
+      throw new APIError(response.status, `Failed to fetch request ${url}: ${response.statusText}`);
     }
 
     return response;
@@ -289,28 +289,28 @@ class APIResource {
   };
   protected calcURLIndex = (id: number) => {
     return `${this._client.baseURL}/v1/indexes/${id}`;
-  }
+  };
   protected calcURLAddIndex = (id: number) => {
     return `${this._client.baseURL}/v1/indexes/${id}/index`;
-  }
+  };
   protected calcURLQueryIndex = (id: number) => {
     return `${this._client.baseURL}/v1/indexes/${id}/query`;
-  }
+  };
   protected calcURLCreateFunction = () => {
     return `${this._client.baseURL}/api/v1/functions`;
-  }
+  };
   protected calcURLGetFunctionByPath = (path: string) => {
     return `${this._client.baseURL}/api/v1/functions/by_path/${path}`;
-  }
+  };
   protected calcURLUpdateFunction = (id: number) => {
     return `${this._client.baseURL}/api/v1/functions/${id}`;
-  }
+  };
   protected calcURLEvents = () => {
     return `${this._client.baseURL}/v1/events`;
-  }
+  };
   protected calcURLEvent = (uuid: string) => {
     return `${this.calcURLEvents()}/${uuid}`;
-  }
+  };
 }
 
 export default APIResource;
