@@ -20,16 +20,7 @@ class Functions extends APIResource {
 
     const response = await this.doPost(url, body);
 
-    const data = await response.json();
-
-    if (data.error) {
-      throw new OpperError(`The response from ${url} has an error: ${data.error}`);
-    }
-
-    return {
-      message: data.message,
-      context: data.context,
-    };
+    return await response.json() as OpperAIChatResponse;
   }
 
   public async update(f: AIFunction): Promise<AIFunction> {
@@ -38,7 +29,8 @@ class Functions extends APIResource {
     }
     const response = await this.doPost(this.calcURLUpdateFunction(f.id), JSON.stringify(f));
     if (response.status !== 200) {
-      throw new OpperError(`Failed to update function: ${response.statusText}`);
+      const responseData = await response.json();
+      throw new OpperError(`Failed to update function: ${response.statusText}, ${responseData}`);
     }
     return f;
   }
@@ -46,10 +38,12 @@ class Functions extends APIResource {
   public async create(f: AIFunction, update: boolean = false): Promise<AIFunction> {
     try {
       const response = await this.doGet(this.calcURLGetFunctionByPath(f.path));
+      const responseData = await response.json() as AIFunction;
       if (response.status === 200) {
         if (!update) {
           throw new OpperError(`Function with path ${f.path} already exists`);
         }
+        f.id = responseData.id;
         return await this.update(f);
       }
     } catch (error) {

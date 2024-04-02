@@ -13,7 +13,8 @@ class Client {
 
   constructor(
     { apiKey, baseURL, isUsingAuthorization, dangerouslyAllowBrowser }: Options = {
-      apiKey: '',
+      apiKey: process.env.OPPER_API_KEY || '',
+      baseURL: process.env.OPPER_API_URL || 'https://api.opper.ai',
     }
   ) {
     if (apiKey === undefined || apiKey === '') {
