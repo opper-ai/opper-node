@@ -39,6 +39,9 @@ class Traces extends APIResource {
      */
     public async create(span: Span): Promise<string> {
         const url = `${this._client.baseURL}/v1/spans`;
+        if (!span.project) {
+            span.project = process.env.OPPER_PROJECT || 'missing_project';
+        }
         const body = JSON.stringify(span);
 
 

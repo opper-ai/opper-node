@@ -11,9 +11,9 @@ npm install opper
 ## Basic Usage
 
 ```typescript
-import OpperAIClient from 'opperai';
-// Initialize the client with your API key
-const client = new OpperAIClient({
+import Client from 'opperai';
+// Initialize the client with your API key (or set the OPPER_API_KEY env variable)
+const client = new Client({
   apiKey: 'your-api-key',
 });
 
@@ -28,14 +28,48 @@ async function main() {
 main();
 ```
 
+## Leverage structured output with the `fn` helper
+
+While chat functions are useful for chat bot use cases, it is much nicer to work without raw strings and treat LLM calls as simple API calls. Opper provides the `fn` helper which enables functions returning output following a specific JSON schema.
+
+
+```typescript
+import fn from "opperai";
+
+const TranslationResultSchema = z.object({
+    translation: z.string(),
+    sentiment: z.string(),
+});
+
+const TranslationInputSchema = z.object({
+    text: z.string(),
+    language: z.string(),
+});
+
+const translate = fn({
+    path: "opper/typescript-sdk/translate",
+    model: "anthropic/claude-3-haiku",
+    description: "Translate the input text to the specified language",
+}, TranslationInputSchema, TranslationResultSchema);
+
+const result = await translate(input);
+
+console.log(result);
+```
+
+
+
+
+
+
 ## Conversation
 
 The message parameter can be a single message in the form of a string or a conversation history represented as an array of objects, each containing `role` (a string indicating the speaker's role) and `content` (the message text).
 
 ```typescript
-import OpperAIClient from 'opperai';
+import Client from 'opperai';
 // Initialize the client with your API key
-const client = new OpperAIClient({
+const client = new Client({
   apiKey: 'your-api-key',
 });
 
@@ -70,9 +104,9 @@ main();
 The `functions.chat` method allows you to send a message to the Opper API and receive a response. This method is useful for initiating a conversation or sending standalone messages.
 
 ```typescript
-import OpperAIClient from 'opperai';
+import Client from 'opperai';
 // Initialize the client with your API key
-const client = new OpperAIClient({
+const client = new Client({
   apiKey: 'your-api-key',
 });
 
@@ -96,10 +130,10 @@ main();
 You can use the `functions.pipe` method to seamlessly integrate an Opper conversation stream into your application, acting as a bridge between the Opper API and your users. This method is particularly useful in server-side environments, such as with Node.js middleware, to forward real-time conversations directly to the client. The following example demonstrates its usage within a Next.js API route, showcasing how to handle incoming messages and pipe them through the Opper API.
 
 ```typescript
-import OpperAIClient from 'opperai';
+import Client from 'opperai';
 
 // Initialize the client with your API key
-const client = new OpperAIClient({
+const client = new Client({
   apiKey: 'your-api-key',
 });
 
@@ -121,10 +155,10 @@ export async function POST(req, res) {
 The `functions.stream` method enables real-time communication with the Opper API, allowing you to send messages and receive responses asynchronously. This method is ideal for applications requiring live interaction, such as chat applications or real-time data processing. It supports various callbacks to handle incoming messages, completion events, and errors, providing a robust solution for managing continuous data streams. The example below illustrates how to initiate a streaming session with the Opper API, including how to handle messages and errors, and how to gracefully terminate the stream.
 
 ```typescript
-import OpperAIClient from 'opperai';
+import Client from 'opperai';
 
 // Initialize the client with your API key
-const client = new OpperAIClient({
+const client = new Client({
   apiKey: 'your-api-key',
 });
 
@@ -158,9 +192,9 @@ main();
 ### Indexes List
 
 ```typescript
-import OpperAIClient from 'opperai';
+import Client from 'opperai';
 // Initialize the client with your API key
-const client = new OpperAIClient('your-api-key');
+const client = new Client('your-api-key');
 
 async function main() {
   const indexes = await client.indexes.list();

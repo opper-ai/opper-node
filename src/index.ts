@@ -2,10 +2,11 @@ import { Options } from './types';
 
 import { OpperError } from './errors';
 import Events from './events';
+import fn from './fn';
 import Functions from './functions';
 import Indexes from './indexes';
 import Traces from './traces';
-
+import { Span, SpanFeedback } from './types';
 
 class Client {
   public baseURL: string;
@@ -61,3 +62,5 @@ class Client {
 }
 
 export default Client;
+export { Span, SpanFeedback, fn };
+
