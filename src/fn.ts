@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { zodToJsonSchema } from "zod-to-json-schema";
 import Client from "./index";
+import { getCurrentSpanId } from './traces';
 import { CacheConfig } from './types';
 
 interface OpperOptions {
@@ -16,7 +17,7 @@ interface OpperOptions {
 }
 
 
-function fn<T extends z.ZodType<any, any>, I extends z.ZodType<any, any>>(
+export default function fn<T extends z.ZodType<any, any>, I extends z.ZodType<any, any>>(
     options: OpperOptions,
     inputSchema: I,
     outputSchema: T
@@ -35,7 +36,9 @@ function fn<T extends z.ZodType<any, any>, I extends z.ZodType<any, any>>(
     }, true);
 
     return async function (input: z.infer<I>): Promise<z.infer<T>> {
+        console.log("spanid", getCurrentSpanId())
         const res = await client.functions.chat({
+            parent_span_uuid: getCurrentSpanId(),
             path: options.path,
             message: JSON.stringify(input),
         });
@@ -44,24 +47,4 @@ function fn<T extends z.ZodType<any, any>, I extends z.ZodType<any, any>>(
     };
 }
 
-const TranslationResultSchema = z.object({
-    translation: z.string(),
-    sentiment: z.string(),
-});
 
-const TranslationInputSchema = z.object({
-    text: z.string(),
-    language: z.string(),
-});
-
-
-const translate = fn({
-    path: "test/translate",
-    model: "anthropic/claude-3-haiku",
-    description: "Translate the input text to the specified language",
-}, TranslationInputSchema, TranslationResultSchema);
-
-(async () => {
-    const result = await translate({ text: "Hello, world!", language: "French" });
-    console.log(result);
-})();

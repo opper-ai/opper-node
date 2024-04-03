@@ -25,6 +25,7 @@ export type Message = {
 };
 
 export interface Chat {
+  parent_span_uuid?: string;
   path: string;
   message: string | Message[];
 }
@@ -39,6 +40,7 @@ export interface SSEStreamCallbacks {
 
 export interface OpperAIStream {
   path: string;
+  parent_span_uuid?: string;
   message: string | Message[];
   callbacks: SSEStreamCallbacks;
 }
@@ -123,5 +125,27 @@ export interface CacheConfig {
   exact_match_cache_tll: number;
   semantic_cache_threshold: number;
   semantic_cache_tll: number;
-}
+};
 
+
+
+export type Span = {
+  uuid: string;
+  project?: string;
+  name?: string;
+  input?: string;
+  output?: string;
+  start_time?: Date;
+  parent_uuid?: string;
+  end_time?: Date;
+  error?: string;
+  meta?: Record<string, unknown>;
+  evaluations?: Record<string, unknown>;
+  score?: number;
+};
+
+export type SpanFeedback = {
+  dimension?: string;
+  score?: number; // Assuming the score is between 0 and 1 as per Python's ge=0 and le=1
+  comment?: string;
+};

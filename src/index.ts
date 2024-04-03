@@ -4,6 +4,8 @@ import { OpperError } from './errors';
 import Events from './events';
 import Functions from './functions';
 import Indexes from './indexes';
+import Traces from './traces';
+
 
 class Client {
   public baseURL: string;
@@ -35,6 +37,7 @@ class Client {
   functions = new Functions(this);
   indexes = new Indexes(this);
   events = new Events(this);
+  traces = new Traces(this);
 
   calcAuthorizationHeaders = () => {
     const isUsingAuthorization = this.isUsingAuthorization;

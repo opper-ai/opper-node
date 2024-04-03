@@ -11,12 +11,13 @@ class Functions extends APIResource {
    * @param path - The path to the chat endpoint.
    * @param message - The message to be sent.
    * @returns A promise that resolves to an object with the message and context.
-   * @throws {OpperAPIError} If the response status is not 200.
+   * @throws {APIError} If the response status is not 200.
    * @throws {OpperError} If the response has an error.
    */
-  public async chat({ path, message }: Chat): Promise<OpperAIChatResponse> {
+  public async chat({ path, message, parent_span_uuid }: Chat): Promise<OpperAIChatResponse> {
     const url = this.calcURLChat(path);
-    const body = this.calcMessageForPost(message);
+    const body = this.calcChatPayload(message, parent_span_uuid);
+
 
     const response = await this.doPost(url, body);
 
@@ -73,12 +74,12 @@ class Functions extends APIResource {
    * @param path - The path to the chat endpoint.
    * @param message - The message to be sent.
    * @returns A promise that resolves to a ReadableStream.
-   * @throws {OpperAPIError} If the response status is not 200.
+   * @throws {APIError} If the response status is not 200.
    * @throws {OpperError} If the response has an error.
    */
-  public pipe({ path, message }: Chat): ReadableStream<unknown> {
+  public pipe({ path, message, parent_span_uuid }: Chat): ReadableStream<unknown> {
     const url = this.calcURLChat(`${path}?stream=True`);
-    const body = this.calcMessageForPost(message);
+    const body = this.calcChatPayload(message, parent_span_uuid);
 
     const iterator = this.urlStreamIterator(url, body);
     const pipe = this.iteratorToStream(iterator);
@@ -103,9 +104,9 @@ class Functions extends APIResource {
    * @param callbacks.onCancel      - if the fetch request is aborted.
    * @returns A promise that resolves when the stream is finished or an error occurs.
    */
-  public async stream({ path, message, callbacks }: OpperAIStream): Promise<void> {
+  public async stream({ path, message, parent_span_uuid, callbacks }: OpperAIStream): Promise<void> {
     const url = this.calcURLChat(path);
-    const body = this.calcMessageForPost(message);
+    const body = this.calcChatPayload(message, parent_span_uuid);
 
     try {
       const response = await this.doPost(url, body, callbacks.controller);
