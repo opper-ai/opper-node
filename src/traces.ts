@@ -45,7 +45,7 @@ class Traces extends APIResource {
         const response = await this.doPost(url, body);
         if (response.status !== 200) {
             const responseData = await response.json();
-            throw new OpperError(`Failed to create span: ${response.statusText}, ${responseData}`);
+            throw new OpperError(`Failed to create span: ${response.statusText}, ${JSON.stringify(responseData)}`);
         }
 
         const data = await response.json();
@@ -67,7 +67,7 @@ class Traces extends APIResource {
         const response = await this.doPut(url, body);
         if (response.status !== 200) {
             const responseData = await response.json();
-            throw new OpperError(`Failed to update span: ${response.statusText}, ${responseData}`);
+            throw new OpperError(`Failed to update span: ${response.status} ${response.statusText}, ${JSON.stringify(responseData)}`);
         }
 
         const data = await response.json();
@@ -107,7 +107,7 @@ class Traces extends APIResource {
         const response = await this.doPost(url, body);
         if (response.status !== 200) {
             const responseData = await response.json();
-            throw new OpperError(`Failed to add feedback for span: ${response.statusText}, ${responseData}`);
+            throw new OpperError(`Failed to add feedback for span: ${response.statusText}, ${JSON.stringify(responseData)}`);
         }
 
         const data = await response.json();
@@ -127,7 +127,7 @@ class Traces extends APIResource {
         const response = await this.doPost(url, undefined);
         if (response.status !== 200) {
             const responseData = await response.json();
-            throw new OpperError(`Failed to save examples for span: ${response.statusText}, ${responseData}`);
+            throw new OpperError(`Failed to save examples for span: ${response.statusText}, ${JSON.stringify(responseData)}`);
         }
 
         const data = await response.json();
