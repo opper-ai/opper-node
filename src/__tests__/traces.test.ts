@@ -1,5 +1,5 @@
 import Client from '../index';
-import Traces from '../traces';
+import Spans from '../spans';
 import { Span, SpanFeedback } from '../types';
 
 // Mocking the global fetch to avoid actual API calls
@@ -11,7 +11,7 @@ global.fetch = jest.fn(() =>
 );
 
 describe('Traces', () => {
-    let traces: Traces;
+    let traces: Spans;
     const mockApiKey = 'test-api-key';
 
     beforeEach(() => {
@@ -19,7 +19,7 @@ describe('Traces', () => {
             apiKey: mockApiKey,
         });
 
-        traces = new Traces(mockClient);
+        traces = new Spans(mockClient);
         // Clear all instances and calls to constructor and all methods:
         (global.fetch as jest.Mock).mockClear();
     });

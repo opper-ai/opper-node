@@ -5,7 +5,7 @@ import Events from './events';
 import fn from './fn';
 import Functions from './functions';
 import Indexes from './indexes';
-import Traces from './traces';
+import Spans from './spans';
 import { Span, SpanFeedback } from './types';
 
 class Client {
@@ -38,7 +38,7 @@ class Client {
   functions = new Functions(this);
   indexes = new Indexes(this);
   events = new Events(this);
-  traces = new Traces(this);
+  traces = new Spans(this);
 
   calcAuthorizationHeaders = () => {
     const isUsingAuthorization = this.isUsingAuthorization;

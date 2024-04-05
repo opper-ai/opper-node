@@ -23,14 +23,14 @@ const client = new Client();
 // Define the function using the fn decorator. This will create an opper function
 // returning a TranslationResultSchema
 const translate = fn({
-    path: "test-sdk/translate",
+    path: "test_sdk/translate",
     model: "anthropic/claude-3-haiku",
     description: "Translate the input text to the specified language",
 }, TranslationInputSchema, TranslationResultSchema);
 
 
 const happify = fn({
-    path: "test-sdk/happify",
+    path: "test_sdk/happify",
     model: "anthropic/claude-3-haiku",
     description: "Make the input text happier!",
 }, TranslationResultSchema, HappyTranslationResultSchema);

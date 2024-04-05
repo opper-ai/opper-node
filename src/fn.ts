@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { zodToJsonSchema } from "zod-to-json-schema";
 import Client from "./index";
-import { getCurrentSpanId } from './traces';
+import { getCurrentSpanId } from './spans';
 import { CacheConfig } from './types';
 
 interface OpperOptions {
@@ -36,7 +36,6 @@ export default function fn<T extends z.ZodType<any, any>, I extends z.ZodType<an
     }, true);
 
     return async function (input: z.infer<I>): Promise<z.infer<T>> {
-        console.log("spanid", getCurrentSpanId())
         const res = await client.functions.chat({
             parent_span_uuid: getCurrentSpanId(),
             path: options.path,
