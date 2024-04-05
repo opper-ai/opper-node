@@ -130,7 +130,7 @@ class APIResource {
    */
   protected async doPost(
     url: string,
-    body: string,
+    body?: string,
     controller?: AbortController | null | undefined
   ) {
     const headers = this._client.calcAuthorizationHeaders();
@@ -141,7 +141,7 @@ class APIResource {
         'Content-Type': 'application/json',
         ...headers,
       },
-      body: body,
+      body: body ?? undefined,
       signal: controller?.signal,
     });
 
@@ -243,6 +243,24 @@ class APIResource {
     return response;
   }
 
+  protected calcChatPayload(messages: string | Message[], parent_span_uuid?: string) {
+    return JSON.stringify({
+      messages: this.calcMessagesForPost(messages),
+      parent_span_uuid: parent_span_uuid,
+    });
+  }
+
+  protected calcMessagesForPost(messages: string | Message[]) {
+    if (typeof messages === 'string') {
+      return [{ role: 'user', content: messages }];
+    }
+
+    if (Array.isArray(messages) && messages.every(this.isOpperAIChatConversation)) {
+      return messages;
+    }
+
+    throw new OpperError('The message is not of type string or OpperAIChatConversation[].');
+  }
   /**
    * This method calculates the message for the POST request.
    * If the message is a string, it is formatted as a user message.

@@ -11,25 +11,17 @@ class Functions extends APIResource {
    * @param path - The path to the chat endpoint.
    * @param message - The message to be sent.
    * @returns A promise that resolves to an object with the message and context.
-   * @throws {OpperAPIError} If the response status is not 200.
+   * @throws {APIError} If the response status is not 200.
    * @throws {OpperError} If the response has an error.
    */
-  public async chat({ path, message }: Chat): Promise<OpperAIChatResponse> {
+  public async chat({ path, message, parent_span_uuid }: Chat): Promise<OpperAIChatResponse> {
     const url = this.calcURLChat(path);
-    const body = this.calcMessageForPost(message);
+    const body = this.calcChatPayload(message, parent_span_uuid);
+
 
     const response = await this.doPost(url, body);
 
-    const data = await response.json();
-
-    if (data.error) {
-      throw new OpperError(`The response from ${url} has an error: ${data.error}`);
-    }
-
-    return {
-      message: data.message,
-      context: data.context,
-    };
+    return await response.json() as OpperAIChatResponse;
   }
 
   public async update(f: AIFunction): Promise<AIFunction> {
@@ -38,7 +30,8 @@ class Functions extends APIResource {
     }
     const response = await this.doPost(this.calcURLUpdateFunction(f.id), JSON.stringify(f));
     if (response.status !== 200) {
-      throw new OpperError(`Failed to update function: ${response.statusText}`);
+      const responseData = await response.json();
+      throw new OpperError(`Failed to update function: ${response.statusText}, ${responseData}`);
     }
     return f;
   }
@@ -46,10 +39,12 @@ class Functions extends APIResource {
   public async create(f: AIFunction, update: boolean = false): Promise<AIFunction> {
     try {
       const response = await this.doGet(this.calcURLGetFunctionByPath(f.path));
+      const responseData = await response.json() as AIFunction;
       if (response.status === 200) {
         if (!update) {
           throw new OpperError(`Function with path ${f.path} already exists`);
         }
+        f.id = responseData.id;
         return await this.update(f);
       }
     } catch (error) {
@@ -79,12 +74,12 @@ class Functions extends APIResource {
    * @param path - The path to the chat endpoint.
    * @param message - The message to be sent.
    * @returns A promise that resolves to a ReadableStream.
-   * @throws {OpperAPIError} If the response status is not 200.
+   * @throws {APIError} If the response status is not 200.
    * @throws {OpperError} If the response has an error.
    */
-  public pipe({ path, message }: Chat): ReadableStream<unknown> {
+  public pipe({ path, message, parent_span_uuid }: Chat): ReadableStream<unknown> {
     const url = this.calcURLChat(`${path}?stream=True`);
-    const body = this.calcMessageForPost(message);
+    const body = this.calcChatPayload(message, parent_span_uuid);
 
     const iterator = this.urlStreamIterator(url, body);
     const pipe = this.iteratorToStream(iterator);
@@ -109,9 +104,9 @@ class Functions extends APIResource {
    * @param callbacks.onCancel      - if the fetch request is aborted.
    * @returns A promise that resolves when the stream is finished or an error occurs.
    */
-  public async stream({ path, message, callbacks }: OpperAIStream): Promise<void> {
+  public async stream({ path, message, parent_span_uuid, callbacks }: OpperAIStream): Promise<void> {
     const url = this.calcURLChat(path);
-    const body = this.calcMessageForPost(message);
+    const body = this.calcChatPayload(message, parent_span_uuid);
 
     try {
       const response = await this.doPost(url, body, callbacks.controller);

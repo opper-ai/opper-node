@@ -46,6 +46,7 @@ describe('OpperAIClient', () => {
       const chatSpy = jest.spyOn(client.functions, 'chat').mockResolvedValue({
         message: 'test response',
         context: {},
+        span_id: 'test-span-id',
       });
 
       const response = await client.functions.chat({
@@ -56,10 +57,12 @@ describe('OpperAIClient', () => {
       expect(chatSpy).toHaveBeenCalledWith({
         path: 'test-path',
         message: 'test message',
+
       });
       expect(response).toEqual({
         message: 'test response',
         context: {},
+        span_id: 'test-span-id',
       });
 
       chatSpy.mockRestore();

@@ -2,8 +2,11 @@ import { Options } from './types';
 
 import { OpperError } from './errors';
 import Events from './events';
+import fn from './fn';
 import Functions from './functions';
 import Indexes from './indexes';
+import Spans from './spans';
+import { Span, SpanFeedback } from './types';
 
 class Client {
   public baseURL: string;
@@ -13,7 +16,8 @@ class Client {
 
   constructor(
     { apiKey, baseURL, isUsingAuthorization, dangerouslyAllowBrowser }: Options = {
-      apiKey: '',
+      apiKey: process.env.OPPER_API_KEY || '',
+      baseURL: process.env.OPPER_API_URL || 'https://api.opper.ai',
     }
   ) {
     if (apiKey === undefined || apiKey === '') {
@@ -34,6 +38,7 @@ class Client {
   functions = new Functions(this);
   indexes = new Indexes(this);
   events = new Events(this);
+  traces = new Spans(this);
 
   calcAuthorizationHeaders = () => {
     const isUsingAuthorization = this.isUsingAuthorization;
@@ -57,3 +62,5 @@ class Client {
 }
 
 export default Client;
+export { Span, SpanFeedback, fn };
+
