@@ -38,7 +38,7 @@ class Client {
   functions = new Functions(this);
   indexes = new Indexes(this);
   events = new Events(this);
-  traces = new Spans(this);
+  spans = new Spans(this);
 
   calcAuthorizationHeaders = () => {
     const isUsingAuthorization = this.isUsingAuthorization;
