@@ -19,14 +19,20 @@ export function getCurrentSpanId(): string | undefined {
 class Spans extends APIResource {
 
     /**
-     * This method is used to start a new span.
-     * It sends a POST request to the spans endpoint with the provided span data.
+     * Helper method to start a new span and set the current span context.
      * @param span - The span data to be created.
      * @returns A promise that resolves to the UUID of the created span.
      * @throws {APIError} If the response status is not 200.
      */
     public async startSpan(span: Span) {
         const spanId = span.uuid;
+        if (!span.start_time) {
+            span.start_time = new Date();
+        }
+        const currentSpanId = getCurrentSpanId();
+        if (currentSpanId && !span.parent_uuid) {
+            span.parent_uuid = currentSpanId;
+        }
         spanContextStorage.enterWith({ spanId });
         return this.create(span);
     }
@@ -39,6 +45,12 @@ class Spans extends APIResource {
      * @throws {APIError} If the response status is not 200.
      */
     public async endSpan(span: Span) {
+        if (!span.end_time) {
+            span.end_time = new Date();
+        }
+        if (span.parent_uuid) {
+            spanContextStorage.run({ spanId: span.parent_uuid }, () => { });
+        }
         spanContextStorage.run({ spanId: '' }, () => { });
         return this.update(span.uuid, span);
     }

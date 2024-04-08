@@ -42,10 +42,9 @@ const happify = fn({
     const span: Span = {
         uuid: uuid.v4(),
         name: "Translate",
-        start_time: new Date(),
         input: JSON.stringify(input),
     }
-    await client.traces.startSpan(span);
+    await client.spans.startSpan(span);
 
     // Call translate and happify like any other function
     const result = await translate(input);
@@ -53,8 +52,7 @@ const happify = fn({
     const happified = await happify(result);
 
     span.output = JSON.stringify(happified);
-    span.end_time = new Date();
-    await client.traces.endSpan(span);
+    await client.spans.endSpan(span);
 
     console.log(happified);
 })();
