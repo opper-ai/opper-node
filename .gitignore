@@ -34,3 +34,6 @@ Thumbs.db
 *.tmp
 *.temp
 *.tscache
+
+# Other
+examples/package-lock.json
