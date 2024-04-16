@@ -323,12 +323,6 @@ class APIResource {
   protected calcURLUpdateFunction = (id: number) => {
     return `${this._client.baseURL}/api/v1/functions/${id}`;
   };
-  protected calcURLEvents = () => {
-    return `${this._client.baseURL}/v1/events`;
-  };
-  protected calcURLEvent = (uuid: string) => {
-    return `${this.calcURLEvents()}/${uuid}`;
-  };
 }
 
 export default APIResource;

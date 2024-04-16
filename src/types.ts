@@ -106,27 +106,12 @@ export type AIFunction = {
   out_schema?: Record<string, unknown>;
 };
 
-export type Event = {
-  uuid?: string;
-  project?: string;
-  name?: string;
-  input?: string;
-  output?: string;
-  start_time?: Date;
-  parent_uuid?: string;
-  end_time?: Date;
-  error?: string;
-  meta?: Record<string, unknown>;
-  evaluations?: Record<string, unknown>;
-  score?: number;
-};
 
 export interface CacheConfig {
   exact_match_cache_tll: number;
   semantic_cache_threshold: number;
   semantic_cache_tll: number;
 };
-
 
 
 export type Span = {
