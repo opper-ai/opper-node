@@ -1,8 +1,9 @@
-import { z } from 'zod';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { z } from "zod";
 import { zodToJsonSchema } from "zod-to-json-schema";
 import Client from "./index";
-import { getCurrentSpanId } from './spans';
-import { CacheConfig } from './types';
+import { getCurrentSpanId } from "./spans";
+import { CacheConfig } from "./types";
 
 interface OpperOptions {
     path: string;
@@ -16,24 +17,26 @@ interface OpperOptions {
     out_schema?: Record<string, any>;
 }
 
-
 export default function fn<T extends z.ZodType<any, any>, I extends z.ZodType<any, any>>(
     options: OpperOptions,
     inputSchema: I,
     outputSchema: T
 ): (input: z.infer<I>) => Promise<z.infer<T>> {
     const client = new Client();
-    client.functions.create({
-        path: options.path,
-        model: options.model,
-        instructions: options.instructions || options.description,
-        description: options.description,
-        few_shot: options.few_shot || false,
-        few_shot_count: options.few_shot_count || 2,
-        cache_config: options.cache_config,
-        input_schema: zodToJsonSchema(inputSchema),
-        out_schema: zodToJsonSchema(outputSchema),
-    }, true);
+    client.functions.create(
+        {
+            path: options.path,
+            model: options.model,
+            instructions: options.instructions || options.description,
+            description: options.description,
+            few_shot: options.few_shot || false,
+            few_shot_count: options.few_shot_count || 2,
+            cache_config: options.cache_config,
+            input_schema: zodToJsonSchema(inputSchema),
+            out_schema: zodToJsonSchema(outputSchema),
+        },
+        true
+    );
 
     return async function (input: z.infer<I>): Promise<z.infer<T>> {
         const res = await client.functions.chat({
@@ -45,5 +48,3 @@ export default function fn<T extends z.ZodType<any, any>, I extends z.ZodType<an
         return outputSchema.parse(res.json_payload);
     };
 }
-
-

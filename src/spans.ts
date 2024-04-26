@@ -1,8 +1,8 @@
-import APIResource from './api-resource';
-import { APIError, OpperError } from './errors';
-import { Span, SpanFeedback } from './types';
+import APIResource from "./api-resource";
+import { OpperError } from "./errors";
+import { Span, SpanFeedback } from "./types";
 
-import { AsyncLocalStorage } from 'async_hooks';
+import { AsyncLocalStorage } from "async_hooks";
 
 interface SpanContext {
     spanId: string;
@@ -10,14 +10,12 @@ interface SpanContext {
 
 const spanContextStorage = new AsyncLocalStorage<SpanContext>();
 
-
 export function getCurrentSpanId(): string | undefined {
     const context = spanContextStorage.getStore();
     return context?.spanId;
 }
 
 class Spans extends APIResource {
-
     /**
      * Helper method to start a new span and set the current span context.
      * @param span - The span data to be created.
@@ -49,9 +47,9 @@ class Spans extends APIResource {
             span.end_time = new Date();
         }
         if (span.parent_uuid) {
-            spanContextStorage.run({ spanId: span.parent_uuid }, () => { });
+            spanContextStorage.run({ spanId: span.parent_uuid }, () => {});
         }
-        spanContextStorage.run({ spanId: '' }, () => { });
+        spanContextStorage.run({ spanId: "" }, () => {});
         return this.update(span.uuid, span);
     }
 
@@ -65,15 +63,16 @@ class Spans extends APIResource {
     public async create(span: Span): Promise<string> {
         const url = `${this._client.baseURL}/v1/spans`;
         if (!span.project) {
-            span.project = process.env.OPPER_PROJECT || 'missing_project';
+            span.project = process.env.OPPER_PROJECT || "missing_project";
         }
         const body = JSON.stringify(span);
-
 
         const response = await this.doPost(url, body);
         if (response.status !== 200) {
             const responseData = await response.json();
-            throw new OpperError(`Failed to create span: ${response.statusText}, ${JSON.stringify(responseData)}`);
+            throw new OpperError(
+                `Failed to create span: ${response.statusText}, ${JSON.stringify(responseData)}`
+            );
         }
 
         const data = await response.json();
@@ -95,7 +94,9 @@ class Spans extends APIResource {
         const response = await this.doPut(url, body);
         if (response.status !== 200) {
             const responseData = await response.json();
-            throw new OpperError(`Failed to update span: ${response.status} ${response.statusText}, ${JSON.stringify(responseData)}`);
+            throw new OpperError(
+                `Failed to update span: ${response.status} ${response.statusText}, ${JSON.stringify(responseData)}`
+            );
         }
 
         const data = await response.json();
@@ -135,7 +136,9 @@ class Spans extends APIResource {
         const response = await this.doPost(url, body);
         if (response.status !== 200) {
             const responseData = await response.json();
-            throw new OpperError(`Failed to add feedback for span: ${response.statusText}, ${JSON.stringify(responseData)}`);
+            throw new OpperError(
+                `Failed to add feedback for span: ${response.statusText}, ${JSON.stringify(responseData)}`
+            );
         }
 
         const data = await response.json();
@@ -155,7 +158,9 @@ class Spans extends APIResource {
         const response = await this.doPost(url, undefined);
         if (response.status !== 200) {
             const responseData = await response.json();
-            throw new OpperError(`Failed to save examples for span: ${response.statusText}, ${JSON.stringify(responseData)}`);
+            throw new OpperError(
+                `Failed to save examples for span: ${response.statusText}, ${JSON.stringify(responseData)}`
+            );
         }
 
         const data = await response.json();
