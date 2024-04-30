@@ -1,7 +1,6 @@
-import Client, { Span, fn } from "opperai";
-import * as uuid from 'uuid';
-import { z } from 'zod';
-
+import Client, { Span, fn } from "../src"; // import Client, { Span, fn } from "opperai";
+import * as uuid from "uuid";
+import { z } from "zod";
 
 // Define the input and output schemas with zod.
 const TranslationResultSchema = z.object({
@@ -22,28 +21,33 @@ const client = new Client();
 
 // Define the function using the fn decorator. This will create an opper function
 // returning a TranslationResultSchema
-const translate = fn({
-    path: "test_sdk/translate",
-    model: "anthropic/claude-3-haiku",
-    description: "Translate the input text to the specified language",
-}, TranslationInputSchema, TranslationResultSchema);
+const translate = fn(
+    {
+        path: "test_sdk/translate",
+        model: "anthropic/claude-3-haiku",
+        description: "Translate the input text to the specified language",
+    },
+    TranslationInputSchema,
+    TranslationResultSchema
+);
 
-
-const happify = fn({
-    path: "test_sdk/happify",
-    model: "anthropic/claude-3-haiku",
-    description: "Make the input text happier!",
-}, TranslationResultSchema, HappyTranslationResultSchema);
-
+const happify = fn(
+    {
+        path: "test_sdk/happify",
+        model: "anthropic/claude-3-haiku",
+        description: "Make the input text happier!",
+    },
+    TranslationResultSchema,
+    HappyTranslationResultSchema
+);
 
 (async () => {
-
     const input = { text: "Hello, world!", language: "French" };
     const span: Span = {
         uuid: uuid.v4(),
         name: "Translate",
         input: JSON.stringify(input),
-    }
+    };
     await client.spans.startSpan(span);
 
     // Call translate and happify like any other function
