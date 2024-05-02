@@ -1,6 +1,6 @@
 import APIResource from "./api-resource";
 import { OpperError } from "./errors";
-import { Span, SpanFeedback } from "./types";
+import { Span, SpanMetric } from "./types";
 
 import { AsyncLocalStorage } from "async_hooks";
 
@@ -47,9 +47,9 @@ class Spans extends APIResource {
             span.end_time = new Date();
         }
         if (span.parent_uuid) {
-            spanContextStorage.run({ spanId: span.parent_uuid }, () => {});
+            spanContextStorage.run({ spanId: span.parent_uuid }, () => { });
         }
-        spanContextStorage.run({ spanId: "" }, () => {});
+        spanContextStorage.run({ spanId: "" }, () => { });
         return this.update(span.uuid, span);
     }
 
@@ -122,22 +122,21 @@ class Spans extends APIResource {
     }
 
     /**
-     * This method is used to save feedback for a span.
-     * It sends a POST request to the spans feedback endpoint with the provided span UUID and feedback data.
+     * Attaches a metric to a span. (e.g "faithfulness", "context_simlarity")
      * @param spanUuid - The UUID of the span to save feedback for.
-     * @param feedback - The feedback data.
-     * @returns A promise that resolves to the UUID of the span feedback was saved for.
+     * @param metric - Metric
+     * @returns A promise that resolves to the UUID of the span metric was saved for.
      * @throws {APIError} If the response status is not 200.
      */
-    public async saveFeedback(spanUuid: string, feedback: SpanFeedback): Promise<string> {
-        const url = `${this._client.baseURL}/v1/spans/${spanUuid}/feedbacks`;
-        const body = JSON.stringify(feedback);
+    public async saveMetric(spanUuid: string, metric: SpanMetric): Promise<string> {
+        const url = `${this._client.baseURL}/v1/spans/${spanUuid}/metrics`;
+        const body = JSON.stringify(metric);
 
         const response = await this.doPost(url, body);
         if (response.status !== 200) {
             const responseData = await response.json();
             throw new OpperError(
-                `Failed to add feedback for span: ${response.statusText}, ${JSON.stringify(responseData)}`
+                `Failed to add metric for span: ${response.statusText}, ${JSON.stringify(responseData)}`
             );
         }
 

@@ -59,15 +59,15 @@ export type IndexFileData = {
     original_filename: string;
     size: number;
     index_status:
-        | "init"
-        | "pending"
-        | "uploading"
-        | "indexing"
-        | "success"
-        | "indexed"
-        | "error"
-        | "failed"
-        | "invalid";
+    | "init"
+    | "pending"
+    | "uploading"
+    | "indexing"
+    | "success"
+    | "indexed"
+    | "error"
+    | "failed"
+    | "invalid";
     n_vectors: number;
 };
 
@@ -127,8 +127,8 @@ export type Span = {
     score?: number;
 };
 
-export type SpanFeedback = {
-    dimension?: string;
+export type SpanMetric = {
+    dimension?: string; // E.g. "accuracy", "faithfulness", "fluency"
     score?: number; // Assuming the score is between 0 and 1 as per Python's ge=0 and le=1
     comment?: string;
 };
