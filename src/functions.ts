@@ -6,7 +6,6 @@ import { APIError, OpperError } from "./errors";
 class Functions extends APIResource {
     /**
      * This method is used to initiate a chat with the OpperAI API.
-     * It sends a POST request to the chat endpoint with the provided path and message.
      * The response is a promise that resolves to an object with the message and context.
      * @param path - The path to the chat endpoint.
      * @param message - The message to be sent.
@@ -23,6 +22,13 @@ class Functions extends APIResource {
         return (await response.json()) as OpperAIChatResponse;
     }
 
+    /**
+     * Updates a function in the OpperAI API.
+     * @param f - The function to be updated.
+     * @returns A promise that resolves to the updated function.
+     * @throws {APIError} If the response status is not 200.
+     * @throws {OpperError} If the function id is not provided.
+     */
     public async update(f: AIFunction): Promise<AIFunction> {
         if (!f.id) {
             throw new OpperError("Function id is required");
@@ -37,6 +43,14 @@ class Functions extends APIResource {
         return f;
     }
 
+    /**
+     * Creates a function in the OpperAI API.
+     * @param f - The function to be created.
+     * @param update - Whether to update the function if it already exists.
+     * @returns A promise that resolves to the created function.
+     * @throws {APIError} If the response status is not 200.
+     * @throws {OpperError} If the function already exists and update is false.
+     */
     public async create(f: AIFunction, update: boolean = false): Promise<AIFunction> {
         try {
             const response = await this.doGet(this.calcURLGetFunctionByPath(f.path));

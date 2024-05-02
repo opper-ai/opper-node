@@ -1,6 +1,6 @@
-import Client, { Span, fn } from "../src"; // import Client, { Span, fn } from "opperai";
 import * as uuid from "uuid";
 import { z } from "zod";
+import Client, { Span, fn } from "../src"; // import Client, { Span, fn } from "opperai";
 
 // Define the input and output schemas with zod.
 const TranslationResultSchema = z.object({
@@ -17,6 +17,7 @@ const HappyTranslationResultSchema = z.object({
     text: z.string(),
 });
 
+// Your API key will be loaded from the environment variable OPPER_API_KEY if not provided
 const client = new Client();
 
 // Define the function using the fn decorator. This will create an opper function

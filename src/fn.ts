@@ -17,6 +17,29 @@ interface OpperOptions {
     out_schema?: Record<string, any>;
 }
 
+/**
+ * Decorator function that creates an opper function from an input and output schema.
+ * @param options - OpperOptions for the function.
+ * @param inputSchema - The input zod schema for the function.
+ * @param outputSchema - The output zod schema for the function.
+ * @returns A function that takes an input and returns a promise of the output.
+ *
+ * @example
+ * ```ts
+ * // Define the input and output schemas with zod.
+ * const TranslationResultSchema = z.object({
+ *    translation: z.string(),
+ *   sentiment: z.string(),
+ * });
+ *
+ * // Create an opper function.
+ * const translateAndAnalyze = fn({ path: 'translate-and-analyze', description: 'Translate text and analyze sentiment.' }, TranslationResultSchema, TranslationResultSchema);
+ *
+ * // Use the function.
+ * const result = await translateAndAnalyze({ text: 'Hello, world!' });
+ * console.log(result);
+ * ```
+ */
 export default function fn<T extends z.ZodType<any, any>, I extends z.ZodType<any, any>>(
     options: OpperOptions,
     inputSchema: I,
