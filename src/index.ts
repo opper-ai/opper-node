@@ -5,7 +5,7 @@ import fn from "./fn";
 import Functions from "./functions";
 import Indexes from "./indexes";
 import Spans from "./spans";
-import { Span, SpanFeedback } from "./types";
+import { Span, SpanMetric } from "./types";
 
 class Client {
     public baseURL: string;
@@ -60,4 +60,4 @@ class Client {
 }
 
 export default Client;
-export { Span, SpanFeedback, fn };
+export { Span, SpanMetric, fn };

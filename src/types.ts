@@ -127,8 +127,8 @@ export type Span = {
     score?: number;
 };
 
-export type SpanFeedback = {
-    dimension?: string;
+export type SpanMetric = {
+    dimension?: string; // E.g. "accuracy", "faithfulness", "fluency"
     score?: number; // Assuming the score is between 0 and 1 as per Python's ge=0 and le=1
     comment?: string;
 };

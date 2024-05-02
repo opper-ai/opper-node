@@ -1,6 +1,6 @@
 import Client from "../index";
 import Spans from "../spans";
-import { Span, SpanFeedback } from "../types";
+import { Span, SpanMetric } from "../types";
 
 // Mocking the global fetch to avoid actual API calls
 // @ts-expect-error Mocking global fetch
@@ -77,10 +77,10 @@ describe("Traces", () => {
         });
     });
 
-    describe("saveFeedback", () => {
-        it("should call fetch with correct parameters and resolve with feedback UUID", async () => {
+    describe("saveMetric", () => {
+        it("should call fetch with correct parameters and resolve with metric UUID", async () => {
             const spanUuid = "span-uuid";
-            const mockFeedback: SpanFeedback = {
+            const mockFeedback: SpanMetric = {
                 dimension: "quality",
                 score: 0.9,
                 comment: "Good job",
@@ -88,20 +88,20 @@ describe("Traces", () => {
             (global.fetch as jest.Mock).mockResolvedValueOnce({
                 ok: true,
                 status: 200,
-                json: () => Promise.resolve({ uuid: "feedback-uuid" }),
+                json: () => Promise.resolve({ uuid: "metric-uuid" }),
             });
 
-            const feedbackId = await traces.saveFeedback(spanUuid, mockFeedback);
+            const metricId = await traces.saveMetric(spanUuid, mockFeedback);
 
             expect(global.fetch).toHaveBeenCalledWith(
-                expect.stringContaining(`/v1/spans/${spanUuid}/feedbacks`),
+                expect.stringContaining(`/v1/spans/${spanUuid}/metrics`),
                 {
                     method: "POST",
                     headers: expect.any(Object),
                     body: expect.any(String),
                 }
             );
-            expect(feedbackId).toEqual("feedback-uuid");
+            expect(metricId).toEqual("metric-uuid");
         });
     });
 
