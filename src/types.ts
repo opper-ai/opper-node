@@ -59,15 +59,15 @@ export type IndexFileData = {
     original_filename: string;
     size: number;
     index_status:
-    | "init"
-    | "pending"
-    | "uploading"
-    | "indexing"
-    | "success"
-    | "indexed"
-    | "error"
-    | "failed"
-    | "invalid";
+        | "init"
+        | "pending"
+        | "uploading"
+        | "indexing"
+        | "success"
+        | "indexed"
+        | "error"
+        | "failed"
+        | "invalid";
     n_vectors: number;
 };
 

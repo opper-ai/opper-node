@@ -47,9 +47,9 @@ class Spans extends APIResource {
             span.end_time = new Date();
         }
         if (span.parent_uuid) {
-            spanContextStorage.run({ spanId: span.parent_uuid }, () => { });
+            spanContextStorage.run({ spanId: span.parent_uuid }, () => {});
         }
-        spanContextStorage.run({ spanId: "" }, () => { });
+        spanContextStorage.run({ spanId: "" }, () => {});
         return this.update(span.uuid, span);
     }
 
