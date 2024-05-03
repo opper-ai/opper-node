@@ -19,9 +19,9 @@ class Spans extends APIResource {
         project = process.env.OPPER_PROJECT || "missing_project",
         ...rest
     }: Omit<Span, "uuid"> & { uuid?: string }) {
-        const url = this.calcURLSpans();
+        spanContextStorage.enterWith({ spanId: uuid });
 
-        const body = JSON.stringify({
+        return this.create({
             ...rest,
             name,
             input,
@@ -29,19 +29,6 @@ class Spans extends APIResource {
             project,
             uuid,
         });
-        spanContextStorage.enterWith({ spanId: uuid });
-
-        const response = await this.doPost(url, body);
-        const data = await response.json();
-
-        return {
-            ...rest,
-            name,
-            input,
-            start_time,
-            project,
-            uuid: data.uuid,
-        };
     }
 
     /**
@@ -67,15 +54,40 @@ class Spans extends APIResource {
     }
 
     /**
+     * This method is used to create a new span.
+     * It sends a POST request to the spans endpoint with the provided span data.
+     * @param span - The span data to be created.
+     * @returns A promise that resolves to the created span.
+     * @throws {APIError} If the response status is not 200.
+     */
+    public async create(span: Span): Promise<Span> {
+        const url = this.calcURLSpans();
+        const body = JSON.stringify(span);
+
+        const response = await this.doPost(url, body);
+
+        if (response.status !== 200) {
+            const responseData = await response.json();
+            throw new OpperError(
+                `Failed to create span: ${response.statusText}, ${JSON.stringify(responseData)}`
+            );
+        }
+
+        const data = await response.json();
+
+        return { ...span, uuid: data.uuid };
+    }
+
+    /**
      * This method is used to update an existing span.
      * It sends a PUT request to the spans endpoint with the provided span UUID and data.
      * @param spanUuid - The UUID of the span to be updated.
      * @param spanData - The new data for the span.
-     * @returns A promise that resolves to the UUID of the updated span.
+     * @returns A promise that resolves to the updated span.
      * @throws {APIError} If the response status is not 200.
      */
     public async update(spanUuid: string, spanData: Partial<Span>): Promise<Span> {
-        const url = `${this._client.baseURL}/v1/spans/${spanUuid}`;
+        const url = this.calcURLSpanById(spanUuid);
         const body = JSON.stringify(spanData);
 
         const response = await this.doPut(url, body);
@@ -102,7 +114,7 @@ class Spans extends APIResource {
      * @throws {APIError} If the response status is not 204.
      */
     public async delete(spanUuid: string): Promise<boolean> {
-        const url = `${this._client.baseURL}/v1/spans/${spanUuid}`;
+        const url = this.calcURLSpanById(spanUuid);
 
         const response = await this.doDelete(url);
         if (response.status !== 204) {
@@ -120,7 +132,7 @@ class Spans extends APIResource {
      * @throws {APIError} If the response status is not 200.
      */
     public async saveMetric(spanUuid: string, metric: SpanMetric): Promise<string> {
-        const url = `${this._client.baseURL}/v1/spans/${spanUuid}/metrics`;
+        const url = this.calcURLSpanById(`${spanUuid}/metrics`);
         const body = JSON.stringify(metric);
 
         const response = await this.doPost(url, body);
@@ -143,7 +155,7 @@ class Spans extends APIResource {
      * @throws {APIError} If the response status is not 200.
      */
     public async saveExample(spanUuid: string): Promise<string> {
-        const url = `${this._client.baseURL}/v1/spans/${spanUuid}/save_examples`;
+        const url = this.calcURLSpanById(`${spanUuid}/save_examples`);
 
         const response = await this.doPost(url, undefined);
         if (response.status !== 200) {
