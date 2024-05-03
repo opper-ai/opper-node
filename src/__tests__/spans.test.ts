@@ -20,7 +20,7 @@ describe("Spans", () => {
         });
 
         jest.useFakeTimers();
-        jest.setSystemTime(new Date(2020, 3, 1));
+        jest.setSystemTime(new Date("2020-04-01T00:00:00Z"));
 
         traces = new Spans(mockClient);
         // Clear all instances and calls to constructor and all methods:
