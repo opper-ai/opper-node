@@ -1,3 +1,4 @@
+import * as uuid from "uuid";
 import { Message, SSEStreamCallbacks } from "./types";
 
 import { APIError, OpperError } from "./errors";
@@ -328,6 +329,18 @@ class APIResource {
     };
     protected calcURLUpdateFunction = (id: number) => {
         return `${this._client.baseURL}/api/v1/functions/${id}`;
+    };
+
+    protected calcURLSpans = () => {
+        return `${this._client.baseURL}/v1/spans`;
+    };
+
+    protected calcURLSpanById = (spanId: string) => {
+        return `${this._client.baseURL}/v1/spans/${spanId}`;
+    };
+
+    protected nanoId = () => {
+        return uuid.v4();
     };
 }
 

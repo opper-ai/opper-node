@@ -1,6 +1,5 @@
-import * as uuid from "uuid";
 import { z } from "zod";
-import Client, { Span, fn } from "../src"; // import Client, { Span, fn } from "opperai";
+import Client, { fn } from "../src"; // import Client, { Span, fn } from "opperai";
 
 // Define the input and output schemas with zod.
 const TranslationResultSchema = z.object({
@@ -44,20 +43,17 @@ const happify = fn(
 
 (async () => {
     const input = { text: "Hello, world!", language: "French" };
-    const span: Span = {
-        uuid: uuid.v4(),
+    const span = await client.spans.startSpan({
         name: "Translate",
         input: JSON.stringify(input),
-    };
-    await client.spans.startSpan(span);
+    });
 
     // Call translate and happify like any other function
     const result = await translate(input);
     console.log(result);
     const happified = await happify(result);
 
-    span.output = JSON.stringify(happified);
-    await client.spans.endSpan(span);
+    await client.spans.endSpan({ ...span, output: JSON.stringify(happified) });
 
     console.log(happified);
 })();
