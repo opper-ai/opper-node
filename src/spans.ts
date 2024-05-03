@@ -46,10 +46,10 @@ class Spans extends APIResource {
         }
 
         return this.update(uuid, {
+            ...rest,
             uuid,
             end_time,
             parent_uuid,
-            ...rest,
         });
     }
 
@@ -101,8 +101,8 @@ class Spans extends APIResource {
         const data = await response.json();
 
         return {
-            uuid: data.uuid,
             ...spanData,
+            uuid: data.uuid,
         };
     }
 
