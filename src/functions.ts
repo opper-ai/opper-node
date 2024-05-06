@@ -106,6 +106,7 @@ class Functions extends APIResource {
      * The response is a promise that resolves to a ReadableStream.
      * @param path - The path to the chat endpoint.
      * @param message - The message to be sent.
+     * @param parent_span_uuid - The parent span UUID.
      * @returns A promise that resolves to a ReadableStream.
      * @throws {APIError} If the response status is not 200.
      * @throws {OpperError} If the response has an error.

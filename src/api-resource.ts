@@ -211,12 +211,20 @@ class APIResource {
             },
         });
 
+        if (!response.ok) {
+            throw new APIError(
+                response.status,
+                `Failed to fetch request ${url}: ${response.statusText}`
+            );
+        }
+
         return response;
     }
 
     /**
-     * This method sends a POST request to the specified URL with the provided body.
-     * The response is a promise that resolves to the fetch response.
+     * This method first gets the given by function path.
+     * If the function exists it will then update the function with the given data.
+     * If the function does not exist it will create a new function with the given data.
      * @param paths - The URLs to send the POST request to.
      * @param data - The body of the POST request.
      * @returns A promise that resolves to the fetch response.
@@ -224,7 +232,13 @@ class APIResource {
      */
     protected async doCreateOrUpdate(
         paths: {
+            /**
+             * The URL to get the function by path.
+             */
             get: string;
+            /**
+             * The URL to create a new function.
+             */
             create: string;
         },
         data: object
@@ -264,7 +278,7 @@ class APIResource {
      */
     protected async doDelete(url: string) {
         const headers = this._client.calcAuthorizationHeaders();
-        console.log("headers", headers);
+
         const response = await fetch(url, {
             method: "DELETE",
             headers: {
@@ -272,7 +286,6 @@ class APIResource {
                 ...headers,
             },
         });
-        console.log("response", response);
 
         if (!response.ok) {
             throw new APIError(
