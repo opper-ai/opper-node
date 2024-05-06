@@ -55,6 +55,7 @@ class Functions extends APIResource {
         try {
             const response = await this.doGet(this.calcURLGetFunctionByPath(f.path));
             const responseData = (await response.json()) as AIFunction;
+
             if (response.status === 200) {
                 if (!update) {
                     throw new OpperError(`Function with path ${f.path} already exists`);
@@ -82,12 +83,30 @@ class Functions extends APIResource {
     }
 
     /**
+     * Creates or updates a given function in the OpperAI API.
+     * @param f - The function to be created or updated.
+     * @returns A promise that resolves to the created or updated function.
+     * @throws {APIError} If the response status is not 200.
+     * @throws {OpperError} If the function already exists and update is false.
+     */
+    public async createOrUpdate(f: AIFunction): Promise<AIFunction> {
+        return await this.doCreateOrUpdate(
+            {
+                get: this.calcURLGetFunctionByPath(f.path),
+                create: this.calcURLCreateFunction(),
+            },
+            f
+        );
+    }
+
+    /**
      * This method is a helper which can be used in node middleware
      * to pipe the OpperAI chat stream directly to the client. See examples.
      * It sends a POST request to the chat endpoint with the provided path and message.
      * The response is a promise that resolves to a ReadableStream.
      * @param path - The path to the chat endpoint.
      * @param message - The message to be sent.
+     * @param parent_span_uuid - The parent span UUID.
      * @returns A promise that resolves to a ReadableStream.
      * @throws {APIError} If the response status is not 200.
      * @throws {OpperError} If the response has an error.
