@@ -1,6 +1,9 @@
+// Run example with "npx ts-node ./examples/weather.ts"
+import "dotenv/config";
 import { z } from "zod";
-import Client, { fn } from "../src"; // import Client, { Span, fn } from "opperai";
+import Client, { fn } from "../src";
 
+// Your API key will be loaded from the environment variable OPPER_API_KEY if not provided
 const client = new Client();
 
 const InputSchema = z.object({

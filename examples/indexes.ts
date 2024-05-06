@@ -1,3 +1,5 @@
+// Run example with "npx ts-node ./examples/indexes.ts"
+import "dotenv/config";
 import Client from "../src";
 
 const client = new Client();

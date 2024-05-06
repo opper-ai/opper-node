@@ -1,3 +1,5 @@
+// Run example with "npx ts-node ./examples/tracing.ts"
+import "dotenv/config";
 import { z } from "zod";
 import Client, { fn } from "../src"; // import Client, { Span, fn } from "opperai";
 
