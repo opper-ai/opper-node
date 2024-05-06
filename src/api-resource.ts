@@ -211,14 +211,48 @@ class APIResource {
             },
         });
 
-        if (!response.ok) {
-            throw new APIError(
-                response.status,
-                `Failed to fetch request ${url}: ${response.statusText}`
+        return response;
+    }
+
+    /**
+     * This method sends a POST request to the specified URL with the provided body.
+     * The response is a promise that resolves to the fetch response.
+     * @param paths - The URLs to send the POST request to.
+     * @param data - The body of the POST request.
+     * @returns A promise that resolves to the fetch response.
+     * @throws {APIError} If the response status is not 200.
+     */
+    protected async doCreateOrUpdate(
+        paths: {
+            get: string;
+            create: string;
+        },
+        data: object
+    ) {
+        const headers = this._client.calcAuthorizationHeaders();
+
+        const response = await fetch(paths.get, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                ...headers,
+            },
+        });
+
+        if (response.status === 200) {
+            const { id } = await response.json();
+
+            const update = await this.doPost(
+                `${paths.create}/${id}`,
+                JSON.stringify({ ...data, id })
             );
+
+            return update.json();
         }
 
-        return response;
+        const create = await this.doPost(paths.create, JSON.stringify(data));
+
+        return create.json();
     }
 
     /**

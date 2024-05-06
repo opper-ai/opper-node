@@ -46,8 +46,8 @@ export default function fn<
     {
         cache_config,
         description,
-        few_shot_count,
-        few_shot,
+        few_shot_count = 2,
+        few_shot = false,
         instructions,
         model,
         path,
@@ -56,22 +56,20 @@ export default function fn<
     outputSchema: T
 ): (input: z.infer<I>) => Promise<z.infer<T>> {
     const client = new Client();
-    client.functions.create(
-        {
+
+    return async function (input: z.infer<I>): Promise<z.infer<T>> {
+        await client.functions.createOrUpdate({
             path: path,
             model: model,
             instructions: instructions || description,
             description: description,
-            few_shot: few_shot || false,
-            few_shot_count: few_shot_count || 2,
+            few_shot: few_shot,
+            few_shot_count: few_shot_count,
             cache_config: cache_config,
             input_schema: zodToJsonSchema(inputSchema),
             out_schema: zodToJsonSchema(outputSchema),
-        },
-        true
-    );
+        });
 
-    return async function (input: z.infer<I>): Promise<z.infer<T>> {
         const res = await client.functions.chat({
             parent_span_uuid: getCurrentSpanId(),
             path: path,
