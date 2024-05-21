@@ -5,7 +5,7 @@ The `OpperAIClient` class is the main interface for interacting with the Opper A
 ## Installation
 
 ```bash
-npm install opper
+npm install opperai
 ```
 
 ## Basic Usage
