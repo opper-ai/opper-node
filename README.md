@@ -1,5 +1,7 @@
 # Node SDK
 
+This is the Opper Node SDK. See below for getting started, and the [docs](https://docs.opper.ai) for more information.
+
 The `OpperAIClient` class is the main interface for interacting with the Opper API. It provides methods for performing various operations such as creating a new chat and piping an opper chat stream.
 
 ## Installation
