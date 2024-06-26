@@ -55,7 +55,7 @@ export interface OpperAIChatResponse {
 }
 
 export type IndexFileData = {
-    id: number;
+    uuid: string;
     original_filename: string;
     size: number;
     index_status:
@@ -72,7 +72,7 @@ export type IndexFileData = {
 };
 
 export type Index = {
-    id: number;
+    uuid: string;
     name: string;
     created_at: Date;
     files: IndexFileData[];
@@ -87,13 +87,13 @@ export interface Filter {
 }
 
 export type Document = {
-    id?: string;
+    uuid?: string;
     key?: string; // a unique key that one can use if you want to update the document
     content: string;
     metadata: Record<string, unknown>;
 };
 export type AIFunction = {
-    id?: number;
+    uuid?: string;
     path: string;
     description: string;
     instructions: string;

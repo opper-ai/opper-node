@@ -254,11 +254,11 @@ class APIResource {
         });
 
         if (response.status === 200) {
-            const { id } = await response.json();
+            const { uuid } = await response.json();
 
             const update = await this.doPost(
-                `${paths.create}/${id}`,
-                JSON.stringify({ ...data, id })
+                `${paths.create}/${uuid}`,
+                JSON.stringify({ ...data, uuid })
             );
 
             return update.json();
@@ -359,14 +359,14 @@ class APIResource {
     protected calcURLIndexes = () => {
         return `${this._client.baseURL}/v1/indexes`;
     };
-    protected calcURLIndex = (id: number) => {
-        return `${this._client.baseURL}/v1/indexes/${id}`;
+    protected calcURLIndex = (uuid: string) => {
+        return `${this._client.baseURL}/v1/indexes/${uuid}`;
     };
-    protected calcURLAddIndex = (id: number) => {
-        return `${this._client.baseURL}/v1/indexes/${id}/index`;
+    protected calcURLAddIndex = (uuid: string) => {
+        return `${this._client.baseURL}/v1/indexes/${uuid}/index`;
     };
-    protected calcURLQueryIndex = (id: number) => {
-        return `${this._client.baseURL}/v1/indexes/${id}/query`;
+    protected calcURLQueryIndex = (uuid: string) => {
+        return `${this._client.baseURL}/v1/indexes/${uuid}/query`;
     };
     protected calcURLCreateFunction = () => {
         return `${this._client.baseURL}/api/v1/functions`;
@@ -374,8 +374,8 @@ class APIResource {
     protected calcURLGetFunctionByPath = (path: string) => {
         return `${this._client.baseURL}/api/v1/functions/by_path/${path}`;
     };
-    protected calcURLUpdateFunction = (id: number) => {
-        return `${this._client.baseURL}/api/v1/functions/${id}`;
+    protected calcURLUpdateFunction = (uuid: string) => {
+        return `${this._client.baseURL}/api/v1/functions/${uuid}`;
     };
 
     protected calcURLSpans = () => {

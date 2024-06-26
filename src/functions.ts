@@ -30,10 +30,10 @@ class Functions extends APIResource {
      * @throws {OpperError} If the function id is not provided.
      */
     public async update(f: AIFunction): Promise<AIFunction> {
-        if (!f.id) {
-            throw new OpperError("Function id is required");
+        if (!f.uuid) {
+            throw new OpperError("Function uuid is required");
         }
-        const response = await this.doPost(this.calcURLUpdateFunction(f.id), JSON.stringify(f));
+        const response = await this.doPost(this.calcURLUpdateFunction(f.uuid), JSON.stringify(f));
         if (response.status !== 200) {
             const responseData = await response.json();
             throw new OpperError(
@@ -60,7 +60,7 @@ class Functions extends APIResource {
                 if (!update) {
                     throw new OpperError(`Function with path ${f.path} already exists`);
                 }
-                f.id = responseData.id;
+                f.uuid = responseData.uuid;
                 return await this.update(f);
             }
         } catch (error) {
@@ -75,7 +75,7 @@ class Functions extends APIResource {
 
         if (response.status === 200) {
             const data = await response.json();
-            f.id = data.id;
+            f.uuid = data.uuid;
             return f;
         }
 

@@ -96,13 +96,13 @@ describe("OpperAIClient", () => {
         it("should be able to list indexes", async () => {
             const mockIndexes: Index[] = [
                 {
-                    id: 1,
+                    uuid: "1",
                     name: "Test Index 1",
                     created_at: new Date(),
                     files: [],
                 },
                 {
-                    id: 2,
+                    uuid: "2",
                     name: "Test Index 2",
                     created_at: new Date(),
                     files: [],
