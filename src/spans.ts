@@ -16,7 +16,6 @@ class Spans extends APIResource {
         input = "",
         start_time = new Date(),
         uuid = this.nanoId(),
-        project = process.env.OPPER_PROJECT || "missing_project",
         ...rest
     }: Omit<Span, "uuid"> & { uuid?: string }) {
         spanContextStorage.enterWith({ spanId: uuid });
@@ -26,7 +25,6 @@ class Spans extends APIResource {
             name,
             input,
             start_time,
-            project,
             uuid,
         });
     }

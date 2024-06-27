@@ -5,7 +5,10 @@ import Client from "../src";
 const client = new Client();
 
 (async () => {
-    const index = await client.indexes.create("support-tickets");
+    let index = await client.indexes.get("support-tickets");
+    if (!index) {
+        index = await client.indexes.create("support-tickets");
+    }
 
     const tickets = [
         {

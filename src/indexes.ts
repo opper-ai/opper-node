@@ -52,12 +52,12 @@ class Indexes extends APIResource {
 
     /**
      * Deletes an index
-     * @param id The id of the index to delete.
+     * @param uuid The uuid of the index to delete.
      * @returns A promise that resolves to void.
      * @throws {APIError} If the response status is not 200.
      */
-    public async delete(id: number): Promise<void> {
-        await this.doDelete(this.calcURLIndex(id));
+    public async delete(uuid: string): Promise<void> {
+        await this.doDelete(this.calcURLIndex(uuid));
     }
 
     /**
@@ -74,7 +74,7 @@ class Indexes extends APIResource {
      * ```
      */
     public async add(index: Index, document: Document): Promise<void> {
-        await this.doPost(this.calcURLAddIndex(index.id), JSON.stringify(document));
+        await this.doPost(this.calcURLAddIndex(index.uuid), JSON.stringify(document));
     }
 
     /**
@@ -93,7 +93,7 @@ class Indexes extends APIResource {
         filters: Filter[] | null
     ): Promise<Document[]> {
         const response = await this.doPost(
-            this.calcURLQueryIndex(index.id),
+            this.calcURLQueryIndex(index.uuid),
             JSON.stringify({ q: query, k: k, filters: filters })
         );
 
