@@ -157,13 +157,11 @@ describe("Spans", () => {
             expect(childEndSpan.name).toBe("child-span");
             expect(childEndSpan.output).toBe("child output");
             expect(childEndSpan.parent_uuid).toBe("parent-uuid");
-            expect(childEndSpan.project).toBe("missing_project");
             expect(childEndSpan).toMatchSnapshot();
 
             expect(parentEndSpan.name).toBe("parent-span");
             expect(parentEndSpan.output).toBe("parent output");
             expect(parentEndSpan.parent_uuid).toBe(undefined);
-            expect(parentEndSpan.project).toBe("missing_project");
             expect(parentEndSpan).toMatchSnapshot();
         });
     });

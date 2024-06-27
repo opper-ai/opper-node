@@ -17,7 +17,6 @@ exports[`Spans span with child span Should create a parent and child span 1`] = 
   "name": "child-span",
   "output": "child output",
   "parent_uuid": "parent-uuid",
-  "project": "missing_project",
   "start_time": 2020-04-01T00:00:00.000Z,
   "uuid": "return-a-uuid",
 }
@@ -30,7 +29,6 @@ exports[`Spans span with child span Should create a parent and child span 2`] = 
   "name": "parent-span",
   "output": "parent output",
   "parent_uuid": undefined,
-  "project": "missing_project",
   "start_time": 2020-04-01T00:00:00.000Z,
   "uuid": "return-a-uuid",
 }
@@ -40,7 +38,6 @@ exports[`Spans startSpan should call fetch with correct parameters and resolve w
 {
   "input": "",
   "name": "test-span",
-  "project": "missing_project",
   "start_time": 2020-04-01T00:00:00.000Z,
   "uuid": "span-uuid",
 }

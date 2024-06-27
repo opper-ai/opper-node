@@ -114,7 +114,6 @@ export interface CacheConfig {
 
 export type Span = {
     uuid: string;
-    project?: string;
     name?: string;
     input?: string;
     output?: string;
