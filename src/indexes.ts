@@ -1,6 +1,7 @@
 import { Document, Filter, Index } from "./types";
 
 import APIResource from "./api-resource";
+import { getCurrentSpanId } from "./context";
 
 class Indexes extends APIResource {
     /**
@@ -90,11 +91,18 @@ class Indexes extends APIResource {
         index: Index,
         query: string,
         k: number,
-        filters: Filter[] | null
+        filters: Filter[] | null,
+        parentSpanUUID: string | null
     ): Promise<Document[]> {
+        if (parentSpanUUID === null) {
+            const contextSpanUUID = getCurrentSpanId();
+            if (contextSpanUUID !== undefined) {
+                parentSpanUUID = contextSpanUUID;
+            }
+        }
         const response = await this.doPost(
             this.calcURLQueryIndex(index.uuid),
-            JSON.stringify({ q: query, k: k, filters: filters })
+            JSON.stringify({ q: query, k: k, filters: filters, parent_span_uuid: parentSpanUUID })
         );
 
         const documents: Document[] = await response.json();
