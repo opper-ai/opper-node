@@ -59,15 +59,15 @@ export type IndexFileData = {
     original_filename: string;
     size: number;
     index_status:
-        | "init"
-        | "pending"
-        | "uploading"
-        | "indexing"
-        | "success"
-        | "indexed"
-        | "error"
-        | "failed"
-        | "invalid";
+    | "init"
+    | "pending"
+    | "uploading"
+    | "indexing"
+    | "success"
+    | "indexed"
+    | "error"
+    | "failed"
+    | "invalid";
     n_vectors: number;
 };
 
@@ -104,6 +104,7 @@ export type AIFunction = {
     cache_config?: CacheConfig;
     input_schema?: Record<string, unknown>;
     out_schema?: Record<string, unknown>;
+    dataset_uuid?: string;
 };
 
 export interface CacheConfig {
@@ -131,3 +132,24 @@ export type SpanMetric = {
     score?: number; // Assuming the score is between 0 and 1 as per Python's ge=0 and le=1
     comment?: string;
 };
+
+export type Dataset = {
+    uuid: string;
+    name: string;
+    description?: string;
+    project_uuid: string;
+    created_at?: Date;
+    updated_at?: Date;
+};
+
+export type DatasetEntry = {
+    uuid: string;
+    input: string;
+    output: string;
+    comment?: string;
+    span_id?: string;
+    trace_id?: string;
+    created_at?: Date;
+    updated_at?: Date;
+};
+
