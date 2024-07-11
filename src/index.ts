@@ -1,5 +1,6 @@
 import { Options } from "./types";
 
+import Datasets from "./datasets";
 import { OpperError } from "./errors";
 import fn from "./fn";
 import Functions from "./functions";
@@ -37,6 +38,7 @@ class Client {
     functions = new Functions(this);
     indexes = new Indexes(this);
     spans = new Spans(this);
+    datasets = new Datasets(this);
 
     calcAuthorizationHeaders = () => {
         const isUsingAuthorization = this.isUsingAuthorization;

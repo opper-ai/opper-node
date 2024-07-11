@@ -386,6 +386,10 @@ class APIResource {
         return `${this._client.baseURL}/v1/spans/${spanId}`;
     };
 
+    protected calcURLDatasets(datasetUuid: string): string {
+        return `${this._client.baseURL}/v1/datasets/${datasetUuid}`;
+    }
+
     protected nanoId = () => {
         return uuid.v4();
     };
