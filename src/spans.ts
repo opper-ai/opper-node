@@ -1,4 +1,4 @@
-import { Span, SpanMetric } from "./types";
+import { Span, SpanMetric, Generation } from "./types";
 
 import { spanContextStorage } from "./context";
 import APIResource from "./api-resource";
@@ -163,6 +163,28 @@ class Spans extends APIResource {
             );
         }
 
+        const data = await response.json();
+        return data.uuid;
+    }
+
+    /**
+     * This method is used to manually save a generation for a span.
+     * It sends a POST request to the spans generation endpoint with the provided span UUID.
+     * @param spanUuid - The UUID of the span to save the generation for.
+     * @param generation - The generation to save.
+     * @returns A promise that resolves to the UUID of the span generation was saved for.
+     * @throws {APIError} If the response status is not 200.
+     */
+    public async saveGeneration(spanUuid: string, generation: Generation): Promise<string> {
+        const url = this.calcURLSpanById(`${spanUuid}/generation`);
+        const body = JSON.stringify(generation);
+        const response = await this.doPost(url, body);
+        if (response.status !== 200) {
+            const responseData = await response.json();
+            throw new OpperError(
+                `Failed to save generation for span: ${response.statusText}, ${JSON.stringify(responseData)}`
+            );
+        }
         const data = await response.json();
         return data.uuid;
     }
