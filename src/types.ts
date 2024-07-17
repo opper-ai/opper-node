@@ -133,6 +133,19 @@ export type SpanMetric = {
     comment?: string;
 };
 
+export type Generation = {
+    called_at: Date;
+    duration_ms: number;
+    model?: string;
+    response?: string;
+    prompt_tokens?: number;
+    completion_tokens?: number;
+    total_tokens?: number;
+    error?: string;
+    messages?: Array<Record<string, any>>;
+    cost?: number;
+};
+
 export type Dataset = {
     uuid: string;
     name: string;
