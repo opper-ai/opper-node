@@ -8,8 +8,8 @@ const client = new Client();
 
 (async () => {
     const { json_payload } = await client.call({
-        instructions: "Extract temperature and location.",
-        input: "In Stockholm its cloudy skies early, followed by partial clearing. Cooler. High 12C. Winds ENE at 15 to 25 km/h.",
+        instructions: "Extract temperature, location and wind speed.",
+        input: "In London its cloudy skies early, followed by partial clearing. Cooler. High 13C. Winds ENE at 15 to 20 km/h.",
         output_schema: {
             $schema: "https://json-schema.org/draft/2020-12/schema",
             type: "object",
@@ -21,6 +21,10 @@ const client = new Client();
                 location: {
                     description: "The location",
                     type: "string",
+                },
+                wind_speed: {
+                    description: "The max wind speed in km/h",
+                    type: "number",
                 },
             },
         },

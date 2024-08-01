@@ -45,9 +45,6 @@
     "tsup": "8.0.2",
     "typescript": "5.3.3"
   },
-  "dependencies": {
-    "uuid": "^9.0.1"
-  },
   "optionalDependencies": {
     "@rollup/rollup-linux-x64-gnu": "^4.19.2"
   }

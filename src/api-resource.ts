@@ -1,4 +1,3 @@
-import * as uuid from "uuid";
 import { Message, SSEStreamCallbacks } from "./types";
 
 import { APIError, OpperError } from "./errors";
@@ -222,54 +221,6 @@ class APIResource {
     }
 
     /**
-     * This method first gets the given by function path.
-     * If the function exists it will then update the function with the given data.
-     * If the function does not exist it will create a new function with the given data.
-     * @param paths - The URLs to send the POST request to.
-     * @param data - The body of the POST request.
-     * @returns A promise that resolves to the fetch response.
-     * @throws {APIError} If the response status is not 200.
-     */
-    protected async doCreateOrUpdate(
-        paths: {
-            /**
-             * The URL to get the function by path.
-             */
-            get: string;
-            /**
-             * The URL to create a new function.
-             */
-            create: string;
-        },
-        data: object
-    ) {
-        const headers = this._client.calcAuthorizationHeaders();
-
-        const response = await fetch(paths.get, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                ...headers,
-            },
-        });
-
-        if (response.status === 200) {
-            const { uuid } = await response.json();
-
-            const update = await this.doPost(
-                `${paths.create}/${uuid}`,
-                JSON.stringify({ ...data, uuid })
-            );
-
-            return update.json();
-        }
-
-        const create = await this.doPost(paths.create, JSON.stringify(data));
-
-        return create.json();
-    }
-
-    /**
      * This method sends a DELETE request to the specified URL.
      * The response is a promise that resolves to the fetch response.
      * @param url - The URL to send the `DELETE` request to.
@@ -391,7 +342,7 @@ class APIResource {
     }
 
     protected nanoId = () => {
-        return uuid.v4();
+        return crypto.randomUUID();
     };
 }
 

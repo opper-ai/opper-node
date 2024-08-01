@@ -1,12 +1,12 @@
 import { OpperAIChatResponse, OpperCall, Options } from "./types";
 
-import Datasets from "./datasets";
+import { djb2 } from "./utils";
 import { OpperError } from "./errors";
 
+import Datasets from "./datasets";
 import Functions from "./functions";
 import Indexes from "./indexes";
 import Spans from "./spans";
-import { djb2 } from "./utils";
 
 class Client {
     public baseURL: string;
@@ -71,7 +71,7 @@ class Client {
     }: OpperCall): Promise<OpperAIChatResponse> => {
         const path = name ? name : djb2(instructions);
 
-        await this.functions.createOrUpdate({
+        await this.functions.create({
             path: path,
             model: model,
             instructions: instructions || description,

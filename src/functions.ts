@@ -83,23 +83,6 @@ class Functions extends APIResource {
     }
 
     /**
-     * Creates or updates a given function in the OpperAI API.
-     * @param f - The function to be created or updated.
-     * @returns A promise that resolves to the created or updated function.
-     * @throws {APIError} If the response status is not 200.
-     * @throws {OpperError} If the function already exists and update is false.
-     */
-    public async createOrUpdate(f: AIFunction): Promise<AIFunction> {
-        return await this.doCreateOrUpdate(
-            {
-                get: this.calcURLGetFunctionByPath(f.path),
-                create: this.calcURLCreateFunction(),
-            },
-            f
-        );
-    }
-
-    /**
      * This method is a helper which can be used in node middleware
      * to pipe the OpperAI chat stream directly to the client. See examples.
      * It sends a POST request to the chat endpoint with the provided path and message.
