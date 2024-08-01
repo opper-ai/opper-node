@@ -59,15 +59,15 @@ export type IndexFileData = {
     original_filename: string;
     size: number;
     index_status:
-    | "init"
-    | "pending"
-    | "uploading"
-    | "indexing"
-    | "success"
-    | "indexed"
-    | "error"
-    | "failed"
-    | "invalid";
+        | "init"
+        | "pending"
+        | "uploading"
+        | "indexing"
+        | "success"
+        | "indexed"
+        | "error"
+        | "failed"
+        | "invalid";
     n_vectors: number;
 };
 
@@ -92,6 +92,17 @@ export type Document = {
     content: string;
     metadata: Record<string, unknown>;
 };
+
+export type OpperCall = {
+    name?: string;
+    input?: string;
+    description?: string;
+    instructions?: string;
+    model?: string;
+    input_schema?: Record<string, unknown>;
+    output_schema?: Record<string, unknown>;
+};
+
 export type AIFunction = {
     uuid?: string;
     path: string;
@@ -142,6 +153,7 @@ export type Generation = {
     completion_tokens?: number;
     total_tokens?: number;
     error?: string;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     messages?: Array<Record<string, any>>;
     cost?: number;
 };
@@ -165,4 +177,3 @@ export type DatasetEntry = {
     created_at?: Date;
     updated_at?: Date;
 };
-

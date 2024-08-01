@@ -1,4 +1,4 @@
-import { Options } from "./types";
+import { OpperAIChatResponse, OpperCall, Options } from "./types";
 
 import Datasets from "./datasets";
 import { OpperError } from "./errors";
@@ -6,6 +6,7 @@ import { OpperError } from "./errors";
 import Functions from "./functions";
 import Indexes from "./indexes";
 import Spans from "./spans";
+import { djb2 } from "./utils";
 
 class Client {
     public baseURL: string;
@@ -59,8 +60,32 @@ class Client {
         );
     };
 
-    call = async (path: string) => {
-        return console.log("working: ", path);
+    call = async ({
+        name,
+        input = "",
+        description = "default",
+        instructions = "default",
+        model,
+        input_schema,
+        output_schema,
+    }: OpperCall): Promise<OpperAIChatResponse> => {
+        const path = name ? name : djb2(instructions);
+
+        await this.functions.createOrUpdate({
+            path: path,
+            model: model,
+            instructions: instructions || description,
+            description: description,
+            input_schema: input_schema,
+            out_schema: output_schema,
+        });
+
+        const res = await this.functions.chat({
+            path: path,
+            message: JSON.stringify(input),
+        });
+
+        return res;
     };
 }
 
