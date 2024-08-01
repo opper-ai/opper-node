@@ -1,6 +1,5 @@
 import { Span, SpanMetric, Generation } from "./types";
 
-import { spanContextStorage } from "./context";
 import APIResource from "./api-resource";
 import { OpperError } from "./errors";
 
@@ -18,8 +17,6 @@ class Spans extends APIResource {
         uuid = this.nanoId(),
         ...rest
     }: Omit<Span, "uuid"> & { uuid?: string }) {
-        spanContextStorage.enterWith({ spanId: uuid });
-
         return this.create({
             ...rest,
             name,
@@ -37,12 +34,6 @@ class Spans extends APIResource {
      * @throws {APIError} If the response status is not 200.
      */
     public async endSpan({ uuid, end_time = new Date(), parent_uuid, ...rest }: Span) {
-        if (parent_uuid) {
-            spanContextStorage.run({ spanId: parent_uuid }, () => {});
-        } else {
-            spanContextStorage.run({ spanId: undefined }, () => {});
-        }
-
         return this.update(uuid, {
             ...rest,
             uuid,

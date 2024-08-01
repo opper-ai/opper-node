@@ -1,15 +1,13 @@
 // Run example with "npx ts-node ./examples/tracing_manual.ts"
 import "dotenv/config";
-import Client from "../src"; 
+import Client from "../src";
 
 const client = new Client();
 
-
 const sleepAndReturn = async (ms: number, returnValue: any) => {
-    await new Promise(resolve => setTimeout(resolve, ms));
+    await new Promise((resolve) => setTimeout(resolve, ms));
     return returnValue;
 };
-
 
 (async () => {
     // start outer span
@@ -36,7 +34,7 @@ const sleepAndReturn = async (ms: number, returnValue: any) => {
         duration_ms: t1.getTime() - t0.getTime(),
         model: "anthropic/claude-3-haiku",
         response: response,
-        messages: [{role: "user", content: "Hello, world!"}],
+        messages: [{ role: "user", content: "Hello, world!" }],
         prompt_tokens: 100,
         completion_tokens: 100,
         total_tokens: 200,
@@ -44,9 +42,9 @@ const sleepAndReturn = async (ms: number, returnValue: any) => {
     });
 
     // end the span and provide the output
-    await client.spans.endSpan({ 
-        ...span, 
-        output: JSON.stringify({"crip": "crap"}) , 
+    await client.spans.endSpan({
+        ...span,
+        output: JSON.stringify({ crip: "crap" }),
     });
 
     await client.spans.endSpan(outerSpan);

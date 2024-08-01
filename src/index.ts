@@ -2,11 +2,10 @@ import { Options } from "./types";
 
 import Datasets from "./datasets";
 import { OpperError } from "./errors";
-import fn from "./fn";
+
 import Functions from "./functions";
 import Indexes from "./indexes";
 import Spans from "./spans";
-import { Span, SpanMetric } from "./types";
 
 class Client {
     public baseURL: string;
@@ -59,7 +58,10 @@ class Client {
             typeof navigator !== "undefined"
         );
     };
+
+    call = async (path: string) => {
+        return console.log("working: ", path);
+    };
 }
 
 export default Client;
-export { Span, SpanMetric, fn };
