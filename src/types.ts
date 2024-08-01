@@ -94,13 +94,14 @@ export type Document = {
 };
 
 export type OpperCall = {
+    input: string;
     name?: string;
-    input?: string;
     description?: string;
     instructions?: string;
     model?: string;
     input_schema?: Record<string, unknown>;
     output_schema?: Record<string, unknown>;
+    parent_span_uuid?: string;
 };
 
 export type AIFunction = {
