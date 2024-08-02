@@ -7,6 +7,12 @@ import Client from "../src";
 const client = new Client();
 
 (async () => {
+    const res = await client.call({
+        input: "what is the capital of sweden",
+    });
+
+    console.log(res.message);
+
     const { json_payload } = await client.call({
         instructions: "Extract temperature, location and wind speed.",
         input: "In London its cloudy skies early, followed by partial clearing. Cooler. High 13C. Winds ENE at 15 to 20 km/h.",

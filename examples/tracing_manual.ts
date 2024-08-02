@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // Run example with "npx ts-node ./examples/tracing_manual.ts"
 import "dotenv/config";
 import Client from "../src";

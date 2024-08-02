@@ -63,31 +63,27 @@ class Client {
     call = async ({
         name,
         input,
-        description = "",
+        description,
         instructions = "default",
-        model,
-        input_schema,
         output_schema,
         parent_span_uuid,
+        ...rest
     }: OpperCall): Promise<OpperAIChatResponse> => {
         const path = name ? name : djb2(instructions);
 
         await this.functions.create({
             path: path,
-            model: model,
             instructions: instructions,
-            description: description,
-            input_schema: input_schema,
+            description: description || instructions,
             out_schema: output_schema,
+            ...rest,
         });
 
-        const res = await this.functions.chat({
+        return await this.functions.chat({
             path: path,
             message: JSON.stringify(input),
             parent_span_uuid,
         });
-
-        return res;
     };
 }
 

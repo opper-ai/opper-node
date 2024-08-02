@@ -19,23 +19,31 @@ interface OpperOptions {
  *
  * @example
  * ```ts
+ * import { Type } from "@sinclair/typebox";
+ * import fn from "./typebox-fn-decorator";
+ *
  * // Define the input and output schemas with TypeBox.
- * const TranslationResultSchema = Type.Object({
+ * const InputSchema = Type.Object({
+ *    text: Type.String(),
+ * });
+ *
+ * const OutputSchema = Type.Object({
  *    translation: Type.String(),
  *    sentiment: Type.String(),
  * });
  *
  * // Create an asynchronous function using the fn factory.
  * const translateAndAnalyze = fn({
- *    path: 'translate-and-analyze',
+ *    name: 'translate-and-analyze',
  *    description: 'Translate text and analyze sentiment.',
- *    few_shot: true,
- *    few_shot_count: 3
- * }, TranslationResultSchema, TranslationResultSchema);
+ *    instructions: 'Translate the given text to French and analyze its sentiment.',
+ *    model: 'azure/gpt-4o-eu',
+ * }, InputSchema, OutputSchema);
  *
  * // Use the function.
  * const result = await translateAndAnalyze({ text: 'Hello, world!' });
  * console.log(result);
+ * // Output: { translation: 'Bonjour, le monde!', sentiment: 'Positive' }
  * ```
  */
 export default function fn<T extends TSchema, I extends TSchema>(
