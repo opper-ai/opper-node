@@ -2,6 +2,7 @@ import { Span, SpanMetric, Generation } from "./types";
 
 import APIResource from "./api-resource";
 import { OpperError } from "./errors";
+import { nanoId } from "./utils";
 
 class Spans extends APIResource {
     /**
@@ -14,7 +15,7 @@ class Spans extends APIResource {
         name = "mising_name",
         input = "",
         start_time = new Date(),
-        uuid = this.nanoId(),
+        uuid = nanoId(),
         ...rest
     }: Omit<Span, "uuid"> & { uuid?: string }): Promise<Span> {
         const url = this.calcURLSpans();
@@ -31,7 +32,6 @@ class Spans extends APIResource {
 
         if (response.ok) {
             const data = await response.json();
-            console.log("data: ", data);
             return { ...span, uuid: data.uuid };
         }
 

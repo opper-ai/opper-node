@@ -28,7 +28,7 @@ exports[`Spans span with child span Should create a parent and child span 2`] = 
   "input": "parent input",
   "name": "parent-span",
   "output": "parent output",
-  "parent_uuid": undefined,
+  "parent_uuid": "parent-uuid",
   "start_time": 2020-04-01T00:00:00.000Z,
   "uuid": "return-a-uuid",
 }

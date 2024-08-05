@@ -5,3 +5,7 @@ export function djb2(str: string) {
     }
     return Math.abs(hash).toString();
 }
+
+export const nanoId = () => {
+    return crypto.randomUUID();
+};

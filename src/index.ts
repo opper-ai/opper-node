@@ -7,7 +7,7 @@ import Datasets from "./datasets";
 import Functions from "./functions";
 import Indexes from "./indexes";
 import Spans from "./spans";
-import Trace from "./trace";
+import Traces from "./traces";
 
 class Client {
     public baseURL: string;
@@ -40,7 +40,7 @@ class Client {
     indexes = new Indexes(this);
     spans = new Spans(this);
     datasets = new Datasets(this);
-    traces = new Trace(this);
+    traces = new Traces(this);
 
     calcAuthorizationHeaders = () => {
         const isUsingAuthorization = this.isUsingAuthorization;

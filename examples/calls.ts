@@ -7,19 +7,31 @@ import Client from "../src";
 const client = new Client();
 
 (async () => {
-    const { message, span_id } = await client.call({
-        input: "what is the capital of sweden",
+    const trace = await client.traces.start({
+        name: "node-sdk/calls",
+        input: "example input",
     });
 
-    console.log(message);
+    const { message, span_id } = await client.call({
+        input: "what is the capital of sweden",
+        parent_span_uuid: trace.uuid,
+    });
 
+    console.log("String response: ", message);
+
+    // Save a metric for the above call
     await client.spans.saveMetric(span_id, {
         dimension: "accuracy",
         score: 0.95,
         comment: "The answer is correct",
     });
 
+    await trace.end({
+        output: "example output",
+    });
+
     const { json_payload } = await client.call({
+        parent_span_uuid: trace.uuid,
         name: "node-sdk/call/weather",
         instructions: "Extract temperature, location and wind speed.",
         input: "In London its cloudy skies early, followed by partial clearing. Cooler. High 13C. Winds ENE at 15 to 20 km/h.",
@@ -43,5 +55,9 @@ const client = new Client();
         },
     });
 
-    console.log(json_payload);
+    console.log("JSON response: ", json_payload);
+
+    await trace.end({
+        output: "example output",
+    });
 })();

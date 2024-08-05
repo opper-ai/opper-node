@@ -18,10 +18,9 @@ const sleepAndReturn = async (ms: number, returnValue: any) => {
     });
 
     // Start the span and provide the input
-    const span = await client.spans.startSpan({
+    const span = await trace.startSpan({
         name: "node-sdk/tracing/span",
         input: JSON.stringify({ some: "input given to", to: "the span" }),
-        parent_uuid: trace.uuid,
     });
 
     // Capture time call some function and capture response
@@ -30,7 +29,7 @@ const sleepAndReturn = async (ms: number, returnValue: any) => {
     const t1 = new Date();
 
     // Save the generation under the current span
-    await client.spans.saveGeneration(span.uuid, {
+    await span.saveGeneration({
         called_at: t0,
         duration_ms: t1.getTime() - t0.getTime(),
         model: "anthropic/claude-3-haiku",
@@ -43,17 +42,16 @@ const sleepAndReturn = async (ms: number, returnValue: any) => {
     });
 
     // A metric and/or comment can be saved to the span
-    await client.spans.saveMetric(span.uuid, {
+    await span.saveMetric({
         dimension: "accuracy",
         score: 1,
         comment: "This is a comment",
     });
 
     // End the span and provide the output
-    await client.spans.endSpan({
-        ...span,
+    await span.end({
         output: JSON.stringify({ foo: "bar" }),
     });
 
-    await client.traces.end({ ...trace, output: JSON.stringify({ foo: "bar" }) });
+    await trace.end({ output: JSON.stringify({ foo: "bar" }) });
 })();
