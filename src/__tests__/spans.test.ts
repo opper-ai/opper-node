@@ -33,6 +33,7 @@ describe("Spans", () => {
                 uuid: "span-uuid",
                 name: "test-span",
                 start_time: new Date(),
+                parent_uuid: "parent-uuid",
             };
             (global.fetch as jest.Mock).mockResolvedValueOnce({
                 ok: true,
@@ -58,6 +59,7 @@ describe("Spans", () => {
                 name: "test-span",
                 start_time: new Date(),
                 end_time: new Date(),
+                parent_uuid: "parent-uuid",
             };
             (global.fetch as jest.Mock).mockResolvedValueOnce({
                 ok: true,
@@ -142,6 +144,7 @@ describe("Spans", () => {
                 name: "parent-span",
                 input: "parent input",
                 uuid: "parent-uuid",
+                parent_uuid: "parent-uuid",
             });
 
             const child = await traces.startSpan({
@@ -161,7 +164,7 @@ describe("Spans", () => {
 
             expect(parentEndSpan.name).toBe("parent-span");
             expect(parentEndSpan.output).toBe("parent output");
-            expect(parentEndSpan.parent_uuid).toBe(undefined);
+            expect(parentEndSpan.parent_uuid).toBe("parent-uuid");
             expect(parentEndSpan).toMatchSnapshot();
         });
     });

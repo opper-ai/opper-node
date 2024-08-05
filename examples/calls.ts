@@ -7,13 +7,20 @@ import Client from "../src";
 const client = new Client();
 
 (async () => {
-    const res = await client.call({
+    const { message, span_id } = await client.call({
         input: "what is the capital of sweden",
     });
 
-    console.log(res.message);
+    console.log(message);
+
+    await client.spans.saveMetric(span_id, {
+        dimension: "accuracy",
+        score: 0.95,
+        comment: "The answer is correct",
+    });
 
     const { json_payload } = await client.call({
+        name: "node-sdk/call/weather",
         instructions: "Extract temperature, location and wind speed.",
         input: "In London its cloudy skies early, followed by partial clearing. Cooler. High 13C. Winds ENE at 15 to 20 km/h.",
         output_schema: {

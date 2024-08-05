@@ -154,6 +154,19 @@ export interface CacheConfig {
     semantic_cache_tll: number;
 }
 
+export type OpperTrace = {
+    uuid: string;
+    name: string;
+    input: string;
+    output?: string;
+    start_time?: Date;
+    end_time?: Date;
+    error?: string;
+    meta?: Record<string, unknown>;
+    evaluations?: Record<string, unknown>;
+    score?: number;
+};
+
 export type Span = {
     uuid: string;
     name?: string;
@@ -169,8 +182,17 @@ export type Span = {
 };
 
 export type SpanMetric = {
-    dimension?: string; // E.g. "accuracy", "faithfulness", "fluency"
-    score?: number; // Assuming the score is between 0 and 1 as per Python's ge=0 and le=1
+    /**
+     * Dimension of the metric. E.g. "accuracy", "faithfulness", "fluency"
+     */
+    dimension?: string;
+    /**
+     * Score of the metric. E.g. 0.95
+     */
+    score?: number;
+    /**
+     * Comment of the metric. E.g. "The answer is correct"
+     */
     comment?: string;
 };
 
@@ -183,8 +205,8 @@ export type Generation = {
     completion_tokens?: number;
     total_tokens?: number;
     error?: string;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    messages?: Array<Record<string, any>>;
+
+    messages?: Message[];
     cost?: number;
 };
 

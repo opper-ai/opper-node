@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-// Run example with "npx ts-node ./examples/tracing_manual.ts"
+// Run example with "npx ts-node ./examples/tracing-manual.ts"
 import "dotenv/config";
 import Client from "../src";
 
@@ -11,25 +11,25 @@ const sleepAndReturn = async (ms: number, returnValue: any) => {
 };
 
 (async () => {
-    // start outer span
-    const outerSpan = await client.spans.startSpan({
-        name: "Outer Span",
-        input: JSON.stringify({ some: "input given to", to: "the span" }),
+    // Start parent trace
+    const trace = await client.traces.start({
+        name: "node-sdk/tracing/trace",
+        input: JSON.stringify({ some: "input given to", to: "the trace" }),
     });
 
-    // start the span and provide the input
+    // Start the span and provide the input
     const span = await client.spans.startSpan({
-        name: "Translate Manual",
+        name: "node-sdk/tracing/span",
         input: JSON.stringify({ some: "input given to", to: "the span" }),
-        parent_uuid: outerSpan.uuid,
+        parent_uuid: trace.uuid,
     });
 
-    // capture time call some function and capture response
+    // Capture time call some function and capture response
     const t0 = new Date();
     const response = await sleepAndReturn(1000, "Hello, world!");
     const t1 = new Date();
 
-    // save the generation under the current span
+    // Save the generation under the current span
     await client.spans.saveGeneration(span.uuid, {
         called_at: t0,
         duration_ms: t1.getTime() - t0.getTime(),
@@ -42,11 +42,18 @@ const sleepAndReturn = async (ms: number, returnValue: any) => {
         cost: 0.001,
     });
 
-    // end the span and provide the output
-    await client.spans.endSpan({
-        ...span,
-        output: JSON.stringify({ crip: "crap" }),
+    // A metric and/or comment can be saved to the span
+    await client.spans.saveMetric(span.uuid, {
+        dimension: "accuracy",
+        score: 1,
+        comment: "This is a comment",
     });
 
-    await client.spans.endSpan(outerSpan);
+    // End the span and provide the output
+    await client.spans.endSpan({
+        ...span,
+        output: JSON.stringify({ foo: "bar" }),
+    });
+
+    await client.traces.end({ ...trace, output: JSON.stringify({ foo: "bar" }) });
 })();

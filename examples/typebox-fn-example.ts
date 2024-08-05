@@ -27,7 +27,7 @@ const client = new Client();
 // returning a TranslationResultSchema
 const translate = fn(
     {
-        name: "test_sdk/typebox/translate",
+        name: "node-sdk/typebox/translate",
         instructions: "Translate the input text to the specified language",
     },
     TranslationInputSchema,
@@ -36,7 +36,7 @@ const translate = fn(
 
 const happify = fn(
     {
-        name: "test_sdk/typebox/happify",
+        name: "node-sdk/typebox/happify",
         instructions: "Make the input text happier!",
     },
     TranslationResultSchema,
@@ -45,17 +45,16 @@ const happify = fn(
 
 (async () => {
     const input = { text: "Hello, world!", language: "French" };
-    const span = await client.spans.startSpan({
-        name: "Translate - typebox",
+    const trace = await client.traces.start({
+        name: "node-sdk/typebox",
         input: JSON.stringify(input),
     });
 
     // Call translate and happify like any other function
-    const result = await translate(input, { parent_span_uuid: span.uuid });
+    const result = await translate(input, { parent_span_uuid: trace.uuid });
     console.log(result);
-    const happified = await happify(result, { parent_span_uuid: span.uuid });
-
-    await client.spans.endSpan({ ...span, output: JSON.stringify(happified) });
-
+    const happified = await happify(result, { parent_span_uuid: trace.uuid });
     console.log(happified);
+
+    await client.traces.end({ ...trace, output: JSON.stringify(happified) });
 })();

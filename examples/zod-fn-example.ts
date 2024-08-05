@@ -27,7 +27,7 @@ const HappyTranslationResultSchema = z.object({
 // returning a TranslationResultSchema
 const translate = fn(
     {
-        name: "test_sdk/zod/translate",
+        name: "node-sdk/zod/translate",
 
         instructions: "Translate the input text to the specified language",
     },
@@ -37,7 +37,7 @@ const translate = fn(
 
 const happify = fn(
     {
-        name: "test_sdk/zod/happify",
+        name: "node-sdk/zod/happify",
 
         instructions: "Make the input text happier!",
     },
@@ -47,19 +47,16 @@ const happify = fn(
 
 (async () => {
     const input = { text: "Hello, world!", language: "French" };
-    const span = await client.spans.startSpan({
-        name: "Translate - zod",
+    const trace = await client.traces.start({
+        name: "node-sdk/zod",
         input: JSON.stringify(input),
     });
 
     // Call translate and happify like any other function
-    const result = await translate(input, { parent_span_uuid: span.uuid });
-
+    const result = await translate(input, { parent_span_uuid: trace.uuid });
     console.log(result);
-
-    const happified = await happify(result, { parent_span_uuid: span.uuid });
-
-    await client.spans.endSpan({ ...span, output: JSON.stringify(happified) });
-
+    const happified = await happify(result, { parent_span_uuid: trace.uuid });
     console.log(happified);
+
+    await client.traces.end({ ...trace, output: JSON.stringify(happified) });
 })();

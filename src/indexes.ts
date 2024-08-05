@@ -91,11 +91,11 @@ class Indexes extends APIResource {
         query: string,
         k: number,
         filters: Filter[] | null,
-        parentSpanUUID?: string | null
+        parent_span_uuid?: string | null
     ): Promise<Document[]> {
         const response = await this.doPost(
             this.calcURLQueryIndex(index.uuid),
-            JSON.stringify({ q: query, k: k, filters: filters, parent_span_uuid: parentSpanUUID })
+            JSON.stringify({ q: query, k: k, filters: filters, parent_span_uuid })
         );
 
         const documents: Document[] = await response.json();

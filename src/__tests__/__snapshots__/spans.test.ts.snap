@@ -4,7 +4,7 @@ exports[`Spans endSpan should call fetch with correct parameters to update the s
 {
   "end_time": 2020-04-01T00:00:00.000Z,
   "name": "test-span",
-  "parent_uuid": undefined,
+  "parent_uuid": "parent-uuid",
   "start_time": 2020-04-01T00:00:00.000Z,
   "uuid": "span-uuid",
 }
@@ -38,6 +38,7 @@ exports[`Spans startSpan should call fetch with correct parameters and resolve w
 {
   "input": "",
   "name": "test-span",
+  "parent_uuid": "parent-uuid",
   "start_time": 2020-04-01T00:00:00.000Z,
   "uuid": "span-uuid",
 }
