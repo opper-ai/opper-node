@@ -56,5 +56,5 @@ const happify = fn(
     const happified = await happify(result, { parent_span_uuid: trace.uuid });
     console.log(happified);
 
-    await client.traces.end({ ...trace, output: JSON.stringify(happified) });
+    await trace.end({ ...trace, output: JSON.stringify(happified) });
 })();

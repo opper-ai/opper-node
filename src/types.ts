@@ -154,19 +154,6 @@ export interface CacheConfig {
     semantic_cache_tll: number;
 }
 
-export type OpperTrace = {
-    uuid: string;
-    name: string;
-    input: string;
-    output?: string;
-    start_time?: Date;
-    end_time?: Date;
-    error?: string;
-    meta?: Record<string, unknown>;
-    evaluations?: Record<string, unknown>;
-    score?: number;
-};
-
 export type Span = {
     uuid: string;
     name?: string;

@@ -13,13 +13,13 @@ const sleepAndReturn = async (ms: number, returnValue: any) => {
 (async () => {
     // Start parent trace
     const trace = await client.traces.start({
-        name: "node-sdk/tracing/trace",
+        name: "node-sdk/tracing-manual",
         input: JSON.stringify({ some: "input given to", to: "the trace" }),
     });
 
     // Start the span and provide the input
     const span = await trace.startSpan({
-        name: "node-sdk/tracing/span",
+        name: "node-sdk/tracing-manual/span",
         input: JSON.stringify({ some: "input given to", to: "the span" }),
     });
 
