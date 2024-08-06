@@ -340,10 +340,6 @@ class APIResource {
     protected calcURLDatasets(datasetUuid: string): string {
         return `${this._client.baseURL}/v1/datasets/${datasetUuid}`;
     }
-
-    protected nanoId = () => {
-        return crypto.randomUUID();
-    };
 }
 
 export default APIResource;
