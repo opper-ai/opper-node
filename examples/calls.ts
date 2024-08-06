@@ -13,6 +13,7 @@ const client = new Client();
     });
 
     const { message, span_id } = await client.call({
+        name: "node-sdk/call/basic",
         input: "what is the capital of sweden",
         parent_span_uuid: trace.uuid,
     });

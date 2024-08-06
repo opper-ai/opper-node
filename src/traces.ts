@@ -32,7 +32,7 @@ interface SpanEndOptions {
     end_time?: Date;
 }
 
-class Trace {
+export class Trace {
     public uuid: string;
     protected _client: Client;
 
@@ -130,7 +130,7 @@ class Trace {
     }
 }
 
-class Span extends Trace {
+export class Span extends Trace {
     /**
      * Saves a metric and or a comment for the span to be displayed in the Opper UI.
      */
@@ -151,9 +151,11 @@ class Span extends Trace {
     /**
      * Saves a manual generation for the span.
      */
-    public async saveGeneration(generation: Generation): Promise<{ uuid: string }> {
+    public async saveGeneration({ called_at = new Date(), ...generation }: Generation): Promise<{
+        uuid: string;
+    }> {
         const url = this.calcURLSpanById(`/generation`);
-        const body = JSON.stringify(generation);
+        const body = JSON.stringify({ called_at, ...generation });
 
         const response = await this.doPost(url, body);
 

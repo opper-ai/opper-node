@@ -184,7 +184,7 @@ export type SpanMetric = {
 };
 
 export type Generation = {
-    called_at: Date;
+    called_at?: Date;
     duration_ms: number;
     model?: string;
     response?: string;

@@ -137,7 +137,10 @@ class Spans extends APIResource {
      * @returns A promise that resolves to the UUID of the span generation was saved for.
      * @throws {APIError} If the response status is not 200.
      */
-    public async saveGeneration(uuid: string, generation: Generation): Promise<string> {
+    public async saveGeneration(
+        uuid: string,
+        generation: Omit<Generation, "called_at"> & { called_at: Date }
+    ): Promise<string> {
         const url = this.calcURLSpanById(`${uuid}/generation`);
         const body = JSON.stringify(generation);
         const response = await this.doPost(url, body);
