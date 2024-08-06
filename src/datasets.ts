@@ -24,7 +24,11 @@ class Datasets extends APIResource {
      * @returns A promise that resolves to an array of DatasetEntry objects.
      * @throws {APIError} If the response status is not 200.
      */
-    public async getEntries(datasetUuid: string, offset: number = 0, limit: number = 100): Promise<DatasetEntry[]> {
+    public async getEntries(
+        datasetUuid: string,
+        offset: number = 0,
+        limit: number = 100
+    ): Promise<DatasetEntry[]> {
         const url = `${this.calcURLDatasets(datasetUuid)}/entries?offset=${offset}&limit=${limit}`;
         const response = await this.doGet(url);
         const entries: DatasetEntry[] = await response.json();
@@ -53,7 +57,11 @@ class Datasets extends APIResource {
      * @returns A promise that resolves to the updated DatasetEntry object.
      * @throws {APIError} If the response status is not 200.
      */
-    public async updateEntry(datasetUuid: string, entryUuid: string, updatedEntry: Partial<DatasetEntry>): Promise<DatasetEntry> {
+    public async updateEntry(
+        datasetUuid: string,
+        entryUuid: string,
+        updatedEntry: Partial<DatasetEntry>
+    ): Promise<DatasetEntry> {
         const url = `${this.calcURLDatasets(datasetUuid)}/entries/${entryUuid}`;
         const response = await this.doPut(url, JSON.stringify(updatedEntry));
         const entry: DatasetEntry = await response.json();
@@ -73,8 +81,6 @@ class Datasets extends APIResource {
         const result: boolean = await response.json();
         return result;
     }
-
-
 }
 
 export default Datasets;

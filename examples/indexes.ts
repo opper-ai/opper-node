@@ -48,6 +48,7 @@ const client = new Client();
             id: "6",
         },
     ];
+
     // Add each ticket to the index. Add status to metadata so we can filter by it later.
     for (const ticket of tickets) {
         const doc = {

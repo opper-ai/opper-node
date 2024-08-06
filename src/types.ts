@@ -59,15 +59,15 @@ export type IndexFileData = {
     original_filename: string;
     size: number;
     index_status:
-    | "init"
-    | "pending"
-    | "uploading"
-    | "indexing"
-    | "success"
-    | "indexed"
-    | "error"
-    | "failed"
-    | "invalid";
+        | "init"
+        | "pending"
+        | "uploading"
+        | "indexing"
+        | "success"
+        | "indexed"
+        | "error"
+        | "failed"
+        | "invalid";
     n_vectors: number;
 };
 
@@ -92,6 +92,47 @@ export type Document = {
     content: string;
     metadata: Record<string, unknown>;
 };
+
+export type BaseOpperCall = {
+    /**
+     * The input to the function.
+     */
+    input: string;
+    /**
+     * Description of the function for reference in the Opper UI.
+     * Will default to the instructions if not provided.
+     */
+    description?: string;
+    /**
+     * The instructions for the call sent to the model to be used as part of the prompt.
+     */
+    instructions?: string;
+    /**
+     * The model to use to generate the output.
+     * See: https://docs.opper.ai/functions/models
+     */
+    model?: string;
+    input_schema?: Record<string, unknown>;
+    output_schema?: Record<string, unknown>;
+    parent_span_uuid?: string;
+};
+
+export type OpperCall =
+    // Basic call
+    | (BaseOpperCall & {
+          name?: string;
+          few_shot?: never;
+          few_shot_count?: never;
+          cache_config?: never;
+      })
+    // Adavanced named function call
+    | (BaseOpperCall & {
+          name: string;
+          few_shot?: boolean;
+          few_shot_count?: number;
+          cache_config?: CacheConfig;
+      });
+
 export type AIFunction = {
     uuid?: string;
     path: string;
@@ -128,13 +169,22 @@ export type Span = {
 };
 
 export type SpanMetric = {
-    dimension?: string; // E.g. "accuracy", "faithfulness", "fluency"
-    score?: number; // Assuming the score is between 0 and 1 as per Python's ge=0 and le=1
+    /**
+     * Dimension of the metric. E.g. "accuracy", "faithfulness", "fluency"
+     */
+    dimension?: string;
+    /**
+     * Score of the metric. E.g. 0.95
+     */
+    score?: number;
+    /**
+     * Comment of the metric. E.g. "The answer is correct"
+     */
     comment?: string;
 };
 
 export type Generation = {
-    called_at: Date;
+    called_at?: Date;
     duration_ms: number;
     model?: string;
     response?: string;
@@ -142,7 +192,8 @@ export type Generation = {
     completion_tokens?: number;
     total_tokens?: number;
     error?: string;
-    messages?: Array<Record<string, any>>;
+
+    messages?: Message[];
     cost?: number;
 };
 
@@ -165,4 +216,3 @@ export type DatasetEntry = {
     created_at?: Date;
     updated_at?: Date;
 };
-

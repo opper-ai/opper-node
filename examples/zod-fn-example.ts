@@ -1,7 +1,12 @@
-// Run example with "npx ts-node ./examples/tracing.ts"
+// Run example with "npx ts-node ./examples/zod-fn-example.ts"
 import "dotenv/config";
 import { z } from "zod";
-import Client, { fn } from "../src"; // import Client, { Span, fn } from "opperai";
+
+import Client from "../src";
+import fn from "./zod-fn-decorator";
+
+// Your API key will be loaded from the environment variable OPPER_API_KEY if not provided
+const client = new Client();
 
 // Define the input and output schemas with zod.
 const TranslationResultSchema = z.object({
@@ -18,16 +23,13 @@ const HappyTranslationResultSchema = z.object({
     text: z.string(),
 });
 
-// Your API key will be loaded from the environment variable OPPER_API_KEY if not provided
-const client = new Client();
-
 // Define the function using the fn decorator. This will create an opper function
 // returning a TranslationResultSchema
 const translate = fn(
     {
-        path: "test_sdk/translate",
-        model: "anthropic/claude-3-haiku",
-        description: "Translate the input text to the specified language",
+        name: "node-sdk/zod/translate",
+
+        instructions: "Translate the input text to the specified language",
     },
     TranslationInputSchema,
     TranslationResultSchema
@@ -35,9 +37,9 @@ const translate = fn(
 
 const happify = fn(
     {
-        path: "test_sdk/happify",
-        model: "anthropic/claude-3-haiku",
-        description: "Make the input text happier!",
+        name: "node-sdk/zod/happify",
+
+        instructions: "Make the input text happier!",
     },
     TranslationResultSchema,
     HappyTranslationResultSchema
@@ -45,17 +47,16 @@ const happify = fn(
 
 (async () => {
     const input = { text: "Hello, world!", language: "French" };
-    const span = await client.spans.startSpan({
-        name: "Translate",
+    const trace = await client.traces.start({
+        name: "node-sdk/zod",
         input: JSON.stringify(input),
     });
 
     // Call translate and happify like any other function
-    const result = await translate(input);
+    const result = await translate(input, { parent_span_uuid: trace.uuid });
     console.log(result);
-    const happified = await happify(result);
-
-    await client.spans.endSpan({ ...span, output: JSON.stringify(happified) });
-
+    const happified = await happify(result, { parent_span_uuid: trace.uuid });
     console.log(happified);
+
+    await trace.end({ ...trace, output: JSON.stringify(happified) });
 })();

@@ -1,12 +1,13 @@
-import { Options } from "./types";
+import { OpperAIChatResponse, OpperCall, Options } from "./types";
+
+import { djb2 } from "./utils";
+import { OpperError } from "./errors";
 
 import Datasets from "./datasets";
-import { OpperError } from "./errors";
-import fn from "./fn";
 import Functions from "./functions";
 import Indexes from "./indexes";
 import Spans from "./spans";
-import { Span, SpanMetric } from "./types";
+import Traces from "./traces";
 
 class Client {
     public baseURL: string;
@@ -39,6 +40,7 @@ class Client {
     indexes = new Indexes(this);
     spans = new Spans(this);
     datasets = new Datasets(this);
+    traces = new Traces(this);
 
     calcAuthorizationHeaders = () => {
         const isUsingAuthorization = this.isUsingAuthorization;
@@ -59,7 +61,32 @@ class Client {
             typeof navigator !== "undefined"
         );
     };
+
+    call = async ({
+        name,
+        input,
+        description,
+        instructions = "default",
+        output_schema,
+        parent_span_uuid,
+        ...rest
+    }: OpperCall): Promise<OpperAIChatResponse> => {
+        const path = name ? name : djb2(instructions);
+
+        await this.functions.create({
+            path: path,
+            instructions: instructions,
+            description: description || instructions,
+            out_schema: output_schema,
+            ...rest,
+        });
+
+        return await this.functions.chat({
+            path: path,
+            message: JSON.stringify(input),
+            parent_span_uuid,
+        });
+    };
 }
 
 export default Client;
-export { Span, SpanMetric, fn };
