@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "Typescript SDK for the Opper API",
   "main": "dist/index.js",
-  "types": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsup",
     "check:lint": "eslint 'src/**/*.ts'",
@@ -14,6 +15,16 @@
     "publish-patch": "npm run check && npm run build && npm version patch",
     "publish-minor": "npm run check && npm run build && npm version minor",
     "publish-major": "npm run check && npm run build && npm version major"
+  },
+  "exports": {
+    ".": {
+      "require": "./dist/index.js",
+      "import": "./dist/index.mjs",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "engines": {
+    "node": ">=18"
   },
   "keywords": [
     "opper",
