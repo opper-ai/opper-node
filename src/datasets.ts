@@ -11,7 +11,7 @@ class Datasets extends APIResource {
      */
     public async add(datasetUuid: string, entry: DatasetEntry): Promise<string> {
         const url = this.calcURLDatasets(datasetUuid);
-        const response = await this.doPost(url, JSON.stringify(entry));
+        const response = await this.doPost(url, entry);
         const data: string = await response.json();
         return data;
     }
@@ -63,7 +63,7 @@ class Datasets extends APIResource {
         updatedEntry: Partial<DatasetEntry>
     ): Promise<DatasetEntry> {
         const url = `${this.calcURLDatasets(datasetUuid)}/entries/${entryUuid}`;
-        const response = await this.doPut(url, JSON.stringify(updatedEntry));
+        const response = await this.doPut(url, updatedEntry);
         const entry: DatasetEntry = await response.json();
         return entry;
     }

@@ -67,7 +67,7 @@ class Client {
         input,
         description,
         instructions = "default",
-        output_schema,
+        // output_schema,
         parent_span_uuid,
         ...rest
     }: OpperCall): Promise<OpperAIChatResponse> => {
@@ -77,13 +77,13 @@ class Client {
             path: path,
             instructions: instructions,
             description: description || instructions,
-            out_schema: output_schema,
+            // out_schema: output_schema,
             ...rest,
         });
 
         return await this.functions.chat({
             path: path,
-            message: JSON.stringify(input),
+            message: input,
             parent_span_uuid,
         });
     };

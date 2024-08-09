@@ -2,7 +2,7 @@ import type Client from "./index";
 
 import { Generation, SpanMetric } from "./types";
 import { OpperError } from "./errors";
-import { nanoId } from "./utils";
+import { nanoId, stringify } from "./utils";
 
 import APIResource from "./api-resource";
 
@@ -14,7 +14,7 @@ interface SpanStartOptions {
     /**
      * The starting input of the span.
      */
-    input?: string;
+    input: unknown;
     /**
      * The start time of the span. Defaults to the current date.
      */
@@ -25,7 +25,7 @@ interface SpanEndOptions {
     /**
      * The ending output of the span to be displayed in the Opper UI.
      */
-    output: string;
+    output: unknown;
     /**
      * The end time of the span. Defaults to the current date.
      */
@@ -46,23 +46,20 @@ export class Trace {
      */
     public async startSpan({
         name = "mising_name",
-        input = "",
+        input,
         start_time = new Date(),
     }: SpanStartOptions) {
         const uuid = nanoId();
         const parent_uuid = this.uuid;
         const url = this.calcURLSpans();
 
-        const response = await this.doPost(
-            url,
-            JSON.stringify({
-                name,
-                input,
-                start_time,
-                uuid,
-                parent_uuid,
-            })
-        );
+        const response = await this.doPost(url, {
+            name,
+            input: stringify(input),
+            start_time,
+            uuid,
+            parent_uuid,
+        });
 
         if (response.ok) {
             const data = await response.json();
@@ -79,16 +76,14 @@ export class Trace {
         const uuid = this.uuid;
         const url = this.calcURLSpanById();
 
-        const span = {
+        const response = await this.doPut(url, {
             uuid,
-            output,
+            output: stringify(output),
             end_time,
-        };
-
-        const response = await this.doPut(url, JSON.stringify(span));
+        });
 
         if (response.ok) {
-            return { ...span };
+            return { uuid };
         }
 
         throw new OpperError(`Failed to end trace: ${response.statusText}`);
@@ -103,7 +98,7 @@ export class Trace {
         return `${this.calcURLSpans()}/${uuid}${path}`;
     };
 
-    protected async doPut(url: string, body: string) {
+    protected async doPut(url: string, body: unknown) {
         const headers = this._client.calcAuthorizationHeaders();
 
         return await fetch(url, {
@@ -112,11 +107,11 @@ export class Trace {
                 "Content-Type": "application/json",
                 ...headers,
             },
-            body: body,
+            body: stringify(body),
         });
     }
 
-    protected async doPost(url: string, body?: string) {
+    protected async doPost(url: string, body: unknown) {
         const headers = this._client.calcAuthorizationHeaders();
 
         return await fetch(url, {
@@ -125,7 +120,7 @@ export class Trace {
                 "Content-Type": "application/json",
                 ...headers,
             },
-            body: body ?? undefined,
+            body: stringify(body),
         });
     }
 }
@@ -136,9 +131,8 @@ export class Span extends Trace {
      */
     public async saveMetric(metric: SpanMetric): Promise<{ uuid: string }> {
         const url = this.calcURLSpanById(`/metrics`);
-        const body = JSON.stringify(metric);
 
-        const response = await this.doPost(url, body);
+        const response = await this.doPost(url, metric);
 
         if (response.ok) {
             const data = await response.json();
@@ -155,9 +149,8 @@ export class Span extends Trace {
         uuid: string;
     }> {
         const url = this.calcURLSpanById(`/generation`);
-        const body = JSON.stringify({ called_at, ...generation });
 
-        const response = await this.doPost(url, body);
+        const response = await this.doPost(url, { called_at, ...generation });
 
         if (response.ok) {
             const data = await response.json();
@@ -173,7 +166,7 @@ export class Span extends Trace {
     public async saveExample(): Promise<{ uuid: string }> {
         const url = this.calcURLSpanById(`/save_examples`);
 
-        const response = await this.doPost(url);
+        const response = await this.doPost(url, {});
 
         if (response.ok) {
             const data = await response.json();
@@ -188,22 +181,15 @@ class Traces extends APIResource {
     /**
      * Starts a new trace.
      */
-    public async start({
-        name = "mising_name",
-        input = "",
-        start_time = new Date(),
-    }: SpanStartOptions) {
+    public async start({ name = "mising_name", input, start_time = new Date() }: SpanStartOptions) {
         const url = this.calcURLSpans();
 
-        const response = await this.doPost(
-            url,
-            JSON.stringify({
-                name,
-                input,
-                start_time,
-                uuid: nanoId(),
-            })
-        );
+        const response = await this.doPost(url, {
+            name,
+            input: stringify(input),
+            start_time,
+            uuid: nanoId(),
+        });
 
         if (response.ok) {
             const data = await response.json();

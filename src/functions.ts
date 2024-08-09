@@ -1,7 +1,7 @@
-import { AIFunction, Chat, OpperAIChatResponse, OpperAIStream } from "./types";
+import { OpperFunction, Chat, OpperAIChatResponse, OpperAIStream } from "./types";
 
 import APIResource from "./api-resource";
-import { APIError, OpperError } from "./errors";
+import { OpperError } from "./errors";
 
 class Functions extends APIResource {
     /**
@@ -29,18 +29,17 @@ class Functions extends APIResource {
      * @throws {APIError} If the response status is not 200.
      * @throws {OpperError} If the function id is not provided.
      */
-    public async update(f: AIFunction): Promise<AIFunction> {
-        if (!f.uuid) {
+    public async update(fn: OpperFunction): Promise<OpperFunction> {
+        if (!fn.uuid) {
             throw new OpperError("Function uuid is required");
         }
-        const response = await this.doPost(this.calcURLUpdateFunction(f.uuid), JSON.stringify(f));
-        if (response.status !== 200) {
-            const responseData = await response.json();
-            throw new OpperError(
-                `Failed to update function: ${response.statusText}, ${responseData}`
-            );
+        const response = await this.doPost(this.calcURLUpdateFunction(fn.uuid), fn);
+
+        if (response.ok) {
+            return fn;
         }
-        return f;
+
+        throw new OpperError(`Failed to update function: ${response.statusText}`);
     }
 
     /**
@@ -48,35 +47,15 @@ class Functions extends APIResource {
      * @param f - The function to be created.
      * @param update - Whether to update the function if it already exists.
      * @returns A promise that resolves to the created function.
-     * @throws {APIError} If the response status is not 200.
      * @throws {OpperError} If the function already exists and update is false.
      */
-    public async create(f: AIFunction, update: boolean = false): Promise<AIFunction> {
-        try {
-            const response = await this.doGet(this.calcURLGetFunctionByPath(f.path));
-            const responseData = (await response.json()) as AIFunction;
+    public async create(fn: OpperFunction): Promise<OpperFunction> {
+        const response = await this.doPost(this.calcURLCreateFunction(), fn);
 
-            if (response.status === 200) {
-                if (!update) {
-                    throw new OpperError(`Function with path ${f.path} already exists`);
-                }
-                f.uuid = responseData.uuid;
-                return await this.update(f);
-            }
-        } catch (error) {
-            if (error instanceof APIError) {
-                if (error.status !== 404) {
-                    throw error;
-                }
-            }
-        }
-
-        const response = await this.doPost(this.calcURLCreateFunction(), JSON.stringify(f));
-
-        if (response.status === 200) {
+        if (response.ok) {
             const data = await response.json();
-            f.uuid = data.uuid;
-            return f;
+
+            return { ...fn, uuid: data.uuid };
         }
 
         throw new OpperError(`Failed to create function: ${response.statusText}`);

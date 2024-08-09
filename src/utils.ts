@@ -11,3 +11,20 @@ export function djb2(str: string) {
 export const nanoId = () => {
     return crypto.randomUUID();
 };
+
+export const stringify = (value: unknown): string => {
+    if (value === null) {
+        return "null";
+    }
+    if (value === undefined) {
+        return "undefined";
+    }
+    if (typeof value === "object" || Array.isArray(value)) {
+        try {
+            return JSON.stringify(value);
+        } catch (error) {
+            return "[Circular]";
+        }
+    }
+    return String(value);
+};

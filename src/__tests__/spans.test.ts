@@ -125,7 +125,7 @@ describe("Spans", () => {
                 {
                     method: "POST",
                     headers: expect.any(Object),
-                    body: undefined,
+                    body: "{}",
                 }
             );
             expect(exampleId).toEqual("example-uuid");

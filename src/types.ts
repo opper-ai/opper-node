@@ -133,7 +133,7 @@ export type OpperCall =
           cache_config?: CacheConfig;
       });
 
-export type AIFunction = {
+export type OpperFunction = {
     uuid?: string;
     path: string;
     description: string;

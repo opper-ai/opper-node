@@ -2,7 +2,7 @@ import { Span, SpanMetric, Generation } from "./types";
 
 import APIResource from "./api-resource";
 import { OpperError } from "./errors";
-import { nanoId } from "./utils";
+import { nanoId, stringify } from "./utils";
 
 class Spans extends APIResource {
     /**
@@ -28,7 +28,7 @@ class Spans extends APIResource {
             uuid,
         };
 
-        const response = await this.doPost(url, JSON.stringify(span));
+        const response = await this.doPost(url, span);
 
         if (response.ok) {
             const data = await response.json();
@@ -54,7 +54,7 @@ class Spans extends APIResource {
             parent_uuid,
         };
 
-        const response = await this.doPut(url, JSON.stringify(span));
+        const response = await this.doPut(url, span);
 
         if (response.ok) {
             return { ...span };
@@ -93,13 +93,12 @@ class Spans extends APIResource {
      */
     public async saveMetric(uuid: string, metric: SpanMetric): Promise<string> {
         const url = this.calcURLSpanById(`${uuid}/metrics`);
-        const body = JSON.stringify(metric);
 
-        const response = await this.doPost(url, body);
+        const response = await this.doPost(url, metric);
         if (response.status !== 200) {
             const responseData = await response.json();
             throw new OpperError(
-                `Failed to add metric for span: ${response.statusText}, ${JSON.stringify(responseData)}`
+                `Failed to add metric for span: ${response.statusText}, ${stringify(responseData)}`
             );
         }
 
@@ -117,11 +116,11 @@ class Spans extends APIResource {
     public async saveExample(uuid: string): Promise<string> {
         const url = this.calcURLSpanById(`${uuid}/save_examples`);
 
-        const response = await this.doPost(url, undefined);
+        const response = await this.doPost(url, {});
         if (response.status !== 200) {
             const responseData = await response.json();
             throw new OpperError(
-                `Failed to save examples for span: ${response.statusText}, ${JSON.stringify(responseData)}`
+                `Failed to save examples for span: ${response.statusText}, ${stringify(responseData)}`
             );
         }
 
@@ -142,12 +141,12 @@ class Spans extends APIResource {
         generation: Omit<Generation, "called_at"> & { called_at: Date }
     ): Promise<string> {
         const url = this.calcURLSpanById(`${uuid}/generation`);
-        const body = JSON.stringify(generation);
-        const response = await this.doPost(url, body);
+        const response = await this.doPost(url, generation);
+
         if (response.status !== 200) {
             const responseData = await response.json();
             throw new OpperError(
-                `Failed to save generation for span: ${response.statusText}, ${JSON.stringify(responseData)}`
+                `Failed to save generation for span: ${response.statusText}, ${stringify(responseData)}`
             );
         }
         const data = await response.json();

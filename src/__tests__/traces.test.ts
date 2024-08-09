@@ -22,7 +22,7 @@ describe("Traces", () => {
             };
             global.fetch = jest.fn().mockResolvedValue(mockResponse);
 
-            const trace = await traces.start({ name: "Test Trace" });
+            const trace = await traces.start({ name: "Test Trace", input: "string input" });
 
             expect(trace).toBeInstanceOf(Object);
             expect(trace).toHaveProperty("uuid", "test-uuid");
@@ -35,25 +35,10 @@ describe("Traces", () => {
             };
             global.fetch = jest.fn().mockResolvedValue(mockResponse);
 
-            await expect(traces.start({ name: "Test Trace" })).rejects.toThrow(
+            await expect(
+                traces.start({ name: "Test Trace", input: "string input" })
+            ).rejects.toThrow(
                 "OpperAIClient: Failed to send request to https://api.opper.ai/v1/spans: Bad Request"
-            );
-        });
-
-        it("should use default values if not provided", async () => {
-            const mockResponse = {
-                ok: true,
-                json: jest.fn().mockResolvedValue({ uuid: "test-uuid" }),
-            };
-            global.fetch = jest.fn().mockResolvedValue(mockResponse);
-
-            await traces.start({});
-
-            expect(fetch).toHaveBeenCalledWith(
-                expect.any(String),
-                expect.objectContaining({
-                    body: expect.stringContaining('"name":"mising_name"'),
-                })
             );
         });
     });
@@ -66,8 +51,8 @@ describe("Traces", () => {
             };
             global.fetch = jest.fn().mockResolvedValue(mockResponse);
 
-            trace = await traces.start({ name: "Test Trace" });
-            span = await trace.startSpan({ name: "Test Span" });
+            trace = await traces.start({ name: "Test Trace", input: "string input" });
+            span = await trace.startSpan({ name: "Test Span", input: "string input" });
 
             expect(span).toBeInstanceOf(Object);
             expect(span).toHaveProperty("uuid", "test-uuid");

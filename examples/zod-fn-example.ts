@@ -49,7 +49,7 @@ const happify = fn(
     const input = { text: "Hello, world!", language: "French" };
     const trace = await client.traces.start({
         name: "node-sdk/zod",
-        input: JSON.stringify(input),
+        input,
     });
 
     // Call translate and happify like any other function
@@ -58,5 +58,5 @@ const happify = fn(
     const happified = await happify(result, { parent_span_uuid: trace.uuid });
     console.log(happified);
 
-    await trace.end({ ...trace, output: JSON.stringify(happified) });
+    await trace.end({ ...trace, output: happified });
 })();
