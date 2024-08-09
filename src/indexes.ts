@@ -43,7 +43,7 @@ class Indexes extends APIResource {
      * @throws {APIError} If the response status is not 200.
      */
     public async create(name: string): Promise<Index> {
-        const response = await this.doPost(this.calcURLIndexes(), JSON.stringify({ name: name }));
+        const response = await this.doPost(this.calcURLIndexes(), { name: name });
 
         const data = await response.json();
 
@@ -74,7 +74,7 @@ class Indexes extends APIResource {
      * ```
      */
     public async add(index: Index, document: Document): Promise<void> {
-        await this.doPost(this.calcURLAddIndex(index.uuid), JSON.stringify(document));
+        await this.doPost(this.calcURLAddIndex(index.uuid), document);
     }
 
     /**
@@ -93,10 +93,12 @@ class Indexes extends APIResource {
         filters: Filter[] | null,
         parent_span_uuid?: string | null
     ): Promise<Document[]> {
-        const response = await this.doPost(
-            this.calcURLQueryIndex(index.uuid),
-            JSON.stringify({ q: query, k: k, filters: filters, parent_span_uuid })
-        );
+        const response = await this.doPost(this.calcURLQueryIndex(index.uuid), {
+            q: query,
+            k: k,
+            filters: filters,
+            parent_span_uuid,
+        });
 
         const documents: Document[] = await response.json();
 

@@ -5,6 +5,12 @@ import Client from "../src";
 const client = new Client();
 
 (async () => {
+    const query = "Issue with my account";
+    const trace = await client.traces.start({
+        name: "node-sdk/indexes",
+        input: query,
+    });
+
     let index = await client.indexes.get("support-tickets");
     if (!index) {
         index = await client.indexes.create("support-tickets");
@@ -60,19 +66,25 @@ const client = new Client();
         await client.indexes.add(index, doc);
     }
 
-    const query = "Issue with my account";
-    const results = await client.indexes.retrieve(index, query, 1, null);
+    const results = await client.indexes.retrieve(index, query, 1, null, trace.uuid);
 
     console.log(results[0].content);
     // 'Issue with my account I cannot log in to my account'
     console.log(results[0].metadata);
     // { status: 'open', id: '1' }
 
-    const open_results = await client.indexes.retrieve(index, query, 1, [
-        { key: "status", operation: "=", value: "open" },
-    ]);
+    const open_results = await client.indexes.retrieve(
+        index,
+        query,
+        1,
+        [{ key: "status", operation: "=", value: "open" }],
+        trace.uuid
+    );
 
     console.log(open_results[0].content);
 
     // 'Issue with my account I cannot log in to my account'
+    await trace.end({
+        output: open_results,
+    });
 })();

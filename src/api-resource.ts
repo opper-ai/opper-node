@@ -1,6 +1,7 @@
 import { Message, SSEStreamCallbacks } from "./types";
 
 import { APIError, OpperError } from "./errors";
+import { stringify } from "./utils";
 import type Client from "./index";
 
 class APIResource {
@@ -18,7 +19,7 @@ class APIResource {
      * @param body - The body of the POST request.
      * @returns An async generator that yields the values of the response body.
      */
-    protected urlStreamIterator(url: string, body: string) {
+    protected urlStreamIterator(url: string, body: unknown) {
         const headers = this._client.calcAuthorizationHeaders();
 
         return (async function* () {
@@ -28,7 +29,7 @@ class APIResource {
                     "Content-Type": "application/json",
                     ...headers,
                 },
-                body: body,
+                body: stringify(body),
             });
 
             if (response.body) {
@@ -130,7 +131,7 @@ class APIResource {
      */
     protected async doPost(
         url: string,
-        body?: string,
+        body: unknown,
         controller?: AbortController | null | undefined
     ) {
         const headers = this._client.calcAuthorizationHeaders();
@@ -141,7 +142,7 @@ class APIResource {
                 "Content-Type": "application/json",
                 ...headers,
             },
-            body: body ?? undefined,
+            body: stringify(body),
             signal: controller?.signal,
         });
 
@@ -167,7 +168,7 @@ class APIResource {
      */
     protected async doPut(
         url: string,
-        body: string,
+        body: unknown,
         controller?: AbortController | null | undefined
     ) {
         const headers = this._client.calcAuthorizationHeaders();
@@ -178,7 +179,7 @@ class APIResource {
                 "Content-Type": "application/json",
                 ...headers,
             },
-            body: body,
+            body: stringify(body),
             signal: controller?.signal,
         });
 
@@ -249,10 +250,10 @@ class APIResource {
     }
 
     protected calcChatPayload(messages: string | Message[], parent_span_uuid?: string) {
-        return JSON.stringify({
+        return {
             messages: this.calcMessagesForPost(messages),
             parent_span_uuid: parent_span_uuid,
-        });
+        };
     }
 
     protected calcMessagesForPost(messages: string | Message[]) {
@@ -300,7 +301,7 @@ class APIResource {
 
     // Format post body
     protected stringifyMessage(messages: Message[]) {
-        return JSON.stringify({ messages });
+        return stringify({ messages });
     }
 
     protected calcURLChat = (path: string) => {
