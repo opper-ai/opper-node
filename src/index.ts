@@ -67,6 +67,7 @@ class Client {
         input,
         description,
         instructions = "default",
+        examples,
         // output_schema,
         parent_span_uuid,
         ...rest
@@ -84,6 +85,7 @@ class Client {
         return await this.functions.chat({
             path: path,
             message: input,
+            examples: examples,
             parent_span_uuid,
         });
     };

@@ -55,8 +55,29 @@ const client = new Client();
             },
         },
     });
-
     console.log("JSON response: ", json_payload);
+
+    const { message: weekday } = await client.call({
+        parent_span_uuid: trace.uuid,
+        name: "node-sdk/call/weekday-with-examples",
+        instructions: "extract the weekday mentioned in the text",
+        examples: [
+            {
+                input: "Today is Monday",
+                output: "Monday",
+            },
+            {
+                input: "Friday is the best day of the week",
+                output: "Friday",
+            },
+            {
+                input: "Saturday is the second best day of the week",
+                output: "Saturday",
+            },
+        ],
+        input: "Wonder what day it is on Sunday",
+    });
+    console.log("Weekday: ", weekday);
 
     await trace.end({
         output: "example output",
