@@ -13,7 +13,12 @@ class Functions extends APIResource {
      * @throws {APIError} If the response status is not 200.
      * @throws {OpperError} If the response has an error.
      */
-    public async chat({ path, message, parent_span_uuid, examples }: Chat): Promise<OpperAIChatResponse> {
+    public async chat({
+        path,
+        message,
+        parent_span_uuid,
+        examples,
+    }: Chat): Promise<OpperAIChatResponse> {
         const url = this.calcURLChat(path);
         const body = this.calcChatPayload(message, parent_span_uuid, examples);
 

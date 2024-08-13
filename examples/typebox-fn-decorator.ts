@@ -64,7 +64,7 @@ export default function fn<T extends TSchema, I extends TSchema>(
             instructions,
             model,
             input_schema: inputSchema,
-            output_schema: outputSchema,
+            out_schema: outputSchema,
             parent_span_uuid: options?.parent_span_uuid,
         });
 

@@ -120,7 +120,7 @@ export type BaseOpperCall = {
      */
     model?: string;
     input_schema?: Record<string, unknown>;
-    output_schema?: Record<string, unknown>;
+    out_schema?: Record<string, unknown>;
     parent_span_uuid?: string;
     /**
      * Examples to use as part of the prompt to guide the model.
@@ -155,7 +155,7 @@ export type OpperFunction = {
     few_shot_count?: number;
     cache_config?: CacheConfig;
     input_schema?: Record<string, unknown>;
-    output_schema?: Record<string, unknown>;
+    out_schema?: Record<string, unknown>;
     dataset_uuid?: string;
 };
 

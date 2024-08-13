@@ -36,7 +36,7 @@ const client = new Client();
         name: "node-sdk/call/weather",
         instructions: "Extract temperature, location and wind speed.",
         input: "In London its cloudy skies early, followed by partial clearing. Cooler. High 13C. Winds ENE at 15 to 20 km/h.",
-        output_schema: {
+        out_schema: {
             $schema: "https://json-schema.org/draft/2020-12/schema",
             type: "object",
             properties: {

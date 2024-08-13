@@ -68,7 +68,6 @@ class Client {
         description,
         instructions = "default",
         examples,
-        // output_schema,
         parent_span_uuid,
         ...rest
     }: OpperCall): Promise<OpperAIChatResponse> => {
@@ -78,7 +77,6 @@ class Client {
             path: path,
             instructions: instructions,
             description: description || instructions,
-            // out_schema: output_schema,
             ...rest,
         });
 

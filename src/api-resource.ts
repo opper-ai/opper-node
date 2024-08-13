@@ -249,7 +249,11 @@ class APIResource {
         return response;
     }
 
-    protected calcChatPayload(messages: string | Message[], parent_span_uuid?: string, examples?: OpperExample[]) {
+    protected calcChatPayload(
+        messages: string | Message[],
+        parent_span_uuid?: string,
+        examples?: OpperExample[]
+    ) {
         return {
             messages: this.calcMessagesForPost(messages),
             parent_span_uuid: parent_span_uuid,
