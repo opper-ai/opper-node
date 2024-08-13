@@ -67,7 +67,7 @@ export default function fn<
             instructions,
             model,
             input_schema: zodToJsonSchema(inputSchema),
-            output_schema: zodToJsonSchema(outputSchema),
+            out_schema: zodToJsonSchema(outputSchema),
             parent_span_uuid: options?.parent_span_uuid,
         });
 

@@ -28,6 +28,7 @@ export interface Chat {
     parent_span_uuid?: string;
     path: string;
     message: string | Message[];
+    examples?: OpperExample[];
 }
 
 export interface SSEStreamCallbacks {
@@ -93,6 +94,12 @@ export type Document = {
     metadata: Record<string, unknown>;
 };
 
+export type OpperExample = {
+    input: string;
+    output: string;
+    comment?: string;
+};
+
 export type BaseOpperCall = {
     /**
      * The input to the function.
@@ -113,8 +120,12 @@ export type BaseOpperCall = {
      */
     model?: string;
     input_schema?: Record<string, unknown>;
-    output_schema?: Record<string, unknown>;
+    out_schema?: Record<string, unknown>;
     parent_span_uuid?: string;
+    /**
+     * Examples to use as part of the prompt to guide the model.
+     */
+    examples?: OpperExample[];
 };
 
 export type OpperCall =
