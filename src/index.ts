@@ -83,7 +83,7 @@ class Client {
         return await this.functions.chat({
             path: path,
             message: input,
-            examples: examples,
+            examples,
             parent_span_uuid,
         });
     };

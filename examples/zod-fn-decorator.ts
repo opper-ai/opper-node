@@ -3,11 +3,19 @@ import { zodToJsonSchema } from "zod-to-json-schema";
 
 import Client from "../src";
 
-interface OpperOptions {
+interface OpperOptions<
+    InputSchema extends z.ZodType<unknown, ZodTypeDef>,
+    OutputSchema extends z.ZodType<unknown, ZodTypeDef>,
+> {
     name: string;
     description?: string;
     instructions: string;
     model?: string;
+    examples?: {
+        input: z.infer<InputSchema>;
+        output: z.infer<OutputSchema>;
+        comment?: string;
+    }[];
 }
 
 /**
@@ -47,19 +55,22 @@ interface OpperOptions {
  * ```
  */
 export default function fn<
-    T extends z.ZodType<unknown, ZodTypeDef>,
-    I extends z.ZodType<unknown, ZodTypeDef>,
+    InputSchema extends z.ZodType<unknown, ZodTypeDef>,
+    OutputSchema extends z.ZodType<unknown, ZodTypeDef>,
 >(
-    { name, description, instructions, model }: OpperOptions,
-    inputSchema: I,
-    outputSchema: T
-): (input: z.infer<I>, options?: { parent_span_uuid?: string }) => Promise<z.infer<T>> {
+    { name, description, instructions, model, examples }: OpperOptions<InputSchema, OutputSchema>,
+    inputSchema: InputSchema,
+    outputSchema: OutputSchema
+): (
+    input: z.infer<InputSchema>,
+    options?: { parent_span_uuid?: string }
+) => Promise<z.infer<OutputSchema>> {
     const client = new Client();
 
     return async function (
-        input: z.infer<I>,
+        input: z.infer<InputSchema>,
         options?: { parent_span_uuid?: string }
-    ): Promise<z.infer<T>> {
+    ): Promise<z.infer<OutputSchema>> {
         const res = await client.call({
             name,
             input: JSON.stringify(input),
@@ -69,6 +80,7 @@ export default function fn<
             input_schema: zodToJsonSchema(inputSchema),
             out_schema: zodToJsonSchema(outputSchema),
             parent_span_uuid: options?.parent_span_uuid,
+            examples,
         });
 
         return outputSchema.parse(res.json_payload);

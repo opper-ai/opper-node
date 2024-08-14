@@ -257,7 +257,11 @@ class APIResource {
         return {
             messages: this.calcMessagesForPost(messages),
             parent_span_uuid: parent_span_uuid,
-            examples: examples,
+            examples: examples?.map(({ input, output, comment }) => ({
+                input: stringify(input) ?? undefined,
+                output: stringify(output) ?? undefined,
+                comment,
+            })),
         };
     }
 

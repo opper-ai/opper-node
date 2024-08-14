@@ -28,8 +28,13 @@ const HappyTranslationResultSchema = z.object({
 const translate = fn(
     {
         name: "node-sdk/zod/translate",
-
         instructions: "Translate the input text to the specified language",
+        examples: [
+            {
+                input: { text: "Hello, world!", language: "French" },
+                output: { translation: "Bonjour le monde!", sentiment: "positive" },
+            },
+        ],
     },
     TranslationInputSchema,
     TranslationResultSchema
@@ -38,7 +43,6 @@ const translate = fn(
 const happify = fn(
     {
         name: "node-sdk/zod/happify",
-
         instructions: "Make the input text happier!",
     },
     TranslationResultSchema,

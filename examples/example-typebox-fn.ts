@@ -29,6 +29,12 @@ const translate = fn(
     {
         name: "node-sdk/typebox/translate",
         instructions: "Translate the input text to the specified language",
+        examples: [
+            {
+                input: { text: "Hello, world!", language: "French" },
+                output: { translation: "Bonjour le monde!", sentiment: "positive" },
+            },
+        ],
     },
     TranslationInputSchema,
     TranslationResultSchema

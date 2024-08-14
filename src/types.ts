@@ -95,8 +95,8 @@ export type Document = {
 };
 
 export type OpperExample = {
-    input: string;
-    output: string;
+    input: unknown;
+    output: unknown;
     comment?: string;
 };
 
