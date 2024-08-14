@@ -12,19 +12,13 @@ export const nanoId = () => {
     return crypto.randomUUID();
 };
 
-export const stringify = (value: unknown): string => {
-    if (value === null) {
-        return "null";
+export const stringify = (value: unknown): string | undefined => {
+    if (value === undefined) return undefined;
+    if (value === null) return "null";
+
+    try {
+        return JSON.stringify(value);
+    } catch {
+        return typeof value === "object" ? "[Circular]" : String(value);
     }
-    if (value === undefined) {
-        return "undefined";
-    }
-    if (typeof value === "object" || Array.isArray(value)) {
-        try {
-            return JSON.stringify(value);
-        } catch (error) {
-            return "[Circular]";
-        }
-    }
-    return String(value);
 };

@@ -3,11 +3,16 @@ import { Value } from "@sinclair/typebox/value";
 
 import Client from "../src";
 
-interface OpperOptions {
+interface OpperOptions<InputSchema extends TSchema, OutputSchema extends TSchema> {
     name: string;
     description?: string;
     instructions: string;
     model?: string;
+    examples?: {
+        input: Static<InputSchema>;
+        output: Static<OutputSchema>;
+        comment?: string;
+    }[];
 }
 
 /**
@@ -46,17 +51,20 @@ interface OpperOptions {
  * // Output: { translation: 'Bonjour, le monde!', sentiment: 'Positive' }
  * ```
  */
-export default function fn<T extends TSchema, I extends TSchema>(
-    { description, instructions, model, name }: OpperOptions,
-    inputSchema: I,
-    outputSchema: T
-): (input: Static<I>, options?: { parent_span_uuid?: string }) => Promise<Static<T>> {
+export default function fn<OutputSchema extends TSchema, InputSchema extends TSchema>(
+    { description, instructions, model, name, examples }: OpperOptions<InputSchema, OutputSchema>,
+    inputSchema: InputSchema,
+    outputSchema: OutputSchema
+): (
+    input: Static<InputSchema>,
+    options?: { parent_span_uuid?: string }
+) => Promise<Static<OutputSchema>> {
     const client = new Client();
 
     return async function (
-        input: Static<I>,
+        input: Static<InputSchema>,
         options?: { parent_span_uuid?: string }
-    ): Promise<Static<T>> {
+    ): Promise<Static<OutputSchema>> {
         const res = await client.call({
             name,
             input: JSON.stringify(input),
@@ -66,6 +74,7 @@ export default function fn<T extends TSchema, I extends TSchema>(
             input_schema: inputSchema,
             out_schema: outputSchema,
             parent_span_uuid: options?.parent_span_uuid,
+            examples,
         });
 
         const validationResult = Value.Check(outputSchema, res.json_payload);
