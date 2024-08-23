@@ -39,11 +39,15 @@ class Indexes extends APIResource {
     /**
      * Creates an index in the OpperAI API.
      * @param name The name of the index to create.
+     * @param embedding_model Optional. The embedding model to use for the index.
      * @returns A promise that resolves to the created index.
      * @throws {APIError} If the response status is not 200.
      */
-    public async create(name: string): Promise<Index> {
-        const response = await this.doPost(this.calcURLIndexes(), { name: name });
+    public async create(name: string, embedding_model?: string): Promise<Index> {
+        const response = await this.doPost(this.calcURLIndexes(), {
+            name,
+            ...(embedding_model && { embedding_model })
+        });
 
         const data = await response.json();
 
