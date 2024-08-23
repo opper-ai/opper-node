@@ -44,12 +44,10 @@ class Indexes extends APIResource {
      * @throws {APIError} If the response status is not 200.
      */
     public async create(name: string, embedding_model?: string): Promise<Index> {
-        const payload: { name: string; embedding_model?: string } = { name };
-        if (embedding_model) {
-            payload.embedding_model = embedding_model;
-        }
-
-        const response = await this.doPost(this.calcURLIndexes(), payload);
+        const response = await this.doPost(this.calcURLIndexes(), {
+            name,
+            ...(embedding_model && { embedding_model })
+        });
 
         const data = await response.json();
 
