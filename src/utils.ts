@@ -1,3 +1,5 @@
+import crypto from "node:crypto";
+
 export const nanoId = () => {
     return crypto.randomUUID();
 };
