@@ -53,37 +53,46 @@ const client = new Client();
                     type: "number",
                 },
             },
+            required: ["temperature", "location", "wind_speed"],
         },
     });
     console.log("JSON response: ", json_payload);
 
-    const { message: weekday } = await client.call({
+    const { json_payload: weekday } = await client.call({
         parent_span_uuid: trace.uuid,
         name: "node-sdk/call/weekday-with-examples",
-        instructions: "extract the weekday mentioned in the text",
         examples: [
             {
                 input: "Today is Monday",
-                output: "Monday",
+                output: { day: "Monday" },
             },
             {
                 input: "Friday is the best day of the week",
-                output: "Friday",
+                output: { day: "Friday" },
             },
             {
                 input: "Saturday is the second best day of the week",
-                output: "Saturday",
+                output: { day: "Saturday" },
             },
         ],
         input: "Wonder what day it is on Sunday",
+        output_schema: {
+            $schema: "https://json-schema.org/draft/2020-12/schema",
+            type: "object",
+            properties: {
+                day: {
+                    type: "string",
+                    description: "The day of the week mentioned in the text",
+                },
+            },
+            required: ["day"],
+        },
     });
-    console.log("Weekday: ", weekday);
+    console.log("JSON response with examples: ", weekday);
 
-    const { message: strawberry } = await client.call({
+    const { json_payload: strawberry } = await client.call({
         parent_span_uuid: trace.uuid,
         name: "node-sdk/call/character-count-fewshot",
-        instructions:
-            "Carefully count the numbers of times the letter `r` exists in the supplied word",
         examples: [
             {
                 input: "runner",
@@ -97,8 +106,26 @@ const client = new Client();
             },
         ],
         input: "Strawberry",
+        output_schema: {
+            $schema: "https://json-schema.org/draft/2020-12/schema",
+            type: "object",
+            properties: {
+                thoughts: {
+                    type: "string",
+                },
+                reflection: {
+                    type: "string",
+                },
+                count: {
+                    type: "number",
+                    description:
+                        "Carefully count the numbers of times the letter `r` exists in the supplied word",
+                },
+            },
+            required: ["thoughts", "reflection", "count"],
+        },
     });
-    console.log("Strawberry: ", strawberry);
+    console.log("JSON response with thoughts and reflection: ", strawberry);
 
     await trace.end({
         output: "example output",
