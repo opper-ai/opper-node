@@ -1,4 +1,4 @@
-// Run example with "npx ts-node ./examples/zod-fn-example.ts"
+// Run example with "npx ts-node ./examples/example-zod-fn.ts"
 import "dotenv/config";
 import { z } from "zod";
 
