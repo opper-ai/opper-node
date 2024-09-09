@@ -43,7 +43,6 @@ interface OpperOptions<
  * // Create an asynchronous function using the fn factory.
  * const translateAndAnalyze = fn({
  *   name: 'translate-and-analyze',
- *   description: 'Translate text and analyze sentiment.',
  *   instructions: 'Translate the given text to French and analyze its sentiment.',
  *   model: 'azure/gpt-4o-eu',
  * }, InputSchema, OutputSchema);
@@ -58,7 +57,7 @@ export default function fn<
     InputSchema extends z.ZodType<unknown, ZodTypeDef>,
     OutputSchema extends z.ZodType<unknown, ZodTypeDef>,
 >(
-    { name, description, instructions, model, examples }: OpperOptions<InputSchema, OutputSchema>,
+    { name, instructions, model, examples }: OpperOptions<InputSchema, OutputSchema>,
     inputSchema: InputSchema,
     outputSchema: OutputSchema
 ): (
@@ -74,11 +73,10 @@ export default function fn<
         const res = await client.call({
             name,
             input: JSON.stringify(input),
-            description: description || instructions,
             instructions,
             model,
             input_schema: zodToJsonSchema(inputSchema),
-            out_schema: zodToJsonSchema(outputSchema),
+            output_schema: zodToJsonSchema(outputSchema),
             parent_span_uuid: options?.parent_span_uuid,
             examples,
         });

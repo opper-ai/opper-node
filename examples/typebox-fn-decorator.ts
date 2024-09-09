@@ -40,7 +40,6 @@ interface OpperOptions<InputSchema extends TSchema, OutputSchema extends TSchema
  * // Create an asynchronous function using the fn factory.
  * const translateAndAnalyze = fn({
  *    name: 'translate-and-analyze',
- *    description: 'Translate text and analyze sentiment.',
  *    instructions: 'Translate the given text to French and analyze its sentiment.',
  *    model: 'azure/gpt-4o-eu',
  * }, InputSchema, OutputSchema);
@@ -52,7 +51,7 @@ interface OpperOptions<InputSchema extends TSchema, OutputSchema extends TSchema
  * ```
  */
 export default function fn<OutputSchema extends TSchema, InputSchema extends TSchema>(
-    { description, instructions, model, name, examples }: OpperOptions<InputSchema, OutputSchema>,
+    { instructions, model, name, examples }: OpperOptions<InputSchema, OutputSchema>,
     inputSchema: InputSchema,
     outputSchema: OutputSchema
 ): (
@@ -68,11 +67,10 @@ export default function fn<OutputSchema extends TSchema, InputSchema extends TSc
         const res = await client.call({
             name,
             input: JSON.stringify(input),
-            description: description || instructions,
             instructions,
             model,
             input_schema: inputSchema,
-            out_schema: outputSchema,
+            output_schema: outputSchema,
             parent_span_uuid: options?.parent_span_uuid,
             examples,
         });

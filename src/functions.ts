@@ -1,4 +1,4 @@
-import { OpperFunction, Chat, OpperAIChatResponse, OpperAIStream } from "./types";
+import { OpperFunction, OpperCall, OpperAIChatResponse, Chat, OpperAIStream } from "./types";
 
 import APIResource from "./api-resource";
 import { OpperError } from "./errors";
@@ -50,7 +50,6 @@ class Functions extends APIResource {
     /**
      * Creates a function in the OpperAI API.
      * @param f - The function to be created.
-     * @param update - Whether to update the function if it already exists.
      * @returns A promise that resolves to the created function.
      * @throws {OpperError} If the function already exists and update is false.
      */
@@ -64,6 +63,28 @@ class Functions extends APIResource {
         }
 
         throw new OpperError(`Failed to create function: ${response.statusText}`);
+    }
+
+    /**
+     * Creates a function in the OpperAI API.
+     * @param f - The function to be created.
+     * @returns A promise that resolves to the created function.
+     * @throws {OpperError} If the function already exists and update is false.
+     */
+    public async call(fn: OpperCall): Promise<OpperAIChatResponse> {
+        const response = await this.doPost(this.calcURLCall(), {
+            ...fn,
+            input_type: fn?.input_schema,
+            output_type: fn?.output_schema,
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+
+            return data;
+        }
+
+        throw new OpperError(`Failed to call function: ${response.statusText}`);
     }
 
     /**

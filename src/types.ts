@@ -100,49 +100,62 @@ export type OpperExample = {
     comment?: string;
 };
 
-export type BaseOpperCall = {
+export type OpperCall = {
+    /**
+     * The name of the function to be used in the Opper UI.
+     */
+    name: string;
+
     /**
      * The input to the function.
      */
     input: string;
-    /**
-     * Description of the function for reference in the Opper UI.
-     * Will default to the instructions if not provided.
-     */
-    description?: string;
+
     /**
      * The instructions for the call sent to the model to be used as part of the prompt.
      */
     instructions?: string;
+
     /**
      * The model to use to generate the output.
      * See: https://docs.opper.ai/functions/models
      */
     model?: string;
+
+    /**
+     * The input schema for the function.
+     */
     input_schema?: Record<string, unknown>;
-    out_schema?: Record<string, unknown>;
+
+    /**
+     * The output schema for the function.
+     */
+    output_schema?: Record<string, unknown>;
+
+    /**
+     * This is used to attach to an existing span.
+     * If not provided, a new span will be created and displayed in the Opper UI.
+     */
     parent_span_uuid?: string;
+
     /**
      * Examples to use as part of the prompt to guide the model.
      */
     examples?: OpperExample[];
-};
 
-export type OpperCall =
-    // Basic call
-    | (BaseOpperCall & {
-          name?: string;
-          few_shot?: never;
-          few_shot_count?: never;
-          cache_config?: never;
-      })
-    // Adavanced named function call
-    | (BaseOpperCall & {
-          name: string;
-          few_shot?: boolean;
-          few_shot_count?: number;
-          cache_config?: CacheConfig;
-      });
+    /**
+     * Whether to stream the response from the function.
+     */
+    stream?: boolean;
+
+    configuration?: {
+        invocation?: {
+            few_shot?: {
+                count?: number;
+            };
+        };
+    };
+};
 
 export type OpperFunction = {
     uuid?: string;
