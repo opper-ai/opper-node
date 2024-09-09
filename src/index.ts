@@ -1,6 +1,5 @@
 import { OpperAIChatResponse, OpperCall, Options } from "./types";
 
-import { djb2 } from "./utils";
 import { OpperError } from "./errors";
 
 import Datasets from "./datasets";
@@ -62,30 +61,8 @@ class Client {
         );
     };
 
-    call = async ({
-        name,
-        input,
-        description,
-        instructions = "default",
-        examples,
-        parent_span_uuid,
-        ...rest
-    }: OpperCall): Promise<OpperAIChatResponse> => {
-        const path = name ? name : djb2(instructions);
-
-        await this.functions.create({
-            path: path,
-            instructions: instructions,
-            description: description || instructions,
-            ...rest,
-        });
-
-        return await this.functions.chat({
-            path: path,
-            message: input,
-            examples,
-            parent_span_uuid,
-        });
+    call = async (fn: OpperCall): Promise<OpperAIChatResponse> => {
+        return await this.functions.call(fn);
     };
 }
 

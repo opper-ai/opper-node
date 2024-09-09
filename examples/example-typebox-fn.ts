@@ -1,4 +1,4 @@
-// Run example with "npx ts-node ./examples/typebox-fn-example.ts"
+// Run example with "npx ts-node ./examples/example-typebox-fn.ts"
 import "dotenv/config";
 import { Type } from "@sinclair/typebox";
 

@@ -46,7 +46,7 @@ class Indexes extends APIResource {
     public async create(name: string, embedding_model?: string): Promise<Index> {
         const response = await this.doPost(this.calcURLIndexes(), {
             name,
-            ...(embedding_model && { embedding_model })
+            ...(embedding_model && { embedding_model }),
         });
 
         const data = await response.json();
@@ -109,4 +109,5 @@ class Indexes extends APIResource {
         return documents;
     }
 }
+
 export default Indexes;

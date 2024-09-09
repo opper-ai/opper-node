@@ -1,4 +1,4 @@
-// Run example with "npx ts-node ./examples/indexes.ts"
+// Run example with "npx ts-node ./examples/example-indexes.ts"
 import "dotenv/config";
 import Client from "../src";
 

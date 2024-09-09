@@ -1,4 +1,4 @@
-// Run example with "npx ts-node ./examples/calls.ts"
+// Run example with "npx ts-node ./examples/example-calls.ts"
 import "dotenv/config";
 
 import Client from "../src";
@@ -36,7 +36,7 @@ const client = new Client();
         name: "node-sdk/call/weather",
         instructions: "Extract temperature, location and wind speed.",
         input: "In London its cloudy skies early, followed by partial clearing. Cooler. High 13C. Winds ENE at 15 to 20 km/h.",
-        out_schema: {
+        output_schema: {
             $schema: "https://json-schema.org/draft/2020-12/schema",
             type: "object",
             properties: {
@@ -78,6 +78,27 @@ const client = new Client();
         input: "Wonder what day it is on Sunday",
     });
     console.log("Weekday: ", weekday);
+
+    const { message: strawberry } = await client.call({
+        parent_span_uuid: trace.uuid,
+        name: "node-sdk/call/character-count-fewshot",
+        instructions:
+            "Carefully count the numbers of times the letter `r` exists in the supplied word",
+        examples: [
+            {
+                input: "runner",
+                output: {
+                    thoughts:
+                        "I need to count the number of times the character r exists in the word runner. I will go through each character: r, yes. u, no. n, no. n, no. e, no. r, yes. There are 2 occurences of the letter r in runner.",
+                    reflection:
+                        "I seem to have made no mistake. In the breakdown I can see that there are two occurences of the letter r",
+                    count: 2,
+                },
+            },
+        ],
+        input: "Strawberry",
+    });
+    console.log("Strawberry: ", strawberry);
 
     await trace.end({
         output: "example output",
