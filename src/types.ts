@@ -109,7 +109,7 @@ export type OpperCall = {
     /**
      * The input to the function.
      */
-    input: string;
+    input: string | Record<string, unknown>;
 
     /**
      * The instructions for the call sent to the model to be used as part of the prompt.
