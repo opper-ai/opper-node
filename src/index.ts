@@ -1,4 +1,4 @@
-import { OpperAIChatResponse, OpperCall, Options } from "./types";
+import { OpperAIChatResponse, OpperCall, OpperGenerateImage, OpperAIImageResponse, Options } from "./types";
 
 import { OpperError } from "./errors";
 
@@ -63,6 +63,10 @@ class Client {
 
     call = async (fn: OpperCall): Promise<OpperAIChatResponse> => {
         return await this.functions.call(fn);
+    };
+
+    generateImage = async (args: OpperGenerateImage): Promise<OpperAIImageResponse> => {
+        return await this.functions.generateImage(args);
     };
 }
 

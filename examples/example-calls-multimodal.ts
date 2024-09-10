@@ -26,6 +26,23 @@ const client = new Client();
     });
     console.log("description: ", message);
 
+
+    const cat = await client.generateImage({
+        parent_span_uuid: trace.uuid,
+        prompt: "Create an image of a cat",
+    });
+    const fs = require('fs');
+    const path = require('path');
+    const os = require('os');
+
+    // Create a temporary file path
+    const tempFilePath = path.join(os.tmpdir(), 'generated_cat_image.png');
+
+    // Write the image bytes to the temporary file
+    fs.writeFileSync(tempFilePath, cat.bytes);
+
+    console.log(`image written to temporary file: ${tempFilePath}`);
+
     await trace.end({
         output: message,
     });

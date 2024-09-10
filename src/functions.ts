@@ -1,4 +1,4 @@
-import { OpperFunction, OpperCall, OpperAIChatResponse, Chat, OpperAIStream } from "./types";
+import { OpperFunction, OpperCall, OpperAIChatResponse, OpperGenerateImage, OpperAIImageResponse, Chat, OpperAIStream } from "./types";
 
 import APIResource from "./api-resource";
 import { OpperError } from "./errors";
@@ -85,6 +85,22 @@ class Functions extends APIResource {
         }
 
         throw new OpperError(`Failed to call function: ${response.statusText}`);
+    }
+    
+    public async generateImage(args: OpperGenerateImage): Promise<OpperAIImageResponse> {
+        const response = await this.doPost(this.calcURLGenerateImage(), { ...args, model: "azure/dall-e-3-eu", format: "b64_json" });
+        
+        if (response.ok) {
+            const data = await response.json();
+            const base64Image = data.result.base64_image;
+            const imageBytes = Buffer.from(base64Image, 'base64');
+
+            return {
+                bytes: imageBytes
+            };
+        }
+
+        throw new OpperError(`Failed to generate image: ${response.statusText}`);
     }
 
     /**

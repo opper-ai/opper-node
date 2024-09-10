@@ -55,6 +55,10 @@ export interface OpperAIChatResponse {
     cached?: boolean;
 }
 
+export interface OpperAIImageResponse {
+    bytes: Uint8Array;
+}
+
 export type IndexFileData = {
     uuid: string;
     original_filename: string;
@@ -99,6 +103,13 @@ export type OpperExample = {
     output: unknown;
     comment?: string;
 };
+
+export type OpperGenerateImage = {
+    prompt: string;
+    image_size?: string;
+    quality?: string;
+    parent_span_uuid?: string;
+}
 
 export type OpperCall = {
     /**
