@@ -1,5 +1,5 @@
 import type Client from "./index";
-import { OpperIndexDocument, OpperIndexFilter, OpperIndex } from "./types";
+import { OpperIndexDocument, OpperIndexQuery, OpperIndex } from "./types";
 
 import { OpperError } from "./errors";
 import APIResource from "./api-resource";
@@ -16,15 +16,20 @@ export class Index extends APIResource {
 
     /**
      * Adds a document to an index.
-     * @param index The index to add the document to.
      * @param document The document to add to the index.
      * @throws {APIError} If the response status is not 200.
      *
      * @example
      * ```ts
      * const index = await client.indexes.create('support-tickets');
-     * const document = { title: 'My first support ticket', content: 'This is my first support ticket.' };
-     * await index.add(document);
+     * await index.add({
+     *      title: 'My first support ticket',
+     *      content: 'This is my first support ticket.',
+     *      metadata: {
+     *          priority: 'high',
+     *          tags: ['bug', 'urgent'],
+     *      }
+     * });
      * ```
      */
     public async add(document: OpperIndexDocument): Promise<void> {
@@ -35,8 +40,9 @@ export class Index extends APIResource {
      * Queries the most relevant documents from an index based on semantic similarity to a query.
      * @param query The query to retrieve documents for.
      * @param k The maximum number of documents to retrieve.
-     * @param filters The filters to apply to the documents in the index.
-     * @returns The most relevant documents from the index
+     * @param filters Optional. The filters to apply to the documents in the index.
+     * @param parent_span_uuid Optional. The parent span uuid to use for the request.
+     * @returns A promise that resolves to an array of OpperIndexDocument objects.
      * @throws {APIError} If the response status is not 200.
      *
      * @example
@@ -49,24 +55,7 @@ export class Index extends APIResource {
         k,
         filters,
         parent_span_uuid,
-    }: {
-        /**
-         * The query to retrieve documents for.
-         */
-        query: string;
-        /**
-         * The maximum number of documents to retrieve.
-         */
-        k: number;
-        /**
-         * The filters to apply to the documents in the index.
-         */
-        filters?: OpperIndexFilter[];
-        /**
-         * The parent span uuid to use for the request.
-         */
-        parent_span_uuid?: string;
-    }): Promise<OpperIndexDocument[]> {
+    }: OpperIndexQuery): Promise<OpperIndexDocument[]> {
         const response = await this.doPost(this.calcURLQueryIndex(this._index.uuid), {
             q: query,
             k: k,

@@ -98,6 +98,25 @@ export type OpperIndexDocument = {
     metadata: Record<string, unknown>;
 };
 
+export type OpperIndexQuery = {
+    /**
+     * The query to retrieve documents for.
+     */
+    query: string;
+    /**
+     * The maximum number of documents to retrieve.
+     */
+    k: number;
+    /**
+     * The filters to apply to the documents in the index.
+     */
+    filters?: OpperIndexFilter[];
+    /**
+     * The parent span uuid to use for the request.
+     */
+    parent_span_uuid?: string;
+};
+
 export type OpperExample = {
     input: unknown;
     output: unknown;
