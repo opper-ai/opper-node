@@ -56,7 +56,7 @@ class Client {
 
         return {
             [key]: value,
-            "User-Agent": `opper-node/${process.env.PACKAGE_VERSION}`,
+            "User-Agent": `opper-node/${process.env.PACKAGE_VERSION || "0.0.0"}`,
         };
     };
 

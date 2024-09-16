@@ -1,6 +1,7 @@
 import type Client from "./index";
 import { OpperIndexDocument, OpperIndexFilter, OpperIndex } from "./types";
 
+import { OpperError } from "./errors";
 import APIResource from "./api-resource";
 
 export class Index extends APIResource {
@@ -73,9 +74,12 @@ export class Index extends APIResource {
             parent_span_uuid,
         });
 
-        const documents: OpperIndexDocument[] = await response.json();
+        if (response.ok) {
+            const documents = await response.json();
+            return documents;
+        }
 
-        return documents;
+        throw new OpperError(`Failed to query index: ${response.statusText}`);
     }
 }
 
@@ -86,14 +90,17 @@ class Indexes extends APIResource {
      * @returns A promise that resolves to an array of OpperAIIndex objects.
      * @throws {APIError} If the response status is not 200.
      */
-    public async list() {
+    public async list(): Promise<OpperIndex[]> {
         const url = this.calcURLIndexes();
 
         const response = await this.doGet(url);
 
-        const indexes: OpperIndex[] = await response.json();
+        if (response.ok) {
+            const indexes = await response.json();
+            return indexes;
+        }
 
-        return indexes;
+        throw new OpperError(`Failed to list indexes: ${response.statusText}`);
     }
 
     /**

@@ -38,6 +38,7 @@ describe("OpperAIFunctions", () => {
                 method: "POST",
                 headers: {
                     "X-OPPER-API-KEY": mockApiKey,
+                    "User-Agent": "opper-node/0.0.0",
                     "Content-Type": "application/json",
                 },
                 body: expect.any(String),
@@ -107,6 +108,7 @@ describe("OpperAIFunctions", () => {
                 headers: {
                     "X-OPPER-API-KEY": mockApiKey,
                     "Content-Type": "application/json",
+                    "User-Agent": "opper-node/0.0.0",
                 },
                 body: expect.any(String),
                 signal: mockCallbacks.controller.signal,

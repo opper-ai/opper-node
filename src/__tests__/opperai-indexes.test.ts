@@ -55,6 +55,7 @@ describe("OpperAIIndexes", () => {
                 method: "GET",
                 headers: {
                     "X-OPPER-API-KEY": "test-api-key",
+                    "User-Agent": "opper-node/0.0.0",
                     "Content-Type": "application/json",
                 },
             });
