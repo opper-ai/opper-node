@@ -1,4 +1,4 @@
-import { Index } from "../types";
+import { OpperIndex } from "../types";
 
 import Client from "../index";
 import Indexes from "../indexes";
@@ -15,7 +15,7 @@ describe("OpperAIIndexes", () => {
     let opperAIIndexes: Indexes;
     const mockApiKey = "test-api-key";
 
-    const mockIndexes: Index[] = [
+    const mockIndexes: OpperIndex[] = [
         {
             uuid: "1",
             name: "Test Index 1",

@@ -1,4 +1,4 @@
-import { Document, Filter, Index } from "./types";
+import { OpperIndexDocument, OpperIndexFilter, OpperIndex } from "./types";
 
 import APIResource from "./api-resource";
 
@@ -14,7 +14,7 @@ class Indexes extends APIResource {
 
         const response = await this.doGet(url);
 
-        const indexes: Index[] = await response.json();
+        const indexes: OpperIndex[] = await response.json();
 
         return indexes;
     }
@@ -25,7 +25,7 @@ class Indexes extends APIResource {
      * @returns A promise that resolves to the index with the given name, or null if no index with the given name exists.
      * @throws {APIError} If the response status is not 200.
      */
-    public async get(name: string): Promise<Index | null> {
+    public async get(name: string): Promise<OpperIndex | null> {
         const list = await this.list();
 
         const index = list.find((index) => index.name === name);
@@ -43,7 +43,7 @@ class Indexes extends APIResource {
      * @returns A promise that resolves to the created index.
      * @throws {APIError} If the response status is not 200.
      */
-    public async create(name: string, embedding_model?: string): Promise<Index> {
+    public async create(name: string, embedding_model?: string): Promise<OpperIndex> {
         const response = await this.doPost(this.calcURLIndexes(), {
             name,
             ...(embedding_model && { embedding_model }),
@@ -77,7 +77,7 @@ class Indexes extends APIResource {
      * await client.indexes.add(index, document);
      * ```
      */
-    public async add(index: Index, document: Document): Promise<void> {
+    public async add(index: OpperIndex, document: OpperIndexDocument): Promise<void> {
         await this.doPost(this.calcURLAddIndex(index.uuid), document);
     }
 
@@ -91,12 +91,12 @@ class Indexes extends APIResource {
      * @throws {APIError} If the response status is not 200.
      */
     public async retrieve(
-        index: Index,
+        index: OpperIndex,
         query: string,
         k: number,
-        filters: Filter[] | null,
+        filters: OpperIndexFilter[] | null,
         parent_span_uuid?: string | null
-    ): Promise<Document[]> {
+    ): Promise<OpperIndexDocument[]> {
         const response = await this.doPost(this.calcURLQueryIndex(index.uuid), {
             q: query,
             k: k,
@@ -104,7 +104,7 @@ class Indexes extends APIResource {
             parent_span_uuid,
         });
 
-        const documents: Document[] = await response.json();
+        const documents: OpperIndexDocument[] = await response.json();
 
         return documents;
     }

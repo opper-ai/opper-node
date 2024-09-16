@@ -1,4 +1,12 @@
-import { OpperFunction, OpperCall, OpperAIChatResponse, OpperGenerateImage, OpperAIImageResponse, Chat, OpperAIStream } from "./types";
+import {
+    OpperFunction,
+    OpperCall,
+    OpperChatResponse,
+    OpperGenerateImage,
+    OpperImageResponse,
+    Chat,
+    OpperAIStream,
+} from "./types";
 
 import APIResource from "./api-resource";
 import { OpperError } from "./errors";
@@ -18,13 +26,13 @@ class Functions extends APIResource {
         message,
         parent_span_uuid,
         examples,
-    }: Chat): Promise<OpperAIChatResponse> {
+    }: Chat): Promise<OpperChatResponse> {
         const url = this.calcURLChat(path);
         const body = this.calcChatPayload(message, parent_span_uuid, examples);
 
         const response = await this.doPost(url, body);
 
-        return (await response.json()) as OpperAIChatResponse;
+        return (await response.json()) as OpperChatResponse;
     }
 
     /**
@@ -71,7 +79,7 @@ class Functions extends APIResource {
      * @returns A promise that resolves to the created function.
      * @throws {OpperError} If the function already exists and update is false.
      */
-    public async call(fn: OpperCall): Promise<OpperAIChatResponse> {
+    public async call(fn: OpperCall): Promise<OpperChatResponse> {
         const response = await this.doPost(this.calcURLCall(), {
             ...fn,
             input_type: fn?.input_schema,
@@ -86,17 +94,21 @@ class Functions extends APIResource {
 
         throw new OpperError(`Failed to call function: ${response.statusText}`);
     }
-    
-    public async generateImage(args: OpperGenerateImage): Promise<OpperAIImageResponse> {
-        const response = await this.doPost(this.calcURLGenerateImage(), { ...args, model: "azure/dall-e-3-eu", format: "b64_json" });
-        
+
+    public async generateImage(args: OpperGenerateImage): Promise<OpperImageResponse> {
+        const response = await this.doPost(this.calcURLGenerateImage(), {
+            ...args,
+            model: "azure/dall-e-3-eu",
+            format: "b64_json",
+        });
+
         if (response.ok) {
             const data = await response.json();
             const base64Image = data.result.base64_image;
-            const imageBytes = Buffer.from(base64Image, 'base64');
+            const imageBytes = Buffer.from(base64Image, "base64");
 
             return {
-                bytes: imageBytes
+                bytes: imageBytes,
             };
         }
 

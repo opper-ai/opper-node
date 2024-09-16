@@ -46,7 +46,7 @@ export interface OpperAIStream {
     callbacks: SSEStreamCallbacks;
 }
 
-export interface OpperAIChatResponse {
+export interface OpperChatResponse {
     span_id: string;
     message: string;
     json_payload?: Record<string, unknown>;
@@ -55,11 +55,11 @@ export interface OpperAIChatResponse {
     cached?: boolean;
 }
 
-export interface OpperAIImageResponse {
+export interface OpperImageResponse {
     bytes: Uint8Array;
 }
 
-export type IndexFileData = {
+export type OpperIndexFile = {
     uuid: string;
     original_filename: string;
     size: number;
@@ -76,22 +76,22 @@ export type IndexFileData = {
     n_vectors: number;
 };
 
-export type Index = {
+export type OpperIndex = {
     uuid: string;
     name: string;
     created_at: Date;
-    files: IndexFileData[];
+    files: OpperIndexFile[];
 };
 
-export type FilterOperation = "=" | "!=" | ">" | "<" | "in";
+export type OpperIndexFilterOperation = "=" | "!=" | ">" | "<" | "in";
 
-export interface Filter {
+export interface OpperIndexFilter {
     key: string;
-    operation: FilterOperation;
+    operation: OpperIndexFilterOperation;
     value: string | number | Array<string | number>;
 }
 
-export type Document = {
+export type OpperIndexDocument = {
     uuid?: string;
     key?: string; // a unique key that one can use if you want to update the document
     content: string;
@@ -109,7 +109,7 @@ export type OpperGenerateImage = {
     image_size?: string;
     quality?: string;
     parent_span_uuid?: string;
-}
+};
 
 export type OpperCall = {
     /**
