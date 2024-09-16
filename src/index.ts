@@ -1,4 +1,10 @@
-import { OpperAIChatResponse, OpperCall, Options } from "./types";
+import {
+    OpperChatResponse,
+    OpperCall,
+    OpperGenerateImage,
+    OpperImageResponse,
+    Options,
+} from "./types";
 
 import { OpperError } from "./errors";
 
@@ -61,9 +67,16 @@ class Client {
         );
     };
 
-    call = async (fn: OpperCall): Promise<OpperAIChatResponse> => {
+    call = async (fn: OpperCall): Promise<OpperChatResponse> => {
         return await this.functions.call(fn);
     };
+
+    generateImage = async (args: OpperGenerateImage): Promise<OpperImageResponse> => {
+        return await this.functions.generateImage(args);
+    };
 }
+
+// Types which are exported for use outside of the SDK
+export { OpperChatResponse, OpperImageResponse, OpperIndexDocument, OpperIndex } from "./types";
 
 export default Client;

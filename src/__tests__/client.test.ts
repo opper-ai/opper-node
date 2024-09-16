@@ -1,4 +1,4 @@
-import { Index, Options } from "../types";
+import { OpperIndex, Options } from "../types";
 
 import Client from "../index";
 
@@ -94,7 +94,7 @@ describe("OpperAIClient", () => {
         });
 
         it("should be able to list indexes", async () => {
-            const mockIndexes: Index[] = [
+            const mockIndexes: OpperIndex[] = [
                 {
                     uuid: "1",
                     name: "Test Index 1",

@@ -335,6 +335,9 @@ class APIResource {
     protected calcURLCall = () => {
         return `${this._client.baseURL}/v1/call`;
     };
+    protected calcURLGenerateImage = () => {
+        return `${this._client.baseURL}/v1/generate-image`;
+    };
     protected calcURLGetFunctionByPath = (path: string) => {
         return `${this._client.baseURL}/api/v1/functions/by_path/${path}`;
     };
