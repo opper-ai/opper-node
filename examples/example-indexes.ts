@@ -63,23 +63,26 @@ const client = new Client();
                 status: ticket.status,
             },
         };
-        await client.indexes.add(index, doc);
+        await index.add(doc);
     }
 
-    const results = await client.indexes.retrieve(index, query, 1, null, trace.uuid);
+    const results = await index.query({
+        query,
+        k: 1,
+        parent_span_uuid: trace.uuid,
+    });
 
     console.log(results[0].content);
     // 'Issue with my account I cannot log in to my account'
     console.log(results[0].metadata);
     // { status: 'open', id: '1' }
 
-    const open_results = await client.indexes.retrieve(
-        index,
+    const open_results = await index.query({
         query,
-        1,
-        [{ key: "status", operation: "=", value: "open" }],
-        trace.uuid
-    );
+        k: 1,
+        filters: [{ key: "status", operation: "=", value: "open" }],
+        parent_span_uuid: trace.uuid,
+    });
 
     console.log(open_results[0].content);
 

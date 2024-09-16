@@ -9,4 +9,7 @@ export default defineConfig({
     clean: true,
     target: ["node18", "es2020"], // Target Node.js 14+ and modern browsers
     outDir: "dist",
+    env: {
+        PACKAGE_VERSION: process.env.npm_package_version || "0.0.0",
+    },
 });

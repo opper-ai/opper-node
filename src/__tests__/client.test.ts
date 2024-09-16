@@ -125,7 +125,10 @@ describe("OpperAIClient", () => {
                 isUsingAuthorization: true,
             });
             const headers = client.calcAuthorizationHeaders();
-            expect(headers).toEqual({ Authorization: "Bearer test-api-key" });
+            expect(headers).toEqual({
+                Authorization: "Bearer test-api-key",
+                "User-Agent": "opper-node/0.0.0",
+            });
         });
 
         it("should return correct headers when not using authorization", () => {
@@ -134,7 +137,10 @@ describe("OpperAIClient", () => {
                 isUsingAuthorization: false,
             });
             const headers = client.calcAuthorizationHeaders();
-            expect(headers).toEqual({ "X-OPPER-API-KEY": "test-api-key" });
+            expect(headers).toEqual({
+                "X-OPPER-API-KEY": "test-api-key",
+                "User-Agent": "opper-node/0.0.0",
+            });
         });
     });
 });

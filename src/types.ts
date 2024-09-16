@@ -98,6 +98,25 @@ export type OpperIndexDocument = {
     metadata: Record<string, unknown>;
 };
 
+export type OpperIndexQuery = {
+    /**
+     * The query to retrieve documents for.
+     */
+    query: string;
+    /**
+     * The maximum number of documents to retrieve.
+     */
+    k: number;
+    /**
+     * The filters to apply to the documents in the index.
+     */
+    filters?: OpperIndexFilter[];
+    /**
+     * The parent span uuid to use for the request.
+     */
+    parent_span_uuid?: string;
+};
+
 export type OpperExample = {
     input: unknown;
     output: unknown;
@@ -124,6 +143,7 @@ export type OpperCall = {
 
     /**
      * The instructions for the call sent to the model to be used as part of the prompt.
+     * Defaults to "you are a helpful assistant".
      */
     instructions?: string;
 
@@ -150,7 +170,7 @@ export type OpperCall = {
     parent_span_uuid?: string;
 
     /**
-     * Examples to use as part of the prompt to guide the model.
+     * Manual examples to use as part of the prompt to guide the model.
      */
     examples?: OpperExample[];
 
@@ -159,9 +179,20 @@ export type OpperCall = {
      */
     stream?: boolean;
 
+    /**
+     * Configuration for the function.
+     */
     configuration?: {
         invocation?: {
+            /**
+             * Use few shot prompting (also know as In Context Learning) to enable Opper to automatically pull in
+             * semantically relevant examples that will guide the model.
+             * See: https://docs.opper.ai/datasets
+             */
             few_shot?: {
+                /**
+                 * The number of few shot examples to use.
+                 */
                 count?: number;
             };
         };
