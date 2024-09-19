@@ -1,11 +1,11 @@
-import Traces, { Span, Trace } from "../traces";
+import Traces, { OpperSpan, OpperTrace } from "../traces";
 import Client from "../index";
 
 describe("Traces", () => {
     let client: Client;
     let traces: Traces;
-    let trace: Trace;
-    let span: Span;
+    let trace: OpperTrace;
+    let span: OpperSpan;
 
     beforeEach(() => {
         client = new Client({ apiKey: "test-api-key" });

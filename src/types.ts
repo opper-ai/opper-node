@@ -282,3 +282,34 @@ export type DatasetEntry = {
     created_at?: Date;
     updated_at?: Date;
 };
+
+export interface SpanStartOptions {
+    /**
+     * The name of the span to be displayed in the Opper UI.
+     */
+    name?: string;
+    /**
+     * The starting input of the span.
+     */
+    input: unknown;
+    /**
+     * The start time of the span. Defaults to the current date.
+     */
+    start_time?: Date;
+
+    /**
+     * The metadata of the span to be displayed in the Opper UI.
+     */
+    metadata?: Record<string, unknown>;
+}
+
+export interface SpanEndOptions {
+    /**
+     * The ending output of the span to be displayed in the Opper UI.
+     */
+    output: unknown;
+    /**
+     * The end time of the span. Defaults to the current date.
+     */
+    end_time?: Date;
+}

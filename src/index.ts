@@ -12,7 +12,7 @@ import Datasets from "./datasets";
 import Functions from "./functions";
 import Indexes from "./indexes";
 import Spans from "./spans";
-import Traces from "./traces";
+import Traces, { OpperSpan, OpperTrace } from "./traces";
 
 class Client {
     public baseURL: string;
@@ -79,5 +79,7 @@ class Client {
 
 // Types which are exported for use outside of the SDK
 export { OpperChatResponse, OpperImageResponse, OpperIndexDocument, OpperIndex } from "./types";
+
+export { type OpperSpan, type OpperTrace };
 
 export default Client;
