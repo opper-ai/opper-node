@@ -1,38 +1,12 @@
 import type Client from "./index";
 
-import { Generation, SpanMetric } from "./types";
+import { Generation, SpanMetric, SpanStartOptions, SpanEndOptions } from "./types";
 import { OpperError } from "./errors";
 import { nanoId, stringify } from "./utils";
 
 import APIResource from "./api-resource";
 
-interface SpanStartOptions {
-    /**
-     * The name of the span to be displayed in the Opper UI.
-     */
-    name?: string;
-    /**
-     * The starting input of the span.
-     */
-    input: unknown;
-    /**
-     * The start time of the span. Defaults to the current date.
-     */
-    start_time?: Date;
-}
-
-interface SpanEndOptions {
-    /**
-     * The ending output of the span to be displayed in the Opper UI.
-     */
-    output: unknown;
-    /**
-     * The end time of the span. Defaults to the current date.
-     */
-    end_time?: Date;
-}
-
-export class Trace {
+export class OpperTrace {
     public uuid: string;
     protected _client: Client;
 
@@ -48,6 +22,7 @@ export class Trace {
         name = "mising_name",
         input,
         start_time = new Date(),
+        metadata,
     }: SpanStartOptions) {
         const uuid = nanoId();
         const parent_uuid = this.uuid;
@@ -59,11 +34,12 @@ export class Trace {
             start_time,
             uuid,
             parent_uuid,
+            metadata,
         });
 
         if (response.ok) {
             const data = await response.json();
-            return new Span({ uuid: data.uuid }, this._client);
+            return new OpperSpan({ uuid: data.uuid }, this._client);
         }
 
         throw new OpperError(`Failed to start span: ${response.statusText}`);
@@ -125,7 +101,7 @@ export class Trace {
     }
 }
 
-export class Span extends Trace {
+export class OpperSpan extends OpperTrace {
     /**
      * Saves a metric and or a comment for the span to be displayed in the Opper UI.
      */
@@ -181,7 +157,12 @@ class Traces extends APIResource {
     /**
      * Starts a new trace.
      */
-    public async start({ name = "mising_name", input, start_time = new Date() }: SpanStartOptions) {
+    public async start({
+        name = "mising_name",
+        input,
+        start_time = new Date(),
+        metadata,
+    }: SpanStartOptions) {
         const url = this.calcURLSpans();
 
         const response = await this.doPost(url, {
@@ -189,11 +170,12 @@ class Traces extends APIResource {
             input: stringify(input),
             start_time,
             uuid: nanoId(),
+            metadata,
         });
 
         if (response.ok) {
             const data = await response.json();
-            return new Trace({ uuid: data.uuid }, this._client);
+            return new OpperTrace({ uuid: data.uuid }, this._client);
         }
 
         throw new OpperError(`Failed to start trace: ${response.statusText}`);
