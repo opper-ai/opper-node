@@ -170,7 +170,7 @@ class Traces extends APIResource {
             input: stringify(input),
             start_time,
             uuid: nanoId(),
-            metadata,
+            ...(metadata && { meta: metadata }),
         });
 
         if (response.ok) {
