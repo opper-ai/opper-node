@@ -15,12 +15,14 @@ const sleepAndReturn = async (ms: number, returnValue: any) => {
     const trace = await client.traces.start({
         name: "node-sdk/tracing-manual",
         input: { some: "input given to", to: "the trace" },
+        metadata: { some: "metadata given to", to: "the trace" },
     });
 
     // Start the span and provide the input
     const span = await trace.startSpan({
         name: "node-sdk/tracing-manual/span",
         input: { some: "input given to", to: "the span" },
+        metadata: { some: "metadata given to", to: "the span" },
     });
 
     // Capture time call some function and capture response
