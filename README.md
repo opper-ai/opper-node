@@ -158,17 +158,62 @@ main();
 
 ## Indexes
 
-### Indexes List
+Indexes allow you to store and query documents efficiently. Here's how to use them:
+
+### Creating an Index
 
 ```typescript
-import Client from "opperai";
-// Initialize the client with your API key
-const client = new Client("your-api-key");
+const client = new Client();
 
-async function main() {
-    const indexes = await client.indexes.list();
+let index = await client.indexes.get("support-tickets");
 
-    console.log(indexes);
+if (!index) {
+    index = await client.indexes.create("support-tickets");
 }
-main();
 ```
+
+### Adding Documents
+
+```typescript
+const ticket = {
+    title: "Issue with my account",
+    description: "I cannot log in to my account",
+    status: "open",
+    id: "1",
+};
+
+await index.add({
+    content: ticket.title + " " + ticket.description,
+    metadata: {
+        status: ticket.status,
+        id: ticket.id,
+    },
+});
+```
+
+### Querying an Index
+
+```typescript
+const query = "Issue with my account";
+const results = await index.query({
+    query,
+    k: 1, // Number of results to return
+});
+
+console.log(results[0].content);
+console.log(results[0].metadata);
+```
+
+### Filtering Query Results
+
+```typescript
+const openResults = await index.query({
+    query,
+    k: 1,
+    filters: [{ key: "status", operation: "=", value: "open" }],
+});
+
+console.log(openResults[0].content);
+```
+
+For more detailed examples and advanced usage, check out the [full example](https://github.com/opper-ai/opper-node/blob/main/examples/example-indexes.ts).
