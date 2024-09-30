@@ -127,6 +127,7 @@ export interface OpperGenerateImage {
     prompt: string;
     model?: string;
     parameters?: Record<string, unknown>;
+    parent_span_uuid?: string;
 }
 
 export type OpperCall = {
