@@ -96,10 +96,12 @@ class Functions extends APIResource {
     }
 
     public async generateImage(args: OpperGenerateImage): Promise<OpperImageResponse> {
+        const model = args.model || "azure/dall-e-3-eu";
+
         const response = await this.doPost(this.calcURLGenerateImage(), {
             ...args,
-            model: "azure/dall-e-3-eu",
-            format: "b64_json",
+            model: model,
+            parameters: args.parameters,
         });
 
         if (response.ok) {

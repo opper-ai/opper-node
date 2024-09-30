@@ -64,15 +64,15 @@ export type OpperIndexFile = {
     original_filename: string;
     size: number;
     index_status:
-        | "init"
-        | "pending"
-        | "uploading"
-        | "indexing"
-        | "success"
-        | "indexed"
-        | "error"
-        | "failed"
-        | "invalid";
+    | "init"
+    | "pending"
+    | "uploading"
+    | "indexing"
+    | "success"
+    | "indexed"
+    | "error"
+    | "failed"
+    | "invalid";
     n_vectors: number;
 };
 
@@ -123,12 +123,12 @@ export type OpperExample = {
     comment?: string;
 };
 
-export type OpperGenerateImage = {
+export interface OpperGenerateImage {
     prompt: string;
-    image_size?: string;
-    quality?: string;
+    model?: string;
+    parameters?: Record<string, unknown>;
     parent_span_uuid?: string;
-};
+}
 
 export type OpperCall = {
     /**
