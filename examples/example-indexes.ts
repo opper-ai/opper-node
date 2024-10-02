@@ -11,9 +11,9 @@ const client = new Client();
         input: query,
     });
 
-    let index = await client.indexes.get("support-tickets");
+    let index = await client.indexes.get("node-sdk/indexes/support-tickets");
     if (!index) {
-        index = await client.indexes.create("support-tickets");
+        index = await client.indexes.create("node-sdk/indexes/support-tickets");
     }
 
     const tickets = [
@@ -85,6 +85,11 @@ const client = new Client();
     });
 
     console.log(open_results[0].content);
+
+    // Upload a file to the index
+    const file = await index.uploadFile("examples/fixtures/example.txt");
+
+    console.log("file: ", file);
 
     // 'Issue with my account I cannot log in to my account'
     await trace.end({

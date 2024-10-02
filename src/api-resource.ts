@@ -356,6 +356,14 @@ class APIResource {
     protected calcURLDatasets(datasetUuid: string): string {
         return `${this._client.baseURL}/v1/datasets/${datasetUuid}`;
     }
+
+    protected calcURLUploadUrl = (uuid: string, fileName: string) => {
+        return `${this._client.baseURL}/v1/indexes/${uuid}/upload_url?filename=${encodeURIComponent(fileName)}`;
+    };
+
+    protected calcURLRegisterFile = (uuid: string) => {
+        return `${this._client.baseURL}/v1/indexes/${uuid}/register_file`;
+    };
 }
 
 export default APIResource;
