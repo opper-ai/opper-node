@@ -1,3 +1,5 @@
+import fs from "node:fs";
+
 import type Client from "./index";
 import { OpperIndexDocument, OpperIndexQuery, OpperIndex } from "./types";
 
@@ -69,6 +71,64 @@ export class Index extends APIResource {
         }
 
         throw new OpperError(`Failed to query index: ${response.statusText}`);
+    }
+
+    /**
+     * Uploads a file to an index.
+     * @param filePath The path to the file to upload.
+     * @returns A promise that resolves to the registered file.
+     * @throws {APIError} If the response status is not 200.
+     *
+     * @example
+     * ```ts
+     * const file = await index.uploadFile("./example.txt");
+     * ```
+     */
+    public async uploadFile(path: string): Promise<{
+        uuid: string;
+        key: string;
+        original_filename: string;
+        document_id: number;
+    }> {
+        // Get upload URL
+        const fileName = path.split("/").pop() || "";
+        const uploadUrlResponse = await this.doGet(
+            this.calcURLUploadUrl(this._index.uuid, fileName)
+        );
+
+        if (!uploadUrlResponse.ok) {
+            throw new OpperError(`Failed to get upload URL: ${uploadUrlResponse.statusText}`);
+        }
+
+        const uploadUrlData = await uploadUrlResponse.json();
+
+        // Upload file
+        const fileContent = await fs.promises.readFile(path);
+        const formData = new FormData();
+        Object.entries(uploadUrlData.fields).forEach(([key, value]) => {
+            formData.append(key, value as string);
+        });
+        formData.append("file", new Blob([fileContent]), fileName);
+
+        const uploadResponse = await fetch(uploadUrlData.url, {
+            method: "POST",
+            body: formData,
+        });
+
+        if (!uploadResponse.ok) {
+            throw new OpperError(`Failed to upload file: ${uploadResponse.statusText}`);
+        }
+
+        // Register file
+        const registerFileResponse = await this.doPost(this.calcURLRegisterFile(this._index.uuid), {
+            uuid: uploadUrlData.uuid,
+        });
+
+        if (!registerFileResponse.ok) {
+            throw new OpperError(`Failed to register file: ${registerFileResponse.statusText}`);
+        }
+
+        return registerFileResponse.json();
     }
 }
 
