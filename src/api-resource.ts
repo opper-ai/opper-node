@@ -341,7 +341,8 @@ class APIResource {
     protected calcURLGetFunctionByPath = (path: string) => {
         return `${this._client.baseURL}/api/v1/functions/by_path/${path}`;
     };
-    protected calcURLUpdateFunction = (uuid: string) => {
+
+    protected calcURLFunctionByUuid = (uuid: string) => {
         return `${this._client.baseURL}/api/v1/functions/${uuid}`;
     };
 

@@ -202,7 +202,7 @@ export type OpperCall = {
 export type OpperFunction = {
     uuid?: string;
     path: string;
-    description: string;
+    description?: string;
     instructions: string;
     model?: string;
     index_ids?: number[];

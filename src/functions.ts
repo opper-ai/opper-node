@@ -46,7 +46,7 @@ class Functions extends APIResource {
         if (!fn.uuid) {
             throw new OpperError("Function uuid is required");
         }
-        const response = await this.doPost(this.calcURLUpdateFunction(fn.uuid), fn);
+        const response = await this.doPost(this.calcURLFunctionByUuid(fn.uuid), fn);
 
         if (response.ok) {
             return fn;
@@ -81,7 +81,7 @@ class Functions extends APIResource {
      */
     public async get(fn: OpperFunction): Promise<OpperFunction> {
         const url = fn.uuid
-            ? this.calcURLGetFunctionByPath(fn.uuid)
+            ? this.calcURLFunctionByUuid(fn.uuid)
             : this.calcURLGetFunctionByPath(fn.path);
 
         const response = await this.doGet(url);
@@ -94,6 +94,24 @@ class Functions extends APIResource {
     }
 
     /**
+     * Deletes a function from the OpperAI API.
+     * @param fn - The function to be deleted.
+     * @returns A promise that resolves to the function.
+     * @throws {OpperError} If the function does not exist.
+     */
+    public async delete(fn: OpperFunction): Promise<OpperFunction> {
+        const url = this.calcURLGetFunctionByPath(fn.path);
+
+        const response = await this.doDelete(url);
+
+        if (response.ok) {
+            return fn;
+        }
+
+        throw new OpperError(`Failed to delete function: ${response.statusText}`);
+    }
+
+    /**
      * Calls a function in the OpperAI API.
      * @param fn - The function to be called.
      * @returns A promise that resolves to the function call response.
@@ -102,8 +120,6 @@ class Functions extends APIResource {
     public async call(fn: OpperCall): Promise<OpperChatResponse> {
         const response = await this.doPost(this.calcURLCall(), {
             ...fn,
-            input_type: fn?.input_schema,
-            output_type: fn?.output_schema,
         });
 
         if (response.ok) {
