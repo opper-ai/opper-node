@@ -74,10 +74,30 @@ class Functions extends APIResource {
     }
 
     /**
-     * Creates a function in the OpperAI API.
-     * @param f - The function to be created.
-     * @returns A promise that resolves to the created function.
-     * @throws {OpperError} If the function already exists and update is false.
+     * Gets a function from the OpperAI API.
+     * @param fn - The function to be retrieved.
+     * @returns A promise that resolves to the function.
+     * @throws {OpperError} If the function does not exist.
+     */
+    public async get(fn: OpperFunction): Promise<OpperFunction> {
+        const url = fn.uuid
+            ? this.calcURLGetFunctionByPath(fn.uuid)
+            : this.calcURLGetFunctionByPath(fn.path);
+
+        const response = await this.doGet(url);
+
+        if (response.ok) {
+            return await response.json();
+        }
+
+        throw new OpperError(`Failed to get function: ${response.statusText}`);
+    }
+
+    /**
+     * Calls a function in the OpperAI API.
+     * @param fn - The function to be called.
+     * @returns A promise that resolves to the function call response.
+     * @throws {OpperError} If the function call fails.
      */
     public async call(fn: OpperCall): Promise<OpperChatResponse> {
         const response = await this.doPost(this.calcURLCall(), {
