@@ -208,16 +208,16 @@ export type OpperFunction = {
     index_ids?: number[];
     few_shot?: boolean;
     few_shot_count?: number;
-    cache_config?: CacheConfig;
+    cache_configuration?: ConfigurationCacheConfig;
     input_schema?: Record<string, unknown>;
     out_schema?: Record<string, unknown>;
     dataset_uuid?: string;
 };
 
-export interface CacheConfig {
-    exact_match_cache_tll: number;
-    semantic_cache_threshold: number;
-    semantic_cache_tll: number;
+export interface ConfigurationCacheConfig {
+    exact_match_cache_ttl?: number;
+    semantic_cache_threshold?: number;
+    semantic_cache_ttl?: number;
 }
 
 export type Span = {
