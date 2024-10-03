@@ -27,6 +27,10 @@ class Functions extends APIResource {
         parent_span_uuid,
         examples,
     }: Chat): Promise<OpperChatResponse> {
+        if (examples && Array.isArray(examples) && examples.length > 10) {
+            throw new OpperError("Maximum number of examples is 10");
+        }
+
         const url = this.calcURLChat(path);
         const body = this.calcChatPayload(message, parent_span_uuid, examples);
 
@@ -80,6 +84,10 @@ class Functions extends APIResource {
      * @throws {OpperError} If the function already exists and update is false.
      */
     public async call(fn: OpperCall): Promise<OpperChatResponse> {
+        if (fn.examples && Array.isArray(fn.examples) && fn.examples.length > 10) {
+            throw new OpperError("Maximum number of examples is 10");
+        }
+
         const response = await this.doPost(this.calcURLCall(), {
             ...fn,
             input_type: fn?.input_schema,

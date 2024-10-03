@@ -28,6 +28,10 @@ export interface Chat {
     parent_span_uuid?: string;
     path: string;
     message: string | Message[];
+    /**
+     * Manual examples to use as part of the prompt to guide the model.
+     * There is a hard limit of 10 examples.
+     */
     examples?: OpperExample[];
 }
 
@@ -171,6 +175,7 @@ export type OpperCall = {
 
     /**
      * Manual examples to use as part of the prompt to guide the model.
+     * There is a hard limit of 10 examples.
      */
     examples?: OpperExample[];
 
