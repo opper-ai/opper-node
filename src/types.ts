@@ -1,3 +1,5 @@
+type MaxTen = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
+
 export type Options = {
     /**
      * OpperAI [API key](https://docs.opper.ai/api-keys)
@@ -32,7 +34,7 @@ export interface Chat {
      * Manual examples to use as part of the prompt to guide the model.
      * There is a hard limit of 10 examples.
      */
-    examples?: OpperExample[];
+    examples?: OpperExample[] & { length: MaxTen };
 }
 
 export interface SSEStreamCallbacks {
@@ -177,7 +179,7 @@ export type OpperCall = {
      * Manual examples to use as part of the prompt to guide the model.
      * There is a hard limit of 10 examples.
      */
-    examples?: OpperExample[];
+    examples?: OpperExample[] & { length: MaxTen };
 
     /**
      * Whether to stream the response from the function.

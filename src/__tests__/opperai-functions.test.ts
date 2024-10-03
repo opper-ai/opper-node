@@ -147,6 +147,7 @@ describe("OpperAIFunctions", () => {
             const functionCall: OpperCall = {
                 name: "testFunction",
                 input: "Test input",
+                // @ts-expect-error - This is a test
                 examples: new Array(10).fill({ input: "test", output: "test" }),
             };
 
@@ -165,6 +166,7 @@ describe("OpperAIFunctions", () => {
             const functionCall: OpperCall = {
                 name: "testFunction",
                 input: "Test input",
+                // @ts-expect-error - This is a test
                 examples: new Array(11).fill({ input: "test", output: "test" }),
             };
 
