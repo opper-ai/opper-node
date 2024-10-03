@@ -6,7 +6,6 @@ import {
     OpperImageResponse,
     Chat,
     OpperAIStream,
-    OpperExample,
 } from "./types";
 
 import APIResource from "./api-resource";
@@ -33,7 +32,7 @@ class Functions extends APIResource {
         }
 
         const url = this.calcURLChat(path);
-        const body = this.calcChatPayload(message, parent_span_uuid, examples as OpperExample[]);
+        const body = this.calcChatPayload(message, parent_span_uuid, examples);
 
         const response = await this.doPost(url, body);
 

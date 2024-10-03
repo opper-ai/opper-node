@@ -1,7 +1,7 @@
 import { APIError } from "../errors";
 import Functions from "../functions";
 import Client from "../index";
-import { OpperCall, OpperCallExample } from "../types";
+import { OpperCall } from "../types";
 
 // Mocking the global fetch to avoid actual API calls
 // @ts-expect-error Mocking global fetch
@@ -147,7 +147,7 @@ describe("OpperAIFunctions", () => {
             const functionCall: OpperCall = {
                 name: "testFunction",
                 input: "Test input",
-                examples: new Array(10).fill({ input: "test", output: "test" }) as OpperCallExample,
+                examples: new Array(10).fill({ input: "test", output: "test" }),
             };
 
             await functions.call(functionCall);
@@ -165,7 +165,7 @@ describe("OpperAIFunctions", () => {
             const functionCall: OpperCall = {
                 name: "testFunction",
                 input: "Test input",
-                examples: new Array(11).fill({ input: "test", output: "test" }) as OpperCallExample,
+                examples: new Array(11).fill({ input: "test", output: "test" }),
             };
 
             await expect(functions.call(functionCall)).rejects.toThrow(

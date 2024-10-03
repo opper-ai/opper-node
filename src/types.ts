@@ -32,7 +32,7 @@ export interface Chat {
      * Manual examples to use as part of the prompt to guide the model.
      * There is a hard limit of 10 examples.
      */
-    examples?: OpperCallExample;
+    examples?: OpperExample[];
 }
 
 export interface SSEStreamCallbacks {
@@ -127,19 +127,6 @@ export type OpperExample = {
     comment?: string;
 };
 
-export type OpperCallExample = [
-    OpperExample?,
-    OpperExample?,
-    OpperExample?,
-    OpperExample?,
-    OpperExample?,
-    OpperExample?,
-    OpperExample?,
-    OpperExample?,
-    OpperExample?,
-    OpperExample?,
-];
-
 export interface OpperGenerateImage {
     prompt: string;
     model?: string;
@@ -190,7 +177,7 @@ export type OpperCall = {
      * Manual examples to use as part of the prompt to guide the model.
      * There is a hard limit of 10 examples.
      */
-    examples?: OpperCallExample;
+    examples?: OpperExample[];
 
     /**
      * Whether to stream the response from the function.
