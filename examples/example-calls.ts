@@ -61,6 +61,7 @@ const client = new Client();
     const { json_payload: weekday } = await client.call({
         parent_span_uuid: trace.uuid,
         name: "node-sdk/call/weekday-with-examples",
+        // Examples are limited to 10
         examples: [
             {
                 input: "Today is Monday",
@@ -93,6 +94,7 @@ const client = new Client();
     const { json_payload: strawberry } = await client.call({
         parent_span_uuid: trace.uuid,
         name: "node-sdk/call/character-count-fewshot",
+        // Examples are limited to 10
         examples: [
             {
                 input: "runner",

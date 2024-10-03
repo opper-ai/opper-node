@@ -29,6 +29,7 @@ const translate = fn(
     {
         name: "node-sdk/zod/translate",
         instructions: "Translate the input text to the specified language",
+        // Examples are limited to 10
         examples: [
             {
                 input: { text: "Hello, world!", language: "French" },
