@@ -1,6 +1,7 @@
 import { APIError } from "../errors";
 import Functions from "../functions";
 import Client from "../index";
+import { OpperCall, OpperCallExample } from "../types";
 
 // Mocking the global fetch to avoid actual API calls
 // @ts-expect-error Mocking global fetch
@@ -55,6 +56,120 @@ describe("OpperAIFunctions", () => {
 
             await expect(functions.chat({ path: "hello", message: "Hi there!" })).rejects.toThrow(
                 "404 Failed to send request to https://api.opper.ai/v1/chat/hello: Not Found"
+            );
+        });
+    });
+
+    describe("call", () => {
+        it("should call fetch with correct parameters and resolve with function result", async () => {
+            const mockCallResponse = { result: "Function executed successfully" };
+            (global.fetch as jest.Mock).mockResolvedValueOnce({
+                ok: true,
+                json: () => Promise.resolve(mockCallResponse),
+            });
+
+            const functionCall: OpperCall = {
+                name: "testFunction",
+                input: { key: "value" },
+                instructions: "Test instructions",
+                model: "gpt-3.5-turbo",
+            };
+
+            const response = await functions.call(functionCall);
+
+            expect(global.fetch).toHaveBeenCalledWith("https://api.opper.ai/v1/call", {
+                method: "POST",
+                headers: {
+                    "X-OPPER-API-KEY": mockApiKey,
+                    "User-Agent": "opper-node/0.0.0",
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    ...functionCall,
+                    input_type: undefined,
+                    output_type: undefined,
+                }),
+            });
+            expect(response).toEqual(mockCallResponse);
+        });
+
+        it("should throw an error if fetch response is not ok", async () => {
+            (global.fetch as jest.Mock).mockResolvedValueOnce({
+                ok: false,
+                status: 400,
+                statusText: "Bad Request",
+            });
+
+            const functionCall: OpperCall = {
+                name: "testFunction",
+                input: "Test input",
+            };
+
+            await expect(functions.call(functionCall)).rejects.toThrow(
+                "OpperAIClient: 400 Failed to send request to https://api.opper.ai/v1/call: Bad Request"
+            );
+        });
+
+        it("should include input_schema and output_schema if provided", async () => {
+            const mockCallResponse = { result: "Function executed successfully" };
+            (global.fetch as jest.Mock).mockResolvedValueOnce({
+                ok: true,
+                json: () => Promise.resolve(mockCallResponse),
+            });
+
+            const functionCall: OpperCall = {
+                name: "testFunction",
+                input: { key: "value" },
+                input_schema: { type: "object", properties: { key: { type: "string" } } },
+                output_schema: { type: "string" },
+            };
+
+            await functions.call(functionCall);
+
+            expect(global.fetch).toHaveBeenCalledWith("https://api.opper.ai/v1/call", {
+                method: "POST",
+                headers: expect.any(Object),
+                body: JSON.stringify({
+                    ...functionCall,
+                    input_type: functionCall.input_schema,
+                    output_type: functionCall.output_schema,
+                }),
+            });
+        });
+
+        it("should handle 10 or less examples", async () => {
+            const mockCallResponse = { result: "Function executed successfully" };
+            (global.fetch as jest.Mock).mockResolvedValueOnce({
+                ok: true,
+                json: () => Promise.resolve(mockCallResponse),
+            });
+
+            const functionCall: OpperCall = {
+                name: "testFunction",
+                input: "Test input",
+                examples: new Array(10).fill({ input: "test", output: "test" }) as OpperCallExample,
+            };
+
+            await functions.call(functionCall);
+
+            expect(global.fetch).toHaveBeenCalledWith("https://api.opper.ai/v1/call", {
+                method: "POST",
+                headers: expect.any(Object),
+                body: JSON.stringify({
+                    ...functionCall,
+                }),
+            });
+        });
+
+        it("should throw an error if more than 10 examples are provided", async () => {
+            const functionCall: OpperCall = {
+                name: "testFunction",
+                input: "Test input",
+                examples: new Array(11).fill({ input: "test", output: "test" }) as OpperCallExample,
+            };
+
+            await expect(functions.call(functionCall)).rejects.toThrow(
+                "Maximum number of examples is 10"
             );
         });
     });

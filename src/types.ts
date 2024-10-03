@@ -28,7 +28,11 @@ export interface Chat {
     parent_span_uuid?: string;
     path: string;
     message: string | Message[];
-    examples?: OpperExample[];
+    /**
+     * Manual examples to use as part of the prompt to guide the model.
+     * There is a hard limit of 10 examples.
+     */
+    examples?: OpperCallExample;
 }
 
 export interface SSEStreamCallbacks {
@@ -123,6 +127,19 @@ export type OpperExample = {
     comment?: string;
 };
 
+export type OpperCallExample = [
+    OpperExample?,
+    OpperExample?,
+    OpperExample?,
+    OpperExample?,
+    OpperExample?,
+    OpperExample?,
+    OpperExample?,
+    OpperExample?,
+    OpperExample?,
+    OpperExample?,
+];
+
 export interface OpperGenerateImage {
     prompt: string;
     model?: string;
@@ -171,8 +188,9 @@ export type OpperCall = {
 
     /**
      * Manual examples to use as part of the prompt to guide the model.
+     * There is a hard limit of 10 examples.
      */
-    examples?: OpperExample[];
+    examples?: OpperCallExample;
 
     /**
      * Whether to stream the response from the function.
