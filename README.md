@@ -1,10 +1,28 @@
-# Node SDK
+# Opper Node SDK
 
-This is the Opper Node SDK. See below for getting started, and the [docs](https://docs.opper.ai) for more information.
+This is the official Node.js SDK for Opper AI. It provides a simple and powerful interface to interact with Opper's AI services, including function calls, indexing, and tracing.
 
-The `OpperAIClient` class is the main interface for interacting with the Opper API. It provides methods for performing various operations such as creating a new chat and piping an opper chat stream.
+## Table of Contents
+
+1. [Installation](#installation)
+2. [Basic Usage](#basic-usage)
+3. [Features](#features)
+    - [Function Calls](#function-calls)
+    - [Structured Output](#structured-output)
+    - [Streaming Responses](#streaming-responses)
+    - [Indexes](#indexes)
+    - [Tracing](#tracing)
+    - [Multimodal Inputs](#multimodal-inputs)
+    - [Image Generation](#image-generation)
+4. [Advanced Usage](#advanced-usage)
+    - [Structured Output with `fn` Helper](#structured-output-with-fn-helper)
+5. [API Reference](#api-reference)
+6. [Examples](#examples)
+7. [License](#license)
 
 ## Installation
+
+Install the Opper Node SDK using npm:
 
 ```bash
 npm install opperai
@@ -27,193 +45,190 @@ async function main() {
 main();
 ```
 
-## Leverage structured output with the `fn` helper
+## Features
 
-While chat functions are useful for chat bot use cases, it is much nicer to work without raw strings and treat LLM calls as simple API calls. See the example folder for a full example of how to use the `fn` helper. We have supplied fn decorators for both [zod](./examples/zod-fn-decorator.ts) and [typebox](./examples/typebox-fn-decorator.ts).
+### Function Calls
 
-## Conversation
-
-The message parameter can be a single message in the form of a string or a conversation history represented as an array of objects, each containing `role` (a string indicating the speaker's role) and `content` (the message text).
+Use the `call` method to send messages to Opper AI and receive responses see [example-calls.ts](./examples/example-calls.ts) for more examples:
 
 ```typescript
-import Client from "opperai";
-// Initialize the client with your API key
-const client = new Client({
-    apiKey: "your-api-key",
+const { message } = await client.call({
+    name: "your/function/name",
+    instructions: "An example message",
 });
 
-async function main() {
-    const { message } = await client.functions.chat({
-        path: "your/function/path", // The API path for your Opper function
-        message: [
-            {
-                role: "user",
-                content: "this is the start",
-            },
-            {
-                role: "assistant",
-                content: "this is response",
-            },
-            {
-                role: "user",
-                content: "this is a followup question",
-            },
-        ],
-    });
-
-    console.log(message); // Process the response
-}
-main();
+console.log(message);
 ```
 
-## Functions
+### Structured Output
 
-### Functions Chat
-
-The `functions.chat` method allows you to send a message to the Opper API and receive a response. This method is useful for initiating a conversation or sending standalone messages.
+The `call` method can be passed an `input_schema` and an `output_schema` to return structured output. See [example-calls.ts](./examples/example-calls.ts) for more examples or [Structured Output with `fn` Helper](#structured-output-with-fn-helper) for a more type-safe approach:
 
 ```typescript
-import Client from "opperai";
-// Initialize the client with your API key
-const client = new Client({
-    apiKey: "your-api-key",
-});
-
-async function main() {
-    try {
-        const { message } = await client.functions.chat({
-            path: "your/function/path", // The API path for your Opper function
-            message: "An example message", // The message you want to send
-        });
-
-        console.log(message); // Process the response
-    } catch (error) {
-        console.error("Failed to send message:", error);
-    }
-}
-main();
-```
-
-### Functions Pipe
-
-You can use the `functions.pipe` method to seamlessly integrate an Opper conversation stream into your application, acting as a bridge between the Opper API and your users. This method is particularly useful in server-side environments, such as with Node.js middleware, to forward real-time conversations directly to the client. The following example demonstrates its usage within a Next.js API route, showcasing how to handle incoming messages and pipe them through the Opper API.
-
-```typescript
-import Client from "opperai";
-
-// Initialize the client with your API key
-const client = new Client({
-    apiKey: "your-api-key",
-});
-
-export async function POST(req, res) {
-    const data = await req.json();
-    const { messages } = data;
-
-    const stream = client.functions.pipe({
-        path: "your/function/path",
-        message: messages,
-    });
-
-    return new Response(stream);
-}
-```
-
-### Functions Stream
-
-The `functions.stream` method enables real-time communication with the Opper API, allowing you to send messages and receive responses asynchronously. This method is ideal for applications requiring live interaction, such as chat applications or real-time data processing. It supports various callbacks to handle incoming messages, completion events, and errors, providing a robust solution for managing continuous data streams. The example below illustrates how to initiate a streaming session with the Opper API, including how to handle messages and errors, and how to gracefully terminate the stream.
-
-```typescript
-import Client from "opperai";
-
-// Initialize the client with your API key
-const client = new Client({
-    apiKey: "your-api-key",
-});
-
-async function main() {
-    // If the stream needs to be canceled use controller.abort();
-    const controller = new AbortController();
-
-    await client.functions.stream({
-        path: "your/function/path",
-        message: "An example message",
-        callbacks: {
-            controller: controller,
-            onMessage: (data) => {
-                console.log(data);
+const { json_payload } = await client.call({
+    name: "your/function/name",
+    instructions: "Extract temperature, location and wind speed.",
+    input: "In London its cloudy skies early, followed by partial clearing. Cooler. High 13C. Winds ENE at 15 to 20 km/h.",
+    output_schema: {
+        $schema: "https://json-schema.org/draft/2020-12/schema",
+        type: "object",
+        properties: {
+            temperature: {
+                description: "The temperature in Celsius",
+                type: "number",
             },
-            onComplete: () => {
-                console.log("Finished!");
+            location: {
+                description: "The location",
+                type: "string",
             },
-            onError: (error) => {
-                console.log("An Error!");
+            wind_speed: {
+                description: "The max wind speed in km/h",
+                type: "number",
             },
         },
-    });
-}
-
-main();
+        required: ["temperature", "location", "wind_speed"],
+    },
+});
+console.log("JSON response: ", json_payload);
 ```
 
-## Indexes
+### Streaming Responses
 
-Indexes allow you to store and query documents efficiently. Here's how to use them:
-
-### Creating an Index
+For long-running functions, you can stream the response. For an example on how to stream using express see [example-stream-express.ts](./examples/example-stream-express.ts) and for an example on how to stream using Next.js see [example-stream-nextjs.ts](./examples/example-stream-nextjs.ts).
 
 ```typescript
-const client = new Client();
+const stream = await client.call({
+    name: "your/function/name",
+    instructions: "An example message",
+    stream: true,
+});
+// Process the stream as needed
+```
 
+### Indexes
+
+Efficiently store and query documents using Opper's indexing feature:
+
+```typescript
+// Create or get an index
 let index = await client.indexes.get("support-tickets");
-
 if (!index) {
     index = await client.indexes.create("support-tickets");
 }
-```
 
-### Adding Documents
-
-```typescript
-const ticket = {
-    title: "Issue with my account",
-    description: "I cannot log in to my account",
-    status: "open",
-    id: "1",
-};
-
+// Add documents
 await index.add({
-    content: ticket.title + " " + ticket.description,
+    content: "Slow response time. The response time for queries is too slow",
     metadata: {
-        status: ticket.status,
-        id: ticket.id,
+        status: "open",
+        id: "1",
     },
 });
-```
 
-### Querying an Index
-
-```typescript
-const query = "Issue with my account";
+// Query the index
 const results = await index.query({
-    query,
-    k: 1, // Number of results to return
+    query: "Issue with slow response time",
+    k: 1,
 });
-
 console.log(results[0].content);
-console.log(results[0].metadata);
 ```
 
-### Filtering Query Results
+### Tracing
+
+Track and analyze your AI operations with Opper's tracing feature:
 
 ```typescript
-const openResults = await index.query({
-    query,
-    k: 1,
-    filters: [{ key: "status", operation: "=", value: "open" }],
+const trace = await client.traces.start({
+    name: "example-trace",
+    input: "example input",
 });
 
-console.log(openResults[0].content);
+// Perform operations...
+await trace.end({
+    output: "example output",
+});
 ```
 
-For more detailed examples and advanced usage, check out the [full example](https://github.com/opper-ai/opper-node/blob/main/examples/example-indexes.ts).
+### Multimodal Inputs
+
+Handle various input types, including images and audio. See [example-calls-multimodal.ts](./examples/example-calls-multimodal.ts) for more examples:
+
+```typescript
+const image = new OpperMediaHandler("path/to/image.png");
+const audio = new OpperMediaHandler("path/to/audio.mp3");
+
+const { message: image_description } = await client.call({
+    name: "describe-image",
+    instructions: "Create a short description of the image",
+    input: image.getInput(),
+    model: "openai/gpt-4o",
+});
+
+const { message: audio_transcription } = await client.call({
+    name: "transcribe-audio",
+    instructions: "Given an audio file, return the transcription of the audio",
+    input: audio.getInput(),
+    model: "gcp/gemini-1.5-flash-eu",
+});
+```
+
+### Image Generation
+
+Generate images using Opper's AI models:
+
+```typescript
+const generatedImage = await client.generateImage({
+    prompt: "Create an image of a cat",
+});
+// Save or process the generated image
+```
+
+## Advanced Usage
+
+### Structured Output with `fn` Helper
+
+Use the `fn` helper to create type-safe function calls with structured input and output. See the example folder for a full example of how to use the `fn` helper. We have supplied fn decorators for both [zod](./examples/zod-fn-decorator.ts) and [typebox](./examples/typebox-fn-decorator.ts):
+
+```typescript
+import { z } from "zod";
+// Copy the zod-fn-decorator.ts file from the examples directory into your project
+import fn from "./zod-fn-decorator";
+
+const TranslationSchema = z.object({
+    translation: z.string(),
+    sentiment: z.string(),
+});
+const translate = fn(
+    {
+        name: "translate",
+        instructions: "Translate the input text and analyze sentiment",
+    },
+    z.object({ text: z.string(), language: z.string() }),
+    TranslationSchema
+);
+
+const result = await translate({ text: "Hello, world!", language: "French" });
+
+console.log(result);
+```
+
+## API Reference
+
+For detailed API documentation, please refer to the [official Opper AI documentation](https://docs.opper.ai).
+
+## Examples
+
+The SDK includes several examples demonstrating various features:
+
+-   Basic function calls: `examples/example-calls.ts`
+-   Multimodal inputs: `examples/example-calls-multimodal.ts`
+-   Indexing: `examples/example-indexes.ts`
+-   Manual tracing: `examples/example-tracing-manual.ts`
+-   Structured output with Zod: `examples/example-zod-fn.ts`
+-   Structured output with TypeBox: `examples/example-typebox-fn.ts`
+
+To run an example:
+
+```bash
+npx ts-node ./examples/example-name.ts
+```

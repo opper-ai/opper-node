@@ -37,3 +37,5 @@ Thumbs.db
 
 # Other
 examples/package-lock.json
+/examples/fixtures/md.ts
+/examples/example-error.ts

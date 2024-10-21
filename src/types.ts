@@ -45,13 +45,6 @@ export interface SSEStreamCallbacks {
     onCancel?: () => void;
 }
 
-export interface OpperAIStream {
-    path: string;
-    parent_span_uuid?: string;
-    message: string | Message[];
-    callbacks: SSEStreamCallbacks;
-}
-
 export interface OpperChatResponse {
     span_id: string;
     message: string;

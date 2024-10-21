@@ -5,7 +5,6 @@ import {
     OpperGenerateImage,
     OpperImageResponse,
     Chat,
-    OpperAIStream,
 } from "./types";
 
 import APIResource from "./api-resource";
@@ -40,11 +39,10 @@ class Functions extends APIResource {
     }
 
     /**
-     * Updates a function in the OpperAI API.
-     * @param f - The function to be updated.
-     * @returns A promise that resolves to the updated function.
-     * @throws {APIError} If the response status is not 200.
-     * @throws {OpperError} If the function id is not provided.
+     * Updates an existing function in the OpperAI API.
+     * @param fn - The OpperFunction object containing the updated function details.
+     * @returns A promise that resolves to the updated OpperFunction.
+     * @throws {OpperError} If the function uuid is missing or if the update fails.
      */
     public async update(fn: OpperFunction): Promise<OpperFunction> {
         if (!fn.uuid) {
@@ -60,10 +58,10 @@ class Functions extends APIResource {
     }
 
     /**
-     * Creates a function in the OpperAI API.
-     * @param f - The function to be created.
-     * @returns A promise that resolves to the created function.
-     * @throws {OpperError} If the function already exists and update is false.
+     * Creates a new function in the OpperAI API.
+     * @param fn - The OpperFunction object containing the function details to be created.
+     * @returns A promise that resolves to the created OpperFunction, including the assigned UUID.
+     * @throws {OpperError} If the function creation fails.
      */
     public async create(fn: OpperFunction): Promise<OpperFunction> {
         const response = await this.doPost(this.calcURLCreateFunction(), fn);
@@ -78,10 +76,10 @@ class Functions extends APIResource {
     }
 
     /**
-     * Creates a function in the OpperAI API.
-     * @param f - The function to be created.
-     * @returns A promise that resolves to the created function.
-     * @throws {OpperError} If the function already exists and update is false.
+     * Calls a function in the OpperAI API.
+     * @param fn - The OpperCall object containing the function call parameters.
+     * @returns A promise that resolves to an OpperChatResponse containing the function call result.
+     * @throws {OpperError} If the number of examples exceeds 10 or if the function call fails.
      */
     public async call(fn: OpperCall): Promise<OpperChatResponse> {
         if (fn.examples && Array.isArray(fn.examples) && fn.examples.length > 10) {
@@ -103,6 +101,14 @@ class Functions extends APIResource {
         throw new OpperError(`Failed to call function: ${response.statusText}`);
     }
 
+    /**
+     * Generates an image using the OpperAI API.
+     * @param args - The OpperGenerateImage object containing the image generation parameters.
+     * @param args.model - Optional. The model to use for image generation. Defaults to "azure/dall-e-3-eu".
+     * @param args.parameters - Additional parameters for image generation.
+     * @returns A promise that resolves to an OpperImageResponse containing the generated image as bytes.
+     * @throws {OpperError} If the image generation fails.
+     */
     public async generateImage(args: OpperGenerateImage): Promise<OpperImageResponse> {
         const model = args.model || "azure/dall-e-3-eu";
 
@@ -126,70 +132,20 @@ class Functions extends APIResource {
     }
 
     /**
-     * This method is a helper which can be used in node middleware
-     * to pipe the OpperAI chat stream directly to the client. See examples.
-     * It sends a POST request to the chat endpoint with the provided path and message.
-     * The response is a promise that resolves to a ReadableStream.
-     * @param path - The path to the chat endpoint.
-     * @param message - The message to be sent.
-     * @param parent_span_uuid - The parent span UUID.
-     * @returns A promise that resolves to a ReadableStream.
-     * @throws {APIError} If the response status is not 200.
-     * @throws {OpperError} If the response has an error.
+     * Streams the response from an OpperAI function call.
+     * @param fn - The OpperCall object containing the function call parameters.
+     * @returns A promise that resolves to a ReadableStream of the function's response.
+     * This stream can be used to process the response data as it arrives.
      */
-    public pipe({ path, message, parent_span_uuid }: Chat): ReadableStream<unknown> {
-        const url = this.calcURLChat(`${path}?stream=True`);
-        const body = this.calcChatPayload(message, parent_span_uuid);
-
-        const iterator = this.urlStreamIterator(url, body);
+    public async stream(fn: OpperCall): Promise<ReadableStream<unknown>> {
+        const iterator = this.urlStreamIterator(this.calcURLCall(), {
+            ...fn,
+            input_type: fn?.input_schema,
+            output_type: fn?.output_schema,
+        });
         const pipe = this.iteratorToStream(iterator);
 
         return pipe;
-    }
-
-    /**
-     * This method processes a Server-Sent Events (SSE) stream from the server.
-     * It reads the stream using a ReadableStreamDefaultReader, decodes the Uint8Array chunks to text,
-     * and splits the text into messages based on double newline characters.
-     * Each message is expected to be in the format "data: <json>", where <json> is a JSON string.
-     * The method parses each JSON string and passes the resulting object to the onMessage callback.
-     * If the stream ends or an error occurs (including an abort signal), appropriate callbacks are called.
-     *
-     * @param reader - The ReadableStreamDefaultReader<Uint8Array> to read the stream from.
-     * @param callbacks - An object containing callback functions for different events:
-     * @param callbacks.controller    - Optional AbortController
-     * @param callbacks.onMessage     - for each message received,
-     * @param callbacks.onComplete    - when the stream is finished,
-     * @param callbacks.onError       - for any error that occurs,
-     * @param callbacks.onCancel      - if the fetch request is aborted.
-     * @returns A promise that resolves when the stream is finished or an error occurs.
-     */
-    public async stream({
-        path,
-        message,
-        parent_span_uuid,
-        callbacks,
-    }: OpperAIStream): Promise<void> {
-        const url = this.calcURLChat(path);
-        const body = this.calcChatPayload(message, parent_span_uuid);
-
-        try {
-            const response = await this.doPost(url, body, callbacks.controller);
-
-            const reader = response.body?.getReader();
-            if (reader) {
-                await this.processSSEStream(reader, callbacks);
-            } else {
-                throw new OpperError("Failed to get a stream reader");
-            }
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        } catch (error: any) {
-            if (error?.name === "AbortError") {
-                callbacks.onCancel ? callbacks.onCancel() : callbacks.onComplete();
-            } else {
-                callbacks.onError(error as Error);
-            }
-        }
     }
 }
 
