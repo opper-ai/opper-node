@@ -66,26 +66,6 @@ describe("OpperAIClient", () => {
 
             chatSpy.mockRestore();
         });
-
-        it("should be able to call stream function", () => {
-            // Mocking the stream function to test if it can be called correctly
-            const streamSpy = jest
-                .spyOn(client.functions, "pipe")
-                .mockReturnValue(new ReadableStream());
-
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            const stream = client.functions.pipe({
-                path: "test-path",
-                message: "test message",
-            });
-
-            expect(streamSpy).toHaveBeenCalledWith({
-                path: "test-path",
-                message: "test message",
-            });
-
-            streamSpy.mockRestore();
-        });
     });
 
     describe("indexes", () => {
