@@ -68,9 +68,15 @@ class Client {
         );
     };
 
-    call = async (fn: OpperCall): Promise<OpperChatResponse> => {
+    async call(fn: OpperCall & { stream: true }): Promise<ReadableStream<unknown>>;
+    async call(fn: OpperCall & { stream?: false | undefined }): Promise<OpperChatResponse>;
+    async call(fn: OpperCall): Promise<ReadableStream<unknown> | OpperChatResponse> {
+        if (fn.stream) {
+            return await this.functions.stream(fn);
+        }
+
         return await this.functions.call(fn);
-    };
+    }
 
     generateImage = async (args: OpperGenerateImage): Promise<OpperImageResponse> => {
         return await this.functions.generateImage(args);

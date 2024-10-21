@@ -3,6 +3,7 @@
 import "dotenv/config";
 import Client from "../src";
 
+// Your API key will be loaded from the environment variable OPPER_API_KEY if not provided
 const client = new Client();
 
 const sleepAndReturn = async (ms: number, returnValue: any) => {

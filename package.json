@@ -14,8 +14,7 @@
         "test": "jest",
         "publish-patch": "npm run check && npm run build && npm version patch",
         "publish-minor": "npm run check && npm run build && npm version minor",
-        "publish-major": "npm run check && npm run build && npm version major",
-        "examples": "for file in examples/example-*.ts; do echo \"Running $file\"; npx ts-node \"$file\"; echo \"\"; done"
+        "publish-major": "npm run check && npm run build && npm version major"
     },
     "exports": {
         ".": {
