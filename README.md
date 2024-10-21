@@ -8,6 +8,7 @@ This is the official Node.js SDK for Opper AI. It provides a simple and powerful
 2. [Basic Usage](#basic-usage)
 3. [Features](#features)
     - [Function Calls](#function-calls)
+    - [Structured Output](#structured-output)
     - [Streaming Responses](#streaming-responses)
     - [Indexes](#indexes)
     - [Tracing](#tracing)
@@ -57,6 +58,38 @@ const { message } = await client.call({
 });
 
 console.log(message);
+```
+
+### Structured Output
+
+The `call` method can be passed an `input_schema` and an `output_schema` to return structured output. See [example-calls.ts](./examples/example-calls.ts) for more examples or [Structured Output with `fn` Helper](#structured-output-with-fn-helper) for a more type-safe approach:
+
+```typescript
+const { json_payload } = await client.call({
+    name: "your/function/name",
+    instructions: "Extract temperature, location and wind speed.",
+    input: "In London its cloudy skies early, followed by partial clearing. Cooler. High 13C. Winds ENE at 15 to 20 km/h.",
+    output_schema: {
+        $schema: "https://json-schema.org/draft/2020-12/schema",
+        type: "object",
+        properties: {
+            temperature: {
+                description: "The temperature in Celsius",
+                type: "number",
+            },
+            location: {
+                description: "The location",
+                type: "string",
+            },
+            wind_speed: {
+                description: "The max wind speed in km/h",
+                type: "number",
+            },
+        },
+        required: ["temperature", "location", "wind_speed"],
+    },
+});
+console.log("JSON response: ", json_payload);
 ```
 
 ### Streaming Responses
