@@ -94,7 +94,7 @@ console.log("JSON response: ", json_payload);
 
 ### Streaming Responses
 
-For long-running functions, you can stream the response. For an example on how to stream using express see [example-stream-express.ts](./examples/example-stream-express.ts) and for an example on how to stream using Next.js see [example-stream-nextjs.ts](./examples/example-stream-nextjs.ts).
+For long-running functions, you can stream the response by adding `stream: true,` to a function call. This will return a `ReadableStream` which can be processed as needed:
 
 ```typescript
 const stream = await client.call({
@@ -104,6 +104,9 @@ const stream = await client.call({
 });
 // Process the stream as needed
 ```
+For examples on how to use streaming with web frameworks:
+- Express: see [example-stream-express.ts](./examples/example-stream-express.ts)
+- Next.js: see [example-stream-nextjs.ts](./examples/example-stream-nextjs.ts)
 
 ### Indexes
 
