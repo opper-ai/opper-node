@@ -34,7 +34,7 @@ export interface Chat {
      * Manual examples to use as part of the prompt to guide the model.
      * There is a hard limit of 10 examples.
      */
-    examples?: OpperExample[] & { length: MaxTen };
+    examples?: OpperCallExamples;
 }
 
 export interface SSEStreamCallbacks {
@@ -116,17 +116,37 @@ export type OpperIndexQuery = {
     parent_span_uuid?: string;
 };
 
-export type OpperExample = {
+export type OpperCallExample = {
     input: unknown;
     output: unknown;
     comment?: string;
 };
+
+export type OpperCallExamples = OpperCallExample[] & { length: MaxTen };
+
+export interface OpperCallConfigurationParameters {
+    invocation?: {
+        /**
+         * Use few shot prompting (also know as In Context Learning) to enable Opper to automatically pull in
+         * semantically relevant examples that will guide the model.
+         * See: https://docs.opper.ai/datasets
+         */
+        few_shot?: {
+            /**
+             * The number of few shot examples to use.
+             */
+            count?: number;
+        };
+    };
+    model_parameters?: Record<string, unknown>;
+}
 
 export interface OpperGenerateImage {
     prompt: string;
     model?: string;
     parameters?: Record<string, unknown>;
     parent_span_uuid?: string;
+    configuration?: OpperCallConfigurationParameters;
 }
 
 export type OpperCall = {
@@ -172,7 +192,7 @@ export type OpperCall = {
      * Manual examples to use as part of the prompt to guide the model.
      * There is a hard limit of 10 examples.
      */
-    examples?: OpperExample[] & { length: MaxTen };
+    examples?: OpperCallExample[] & { length: MaxTen };
 
     /**
      * Whether to stream the response from the function.
@@ -182,21 +202,7 @@ export type OpperCall = {
     /**
      * Configuration for the function.
      */
-    configuration?: {
-        invocation?: {
-            /**
-             * Use few shot prompting (also know as In Context Learning) to enable Opper to automatically pull in
-             * semantically relevant examples that will guide the model.
-             * See: https://docs.opper.ai/datasets
-             */
-            few_shot?: {
-                /**
-                 * The number of few shot examples to use.
-                 */
-                count?: number;
-            };
-        };
-    };
+    configuration?: OpperCallConfigurationParameters;
 };
 
 export type OpperFunction = {

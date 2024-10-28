@@ -84,7 +84,16 @@ class Client {
 }
 
 // Types which are exported for use outside of the SDK
-export { OpperChatResponse, OpperImageResponse, OpperIndexDocument, OpperIndex } from "./types";
+export {
+    OpperChatResponse,
+    OpperImageResponse,
+    OpperIndexDocument,
+    OpperIndex,
+    OpperCall,
+    OpperCallExample,
+    OpperCallExamples,
+    OpperCallConfigurationParameters,
+} from "./types";
 
 export { OpperMediaHandler } from "./utils";
 
