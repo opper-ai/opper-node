@@ -1,4 +1,4 @@
-import { Message, SSEStreamCallbacks, OpperExample } from "./types";
+import { Message, SSEStreamCallbacks, OpperCallExample } from "./types";
 
 import { APIError, OpperError } from "./errors";
 import { stringify } from "./utils";
@@ -252,7 +252,7 @@ class APIResource {
     protected calcChatPayload(
         messages: string | Message[],
         parent_span_uuid?: string,
-        examples?: OpperExample[]
+        examples?: OpperCallExample[]
     ) {
         return {
             messages: this.calcMessagesForPost(messages),

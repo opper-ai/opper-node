@@ -43,6 +43,12 @@ const client = new Client();
     const cat = await client.generateImage({
         parent_span_uuid: trace.uuid,
         prompt: "Create an image of a cat",
+        configuration: {
+            model_parameters: {
+                size: "1792x1024",
+                quality: "hd",
+            },
+        },
     });
 
     // Create a temporary file path
