@@ -282,6 +282,7 @@ export type DatasetEntry = {
     uuid: string;
     input: string;
     output: string;
+    expected: string;
     comment?: string;
     span_id?: string;
     trace_id?: string;
