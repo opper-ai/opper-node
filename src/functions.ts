@@ -1,14 +1,31 @@
+import type Client from "./index";
+
 import {
     OpperFunction,
     OpperCall,
     OpperChatResponse,
     OpperGenerateImage,
     OpperImageResponse,
+    GetOptions,
     Chat,
 } from "./types";
 
 import APIResource from "./api-resource";
 import { OpperError } from "./errors";
+
+class OpperFunctionTmp {
+    public uuid: string;
+    public fn: OpperFunction;
+
+    protected _client: Client;
+
+    constructor(fn: OpperFunction & { uuid: string }, client: Client) {
+        this._client = client;
+
+        this.fn = fn;
+        this.uuid = fn.uuid;
+    }
+}
 
 class Functions extends APIResource {
     /**
@@ -36,6 +53,30 @@ class Functions extends APIResource {
         const response = await this.doPost(url, body);
 
         return (await response.json()) as OpperChatResponse;
+    }
+
+    public async get(options: GetOptions): Promise<unknown> {
+        let url: string | null = null;
+        if ("uuid" in options && options.uuid) {
+            url = this.calcURLUpdateFunction(options.uuid);
+        }
+
+        if ("name" in options && options.name) {
+            url = this.calcURLGetFunctionByPath(options.name);
+        }
+
+        if (!url) {
+            throw new OpperError("Either uuid or name must be provided in options");
+        }
+
+        const response = await this.doGet(url);
+        if (response.ok) {
+            const fn = await response.json();
+            console.log(fn);
+            return new OpperFunctionTmp(fn, this._client);
+        }
+
+        throw new OpperError(`Failed to get function: ${response.statusText}`);
     }
 
     /**
