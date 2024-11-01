@@ -1,6 +1,6 @@
 {
     "name": "opperai",
-    "version": "2.0.1",
+    "version": "2.0.2",
     "description": "Typescript SDK for the Opper API",
     "main": "dist/index.js",
     "module": "dist/index.mjs",
