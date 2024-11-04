@@ -14,7 +14,7 @@ const client = new Client();
 
     const fn = await client.functions.get({ name: "node-sdk/datasets" });
 
-    // Get the dataset
+    // Get the dataset for the function
     const dataset = await fn.dataset();
 
     // Add an entry to the dataset
@@ -29,6 +29,6 @@ const client = new Client();
     const entries = await dataset.getEntries();
     console.log(entries);
 
-    const test = await dataset.deleteEntry(entry.uuid);
-    console.log(test);
+    const deleted = await dataset.deleteEntry(entry.uuid);
+    console.log(deleted);
 })();

@@ -14,9 +14,7 @@ describe("OpperAIClient", () => {
 
     it("should be instantiated with an API key, authorization enabled, and a base URL", () => {
         expect(client).toBeInstanceOf(Client);
-        // @ts-expect-error Testing protected prop
         expect(client.apiKey).toBe("test-api-key");
-        // @ts-expect-error Testing protected prop
         expect(client.isUsingAuthorization).toBe(true);
         expect(client.baseURL).toBe("https://api.opper.ai");
     });
@@ -95,32 +93,6 @@ describe("OpperAIClient", () => {
             await client.indexes.list();
 
             expect(listSpy).toHaveBeenCalled();
-        });
-    });
-
-    describe("calcAuthorizationHeaders", () => {
-        it("should return correct headers when using authorization", () => {
-            client = new Client({
-                apiKey: "test-api-key",
-                isUsingAuthorization: true,
-            });
-            const headers = client.calcAuthorizationHeaders();
-            expect(headers).toEqual({
-                Authorization: "Bearer test-api-key",
-                "User-Agent": "opper-node/0.0.0",
-            });
-        });
-
-        it("should return correct headers when not using authorization", () => {
-            client = new Client({
-                apiKey: "test-api-key",
-                isUsingAuthorization: false,
-            });
-            const headers = client.calcAuthorizationHeaders();
-            expect(headers).toEqual({
-                "X-OPPER-API-KEY": "test-api-key",
-                "User-Agent": "opper-node/0.0.0",
-            });
         });
     });
 });

@@ -174,4 +174,44 @@ describe("OpperAIFunctions", () => {
             );
         });
     });
+
+    describe("calcURLChat", () => {
+        it("should return the correct URL", () => {
+            // @ts-expect-error Testing protected method
+            const url = functions.calcURLChat("test");
+            expect(url).toBe("https://api.opper.ai/v1/chat/test");
+        });
+    });
+
+    describe("calcURLCall", () => {
+        it("should return the correct URL", () => {
+            // @ts-expect-error Testing protected method
+            const url = functions.calcURLCall();
+            expect(url).toBe("https://api.opper.ai/v1/call");
+        });
+    });
+
+    describe("calcURLFunctions", () => {
+        it("should return the correct URL", () => {
+            // @ts-expect-error Testing protected method
+            const url = functions.calcURLFunctions();
+            expect(url).toBe("https://api.opper.ai/api/v1/functions");
+        });
+    });
+
+    describe("calcURLGetFunctionByPath", () => {
+        it("should return the correct URL", () => {
+            // @ts-expect-error Testing protected method
+            const url = functions.calcURLGetFunctionByPath("test");
+            expect(url).toBe("https://api.opper.ai/api/v1/functions/by_path/test");
+        });
+    });
+
+    describe("calcURLUpdateFunctionByUUID", () => {
+        it("should return the correct URL", () => {
+            // @ts-expect-error Testing protected method
+            const url = functions.calcURLUpdateFunctionByUUID("test");
+            expect(url).toBe("https://api.opper.ai/api/v1/functions/test");
+        });
+    });
 });
