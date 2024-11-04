@@ -1,17 +1,29 @@
-import type Client from "./index";
-
-import { Generation, SpanMetric, SpanStartOptions, SpanEndOptions } from "./types";
+import {
+    Generation,
+    SpanMetric,
+    SpanStartOptions,
+    SpanEndOptions,
+    APIClientContext,
+} from "./types";
 import { OpperError } from "./errors";
 import { nanoId, stringify } from "./utils";
 
 import APIResource from "./api-resource";
 
-export class OpperTrace {
+export class OpperTrace extends APIResource {
     public uuid: string;
-    protected _client: Client;
 
-    constructor({ uuid }: { uuid: string }, client: Client) {
-        this._client = client;
+    protected calcURLSpanById = (path: string = "") => {
+        const uuid = this.uuid;
+        return `${this.calcURLSpans()}/${uuid}${path}`;
+    };
+
+    constructor(
+        { uuid }: { uuid: string },
+        { baseURL, apiKey, isUsingAuthorization }: APIClientContext
+    ) {
+        super({ baseURL, apiKey, isUsingAuthorization });
+
         this.uuid = uuid;
     }
 
@@ -39,7 +51,7 @@ export class OpperTrace {
 
         if (response.ok) {
             const data = await response.json();
-            return new OpperSpan({ uuid: data.uuid }, this._client);
+            return new OpperSpan({ uuid: data.uuid }, this);
         }
 
         throw new OpperError(`Failed to start span: ${response.statusText}`);
@@ -63,41 +75,6 @@ export class OpperTrace {
         }
 
         throw new OpperError(`Failed to end trace: ${response.statusText}`);
-    }
-
-    protected calcURLSpans = () => {
-        return `${this._client.baseURL}/v1/spans`;
-    };
-
-    protected calcURLSpanById = (path: string = "") => {
-        const uuid = this.uuid;
-        return `${this.calcURLSpans()}/${uuid}${path}`;
-    };
-
-    protected async doPut(url: string, body: unknown) {
-        const headers = this._client.calcAuthorizationHeaders();
-
-        return await fetch(url, {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json",
-                ...headers,
-            },
-            body: stringify(body),
-        });
-    }
-
-    protected async doPost(url: string, body: unknown) {
-        const headers = this._client.calcAuthorizationHeaders();
-
-        return await fetch(url, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                ...headers,
-            },
-            body: stringify(body),
-        });
     }
 }
 
@@ -175,7 +152,7 @@ class Traces extends APIResource {
 
         if (response.ok) {
             const data = await response.json();
-            return new OpperTrace({ uuid: data.uuid }, this._client);
+            return new OpperTrace({ uuid: data.uuid }, this);
         }
 
         throw new OpperError(`Failed to start trace: ${response.statusText}`);

@@ -1,15 +1,31 @@
-import { Message, SSEStreamCallbacks, OpperCallExample } from "./types";
+import { Message, SSEStreamCallbacks, OpperCallExample, APIClientContext } from "./types";
 
 import { APIError, OpperError } from "./errors";
 import { stringify } from "./utils";
-import type Client from "./index";
 
 class APIResource {
-    protected _client: Client;
+    public baseURL: string;
+    public readonly apiKey: string;
+    public readonly isUsingAuthorization: boolean;
 
-    constructor(client: Client) {
-        this._client = client;
+    constructor({ baseURL, apiKey, isUsingAuthorization }: APIClientContext) {
+        this.baseURL = baseURL;
+        this.apiKey = apiKey;
+        this.isUsingAuthorization = isUsingAuthorization;
     }
+
+    protected calcAuthorizationHeaders = () => {
+        const isUsingAuthorization = this.isUsingAuthorization;
+        const apiKey = this.apiKey;
+
+        const key = isUsingAuthorization ? "Authorization" : "X-OPPER-API-KEY";
+        const value = isUsingAuthorization ? `Bearer ${apiKey}` : apiKey;
+
+        return {
+            [key]: value,
+            "User-Agent": `opper-node/${process.env.PACKAGE_VERSION || "0.0.0"}`,
+        };
+    };
 
     /**
      * This method creates an iterator for a URL stream.
@@ -20,7 +36,7 @@ class APIResource {
      * @returns An async generator that yields the values of the response body.
      */
     protected urlStreamIterator(url: string, body: unknown) {
-        const headers = this._client.calcAuthorizationHeaders();
+        const headers = this.calcAuthorizationHeaders();
 
         return (async function* () {
             const response = await fetch(url, {
@@ -134,7 +150,7 @@ class APIResource {
         body: unknown,
         controller?: AbortController | null | undefined
     ) {
-        const headers = this._client.calcAuthorizationHeaders();
+        const headers = this.calcAuthorizationHeaders();
 
         const response = await fetch(url, {
             method: "POST",
@@ -171,7 +187,7 @@ class APIResource {
         body: unknown,
         controller?: AbortController | null | undefined
     ) {
-        const headers = this._client.calcAuthorizationHeaders();
+        const headers = this.calcAuthorizationHeaders();
 
         const response = await fetch(url, {
             method: "PUT",
@@ -201,7 +217,7 @@ class APIResource {
      * @throws {APIError} If the response status is not 200.
      */
     protected async doGet(url: string) {
-        const headers = this._client.calcAuthorizationHeaders();
+        const headers = this.calcAuthorizationHeaders();
 
         const response = await fetch(url, {
             method: "GET",
@@ -229,7 +245,7 @@ class APIResource {
      * @throws {APIError} If the response status is not 200.
      */
     protected async doDelete(url: string) {
-        const headers = this._client.calcAuthorizationHeaders();
+        const headers = this.calcAuthorizationHeaders();
 
         const response = await fetch(url, {
             method: "DELETE",
@@ -313,56 +329,12 @@ class APIResource {
         return stringify({ messages });
     }
 
-    protected calcURLChat = (path: string) => {
-        return `${this._client.baseURL}/v1/chat/${path}`;
-    };
-
-    protected calcURLIndexes = () => {
-        return `${this._client.baseURL}/v1/indexes`;
-    };
-    protected calcURLIndex = (uuid: string) => {
-        return `${this._client.baseURL}/v1/indexes/${uuid}`;
-    };
-    protected calcURLAddIndex = (uuid: string) => {
-        return `${this._client.baseURL}/v1/indexes/${uuid}/index`;
-    };
-    protected calcURLQueryIndex = (uuid: string) => {
-        return `${this._client.baseURL}/v1/indexes/${uuid}/query`;
-    };
-    protected calcURLCreateFunction = () => {
-        return `${this._client.baseURL}/api/v1/functions`;
-    };
-    protected calcURLCall = () => {
-        return `${this._client.baseURL}/v1/call`;
-    };
     protected calcURLGenerateImage = () => {
-        return `${this._client.baseURL}/v1/generate-image`;
-    };
-    protected calcURLGetFunctionByPath = (path: string) => {
-        return `${this._client.baseURL}/api/v1/functions/by_path/${path}`;
-    };
-    protected calcURLUpdateFunction = (uuid: string) => {
-        return `${this._client.baseURL}/api/v1/functions/${uuid}`;
+        return `${this.baseURL}/v1/generate-image`;
     };
 
     protected calcURLSpans = () => {
-        return `${this._client.baseURL}/v1/spans`;
-    };
-
-    protected calcURLSpanById = (spanId: string) => {
-        return `${this._client.baseURL}/v1/spans/${spanId}`;
-    };
-
-    protected calcURLDatasets(datasetUuid: string): string {
-        return `${this._client.baseURL}/v1/datasets/${datasetUuid}`;
-    }
-
-    protected calcURLUploadUrl = (uuid: string, fileName: string) => {
-        return `${this._client.baseURL}/v1/indexes/${uuid}/upload_url?filename=${encodeURIComponent(fileName)}`;
-    };
-
-    protected calcURLRegisterFile = (uuid: string) => {
-        return `${this._client.baseURL}/v1/indexes/${uuid}/register_file`;
+        return `${this.baseURL}/v1/spans`;
     };
 }
 

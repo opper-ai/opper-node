@@ -5,6 +5,10 @@ import { OpperError } from "./errors";
 import { nanoId, stringify } from "./utils";
 
 class Spans extends APIResource {
+    protected calcURLSpanById = (spanId: string) => {
+        return `${this.baseURL}/v1/spans/${spanId}`;
+    };
+
     /**
      * Helper method to start a new span and set the current span context.
      * @param span - The span data to be created.

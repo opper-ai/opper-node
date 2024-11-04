@@ -8,7 +8,6 @@ import {
 
 import { OpperError } from "./errors";
 
-import Datasets from "./datasets";
 import Functions from "./functions";
 import Indexes from "./indexes";
 import Spans from "./spans";
@@ -16,9 +15,12 @@ import Traces, { OpperSpan, OpperTrace } from "./traces";
 
 class Client {
     public baseURL: string;
-
-    private apiKey: string;
-    private isUsingAuthorization: boolean;
+    public readonly apiKey: string;
+    public readonly isUsingAuthorization: boolean;
+    public readonly functions: Functions;
+    public readonly indexes: Indexes;
+    public readonly spans: Spans;
+    public readonly traces: Traces;
 
     constructor(
         { apiKey, baseURL, isUsingAuthorization, dangerouslyAllowBrowser }: Options = {
@@ -39,38 +41,16 @@ class Client {
         this.apiKey = apiKey;
         this.baseURL = baseURL || "https://api.opper.ai";
         this.isUsingAuthorization = !!isUsingAuthorization;
+
+        this.functions = new Functions(this);
+        this.indexes = new Indexes(this);
+        this.spans = new Spans(this);
+        this.traces = new Traces(this);
     }
 
-    functions = new Functions(this);
-    indexes = new Indexes(this);
-    spans = new Spans(this);
-    datasets = new Datasets(this);
-    traces = new Traces(this);
-
-    calcAuthorizationHeaders = () => {
-        const isUsingAuthorization = this.isUsingAuthorization;
-        const apiKey = this.apiKey;
-
-        const key = isUsingAuthorization ? "Authorization" : "X-OPPER-API-KEY";
-        const value = isUsingAuthorization ? `Bearer ${apiKey}` : apiKey;
-
-        return {
-            [key]: value,
-            "User-Agent": `opper-node/${process.env.PACKAGE_VERSION || "0.0.0"}`,
-        };
-    };
-
-    isRunningInBrowser = () => {
-        return (
-            typeof window !== "undefined" &&
-            typeof window.document !== "undefined" &&
-            typeof navigator !== "undefined"
-        );
-    };
-
-    async call(fn: OpperCall & { stream: true }): Promise<ReadableStream<unknown>>;
-    async call(fn: OpperCall & { stream?: false | undefined }): Promise<OpperChatResponse>;
-    async call(fn: OpperCall): Promise<ReadableStream<unknown> | OpperChatResponse> {
+    public async call(fn: OpperCall & { stream: true }): Promise<ReadableStream<unknown>>;
+    public async call(fn: OpperCall & { stream?: false | undefined }): Promise<OpperChatResponse>;
+    public async call(fn: OpperCall): Promise<ReadableStream<unknown> | OpperChatResponse> {
         if (fn.stream) {
             return await this.functions.stream(fn);
         }
@@ -78,8 +58,16 @@ class Client {
         return await this.functions.call(fn);
     }
 
-    generateImage = async (args: OpperGenerateImage): Promise<OpperImageResponse> => {
+    public generateImage = async (args: OpperGenerateImage): Promise<OpperImageResponse> => {
         return await this.functions.generateImage(args);
+    };
+
+    private isRunningInBrowser = () => {
+        return (
+            typeof window !== "undefined" &&
+            typeof window.document !== "undefined" &&
+            typeof navigator !== "undefined"
+        );
     };
 }
 

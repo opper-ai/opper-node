@@ -1,16 +1,50 @@
 import {
-    OpperFunction,
+    OpperFunctionSchema,
     OpperCall,
     OpperChatResponse,
     OpperGenerateImage,
     OpperImageResponse,
     Chat,
+    GetOpperFunctionOptions,
+    APIClientContext,
 } from "./types";
 
 import APIResource from "./api-resource";
 import { OpperError } from "./errors";
+import { Dataset } from "./datasets";
+
+class OpperFunction extends APIResource {
+    public uuid: string;
+    public dataset_uuid: string;
+
+    constructor(fn: OpperFunctionSchema & { dataset_uuid: string }, ctx: APIClientContext) {
+        super(ctx);
+        this.uuid = fn.uuid;
+        this.dataset_uuid = fn.dataset_uuid;
+    }
+
+    public async dataset(): Promise<Dataset> {
+        return new Dataset(this.dataset_uuid, this);
+    }
+}
 
 class Functions extends APIResource {
+    protected calcURLChat = (path: string) => {
+        return `${this.baseURL}/v1/chat/${path}`;
+    };
+    protected calcURLCall = () => {
+        return `${this.baseURL}/v1/call`;
+    };
+    protected calcURLFunctions = () => {
+        return `${this.baseURL}/api/v1/functions`;
+    };
+    protected calcURLGetFunctionByPath = (path: string) => {
+        return `${this.calcURLFunctions()}/by_path/${path}`;
+    };
+    protected calcURLUpdateFunctionByUUID = (uuid: string) => {
+        return `${this.calcURLFunctions()}/${uuid}`;
+    };
+
     /**
      * This method is used to initiate a chat with the OpperAI API.
      * The response is a promise that resolves to an object with the message and context.
@@ -38,17 +72,43 @@ class Functions extends APIResource {
         return (await response.json()) as OpperChatResponse;
     }
 
+    public async get(options: GetOpperFunctionOptions): Promise<OpperFunction> {
+        let url: string | null = null;
+
+        if (options.name) {
+            url = this.calcURLGetFunctionByPath(options.name);
+        }
+
+        if (options.uuid) {
+            url = this.calcURLUpdateFunctionByUUID(options.uuid);
+        }
+
+        if (!url) {
+            throw new OpperError("Function uuid or name is required");
+        }
+
+        const response = await this.doGet(url);
+
+        if (response.ok) {
+            const fn = await response.json();
+
+            return new OpperFunction(fn, this);
+        }
+
+        throw new OpperError(`Failed to get function: ${response.statusText}`);
+    }
+
     /**
      * Updates an existing function in the OpperAI API.
      * @param fn - The OpperFunction object containing the updated function details.
      * @returns A promise that resolves to the updated OpperFunction.
      * @throws {OpperError} If the function uuid is missing or if the update fails.
      */
-    public async update(fn: OpperFunction): Promise<OpperFunction> {
+    public async update(fn: OpperFunctionSchema): Promise<OpperFunctionSchema> {
         if (!fn.uuid) {
             throw new OpperError("Function uuid is required");
         }
-        const response = await this.doPost(this.calcURLUpdateFunction(fn.uuid), fn);
+        const response = await this.doPost(this.calcURLUpdateFunctionByUUID(fn.uuid), fn);
 
         if (response.ok) {
             return fn;
@@ -63,8 +123,8 @@ class Functions extends APIResource {
      * @returns A promise that resolves to the created OpperFunction, including the assigned UUID.
      * @throws {OpperError} If the function creation fails.
      */
-    public async create(fn: OpperFunction): Promise<OpperFunction> {
-        const response = await this.doPost(this.calcURLCreateFunction(), fn);
+    public async create(fn: OpperFunctionSchema): Promise<OpperFunctionSchema> {
+        const response = await this.doPost(this.calcURLFunctions(), fn);
 
         if (response.ok) {
             const data = await response.json();

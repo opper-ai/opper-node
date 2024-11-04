@@ -205,8 +205,8 @@ export type OpperCall = {
     configuration?: OpperCallConfigurationParameters;
 };
 
-export type OpperFunction = {
-    uuid?: string;
+export type OpperFunctionSchema = {
+    uuid: string;
     path: string;
     description: string;
     instructions: string;
@@ -319,4 +319,14 @@ export interface SpanEndOptions {
      * The end time of the span. Defaults to the current date.
      */
     end_time?: Date;
+}
+
+export type GetOpperFunctionOptions =
+    | { uuid: string; name?: never }
+    | { uuid?: never; name: string };
+
+export interface APIClientContext {
+    baseURL: string;
+    apiKey: string;
+    isUsingAuthorization: boolean;
 }
