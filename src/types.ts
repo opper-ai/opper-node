@@ -217,7 +217,7 @@ export type OpperFunctionSchema = {
     cache_config?: CacheConfig;
     input_schema?: Record<string, unknown>;
     out_schema?: Record<string, unknown>;
-    dataset_uuid?: string;
+    dataset_uuid: string;
 };
 
 export interface CacheConfig {

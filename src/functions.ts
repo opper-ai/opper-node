@@ -7,22 +7,47 @@ import {
     Chat,
     GetOpperFunctionOptions,
     APIClientContext,
+    CacheConfig,
 } from "./types";
 
 import APIResource from "./api-resource";
 import { OpperError } from "./errors";
 import { Dataset } from "./datasets";
 
-class OpperFunction extends APIResource {
-    public uuid: string;
-    public dataset_uuid: string;
+class OpperFunction extends APIResource implements OpperFunctionSchema {
+    public readonly uuid: string;
+    public readonly dataset_uuid: string;
+    public readonly path: string;
+    public readonly description: string;
+    public readonly instructions: string;
+    public readonly model?: string;
+    public readonly index_ids?: number[];
+    public readonly few_shot?: boolean;
+    public readonly few_shot_count?: number;
+    public readonly cache_config?: CacheConfig;
+    public readonly input_schema?: Record<string, unknown>;
+    public readonly out_schema?: Record<string, unknown>;
 
     constructor(fn: OpperFunctionSchema & { dataset_uuid: string }, ctx: APIClientContext) {
         super(ctx);
         this.uuid = fn.uuid;
         this.dataset_uuid = fn.dataset_uuid;
+        this.path = fn.path;
+        this.description = fn.description;
+        this.instructions = fn.instructions;
+        this.model = fn.model;
+        this.index_ids = fn.index_ids;
+        this.few_shot = fn.few_shot;
+        this.few_shot_count = fn.few_shot_count;
+        this.cache_config = fn.cache_config;
+        this.input_schema = fn.input_schema;
+        this.out_schema = fn.out_schema;
     }
 
+    /**
+     * Get the dataset for the function.
+     * @returns A promise that resolves to a Dataset object.
+     */
     public async dataset(): Promise<Dataset> {
         return new Dataset(this.dataset_uuid, this);
     }

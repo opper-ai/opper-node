@@ -9,6 +9,14 @@ export class Dataset extends APIResource {
         return `${this.baseURL}/v1/datasets/${this.uuid}`;
     }
 
+    protected calcURLDatasetEntry(uuid: string): string {
+        return `${this.calcURLDataset()}/entries/${uuid}`;
+    }
+
+    protected calcURLDatasetEntries(offset: number = 0, limit: number = 100): string {
+        return `${this.calcURLDataset()}/entries?offset=${offset}&limit=${limit}`;
+    }
+
     constructor(uuid: string, ctx: APIClientContext) {
         super(ctx);
         this.uuid = uuid;
@@ -42,7 +50,7 @@ export class Dataset extends APIResource {
      * @throws {OpperError} If the response status is not 200.
      */
     public async getEntries(offset: number = 0, limit: number = 100): Promise<DatasetEntry[]> {
-        const url = `${this.calcURLDataset()}/entries?offset=${offset}&limit=${limit}`;
+        const url = this.calcURLDatasetEntries(offset, limit);
 
         const response = await this.doGet(url);
 
@@ -57,12 +65,12 @@ export class Dataset extends APIResource {
 
     /**
      * Retrieves a specific entry from a dataset.
-     * @param entryUuid The UUID of the entry to retrieve.
+     * @param uuid The UUID of the entry to retrieve.
      * @returns A promise that resolves to a DatasetEntry object.
      * @throws {OpperError} If the response status is not 200.
      */
-    public async getEntry(entryUuid: string): Promise<DatasetEntry> {
-        const url = `${this.calcURLDataset()}/entries/${entryUuid}`;
+    public async getEntry(uuid: string): Promise<DatasetEntry> {
+        const url = this.calcURLDatasetEntry(uuid);
         const response = await this.doGet(url);
 
         if (response.ok) {
@@ -76,16 +84,16 @@ export class Dataset extends APIResource {
 
     /**
      * Updates a specific entry in a dataset.
-     * @param entryUuid The UUID of the entry to update.
+     * @param uuid The UUID of the entry to update.
      * @param updatedEntry The updated entry data.
      * @returns A promise that resolves to the updated DatasetEntry object.
      * @throws {OpperError} If the response status is not 200.
      */
     public async updateEntry(
-        entryUuid: string,
+        uuid: string,
         updatedEntry: Partial<DatasetEntry>
     ): Promise<DatasetEntry> {
-        const url = `${this.calcURLDataset()}/entries/${entryUuid}`;
+        const url = this.calcURLDatasetEntry(uuid);
         const response = await this.doPut(url, updatedEntry);
 
         if (response.ok) {
@@ -99,12 +107,12 @@ export class Dataset extends APIResource {
 
     /**
      * Deletes a specific entry from a dataset.
-     * @param entryUuid The UUID of the entry to delete.
+     * @param uuid The UUID of the entry to delete.
      * @returns A promise that resolves to a boolean indicating success.
      * @throws {OpperError} If the response status is not 200.
      */
-    public async deleteEntry(entryUuid: string): Promise<boolean> {
-        const url = `${this.calcURLDataset()}/entries/${entryUuid}`;
+    public async deleteEntry(uuid: string): Promise<boolean> {
+        const url = this.calcURLDatasetEntry(uuid);
         const response = await this.doDelete(url);
 
         if (response.ok) {
