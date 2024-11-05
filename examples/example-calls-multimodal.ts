@@ -36,7 +36,7 @@ const client = new Client();
         name: "node-sdk/call/multimodal/transcribe-audio",
         instructions: "Given an audio file, return the transcription of the audio",
         input: audio.getInput(),
-        model: "gcp/gemini-1.5-flash-eu",
+        model: "gcp/gemini-pro-1.5-eu",
     });
     console.log("audio_description: ", audio_description);
 
