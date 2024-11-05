@@ -5,7 +5,6 @@ import {
     SpanEndOptions,
     APIClientContext,
 } from "./types";
-import { OpperError } from "./errors";
 import { nanoId, stringify } from "./utils";
 
 import APIResource from "./api-resource";
@@ -40,7 +39,7 @@ export class OpperTrace extends APIResource {
         const parent_uuid = this.uuid;
         const url = this.calcURLSpans();
 
-        const response = await this.doPost(url, {
+        const data = await this.doPost<{ uuid: string }>(url, {
             name,
             input: stringify(input),
             start_time,
@@ -49,12 +48,7 @@ export class OpperTrace extends APIResource {
             metadata,
         });
 
-        if (response.ok) {
-            const data = await response.json();
-            return new OpperSpan({ uuid: data.uuid }, this);
-        }
-
-        throw new OpperError(`Failed to start span: ${response.statusText}`);
+        return new OpperSpan({ uuid: data.uuid }, this);
     }
 
     /**
@@ -64,17 +58,13 @@ export class OpperTrace extends APIResource {
         const uuid = this.uuid;
         const url = this.calcURLSpanById();
 
-        const response = await this.doPut(url, {
+        const data = await this.doPut<{ uuid: string }>(url, {
             uuid,
             output: stringify(output),
             end_time,
         });
 
-        if (response.ok) {
-            return { uuid };
-        }
-
-        throw new OpperError(`Failed to end trace: ${response.statusText}`);
+        return data;
     }
 }
 
@@ -85,14 +75,9 @@ export class OpperSpan extends OpperTrace {
     public async saveMetric(metric: SpanMetric): Promise<{ uuid: string }> {
         const url = this.calcURLSpanById(`/metrics`);
 
-        const response = await this.doPost(url, metric);
+        const data = await this.doPost<{ uuid: string }>(url, metric);
 
-        if (response.ok) {
-            const data = await response.json();
-            return { uuid: data.uuid };
-        }
-
-        throw new OpperError(`Failed to add metric for span: ${response.statusText}`);
+        return data;
     }
 
     /**
@@ -103,14 +88,9 @@ export class OpperSpan extends OpperTrace {
     }> {
         const url = this.calcURLSpanById(`/generation`);
 
-        const response = await this.doPost(url, { called_at, ...generation });
+        const data = await this.doPost<{ uuid: string }>(url, { called_at, ...generation });
 
-        if (response.ok) {
-            const data = await response.json();
-            return { uuid: data.uuid };
-        }
-
-        throw new OpperError(`Failed to save generation for span: ${response.statusText}`);
+        return data;
     }
 
     /**
@@ -119,14 +99,9 @@ export class OpperSpan extends OpperTrace {
     public async saveExample(): Promise<{ uuid: string }> {
         const url = this.calcURLSpanById(`/save_examples`);
 
-        const response = await this.doPost(url, {});
+        const data = await this.doPost<{ uuid: string }>(url, {});
 
-        if (response.ok) {
-            const data = await response.json();
-            return { uuid: data.uuid };
-        }
-
-        throw new OpperError(`Failed to save examples for span: ${response.statusText}`);
+        return data;
     }
 }
 
@@ -142,7 +117,7 @@ class Traces extends APIResource {
     }: SpanStartOptions) {
         const url = this.calcURLSpans();
 
-        const response = await this.doPost(url, {
+        const data = await this.doPost<{ uuid: string }>(url, {
             name,
             input: stringify(input),
             start_time,
@@ -150,12 +125,7 @@ class Traces extends APIResource {
             ...(metadata && { meta: metadata }),
         });
 
-        if (response.ok) {
-            const data = await response.json();
-            return new OpperTrace({ uuid: data.uuid }, this);
-        }
-
-        throw new OpperError(`Failed to start trace: ${response.statusText}`);
+        return new OpperTrace({ uuid: data.uuid }, this);
     }
 }
 

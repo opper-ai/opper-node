@@ -92,9 +92,9 @@ class Functions extends APIResource {
         const url = this.calcURLChat(path);
         const body = this.calcChatPayload(message, parent_span_uuid, examples);
 
-        const response = await this.doPost(url, body);
+        const data = await this.doPost<OpperChatResponse>(url, body);
 
-        return (await response.json()) as OpperChatResponse;
+        return data;
     }
 
     public async get(options: GetOpperFunctionOptions): Promise<OpperFunction> {
@@ -112,15 +112,9 @@ class Functions extends APIResource {
             throw new OpperError("Function uuid or name is required");
         }
 
-        const response = await this.doGet(url);
+        const fn = await this.doGet<OpperFunctionSchema>(url);
 
-        if (response.ok) {
-            const fn = await response.json();
-
-            return new OpperFunction(fn, this);
-        }
-
-        throw new OpperError(`Failed to get function: ${response.statusText}`);
+        return new OpperFunction(fn, this);
     }
 
     /**
@@ -133,13 +127,12 @@ class Functions extends APIResource {
         if (!fn.uuid) {
             throw new OpperError("Function uuid is required");
         }
-        const response = await this.doPost(this.calcURLUpdateFunctionByUUID(fn.uuid), fn);
+        const data = await this.doPost<OpperFunctionSchema>(
+            this.calcURLUpdateFunctionByUUID(fn.uuid),
+            fn
+        );
 
-        if (response.ok) {
-            return fn;
-        }
-
-        throw new OpperError(`Failed to update function: ${response.statusText}`);
+        return data;
     }
 
     /**
@@ -149,15 +142,9 @@ class Functions extends APIResource {
      * @throws {OpperError} If the function creation fails.
      */
     public async create(fn: OpperFunctionSchema): Promise<OpperFunctionSchema> {
-        const response = await this.doPost(this.calcURLFunctions(), fn);
+        const data = await this.doPost<{ uuid: string }>(this.calcURLFunctions(), fn);
 
-        if (response.ok) {
-            const data = await response.json();
-
-            return { ...fn, uuid: data.uuid };
-        }
-
-        throw new OpperError(`Failed to create function: ${response.statusText}`);
+        return { ...fn, uuid: data.uuid };
     }
 
     /**
@@ -171,19 +158,13 @@ class Functions extends APIResource {
             throw new OpperError("Maximum number of examples is 10");
         }
 
-        const response = await this.doPost(this.calcURLCall(), {
+        const data = await this.doPost<OpperChatResponse>(this.calcURLCall(), {
             ...fn,
             input_type: fn?.input_schema,
             output_type: fn?.output_schema,
         });
 
-        if (response.ok) {
-            const data = await response.json();
-
-            return data;
-        }
-
-        throw new OpperError(`Failed to call function: ${response.statusText}`);
+        return data;
     }
 
     /**
@@ -197,23 +178,21 @@ class Functions extends APIResource {
     public async generateImage(args: OpperGenerateImage): Promise<OpperImageResponse> {
         const model = args.model || "azure/dall-e-3-eu";
 
-        const response = await this.doPost(this.calcURLGenerateImage(), {
-            ...args,
-            model: model,
-            parameters: args.parameters,
-        });
+        const data = await this.doPost<{ result: { base64_image: string } }>(
+            this.calcURLGenerateImage(),
+            {
+                ...args,
+                model: model,
+                parameters: args.parameters,
+            }
+        );
 
-        if (response.ok) {
-            const data = await response.json();
-            const base64Image = data.result.base64_image;
-            const imageBytes = Buffer.from(base64Image, "base64");
+        const base64Image = data.result.base64_image;
+        const imageBytes = Buffer.from(base64Image, "base64");
 
-            return {
-                bytes: imageBytes,
-            };
-        }
-
-        throw new OpperError(`Failed to generate image: ${response.statusText}`);
+        return {
+            bytes: imageBytes,
+        };
     }
 
     /**

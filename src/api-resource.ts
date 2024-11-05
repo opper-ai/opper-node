@@ -145,11 +145,11 @@ class APIResource {
      * @returns A promise that resolves to the fetch response.
      * @throws {APIError} If the response status is not 200.
      */
-    protected async doPost(
+    protected async doPost<T = unknown>(
         url: string,
         body: unknown,
         controller?: AbortController | null | undefined
-    ) {
+    ): Promise<T> {
         const headers = this.calcAuthorizationHeaders();
 
         const response = await fetch(url, {
@@ -169,7 +169,9 @@ class APIResource {
             );
         }
 
-        return response;
+        const data: T = await response.json();
+
+        return data;
     }
 
     /**
@@ -182,11 +184,11 @@ class APIResource {
      * @returns A promise that resolves to the fetch response.
      * @throws {APIError} If the response status is not 200.
      */
-    protected async doPut(
+    protected async doPut<T = unknown>(
         url: string,
         body: unknown,
         controller?: AbortController | null | undefined
-    ) {
+    ): Promise<T> {
         const headers = this.calcAuthorizationHeaders();
 
         const response = await fetch(url, {
@@ -206,7 +208,9 @@ class APIResource {
             );
         }
 
-        return response;
+        const data: T = await response.json();
+
+        return data;
     }
 
     /**
@@ -216,7 +220,7 @@ class APIResource {
      * @returns A promise that resolves to the fetch response.
      * @throws {APIError} If the response status is not 200.
      */
-    protected async doGet(url: string) {
+    protected async doGet<T = unknown>(url: string): Promise<T> {
         const headers = this.calcAuthorizationHeaders();
 
         const response = await fetch(url, {
@@ -234,7 +238,9 @@ class APIResource {
             );
         }
 
-        return response;
+        const data: T = await response.json();
+
+        return data;
     }
 
     /**

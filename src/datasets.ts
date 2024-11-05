@@ -31,15 +31,9 @@ export class Dataset extends APIResource {
     public async add(entry: Omit<DatasetEntry, "uuid">): Promise<DatasetEntry> {
         const url = this.calcURLDataset();
 
-        const response = await this.doPost(url, entry);
+        const data = await this.doPost<DatasetEntry>(url, entry);
 
-        if (response.ok) {
-            const data: DatasetEntry = await response.json();
-
-            return data;
-        }
-
-        throw new OpperError(`Failed to add entry to dataset: ${response.statusText}`);
+        return data;
     }
 
     /**
@@ -52,15 +46,9 @@ export class Dataset extends APIResource {
     public async getEntries(offset: number = 0, limit: number = 100): Promise<DatasetEntry[]> {
         const url = this.calcURLDatasetEntries(offset, limit);
 
-        const response = await this.doGet(url);
+        const entries = await this.doGet<DatasetEntry[]>(url);
 
-        if (response.ok) {
-            const entries: DatasetEntry[] = await response.json();
-
-            return entries;
-        }
-
-        throw new OpperError(`Failed to get entries from dataset: ${response.statusText}`);
+        return entries;
     }
 
     /**
@@ -71,15 +59,9 @@ export class Dataset extends APIResource {
      */
     public async getEntry(uuid: string): Promise<DatasetEntry> {
         const url = this.calcURLDatasetEntry(uuid);
-        const response = await this.doGet(url);
+        const entry = await this.doGet<DatasetEntry>(url);
 
-        if (response.ok) {
-            const entry: DatasetEntry = await response.json();
-
-            return entry;
-        }
-
-        throw new OpperError(`Failed to get entry from dataset: ${response.statusText}`);
+        return entry;
     }
 
     /**
@@ -94,15 +76,9 @@ export class Dataset extends APIResource {
         updatedEntry: Partial<DatasetEntry>
     ): Promise<DatasetEntry> {
         const url = this.calcURLDatasetEntry(uuid);
-        const response = await this.doPut(url, updatedEntry);
+        const entry = await this.doPut<DatasetEntry>(url, updatedEntry);
 
-        if (response.ok) {
-            const entry: DatasetEntry = await response.json();
-
-            return entry;
-        }
-
-        throw new OpperError(`Failed to update entry in dataset: ${response.statusText}`);
+        return entry;
     }
 
     /**

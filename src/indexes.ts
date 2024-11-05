@@ -71,19 +71,14 @@ export class Index extends APIResource {
         filters,
         parent_span_uuid,
     }: OpperIndexQuery): Promise<OpperIndexDocument[]> {
-        const response = await this.doPost(this.calcURLQueryIndex(), {
+        const documents = await this.doPost<OpperIndexDocument[]>(this.calcURLQueryIndex(), {
             q: query,
             k: k,
             filters: filters,
             parent_span_uuid,
         });
 
-        if (response.ok) {
-            const documents = await response.json();
-            return documents;
-        }
-
-        throw new OpperError(`Failed to query index: ${response.statusText}`);
+        return documents;
     }
 
     /**
@@ -105,13 +100,11 @@ export class Index extends APIResource {
     }> {
         // Get upload URL
         const fileName = path.split("/").pop() || "";
-        const uploadUrlResponse = await this.doGet(this.calcURLUploadUrl(fileName));
-
-        if (!uploadUrlResponse.ok) {
-            throw new OpperError(`Failed to get upload URL: ${uploadUrlResponse.statusText}`);
-        }
-
-        const uploadUrlData = await uploadUrlResponse.json();
+        const uploadUrlData = await this.doGet<{
+            uuid: string;
+            url: string;
+            fields: Record<string, string>;
+        }>(this.calcURLUploadUrl(fileName));
 
         // Upload file
         const fileContent = await fs.promises.readFile(path);
@@ -131,15 +124,16 @@ export class Index extends APIResource {
         }
 
         // Register file
-        const registerFileResponse = await this.doPost(this.calcURLRegisterFile(), {
+        const registerFileResponse = await this.doPost<{
+            uuid: string;
+            key: string;
+            original_filename: string;
+            document_id: number;
+        }>(this.calcURLRegisterFile(), {
             uuid: uploadUrlData.uuid,
         });
 
-        if (!registerFileResponse.ok) {
-            throw new OpperError(`Failed to register file: ${registerFileResponse.statusText}`);
-        }
-
-        return registerFileResponse.json();
+        return registerFileResponse;
     }
 }
 
@@ -164,14 +158,9 @@ class Indexes extends APIResource {
     public async list(): Promise<OpperIndex[]> {
         const url = this.calcURLIndexes();
 
-        const response = await this.doGet(url);
+        const indexes = await this.doGet<OpperIndex[]>(url);
 
-        if (response.ok) {
-            const indexes = await response.json();
-            return indexes;
-        }
-
-        throw new OpperError(`Failed to list indexes: ${response.statusText}`);
+        return indexes;
     }
 
     /**
@@ -182,12 +171,10 @@ class Indexes extends APIResource {
      * @throws {APIError} If the response status is not 200.
      */
     public async create(name: string, embedding_model?: string): Promise<Index> {
-        const response = await this.doPost(this.calcURLIndexes(), {
+        const data = await this.doPost<OpperIndex>(this.calcURLIndexes(), {
             name,
             ...(embedding_model && { embedding_model }),
         });
-
-        const data = await response.json();
 
         return new Index(data, this);
     }

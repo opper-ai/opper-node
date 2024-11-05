@@ -1,4 +1,4 @@
-// Run example with "npx ts-node ./examples/example-functions.ts"
+// Run example with "npx ts-node ./examples/example-datasets.ts"
 import "dotenv/config";
 import Client from "../src";
 
@@ -12,6 +12,7 @@ const client = new Client();
         input: "what is the capital of sweden",
     });
 
+    // Get the function
     const fn = await client.functions.get({ name: "node-sdk/datasets" });
 
     // Get the dataset for the function
