@@ -1,7 +1,6 @@
 import { Span, SpanMetric, Generation } from "./types";
 
 import APIResource from "./api-resource";
-import { OpperError } from "./errors";
 import { nanoId } from "./utils";
 
 class Spans extends APIResource {
@@ -67,13 +66,9 @@ class Spans extends APIResource {
      */
     public async delete(uuid: string): Promise<boolean> {
         const url = this.calcURLSpanById(uuid);
+        const data = await this.doDelete<boolean>(url);
 
-        const response = await this.doDelete(url);
-        if (response.status !== 204) {
-            throw new OpperError(`Failed to delete span: ${response.statusText}`);
-        }
-
-        return true;
+        return data;
     }
 
     /**

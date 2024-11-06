@@ -182,18 +182,19 @@ class Indexes extends APIResource {
     /**
      * Deletes an index
      * @param uuid The uuid of the index to delete.
-     * @returns A promise that resolves to void.
-     * @throws {APIError} If the response status is not 200.
+     * @returns A promise that resolves to a boolean indicating success.
      */
-    public async delete(uuid: string): Promise<void> {
-        await this.doDelete(this.calcURLIndex(uuid));
+    public async delete(uuid: string): Promise<boolean> {
+        const url = this.calcURLIndex(uuid);
+        const deleted = await this.doDelete<boolean>(url);
+
+        return deleted;
     }
 
     /**
      * Retrieves an index by name.
      * @param name The name of the index to retrieve.
      * @returns A promise that resolves to the index.
-     * @throws {APIError} If the response status is not 200.
      */
     public async get(name: string) {
         const list = await this.list();

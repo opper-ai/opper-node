@@ -92,6 +92,10 @@ const client = new Client();
 
     console.log("file: ", file);
 
+    // Delete the index
+    // const deleted = await client.indexes.delete(index.uuid);
+    // console.log("deleted: ", deleted);
+
     // 'Issue with my account I cannot log in to my account'
     await trace.end({
         output: open_results,

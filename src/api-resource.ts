@@ -250,7 +250,7 @@ class APIResource {
      * @returns A promise that resolves to the fetch response.
      * @throws {APIError} If the response status is not 200.
      */
-    protected async doDelete(url: string) {
+    protected async doDelete<T = unknown>(url: string): Promise<T> {
         const headers = this.calcAuthorizationHeaders();
 
         const response = await fetch(url, {
@@ -268,7 +268,9 @@ class APIResource {
             );
         }
 
-        return response;
+        const data: T = await response.json();
+
+        return data;
     }
 
     protected calcChatPayload(

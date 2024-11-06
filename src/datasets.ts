@@ -1,5 +1,4 @@
 import APIResource from "./api-resource";
-import { OpperError } from "./errors";
 import { APIClientContext, DatasetEntry } from "./types";
 
 export class Dataset extends APIResource {
@@ -45,7 +44,6 @@ export class Dataset extends APIResource {
      */
     public async getEntries(offset: number = 0, limit: number = 100): Promise<DatasetEntry[]> {
         const url = this.calcURLDatasetEntries(offset, limit);
-
         const entries = await this.doGet<DatasetEntry[]>(url);
 
         return entries;
@@ -89,14 +87,8 @@ export class Dataset extends APIResource {
      */
     public async deleteEntry(uuid: string): Promise<boolean> {
         const url = this.calcURLDatasetEntry(uuid);
-        const response = await this.doDelete(url);
+        const data = await this.doDelete<boolean>(url);
 
-        if (response.ok) {
-            const result: boolean = await response.json();
-
-            return result;
-        }
-
-        throw new OpperError(`Failed to delete entry from dataset: ${response.statusText}`);
+        return data;
     }
 }
