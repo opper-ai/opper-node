@@ -24,13 +24,13 @@ const client = new Client();
         output: "Hello, world!",
         expected: "Hello, world!",
     });
-    console.log(entry);
+    console.log("Entry added: ", entry);
 
     // Get all entries from the dataset
     const entries = await dataset.getEntries();
-    console.log(entries);
+    console.log("Entries: ", entries);
 
     // Delete an entry from the dataset
     const deleted = await dataset.deleteEntry(entry.uuid);
-    console.log(deleted);
+    console.log("Entry deleted: ", deleted);
 })();
