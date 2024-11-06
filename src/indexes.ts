@@ -141,7 +141,7 @@ class Indexes extends APIResource {
     protected calcURLIndexes = () => {
         return `${this.baseURL}/v1/indexes`;
     };
-    protected calcURLIndex = (uuid: string) => {
+    protected calcURLIndexByUUID = (uuid: string) => {
         return `${this.baseURL}/v1/indexes/${uuid}`;
     };
 
@@ -157,7 +157,6 @@ class Indexes extends APIResource {
      */
     public async list(): Promise<OpperIndex[]> {
         const url = this.calcURLIndexes();
-
         const indexes = await this.doGet<OpperIndex[]>(url);
 
         return indexes;
@@ -171,7 +170,8 @@ class Indexes extends APIResource {
      * @throws {APIError} If the response status is not 200.
      */
     public async create(name: string, embedding_model?: string): Promise<Index> {
-        const data = await this.doPost<OpperIndex>(this.calcURLIndexes(), {
+        const url = this.calcURLIndexes();
+        const data = await this.doPost<OpperIndex>(url, {
             name,
             ...(embedding_model && { embedding_model }),
         });
@@ -185,7 +185,7 @@ class Indexes extends APIResource {
      * @returns A promise that resolves to a boolean indicating success.
      */
     public async delete(uuid: string): Promise<boolean> {
-        const url = this.calcURLIndex(uuid);
+        const url = this.calcURLIndexByUUID(uuid);
         const deleted = await this.doDelete<boolean>(url);
 
         return deleted;

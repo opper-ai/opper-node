@@ -38,6 +38,22 @@ describe("OpperAIIndexes", () => {
         (global.fetch as jest.Mock).mockClear();
     });
 
+    describe("calcURLIndexes", () => {
+        it("should return the correct URL", () => {
+            // @ts-expect-error Testing protected method
+            const url = opperAIIndexes.calcURLIndexes();
+            expect(url).toBe("https://api.opper.ai/v1/indexes");
+        });
+    });
+
+    describe("calcURLIndex", () => {
+        it("should return the correct URL", () => {
+            // @ts-expect-error Testing protected method
+            const url = opperAIIndexes.calcURLIndexByUUID("test-uuid");
+            expect(url).toBe("https://api.opper.ai/v1/indexes/test-uuid");
+        });
+    });
+
     describe("list", () => {
         it("should retrieve a list of indexes", async () => {
             (global.fetch as jest.Mock).mockResolvedValueOnce({

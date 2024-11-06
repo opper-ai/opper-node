@@ -12,9 +12,9 @@ const client = new Client();
         input: query,
     });
 
-    let index = await client.indexes.get("node-sdk/indexes/support-tickets");
+    let index = await client.indexes.get("node-sdk/indexes/support-tickets-1");
     if (!index) {
-        index = await client.indexes.create("node-sdk/indexes/support-tickets");
+        index = await client.indexes.create("node-sdk/indexes/support-tickets-1");
     }
 
     const tickets = [
@@ -73,9 +73,9 @@ const client = new Client();
         parent_span_uuid: trace.uuid,
     });
 
-    console.log(results[0].content);
+    console.log("Result: ", results[0].content);
     // 'Issue with my account I cannot log in to my account'
-    console.log(results[0].metadata);
+    console.log("Metadata: ", results[0].metadata);
     // { status: 'open', id: '1' }
 
     const open_results = await index.query({
@@ -84,17 +84,15 @@ const client = new Client();
         filters: [{ key: "status", operation: "=", value: "open" }],
         parent_span_uuid: trace.uuid,
     });
-
-    console.log(open_results[0].content);
+    console.log("Open Result: ", open_results[0].content);
 
     // Upload a file to the index
     const file = await index.uploadFile("examples/fixtures/example.txt");
-
-    console.log("file: ", file);
+    console.log("File: ", file);
 
     // Delete the index
-    // const deleted = await client.indexes.delete(index.uuid);
-    // console.log("deleted: ", deleted);
+    const deleted = await client.indexes.delete(index.uuid);
+    console.log("Deleted: ", deleted);
 
     // 'Issue with my account I cannot log in to my account'
     await trace.end({

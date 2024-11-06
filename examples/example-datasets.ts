@@ -30,6 +30,7 @@ const client = new Client();
     const entries = await dataset.getEntries();
     console.log(entries);
 
+    // Delete an entry from the dataset
     const deleted = await dataset.deleteEntry(entry.uuid);
     console.log(deleted);
 })();
