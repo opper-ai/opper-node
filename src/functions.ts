@@ -69,6 +69,9 @@ class Functions extends APIResource {
     protected calcURLUpdateFunctionByUUID = (uuid: string) => {
         return `${this.calcURLFunctions()}/${uuid}`;
     };
+    protected calcURLGenerateImage = () => {
+        return `${this.baseURL}/v1/generate-image`;
+    };
 
     /**
      * This method is used to initiate a chat with the OpperAI API.

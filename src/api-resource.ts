@@ -336,14 +336,6 @@ class APIResource {
     protected stringifyMessage(messages: Message[]) {
         return stringify({ messages });
     }
-
-    protected calcURLGenerateImage = () => {
-        return `${this.baseURL}/v1/generate-image`;
-    };
-
-    protected calcURLSpans = () => {
-        return `${this.baseURL}/v1/spans`;
-    };
 }
 
 export default APIResource;

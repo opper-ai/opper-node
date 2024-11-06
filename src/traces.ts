@@ -12,6 +12,10 @@ import APIResource from "./api-resource";
 export class OpperTrace extends APIResource {
     public uuid: string;
 
+    protected calcURLSpans = () => {
+        return `${this.baseURL}/v1/spans`;
+    };
+
     protected calcURLSpanById = (path: string = "") => {
         const uuid = this.uuid;
         return `${this.calcURLSpans()}/${uuid}${path}`;
@@ -74,8 +78,17 @@ export class OpperSpan extends OpperTrace {
      */
     public async saveMetric(metric: SpanMetric): Promise<{ uuid: string }> {
         const url = this.calcURLSpanById(`/metrics`);
-
         const data = await this.doPost<{ uuid: string }>(url, metric);
+
+        return data;
+    }
+
+    /**
+     * Save all child spans as examples.
+     */
+    public async saveExample(): Promise<{ uuid: string }> {
+        const url = this.calcURLSpanById(`/save_examples`);
+        const data = await this.doPost<{ uuid: string }>(url, {});
 
         return data;
     }
@@ -87,19 +100,7 @@ export class OpperSpan extends OpperTrace {
         uuid: string;
     }> {
         const url = this.calcURLSpanById(`/generation`);
-
         const data = await this.doPost<{ uuid: string }>(url, { called_at, ...generation });
-
-        return data;
-    }
-
-    /**
-     * Save all child spans as examples.
-     */
-    public async saveExample(): Promise<{ uuid: string }> {
-        const url = this.calcURLSpanById(`/save_examples`);
-
-        const data = await this.doPost<{ uuid: string }>(url, {});
 
         return data;
     }
@@ -115,9 +116,7 @@ class Traces extends APIResource {
         start_time = new Date(),
         metadata,
     }: SpanStartOptions) {
-        const url = this.calcURLSpans();
-
-        const data = await this.doPost<{ uuid: string }>(url, {
+        const data = await this.doPost<{ uuid: string }>(`${this.baseURL}/v1/spans`, {
             name,
             input: stringify(input),
             start_time,
