@@ -12,6 +12,7 @@ This is the official Node.js SDK for Opper AI. It provides a simple and powerful
     - [Streaming Responses](#streaming-responses)
     - [Indexes](#indexes)
     - [Tracing](#tracing)
+    - [Datasets](#datasets)
     - [Multimodal Inputs](#multimodal-inputs)
     - [Image Generation](#image-generation)
 4. [Advanced Usage](#advanced-usage)
@@ -104,9 +105,11 @@ const stream = await client.call({
 });
 // Process the stream as needed
 ```
+
 For examples on how to use streaming with web frameworks:
-- Express: see [example-stream-express.ts](./examples/example-stream-express.ts)
-- Next.js: see [example-stream-nextjs.ts](./examples/example-stream-nextjs.ts)
+
+-   Express: see [example-stream-express.ts](./examples/example-stream-express.ts)
+-   Next.js: see [example-stream-nextjs.ts](./examples/example-stream-nextjs.ts)
 
 ### Indexes
 
@@ -149,6 +152,25 @@ const trace = await client.traces.start({
 // Perform operations...
 await trace.end({
     output: "example output",
+});
+```
+
+### Datasets
+
+See [example-datasets.ts](./examples/example-datasets.ts):
+
+```typescript
+// Get the function who's dataset we want to access
+const fn = await client.functions.get({ name: "node-sdk/datasets" });
+
+// Get the dataset for the function
+const dataset = await fn.dataset();
+
+// Add an entry to the dataset
+const entry = await dataset.add({
+    input: "Hello, world!",
+    output: "Hello, world!",
+    expected: "Hello, world!",
 });
 ```
 

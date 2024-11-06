@@ -13,6 +13,36 @@ describe("APIResource", () => {
         apiResource = new APIResource(client);
     });
 
+    describe("calcAuthorizationHeaders", () => {
+        it("should return correct headers when using authorization", () => {
+            const resource = new APIResource({
+                baseURL: "https://api.opper.ai",
+                apiKey: "test-api-key",
+                isUsingAuthorization: true,
+            });
+            // @ts-expect-error Testing protected prop
+            const headers = resource.calcAuthorizationHeaders();
+            expect(headers).toEqual({
+                Authorization: "Bearer test-api-key",
+                "User-Agent": "opper-node/0.0.0",
+            });
+        });
+
+        it("should return correct headers when not using authorization", () => {
+            const resource = new APIResource({
+                baseURL: "https://api.opper.ai",
+                apiKey: "test-api-key",
+                isUsingAuthorization: false,
+            });
+            // @ts-expect-error Testing protected prop
+            const headers = resource.calcAuthorizationHeaders();
+            expect(headers).toEqual({
+                "X-OPPER-API-KEY": "test-api-key",
+                "User-Agent": "opper-node/0.0.0",
+            });
+        });
+    });
+
     describe("processSSEStream", () => {
         it("should process a Server-Sent Events (SSE) stream from the server", async () => {
             // Mock SSE stream
@@ -183,27 +213,6 @@ describe("APIResource", () => {
             expect(formattedMessage).toBe(
                 '{"messages":[{"role":"user","content":"Hello, world!"},{"role":"bot","content":"Hi there!"}]}'
             );
-        });
-    });
-
-    describe("calcURLChat", () => {
-        it("should calculate the correct URL for the chat path", () => {
-            const path = "test-path";
-            // @ts-expect-error Testing protected prop
-            const expectedURL = `${apiResource._client.baseURL}/v1/chat/${path}`;
-            // @ts-expect-error Testing protected prop
-            const calculatedURL = apiResource.calcURLChat(path);
-            expect(calculatedURL).toBe(expectedURL);
-        });
-    });
-
-    describe("calcURLIndexes", () => {
-        it("should calculate the correct URL for the indexes path", () => {
-            // @ts-expect-error Testing protected prop
-            const expectedURL = `${apiResource._client.baseURL}/v1/indexes`;
-            // @ts-expect-error Testing protected prop
-            const calculatedURL = apiResource.calcURLIndexes();
-            expect(calculatedURL).toBe(expectedURL);
         });
     });
 });

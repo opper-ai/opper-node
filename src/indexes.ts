@@ -1,18 +1,31 @@
 import fs from "node:fs";
 
-import type Client from "./index";
-import { OpperIndexDocument, OpperIndexQuery, OpperIndex } from "./types";
+import { OpperIndexDocument, OpperIndexQuery, OpperIndex, APIClientContext } from "./types";
 
 import { OpperError } from "./errors";
 import APIResource from "./api-resource";
 
 export class Index extends APIResource {
     public _index: OpperIndex;
-    protected _client: Client;
+    public uuid: string;
 
-    constructor(index: OpperIndex, client: Client) {
-        super(client);
-        this._client = client;
+    protected calcURLAddIndex = () => {
+        return `${this.baseURL}/v1/indexes/${this.uuid}/index`;
+    };
+    protected calcURLQueryIndex = () => {
+        return `${this.baseURL}/v1/indexes/${this.uuid}/query`;
+    };
+    protected calcURLUploadUrl = (fileName: string) => {
+        return `${this.baseURL}/v1/indexes/${this.uuid}/upload_url?filename=${encodeURIComponent(fileName)}`;
+    };
+    protected calcURLRegisterFile = () => {
+        return `${this.baseURL}/v1/indexes/${this.uuid}/register_file`;
+    };
+
+    constructor(index: OpperIndex, { baseURL, apiKey, isUsingAuthorization }: APIClientContext) {
+        super({ baseURL, apiKey, isUsingAuthorization });
+
+        this.uuid = index.uuid;
         this._index = index;
     }
 
@@ -35,7 +48,7 @@ export class Index extends APIResource {
      * ```
      */
     public async add(document: OpperIndexDocument): Promise<void> {
-        await this.doPost(this.calcURLAddIndex(this._index.uuid), document);
+        await this.doPost(this.calcURLAddIndex(), document);
     }
 
     /**
@@ -58,19 +71,14 @@ export class Index extends APIResource {
         filters,
         parent_span_uuid,
     }: OpperIndexQuery): Promise<OpperIndexDocument[]> {
-        const response = await this.doPost(this.calcURLQueryIndex(this._index.uuid), {
+        const documents = await this.doPost<OpperIndexDocument[]>(this.calcURLQueryIndex(), {
             q: query,
             k: k,
             filters: filters,
             parent_span_uuid,
         });
 
-        if (response.ok) {
-            const documents = await response.json();
-            return documents;
-        }
-
-        throw new OpperError(`Failed to query index: ${response.statusText}`);
+        return documents;
     }
 
     /**
@@ -92,15 +100,11 @@ export class Index extends APIResource {
     }> {
         // Get upload URL
         const fileName = path.split("/").pop() || "";
-        const uploadUrlResponse = await this.doGet(
-            this.calcURLUploadUrl(this._index.uuid, fileName)
-        );
-
-        if (!uploadUrlResponse.ok) {
-            throw new OpperError(`Failed to get upload URL: ${uploadUrlResponse.statusText}`);
-        }
-
-        const uploadUrlData = await uploadUrlResponse.json();
+        const uploadUrlData = await this.doGet<{
+            uuid: string;
+            url: string;
+            fields: Record<string, string>;
+        }>(this.calcURLUploadUrl(fileName));
 
         // Upload file
         const fileContent = await fs.promises.readFile(path);
@@ -120,19 +124,31 @@ export class Index extends APIResource {
         }
 
         // Register file
-        const registerFileResponse = await this.doPost(this.calcURLRegisterFile(this._index.uuid), {
+        const registerFileResponse = await this.doPost<{
+            uuid: string;
+            key: string;
+            original_filename: string;
+            document_id: number;
+        }>(this.calcURLRegisterFile(), {
             uuid: uploadUrlData.uuid,
         });
 
-        if (!registerFileResponse.ok) {
-            throw new OpperError(`Failed to register file: ${registerFileResponse.statusText}`);
-        }
-
-        return registerFileResponse.json();
+        return registerFileResponse;
     }
 }
 
 class Indexes extends APIResource {
+    protected calcURLIndexes = () => {
+        return `${this.baseURL}/v1/indexes`;
+    };
+    protected calcURLIndexByUUID = (uuid: string) => {
+        return `${this.baseURL}/v1/indexes/${uuid}`;
+    };
+
+    constructor({ baseURL, apiKey, isUsingAuthorization }: APIClientContext) {
+        super({ baseURL, apiKey, isUsingAuthorization });
+    }
+
     /**
      * This method retrieves a list of indexes from the OpperAI API.
      * It sends a GET request to the indexes endpoint and returns the response as an array of OpperAIIndex objects.
@@ -141,15 +157,9 @@ class Indexes extends APIResource {
      */
     public async list(): Promise<OpperIndex[]> {
         const url = this.calcURLIndexes();
+        const indexes = await this.doGet<OpperIndex[]>(url);
 
-        const response = await this.doGet(url);
-
-        if (response.ok) {
-            const indexes = await response.json();
-            return indexes;
-        }
-
-        throw new OpperError(`Failed to list indexes: ${response.statusText}`);
+        return indexes;
     }
 
     /**
@@ -160,31 +170,31 @@ class Indexes extends APIResource {
      * @throws {APIError} If the response status is not 200.
      */
     public async create(name: string, embedding_model?: string): Promise<Index> {
-        const response = await this.doPost(this.calcURLIndexes(), {
+        const url = this.calcURLIndexes();
+        const data = await this.doPost<OpperIndex>(url, {
             name,
             ...(embedding_model && { embedding_model }),
         });
 
-        const data = await response.json();
-
-        return new Index(data, this._client);
+        return new Index(data, this);
     }
 
     /**
      * Deletes an index
      * @param uuid The uuid of the index to delete.
-     * @returns A promise that resolves to void.
-     * @throws {APIError} If the response status is not 200.
+     * @returns A promise that resolves to a boolean indicating success.
      */
-    public async delete(uuid: string): Promise<void> {
-        await this.doDelete(this.calcURLIndex(uuid));
+    public async delete(uuid: string): Promise<boolean> {
+        const url = this.calcURLIndexByUUID(uuid);
+        const deleted = await this.doDelete<boolean>(url);
+
+        return deleted;
     }
 
     /**
      * Retrieves an index by name.
      * @param name The name of the index to retrieve.
      * @returns A promise that resolves to the index.
-     * @throws {APIError} If the response status is not 200.
      */
     public async get(name: string) {
         const list = await this.list();
@@ -193,7 +203,7 @@ class Indexes extends APIResource {
         if (!index) {
             return null;
         }
-        return new Index(index, this._client);
+        return new Index(index, this);
     }
 }
 

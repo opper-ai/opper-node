@@ -1,10 +1,13 @@
 import { Span, SpanMetric, Generation } from "./types";
 
 import APIResource from "./api-resource";
-import { OpperError } from "./errors";
-import { nanoId, stringify } from "./utils";
+import { nanoId } from "./utils";
 
 class Spans extends APIResource {
+    protected calcURLSpanById = (spanId: string) => {
+        return `${this.baseURL}/v1/spans/${spanId}`;
+    };
+
     /**
      * Helper method to start a new span and set the current span context.
      * @param span - The span data to be created.
@@ -28,14 +31,9 @@ class Spans extends APIResource {
             uuid,
         };
 
-        const response = await this.doPost(url, span);
+        const data = await this.doPost<{ uuid: string }>(url, span);
 
-        if (response.ok) {
-            const data = await response.json();
-            return { ...span, uuid: data.uuid };
-        }
-
-        throw new OpperError(`Failed to start span: ${response.statusText}`);
+        return { ...span, uuid: data.uuid };
     }
 
     /**
@@ -54,13 +52,9 @@ class Spans extends APIResource {
             parent_uuid,
         };
 
-        const response = await this.doPut(url, span);
+        await this.doPut<Span>(url, span);
 
-        if (response.ok) {
-            return { ...span };
-        }
-
-        throw new OpperError(`Failed to end span: ${response.statusText}`);
+        return { ...span };
     }
 
     /**
@@ -72,13 +66,9 @@ class Spans extends APIResource {
      */
     public async delete(uuid: string): Promise<boolean> {
         const url = this.calcURLSpanById(uuid);
+        const data = await this.doDelete<boolean>(url);
 
-        const response = await this.doDelete(url);
-        if (response.status !== 204) {
-            throw new OpperError(`Failed to delete span: ${response.statusText}`);
-        }
-
-        return true;
+        return data;
     }
 
     /**
@@ -94,15 +84,8 @@ class Spans extends APIResource {
     public async saveMetric(uuid: string, metric: SpanMetric): Promise<string> {
         const url = this.calcURLSpanById(`${uuid}/metrics`);
 
-        const response = await this.doPost(url, metric);
-        if (response.status !== 200) {
-            const responseData = await response.json();
-            throw new OpperError(
-                `Failed to add metric for span: ${response.statusText}, ${stringify(responseData)}`
-            );
-        }
+        const data = await this.doPost<{ uuid: string }>(url, metric);
 
-        const data = await response.json();
         return data.uuid;
     }
 
@@ -116,15 +99,8 @@ class Spans extends APIResource {
     public async saveExample(uuid: string): Promise<string> {
         const url = this.calcURLSpanById(`${uuid}/save_examples`);
 
-        const response = await this.doPost(url, {});
-        if (response.status !== 200) {
-            const responseData = await response.json();
-            throw new OpperError(
-                `Failed to save examples for span: ${response.statusText}, ${stringify(responseData)}`
-            );
-        }
+        const data = await this.doPost<{ uuid: string }>(url, {});
 
-        const data = await response.json();
         return data.uuid;
     }
 
@@ -141,15 +117,8 @@ class Spans extends APIResource {
         generation: Omit<Generation, "called_at"> & { called_at: Date }
     ): Promise<string> {
         const url = this.calcURLSpanById(`${uuid}/generation`);
-        const response = await this.doPost(url, generation);
+        const data = await this.doPost<{ uuid: string }>(url, generation);
 
-        if (response.status !== 200) {
-            const responseData = await response.json();
-            throw new OpperError(
-                `Failed to save generation for span: ${response.statusText}, ${stringify(responseData)}`
-            );
-        }
-        const data = await response.json();
         return data.uuid;
     }
 }

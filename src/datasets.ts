@@ -1,86 +1,94 @@
 import APIResource from "./api-resource";
-import { DatasetEntry } from "./types";
+import { APIClientContext, DatasetEntry } from "./types";
 
-class Datasets extends APIResource {
+export class Dataset extends APIResource {
+    public uuid: string;
+
+    protected calcURLDataset(): string {
+        return `${this.baseURL}/v1/datasets/${this.uuid}`;
+    }
+
+    protected calcURLDatasetEntry(uuid: string): string {
+        return `${this.calcURLDataset()}/entries/${uuid}`;
+    }
+
+    protected calcURLDatasetEntries(offset: number = 0, limit: number = 100): string {
+        return `${this.calcURLDataset()}/entries?offset=${offset}&limit=${limit}`;
+    }
+
+    constructor(uuid: string, ctx: APIClientContext) {
+        super(ctx);
+        this.uuid = uuid;
+    }
+
     /**
      * Adds an entry to a dataset.
-     * @param datasetUuid The UUID of the dataset to add the entry to.
      * @param entry The entry to add to the dataset.
-     * @returns A promise that resolves to the UUID of the created entry.
-     * @throws {APIError} If the response status is not 200.
+     * @returns A promise that resolves to the created DatasetEntry.
+     * @throws {OpperError} If the response status is not 200.
      */
-    public async add(datasetUuid: string, entry: DatasetEntry): Promise<string> {
-        const url = this.calcURLDatasets(datasetUuid);
-        const response = await this.doPost(url, entry);
-        const data: string = await response.json();
+    public async add(entry: Omit<DatasetEntry, "uuid">): Promise<DatasetEntry> {
+        const url = this.calcURLDataset();
+
+        const data = await this.doPost<DatasetEntry>(url, entry);
+
         return data;
     }
 
     /**
      * Retrieves entries from a dataset.
-     * @param datasetUuid The UUID of the dataset to retrieve entries from.
      * @param offset The number of entries to skip.
      * @param limit The maximum number of entries to retrieve.
      * @returns A promise that resolves to an array of DatasetEntry objects.
-     * @throws {APIError} If the response status is not 200.
+     * @throws {OpperError} If the response status is not 200.
      */
-    public async getEntries(
-        datasetUuid: string,
-        offset: number = 0,
-        limit: number = 100
-    ): Promise<DatasetEntry[]> {
-        const url = `${this.calcURLDatasets(datasetUuid)}/entries?offset=${offset}&limit=${limit}`;
-        const response = await this.doGet(url);
-        const entries: DatasetEntry[] = await response.json();
+    public async getEntries(offset: number = 0, limit: number = 100): Promise<DatasetEntry[]> {
+        const url = this.calcURLDatasetEntries(offset, limit);
+        const entries = await this.doGet<DatasetEntry[]>(url);
+
         return entries;
     }
 
     /**
      * Retrieves a specific entry from a dataset.
-     * @param datasetUuid The UUID of the dataset containing the entry.
-     * @param entryUuid The UUID of the entry to retrieve.
+     * @param uuid The UUID of the entry to retrieve.
      * @returns A promise that resolves to a DatasetEntry object.
-     * @throws {APIError} If the response status is not 200.
+     * @throws {OpperError} If the response status is not 200.
      */
-    public async getEntry(datasetUuid: string, entryUuid: string): Promise<DatasetEntry> {
-        const url = `${this.calcURLDatasets(datasetUuid)}/entries/${entryUuid}`;
-        const response = await this.doGet(url);
-        const entry: DatasetEntry = await response.json();
+    public async getEntry(uuid: string): Promise<DatasetEntry> {
+        const url = this.calcURLDatasetEntry(uuid);
+        const entry = await this.doGet<DatasetEntry>(url);
+
         return entry;
     }
 
     /**
      * Updates a specific entry in a dataset.
-     * @param datasetUuid The UUID of the dataset containing the entry.
-     * @param entryUuid The UUID of the entry to update.
+     * @param uuid The UUID of the entry to update.
      * @param updatedEntry The updated entry data.
      * @returns A promise that resolves to the updated DatasetEntry object.
-     * @throws {APIError} If the response status is not 200.
+     * @throws {OpperError} If the response status is not 200.
      */
     public async updateEntry(
-        datasetUuid: string,
-        entryUuid: string,
+        uuid: string,
         updatedEntry: Partial<DatasetEntry>
     ): Promise<DatasetEntry> {
-        const url = `${this.calcURLDatasets(datasetUuid)}/entries/${entryUuid}`;
-        const response = await this.doPut(url, updatedEntry);
-        const entry: DatasetEntry = await response.json();
+        const url = this.calcURLDatasetEntry(uuid);
+        const entry = await this.doPut<DatasetEntry>(url, updatedEntry);
+
         return entry;
     }
 
     /**
      * Deletes a specific entry from a dataset.
-     * @param datasetUuid The UUID of the dataset containing the entry.
-     * @param entryUuid The UUID of the entry to delete.
+     * @param uuid The UUID of the entry to delete.
      * @returns A promise that resolves to a boolean indicating success.
-     * @throws {APIError} If the response status is not 200.
+     * @throws {OpperError} If the response status is not 200.
      */
-    public async deleteEntry(datasetUuid: string, entryUuid: string): Promise<boolean> {
-        const url = `${this.calcURLDatasets(datasetUuid)}/entries/${entryUuid}`;
-        const response = await this.doDelete(url);
-        const result: boolean = await response.json();
-        return result;
+    public async deleteEntry(uuid: string): Promise<boolean> {
+        const url = this.calcURLDatasetEntry(uuid);
+        const data = await this.doDelete<boolean>(url);
+
+        return data;
     }
 }
-
-export default Datasets;

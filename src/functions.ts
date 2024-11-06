@@ -1,16 +1,75 @@
 import {
-    OpperFunction,
+    OpperFunctionSchema,
     OpperCall,
     OpperChatResponse,
     OpperGenerateImage,
     OpperImageResponse,
     Chat,
+    GetOpperFunctionOptions,
+    APIClientContext,
+    CacheConfig,
 } from "./types";
 
 import APIResource from "./api-resource";
 import { OpperError } from "./errors";
+import { Dataset } from "./datasets";
+
+class OpperFunction extends APIResource implements OpperFunctionSchema {
+    public readonly uuid: string;
+    public readonly dataset_uuid: string;
+    public readonly path: string;
+    public readonly description: string;
+    public readonly instructions: string;
+    public readonly model?: string;
+    public readonly index_ids?: number[];
+    public readonly few_shot?: boolean;
+    public readonly few_shot_count?: number;
+    public readonly cache_config?: CacheConfig;
+    public readonly input_schema?: Record<string, unknown>;
+    public readonly out_schema?: Record<string, unknown>;
+
+    constructor(fn: OpperFunctionSchema & { dataset_uuid: string }, ctx: APIClientContext) {
+        super(ctx);
+        this.uuid = fn.uuid;
+        this.dataset_uuid = fn.dataset_uuid;
+        this.path = fn.path;
+        this.description = fn.description;
+        this.instructions = fn.instructions;
+        this.model = fn.model;
+        this.index_ids = fn.index_ids;
+        this.few_shot = fn.few_shot;
+        this.few_shot_count = fn.few_shot_count;
+        this.cache_config = fn.cache_config;
+        this.input_schema = fn.input_schema;
+        this.out_schema = fn.out_schema;
+    }
+
+    /**
+     * Get the dataset for the function.
+     * @returns A promise that resolves to a Dataset object.
+     */
+    public async dataset(): Promise<Dataset> {
+        return new Dataset(this.dataset_uuid, this);
+    }
+}
 
 class Functions extends APIResource {
+    protected calcURLChat = (path: string) => {
+        return `${this.baseURL}/v1/chat/${path}`;
+    };
+    protected calcURLCall = () => {
+        return `${this.baseURL}/v1/call`;
+    };
+    protected calcURLFunctions = () => {
+        return `${this.baseURL}/api/v1/functions`;
+    };
+    protected calcURLGetFunctionByPath = (path: string) => {
+        return `${this.calcURLFunctions()}/by_path/${path}`;
+    };
+    protected calcURLUpdateFunctionByUUID = (uuid: string) => {
+        return `${this.calcURLFunctions()}/${uuid}`;
+    };
+
     /**
      * This method is used to initiate a chat with the OpperAI API.
      * The response is a promise that resolves to an object with the message and context.
@@ -33,9 +92,29 @@ class Functions extends APIResource {
         const url = this.calcURLChat(path);
         const body = this.calcChatPayload(message, parent_span_uuid, examples);
 
-        const response = await this.doPost(url, body);
+        const data = await this.doPost<OpperChatResponse>(url, body);
 
-        return (await response.json()) as OpperChatResponse;
+        return data;
+    }
+
+    public async get(options: GetOpperFunctionOptions): Promise<OpperFunction> {
+        let url: string | null = null;
+
+        if (options.name) {
+            url = this.calcURLGetFunctionByPath(options.name);
+        }
+
+        if (options.uuid) {
+            url = this.calcURLUpdateFunctionByUUID(options.uuid);
+        }
+
+        if (!url) {
+            throw new OpperError("Function uuid or name is required");
+        }
+
+        const fn = await this.doGet<OpperFunctionSchema>(url);
+
+        return new OpperFunction(fn, this);
     }
 
     /**
@@ -44,17 +123,16 @@ class Functions extends APIResource {
      * @returns A promise that resolves to the updated OpperFunction.
      * @throws {OpperError} If the function uuid is missing or if the update fails.
      */
-    public async update(fn: OpperFunction): Promise<OpperFunction> {
+    public async update(fn: OpperFunctionSchema): Promise<OpperFunctionSchema> {
         if (!fn.uuid) {
             throw new OpperError("Function uuid is required");
         }
-        const response = await this.doPost(this.calcURLUpdateFunction(fn.uuid), fn);
+        const data = await this.doPost<OpperFunctionSchema>(
+            this.calcURLUpdateFunctionByUUID(fn.uuid),
+            fn
+        );
 
-        if (response.ok) {
-            return fn;
-        }
-
-        throw new OpperError(`Failed to update function: ${response.statusText}`);
+        return data;
     }
 
     /**
@@ -63,16 +141,10 @@ class Functions extends APIResource {
      * @returns A promise that resolves to the created OpperFunction, including the assigned UUID.
      * @throws {OpperError} If the function creation fails.
      */
-    public async create(fn: OpperFunction): Promise<OpperFunction> {
-        const response = await this.doPost(this.calcURLCreateFunction(), fn);
+    public async create(fn: OpperFunctionSchema): Promise<OpperFunctionSchema> {
+        const data = await this.doPost<{ uuid: string }>(this.calcURLFunctions(), fn);
 
-        if (response.ok) {
-            const data = await response.json();
-
-            return { ...fn, uuid: data.uuid };
-        }
-
-        throw new OpperError(`Failed to create function: ${response.statusText}`);
+        return { ...fn, uuid: data.uuid };
     }
 
     /**
@@ -86,19 +158,13 @@ class Functions extends APIResource {
             throw new OpperError("Maximum number of examples is 10");
         }
 
-        const response = await this.doPost(this.calcURLCall(), {
+        const data = await this.doPost<OpperChatResponse>(this.calcURLCall(), {
             ...fn,
             input_type: fn?.input_schema,
             output_type: fn?.output_schema,
         });
 
-        if (response.ok) {
-            const data = await response.json();
-
-            return data;
-        }
-
-        throw new OpperError(`Failed to call function: ${response.statusText}`);
+        return data;
     }
 
     /**
@@ -112,23 +178,21 @@ class Functions extends APIResource {
     public async generateImage(args: OpperGenerateImage): Promise<OpperImageResponse> {
         const model = args.model || "azure/dall-e-3-eu";
 
-        const response = await this.doPost(this.calcURLGenerateImage(), {
-            ...args,
-            model: model,
-            parameters: args.parameters,
-        });
+        const data = await this.doPost<{ result: { base64_image: string } }>(
+            this.calcURLGenerateImage(),
+            {
+                ...args,
+                model: model,
+                parameters: args.parameters,
+            }
+        );
 
-        if (response.ok) {
-            const data = await response.json();
-            const base64Image = data.result.base64_image;
-            const imageBytes = Buffer.from(base64Image, "base64");
+        const base64Image = data.result.base64_image;
+        const imageBytes = Buffer.from(base64Image, "base64");
 
-            return {
-                bytes: imageBytes,
-            };
-        }
-
-        throw new OpperError(`Failed to generate image: ${response.statusText}`);
+        return {
+            bytes: imageBytes,
+        };
     }
 
     /**

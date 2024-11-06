@@ -12,6 +12,8 @@
         "check": "npm run check:type && npm run check:lint && npm run test",
         "prepare": "npm run build",
         "test": "jest",
+        "test:watch": "jest --watch",
+        "examples": "for file in examples/example-*.ts; do [[ ! $file =~ example-stream- ]] && echo \"Running $file\" && npx ts-node \"$file\" && echo \"\"; done",
         "publish-patch": "npm run check && npm run build && npm version patch",
         "publish-minor": "npm run check && npm run build && npm version minor",
         "publish-major": "npm run check && npm run build && npm version major"
