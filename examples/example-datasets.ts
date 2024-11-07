@@ -18,7 +18,7 @@ const client = new Client();
     // const dataset = await client.functions.dataset({ name: "node-sdk/datasets" });
 
     // Get the dataset for the function
-    const dataset = fn.dataset();
+    const dataset = await fn.dataset();
 
     // Add an entry to the dataset
     const entry = await dataset.add({
