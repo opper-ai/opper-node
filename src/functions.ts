@@ -106,6 +106,12 @@ class Functions extends APIResource {
         return data;
     }
 
+    /**
+     * Get a function by name or uuid.
+     * @param options - The options to get the function.
+     * @returns A promise that resolves to an OpperFunction object.
+     * @throws {OpperError} If the function uuid or name is missing.
+     */
     public async get(options: GetOpperFunctionOptions): Promise<OpperFunction> {
         let url: string | null = null;
 
@@ -219,6 +225,17 @@ class Functions extends APIResource {
         const pipe = this.iteratorToStream(iterator);
 
         return pipe;
+    }
+
+    /**
+     * Get the dataset for a given function by name or uuid.
+     * @param options - The options to get the function.
+     * @returns A promise that resolves to a Dataset object.
+     */
+    public async dataset(options: GetOpperFunctionOptions): Promise<Dataset> {
+        const fn = await this.get(options);
+
+        return fn.dataset();
     }
 }
 
