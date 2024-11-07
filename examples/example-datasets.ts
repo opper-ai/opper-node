@@ -14,6 +14,8 @@ const client = new Client();
 
     // Get the function
     const fn = await client.functions.get({ name: "node-sdk/datasets" });
+    // Or get the dataset for a given function directly
+    // const dataset = await client.functions.dataset({ name: "node-sdk/datasets" });
 
     // Get the dataset for the function
     const dataset = await fn.dataset();

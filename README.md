@@ -160,11 +160,8 @@ await trace.end({
 See [example-datasets.ts](./examples/example-datasets.ts):
 
 ```typescript
-// Get the function who's dataset we want to access
-const fn = await client.functions.get({ name: "node-sdk/datasets" });
-
-// Get the dataset for the function
-const dataset = await fn.dataset();
+// Get the dataset for a given function by name or uuid
+const dataset = await client.functions.dataset({ name: "node-sdk/datasets" });
 
 // Add an entry to the dataset
 const entry = await dataset.add({
