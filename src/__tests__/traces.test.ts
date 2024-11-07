@@ -59,6 +59,27 @@ describe("Traces", () => {
         });
     });
 
+    describe("calcBaseURL", () => {
+        it("should return the correct URL", () => {
+            // @ts-expect-error Testing protected method
+            const url = trace.calcBaseURL();
+            expect(url).toBe("https://api.opper.ai/v1/spans");
+        });
+    });
+
+    describe("calcResourceURL", () => {
+        it("should return the correct URL", () => {
+            // @ts-expect-error Testing protected method
+            const url = trace.calcResourceURL();
+            expect(url).toBe("https://api.opper.ai/v1/spans/test-uuid");
+        });
+        it("should return the correct URL", () => {
+            // @ts-expect-error Testing protected method
+            const url = trace.calcResourceURL("/sub-path");
+            expect(url).toBe("https://api.opper.ai/v1/spans/test-uuid/sub-path");
+        });
+    });
+
     describe("Span", () => {
         it("should save metric successfully", async () => {
             const metricSpy = jest.spyOn(span, "saveMetric").mockResolvedValue({

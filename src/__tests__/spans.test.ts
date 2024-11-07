@@ -11,7 +11,7 @@ global.fetch = jest.fn(() =>
 );
 
 describe("Spans", () => {
-    let traces: Spans;
+    let span: Spans;
     const mockApiKey = "test-api-key";
 
     beforeEach(() => {
@@ -22,63 +22,9 @@ describe("Spans", () => {
         jest.useFakeTimers();
         jest.setSystemTime(new Date("2020-04-01T00:00:00Z"));
 
-        traces = new Spans(mockClient);
+        span = new Spans(mockClient);
         // Clear all instances and calls to constructor and all methods:
         (global.fetch as jest.Mock).mockClear();
-    });
-
-    describe("startSpan", () => {
-        it("should call fetch with correct parameters and resolve with the current span", async () => {
-            const mockSpan = {
-                uuid: "span-uuid",
-                name: "test-span",
-                start_time: new Date(),
-                parent_uuid: "parent-uuid",
-            };
-            (global.fetch as jest.Mock).mockResolvedValueOnce({
-                ok: true,
-                status: 200,
-                json: () => Promise.resolve({ uuid: mockSpan.uuid }),
-            });
-
-            const spanId = await traces.startSpan(mockSpan);
-
-            expect(global.fetch).toHaveBeenCalledWith(expect.stringContaining("/v1/spans"), {
-                method: "POST",
-                headers: expect.any(Object),
-                body: expect.any(String),
-            });
-            expect(spanId).toMatchSnapshot();
-        });
-    });
-
-    describe("endSpan", () => {
-        it("should call fetch with correct parameters to update the span", async () => {
-            const mockSpan = {
-                uuid: "span-uuid",
-                name: "test-span",
-                start_time: new Date(),
-                end_time: new Date(),
-                parent_uuid: "parent-uuid",
-            };
-            (global.fetch as jest.Mock).mockResolvedValueOnce({
-                ok: true,
-                status: 200,
-                json: () => Promise.resolve({ uuid: mockSpan.uuid }),
-            });
-
-            const spanId = await traces.endSpan(mockSpan);
-
-            expect(global.fetch).toHaveBeenCalledWith(
-                expect.stringContaining(`/v1/spans/${mockSpan.uuid}`),
-                {
-                    method: "PUT",
-                    headers: expect.any(Object),
-                    body: expect.any(String),
-                }
-            );
-            expect(spanId).toMatchSnapshot();
-        });
     });
 
     describe("saveMetric", () => {
@@ -95,7 +41,7 @@ describe("Spans", () => {
                 json: () => Promise.resolve({ uuid: "metric-uuid" }),
             });
 
-            const metricId = await traces.saveMetric(spanUuid, mockFeedback);
+            const metricId = await span.saveMetric(spanUuid, mockFeedback);
 
             expect(global.fetch).toHaveBeenCalledWith(
                 expect.stringContaining(`/v1/spans/${spanUuid}/metrics`),
@@ -105,7 +51,7 @@ describe("Spans", () => {
                     body: expect.any(String),
                 }
             );
-            expect(metricId).toEqual("metric-uuid");
+            expect(metricId).toStrictEqual({ uuid: "metric-uuid" });
         });
     });
 
@@ -118,7 +64,7 @@ describe("Spans", () => {
                 json: () => Promise.resolve({ uuid: "example-uuid" }),
             });
 
-            const exampleId = await traces.saveExample(spanUuid);
+            const exampleId = await span.saveExample(spanUuid);
 
             expect(global.fetch).toHaveBeenCalledWith(
                 expect.stringContaining(`/v1/spans/${spanUuid}/save_examples`),
@@ -128,44 +74,52 @@ describe("Spans", () => {
                     body: "{}",
                 }
             );
-            expect(exampleId).toEqual("example-uuid");
+            expect(exampleId).toStrictEqual({ uuid: "example-uuid" });
         });
     });
 
-    describe("span with child span", () => {
-        it("Should create a parent and child span", async () => {
-            (global.fetch as jest.Mock).mockResolvedValue({
+    describe("saveGeneration", () => {
+        it("should call fetch with correct parameters and resolve with example UUID", async () => {
+            const spanUuid = "span-uuid";
+            (global.fetch as jest.Mock).mockResolvedValueOnce({
                 ok: true,
                 status: 200,
-                json: () => Promise.resolve({ uuid: "return-a-uuid" }),
+                json: () => Promise.resolve({ uuid: "generation-uuid" }),
             });
 
-            const parent = await traces.startSpan({
-                name: "parent-span",
-                input: "parent input",
-                uuid: "parent-uuid",
-                parent_uuid: "parent-uuid",
+            const generation = await span.saveGeneration(spanUuid, {
+                called_at: new Date(),
+                duration_ms: 100,
+                model: "test-model",
+                response: "test-response",
+                prompt_tokens: 100,
+                completion_tokens: 100,
+                total_tokens: 200,
+                error: "test-error",
+                messages: [],
+                cost: 100,
             });
 
-            const child = await traces.startSpan({
-                name: "child-span",
-                uuid: "child-uuid",
-                input: "child input",
-                parent_uuid: "parent-uuid",
-            });
-
-            const childEndSpan = await traces.endSpan({ ...child, output: "child output" });
-            const parentEndSpan = await traces.endSpan({ ...parent, output: "parent output" });
-
-            expect(childEndSpan.name).toBe("child-span");
-            expect(childEndSpan.output).toBe("child output");
-            expect(childEndSpan.parent_uuid).toBe("parent-uuid");
-            expect(childEndSpan).toMatchSnapshot();
-
-            expect(parentEndSpan.name).toBe("parent-span");
-            expect(parentEndSpan.output).toBe("parent output");
-            expect(parentEndSpan.parent_uuid).toBe("parent-uuid");
-            expect(parentEndSpan).toMatchSnapshot();
+            expect(global.fetch).toHaveBeenCalledWith(
+                expect.stringContaining(`/v1/spans/${spanUuid}/generation`),
+                {
+                    method: "POST",
+                    headers: expect.any(Object),
+                    body: JSON.stringify({
+                        called_at: new Date(),
+                        duration_ms: 100,
+                        model: "test-model",
+                        response: "test-response",
+                        prompt_tokens: 100,
+                        completion_tokens: 100,
+                        total_tokens: 200,
+                        error: "test-error",
+                        messages: [],
+                        cost: 100,
+                    }),
+                }
+            );
+            expect(generation).toStrictEqual({ uuid: "generation-uuid" });
         });
     });
 });

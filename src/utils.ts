@@ -79,3 +79,35 @@ export class OpperMediaHandler {
         throw new Error("Unsupported media type");
     }
 }
+
+/**
+ * Base paths used throughout the application
+ */
+export const BASE_PATHS = {
+    SPANS: "/v1/spans",
+    TRACES: "/v1/traces",
+    INDEXES: "/v1/indexes",
+    CHAT: "/v1/chat",
+    CALL: "/v1/call",
+    FUNCTIONS: "/api/v1/functions",
+    GENERATE_IMAGE: "/v1/generate-image",
+    DATASETS: "/v1/datasets",
+};
+
+export class URLBuilder {
+    constructor(private readonly baseURL: string) {}
+
+    /**
+     * Builds a complete URL by combining the base URL with a path
+     */
+    public buildURL(path: string): string {
+        return `${this.baseURL}${path}`;
+    }
+
+    /**
+     * Builds a resource URL with an ID
+     */
+    public buildResourceURL(basePath: string, resourceId: string, subPath: string = ""): string {
+        return `${this.baseURL}${basePath}/${resourceId}${subPath}`;
+    }
+}

@@ -89,7 +89,7 @@ describe("OpperAIIndexes", () => {
     });
 });
 
-describe("Index", () => {
+describe("OpperAIIndex", () => {
     let index: Index;
 
     beforeEach(() => {
@@ -100,18 +100,18 @@ describe("Index", () => {
         });
     });
 
-    describe("calcURLAddIndex", () => {
+    describe("calcResourceURL", () => {
         it("should return the correct URL", () => {
             // @ts-expect-error Testing protected method
-            const url = index.calcURLAddIndex();
+            const url = index.calcResourceURL("/index");
             expect(url).toBe("https://api.opper.ai/v1/indexes/1/index");
         });
     });
 
-    describe("calcURLQueryIndex", () => {
+    describe("calcResourceURL", () => {
         it("should return the correct URL", () => {
             // @ts-expect-error Testing protected method
-            const url = index.calcURLQueryIndex();
+            const url = index.calcResourceURL("/query");
             expect(url).toBe("https://api.opper.ai/v1/indexes/1/query");
         });
     });
@@ -121,14 +121,6 @@ describe("Index", () => {
             // @ts-expect-error Testing protected method
             const url = index.calcURLUploadUrl("test.txt");
             expect(url).toBe("https://api.opper.ai/v1/indexes/1/upload_url?filename=test.txt");
-        });
-    });
-
-    describe("calcURLRegisterFile", () => {
-        it("should return the correct URL", () => {
-            // @ts-expect-error Testing protected method
-            const url = index.calcURLRegisterFile();
-            expect(url).toBe("https://api.opper.ai/v1/indexes/1/register_file");
         });
     });
 });

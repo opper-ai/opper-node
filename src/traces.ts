@@ -5,16 +5,22 @@ import {
     SpanEndOptions,
     APIClientContext,
 } from "./types";
-import { nanoId, stringify } from "./utils";
+import { nanoId, stringify, URLBuilder, BASE_PATHS } from "./utils";
 
 import APIResource from "./api-resource";
 
 export class OpperTrace extends APIResource {
     public uuid: string;
 
-    protected calcURLSpanById = (path: string = "") => {
+    protected calcBaseURL = () => {
+        const urlBuilder = new URLBuilder(this.baseURL);
+        return urlBuilder.buildURL(BASE_PATHS.SPANS);
+    };
+
+    protected calcResourceURL = (path: string = "") => {
+        const urlBuilder = new URLBuilder(this.baseURL);
         const uuid = this.uuid;
-        return `${this.calcURLSpans()}/${uuid}${path}`;
+        return urlBuilder.buildResourceURL(BASE_PATHS.SPANS, uuid, path);
     };
 
     constructor(
@@ -37,7 +43,7 @@ export class OpperTrace extends APIResource {
     }: SpanStartOptions) {
         const uuid = nanoId();
         const parent_uuid = this.uuid;
-        const url = this.calcURLSpans();
+        const url = this.calcBaseURL();
 
         const data = await this.doPost<{ uuid: string }>(url, {
             name,
@@ -56,7 +62,7 @@ export class OpperTrace extends APIResource {
      */
     public async end({ output, end_time = new Date() }: SpanEndOptions) {
         const uuid = this.uuid;
-        const url = this.calcURLSpanById();
+        const url = this.calcResourceURL();
 
         const data = await this.doPut<{ uuid: string }>(url, {
             uuid,
@@ -73,9 +79,18 @@ export class OpperSpan extends OpperTrace {
      * Saves a metric and or a comment for the span to be displayed in the Opper UI.
      */
     public async saveMetric(metric: SpanMetric): Promise<{ uuid: string }> {
-        const url = this.calcURLSpanById(`/metrics`);
-
+        const url = this.calcResourceURL(`/metrics`);
         const data = await this.doPost<{ uuid: string }>(url, metric);
+
+        return data;
+    }
+
+    /**
+     * Save all child spans as examples.
+     */
+    public async saveExample(): Promise<{ uuid: string }> {
+        const url = this.calcResourceURL(`/save_examples`);
+        const data = await this.doPost<{ uuid: string }>(url, {});
 
         return data;
     }
@@ -86,20 +101,8 @@ export class OpperSpan extends OpperTrace {
     public async saveGeneration({ called_at = new Date(), ...generation }: Generation): Promise<{
         uuid: string;
     }> {
-        const url = this.calcURLSpanById(`/generation`);
-
+        const url = this.calcResourceURL(`/generation`);
         const data = await this.doPost<{ uuid: string }>(url, { called_at, ...generation });
-
-        return data;
-    }
-
-    /**
-     * Save all child spans as examples.
-     */
-    public async saveExample(): Promise<{ uuid: string }> {
-        const url = this.calcURLSpanById(`/save_examples`);
-
-        const data = await this.doPost<{ uuid: string }>(url, {});
 
         return data;
     }
@@ -115,9 +118,7 @@ class Traces extends APIResource {
         start_time = new Date(),
         metadata,
     }: SpanStartOptions) {
-        const url = this.calcURLSpans();
-
-        const data = await this.doPost<{ uuid: string }>(url, {
+        const data = await this.doPost<{ uuid: string }>(`${this.baseURL}/v1/spans`, {
             name,
             input: stringify(input),
             start_time,
