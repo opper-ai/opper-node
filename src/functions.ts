@@ -13,6 +13,7 @@ import {
 import APIResource from "./api-resource";
 import { OpperError } from "./errors";
 import { Dataset } from "./datasets";
+import { URLBuilder, BASE_PATHS } from "./utils";
 
 class OpperFunction extends APIResource implements OpperFunctionSchema {
     public readonly uuid: string;
@@ -55,13 +56,17 @@ class OpperFunction extends APIResource implements OpperFunctionSchema {
 
 class Functions extends APIResource {
     protected calcURLChat = (path: string) => {
-        return `${this.baseURL}/v1/chat/${path}`;
+        const urlBuilder = new URLBuilder(this.baseURL);
+        const url = urlBuilder.buildURL(BASE_PATHS.CHAT);
+        return `${url}/${path}`;
     };
     protected calcURLCall = () => {
-        return `${this.baseURL}/v1/call`;
+        const urlBuilder = new URLBuilder(this.baseURL);
+        return urlBuilder.buildURL(BASE_PATHS.CALL);
     };
     protected calcURLFunctions = () => {
-        return `${this.baseURL}/api/v1/functions`;
+        const urlBuilder = new URLBuilder(this.baseURL);
+        return urlBuilder.buildURL(BASE_PATHS.FUNCTIONS);
     };
     protected calcURLGetFunctionByPath = (path: string) => {
         return `${this.calcURLFunctions()}/by_path/${path}`;
@@ -70,7 +75,8 @@ class Functions extends APIResource {
         return `${this.calcURLFunctions()}/${uuid}`;
     };
     protected calcURLGenerateImage = () => {
-        return `${this.baseURL}/v1/generate-image`;
+        const urlBuilder = new URLBuilder(this.baseURL);
+        return urlBuilder.buildURL(BASE_PATHS.GENERATE_IMAGE);
     };
 
     /**

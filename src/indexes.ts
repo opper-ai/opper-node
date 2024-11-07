@@ -4,22 +4,22 @@ import { OpperIndexDocument, OpperIndexQuery, OpperIndex, APIClientContext } fro
 
 import { OpperError } from "./errors";
 import APIResource from "./api-resource";
+import { URLBuilder, BASE_PATHS } from "./utils";
 
 export class Index extends APIResource {
     public _index: OpperIndex;
     public uuid: string;
 
-    protected calcURLAddIndex = () => {
-        return `${this.baseURL}/v1/indexes/${this.uuid}/index`;
+    protected calcResourceURL = (path: string = "") => {
+        const urlBuilder = new URLBuilder(this.baseURL);
+        const uuid = this.uuid;
+        return urlBuilder.buildResourceURL(BASE_PATHS.INDEXES, uuid, path);
     };
-    protected calcURLQueryIndex = () => {
-        return `${this.baseURL}/v1/indexes/${this.uuid}/query`;
-    };
+
     protected calcURLUploadUrl = (fileName: string) => {
-        return `${this.baseURL}/v1/indexes/${this.uuid}/upload_url?filename=${encodeURIComponent(fileName)}`;
-    };
-    protected calcURLRegisterFile = () => {
-        return `${this.baseURL}/v1/indexes/${this.uuid}/register_file`;
+        const path = `/upload_url?filename=${encodeURIComponent(fileName)}`;
+
+        return this.calcResourceURL(path);
     };
 
     constructor(index: OpperIndex, { baseURL, apiKey, isUsingAuthorization }: APIClientContext) {
@@ -48,7 +48,7 @@ export class Index extends APIResource {
      * ```
      */
     public async add(document: OpperIndexDocument): Promise<void> {
-        await this.doPost(this.calcURLAddIndex(), document);
+        await this.doPost(this.calcResourceURL("/index"), document);
     }
 
     /**
@@ -71,7 +71,7 @@ export class Index extends APIResource {
         filters,
         parent_span_uuid,
     }: OpperIndexQuery): Promise<OpperIndexDocument[]> {
-        const documents = await this.doPost<OpperIndexDocument[]>(this.calcURLQueryIndex(), {
+        const documents = await this.doPost<OpperIndexDocument[]>(this.calcResourceURL("/query"), {
             q: query,
             k: k,
             filters: filters,
@@ -129,7 +129,7 @@ export class Index extends APIResource {
             key: string;
             original_filename: string;
             document_id: number;
-        }>(this.calcURLRegisterFile(), {
+        }>(this.calcResourceURL("/register_file"), {
             uuid: uploadUrlData.uuid,
         });
 

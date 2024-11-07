@@ -1,11 +1,14 @@
 import APIResource from "./api-resource";
 import { APIClientContext, DatasetEntry } from "./types";
+import { BASE_PATHS, URLBuilder } from "./utils";
 
 export class Dataset extends APIResource {
     public uuid: string;
 
     protected calcURLDataset(): string {
-        return `${this.baseURL}/v1/datasets/${this.uuid}`;
+        const urlBuilder = new URLBuilder(this.baseURL);
+        const uuid = this.uuid;
+        return urlBuilder.buildResourceURL(BASE_PATHS.DATASETS, uuid);
     }
 
     protected calcURLDatasetEntry(uuid: string): string {
