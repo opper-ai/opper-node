@@ -203,6 +203,11 @@ export type OpperCall = {
      * Configuration for the function.
      */
     configuration?: OpperCallConfigurationParameters;
+
+    /**
+     * Fallback models to use if the primary model fails.
+     */
+    fallback_models?: string[];
 };
 
 export type OpperFunctionSchema = {
