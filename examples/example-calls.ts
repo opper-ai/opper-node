@@ -129,6 +129,15 @@ const client = new Client();
     });
     console.log("JSON response with thoughts and reflection: ", strawberry);
 
+    const { message: fallbackMessage } = await client.call({
+        name: "node-sdk/call/fallback-example",
+        input: "What is the capital of France?",
+        model: "azure/gpt-4o-eu",
+        fallback_models: ["openai/gpt-4o"],
+    });
+
+    console.log("Fallback response: ", fallbackMessage);
+
     await trace.end({
         output: "example output",
     });
