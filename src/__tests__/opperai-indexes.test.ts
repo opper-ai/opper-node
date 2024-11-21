@@ -87,6 +87,116 @@ describe("OpperAIIndexes", () => {
             );
         });
     });
+
+    describe("get", () => {
+        it("should retrieve an index by name", async () => {
+            const mockIndex = mockIndexes[0];
+            (global.fetch as jest.Mock).mockResolvedValueOnce({
+                ok: true,
+                json: () => Promise.resolve(mockIndex),
+            });
+
+            const index = await opperAIIndexes.get("Test Index 1");
+
+            expect(index).toBeInstanceOf(Index);
+            expect(index?.uuid).toBe(mockIndex.uuid);
+            expect(index?._index).toEqual(mockIndex);
+            expect(fetch).toHaveBeenCalledTimes(1);
+            expect(fetch).toHaveBeenCalledWith("https://api.opper.ai/v1/indexes/by-name/Test%20Index%201", {
+                method: "GET",
+                headers: {
+                    "X-OPPER-API-KEY": "test-api-key",
+                    "User-Agent": "opper-node/0.0.0",
+                    "Content-Type": "application/json",
+                },
+            });
+        });
+
+        it("should return null when index is not found", async () => {
+            (global.fetch as jest.Mock).mockResolvedValueOnce({
+                ok: false,
+                status: 404,
+                statusText: "Not Found",
+            });
+
+            const index = await opperAIIndexes.get("NonExistentIndex");
+
+            expect(index).toBeNull();
+            expect(fetch).toHaveBeenCalledTimes(1);
+            expect(fetch).toHaveBeenCalledWith("https://api.opper.ai/v1/indexes/by-name/NonExistentIndex", {
+                method: "GET",
+                headers: {
+                    "X-OPPER-API-KEY": "test-api-key",
+                    "User-Agent": "opper-node/0.0.0",
+                    "Content-Type": "application/json",
+                },
+            });
+        });
+
+        it("should throw an error for non-404 errors", async () => {
+            (global.fetch as jest.Mock).mockResolvedValueOnce({
+                ok: false,
+                status: 500,
+                statusText: "Internal Server Error",
+            });
+
+            await expect(opperAIIndexes.get("Test Index 1")).rejects.toThrow(
+                "500 Failed to fetch request https://api.opper.ai/v1/indexes/by-name/Test%20Index%201: Internal Server Error"
+            );
+        });
+    });
+
+    describe("deleteByName", () => {
+        it("should delete an index by name", async () => {
+            const mockIndex = mockIndexes[0];
+            // Mock the get request
+            (global.fetch as jest.Mock).mockResolvedValueOnce({
+                ok: true,
+                json: () => Promise.resolve(mockIndex),
+            });
+            // Mock the delete request
+            (global.fetch as jest.Mock).mockResolvedValueOnce({
+                ok: true,
+                json: () => Promise.resolve(true),
+            });
+
+            const result = await opperAIIndexes.deleteByName("Test Index 1");
+
+            expect(result).toBe(true);
+            expect(fetch).toHaveBeenCalledTimes(2);
+            // Verify get request
+            expect(fetch).toHaveBeenNthCalledWith(1, "https://api.opper.ai/v1/indexes/by-name/Test%20Index%201", {
+                method: "GET",
+                headers: {
+                    "X-OPPER-API-KEY": "test-api-key",
+                    "User-Agent": "opper-node/0.0.0",
+                    "Content-Type": "application/json",
+                },
+            });
+            // Verify delete request
+            expect(fetch).toHaveBeenNthCalledWith(2, "https://api.opper.ai/v1/indexes/1", {
+                method: "DELETE",
+                headers: {
+                    "X-OPPER-API-KEY": "test-api-key",
+                    "User-Agent": "opper-node/0.0.0",
+                    "Content-Type": "application/json",
+                },
+            });
+        });
+
+        it("should return false when index is not found", async () => {
+            (global.fetch as jest.Mock).mockResolvedValueOnce({
+                ok: false,
+                status: 404,
+                statusText: "Not Found",
+            });
+
+            const result = await opperAIIndexes.deleteByName("NonExistentIndex");
+
+            expect(result).toBe(false);
+            expect(fetch).toHaveBeenCalledTimes(1);
+        });
+    });
 });
 
 describe("OpperAIIndex", () => {

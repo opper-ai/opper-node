@@ -2,7 +2,7 @@ import fs from "node:fs";
 
 import { OpperIndexDocument, OpperIndexQuery, OpperIndex, APIClientContext } from "./types";
 
-import { OpperError } from "./errors";
+import { OpperError, APIError } from "./errors";
 import APIResource from "./api-resource";
 import { URLBuilder, BASE_PATHS } from "./utils";
 
@@ -144,6 +144,9 @@ class Indexes extends APIResource {
     protected calcURLIndexByUUID = (uuid: string) => {
         return `${this.baseURL}/v1/indexes/${uuid}`;
     };
+    protected calcURLIndexByName = (name: string) => {
+        return `${this.baseURL}/v1/indexes/by-name/${encodeURIComponent(name)}`;
+    };
 
     constructor({ baseURL, apiKey, isUsingAuthorization }: APIClientContext) {
         super({ baseURL, apiKey, isUsingAuthorization });
@@ -180,30 +183,47 @@ class Indexes extends APIResource {
     }
 
     /**
-     * Deletes an index
+     * Deletes an index by UUID
      * @param uuid The uuid of the index to delete.
      * @returns A promise that resolves to a boolean indicating success.
      */
     public async delete(uuid: string): Promise<boolean> {
         const url = this.calcURLIndexByUUID(uuid);
         const deleted = await this.doDelete<boolean>(url);
-
         return deleted;
+    }
+
+    /**
+     * Deletes an index by name
+     * @param name The name of the index to delete.
+     * @returns A promise that resolves to a boolean indicating success, or false if index not found.
+     * @throws {APIError} If there's an API error other than 404 Not Found
+     */
+    public async deleteByName(name: string): Promise<boolean> {
+        const index = await this.get(name);
+        if (!index) {
+            return false;
+        }
+        return this.delete(index.uuid);
     }
 
     /**
      * Retrieves an index by name.
      * @param name The name of the index to retrieve.
-     * @returns A promise that resolves to the index.
+     * @returns A promise that resolves to the index or null if not found.
+     * @throws {APIError} If there's an API error other than 404 Not Found
      */
-    public async get(name: string) {
-        const list = await this.list();
-        const index = list.find((index) => index.name === name);
-
-        if (!index) {
-            return null;
+    public async get(name: string): Promise<Index | null> {
+        try {
+            const url = this.calcURLIndexByName(name);
+            const index = await this.doGet<OpperIndex>(url);
+            return new Index(index, this);
+        } catch (error: unknown) {
+            if (error instanceof APIError && error.status === 404) {
+                return null;
+            }
+            throw error;
         }
-        return new Index(index, this);
     }
 }
 
