@@ -138,6 +138,35 @@ const client = new Client();
 
     console.log("Fallback response: ", fallbackMessage);
 
+    // Example with tags
+    const { json_payload: taggedResponse } = await client.call({
+        parent_span_uuid: trace.uuid,
+        name: "node-sdk/call/tags-example",
+        instructions: "Add two numbers together",
+        input: {
+            x: 10,
+            y: 20
+        },
+        tags: {
+            environment: "production",
+            feature: "arithmetic",
+            version: "1.0.0",
+            customer_id: "example-123"
+        },
+        output_schema: {
+            type: "object",
+            properties: {
+                sum: {
+                    type: "number",
+                    description: "The sum of the two numbers"
+                }
+            },
+            required: ["sum"]
+        }
+    });
+
+    console.log("Tagged response: ", taggedResponse);
+
     await trace.end({
         output: "example output",
     });
