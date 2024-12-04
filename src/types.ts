@@ -208,6 +208,12 @@ export type OpperCall = {
      * Fallback models to use if the primary model fails.
      */
     fallback_models?: string[];
+
+    /**
+     * Tags to be associated with the function call.
+     * These can be used for tracking, filtering, and organizing function calls.
+     */
+    tags?: Record<string, string>;
 };
 
 export type OpperFunctionSchema = {
