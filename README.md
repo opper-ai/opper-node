@@ -17,6 +17,7 @@ This is the official Node.js SDK for Opper AI. It provides a simple and powerful
     - [Image Generation](#image-generation)
 4. [Advanced Usage](#advanced-usage)
     - [Structured Output with `fn` Helper](#structured-output-with-fn-helper)
+    - [OpenAI](#openai)
 5. [API Reference](#api-reference)
 6. [Examples](#examples)
 7. [License](#license)
@@ -233,6 +234,12 @@ const result = await translate({ text: "Hello, world!", language: "French" });
 
 console.log(result);
 ```
+
+### OpenAI
+
+The Opper OpenAI compatibility layer allows you to use Opper models with the OpenAI API and SDKs. This gives you the ability to use any model provided by Opper in any project that uses the OpenAI API/SDKs.
+
+See [example-openai.ts](./examples/example-openai.ts) for an example of how to use the OpenAI compatibility layer.
 
 ## API Reference
 
