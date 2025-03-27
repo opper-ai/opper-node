@@ -2,6 +2,7 @@
 // Run example with "npx ts-node ./examples/example-tracing-manual.ts"
 import "dotenv/config";
 import Client from "../src";
+import { nanoId } from "../src/utils";
 
 // Your API key will be loaded from the environment variable OPPER_API_KEY if not provided
 const client = new Client();
@@ -55,6 +56,17 @@ const sleepAndReturn = async (ms: number, returnValue: any) => {
     await span.end({
         output: { foo: "bar" },
     });
+
+    // Manually create a new child span for a given trace with a its uuid
+    const manualSpan = await client.traces.startSpan({
+        // A custom uuid can be provided for the span
+        uuid: nanoId(),
+        parent_uuid: trace.uuid,
+        name: "node-sdk/tracing-manual/manual-span",
+        input: { some: "input given to", to: "the manual span" },
+    });
+    await sleepAndReturn(1000, null);
+    await manualSpan.end({ output: { foo: "bar" } });
 
     await trace.end({ output: { foo: "bar" } });
 })();

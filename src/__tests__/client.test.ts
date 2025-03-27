@@ -70,33 +70,33 @@ describe("OpperAIClient", () => {
                 message: "test response",
                 context: {},
                 span_id: "test-span-id",
-                json_payload: { sum: 30 }
+                json_payload: { sum: 30 },
             });
 
             const response = await client.functions.call({
                 name: "test-function",
                 input: {
                     x: 10,
-                    y: 20
+                    y: 20,
                 },
                 tags: {
                     environment: "test",
                     feature: "arithmetic",
-                    version: "1.0.0"
-                }
+                    version: "1.0.0",
+                },
             });
 
             expect(callSpy).toHaveBeenCalledWith({
                 name: "test-function",
                 input: {
                     x: 10,
-                    y: 20
+                    y: 20,
                 },
                 tags: {
                     environment: "test",
                     feature: "arithmetic",
-                    version: "1.0.0"
-                }
+                    version: "1.0.0",
+                },
             });
 
             expect(response.json_payload).toEqual({ sum: 30 });

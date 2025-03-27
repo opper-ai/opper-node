@@ -102,14 +102,17 @@ describe("OpperAIIndexes", () => {
             expect(index?.uuid).toBe(mockIndex.uuid);
             expect(index?._index).toEqual(mockIndex);
             expect(fetch).toHaveBeenCalledTimes(1);
-            expect(fetch).toHaveBeenCalledWith("https://api.opper.ai/v1/indexes/by-name/Test%20Index%201", {
-                method: "GET",
-                headers: {
-                    "X-OPPER-API-KEY": "test-api-key",
-                    "User-Agent": "opper-node/0.0.0",
-                    "Content-Type": "application/json",
-                },
-            });
+            expect(fetch).toHaveBeenCalledWith(
+                "https://api.opper.ai/v1/indexes/by-name/Test%20Index%201",
+                {
+                    method: "GET",
+                    headers: {
+                        "X-OPPER-API-KEY": "test-api-key",
+                        "User-Agent": "opper-node/0.0.0",
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
         });
 
         it("should return null when index is not found", async () => {
@@ -123,14 +126,17 @@ describe("OpperAIIndexes", () => {
 
             expect(index).toBeNull();
             expect(fetch).toHaveBeenCalledTimes(1);
-            expect(fetch).toHaveBeenCalledWith("https://api.opper.ai/v1/indexes/by-name/NonExistentIndex", {
-                method: "GET",
-                headers: {
-                    "X-OPPER-API-KEY": "test-api-key",
-                    "User-Agent": "opper-node/0.0.0",
-                    "Content-Type": "application/json",
-                },
-            });
+            expect(fetch).toHaveBeenCalledWith(
+                "https://api.opper.ai/v1/indexes/by-name/NonExistentIndex",
+                {
+                    method: "GET",
+                    headers: {
+                        "X-OPPER-API-KEY": "test-api-key",
+                        "User-Agent": "opper-node/0.0.0",
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
         });
 
         it("should throw an error for non-404 errors", async () => {
@@ -165,14 +171,18 @@ describe("OpperAIIndexes", () => {
             expect(result).toBe(true);
             expect(fetch).toHaveBeenCalledTimes(2);
             // Verify get request
-            expect(fetch).toHaveBeenNthCalledWith(1, "https://api.opper.ai/v1/indexes/by-name/Test%20Index%201", {
-                method: "GET",
-                headers: {
-                    "X-OPPER-API-KEY": "test-api-key",
-                    "User-Agent": "opper-node/0.0.0",
-                    "Content-Type": "application/json",
-                },
-            });
+            expect(fetch).toHaveBeenNthCalledWith(
+                1,
+                "https://api.opper.ai/v1/indexes/by-name/Test%20Index%201",
+                {
+                    method: "GET",
+                    headers: {
+                        "X-OPPER-API-KEY": "test-api-key",
+                        "User-Agent": "opper-node/0.0.0",
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
             // Verify delete request
             expect(fetch).toHaveBeenNthCalledWith(2, "https://api.opper.ai/v1/indexes/1", {
                 method: "DELETE",
