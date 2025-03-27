@@ -156,6 +156,22 @@ await trace.end({
 });
 ```
 
+Manually create a child span for a given parent trace/span:
+
+```typescript
+const manualSpan = await client.traces.startSpan({
+    parent_uuid: trace.uuid,
+    name: "example-span",
+    input: "example input",
+});
+
+await manualSpan.end({
+    output: "example output",
+});
+```
+
+See [example-tracing-manual.ts](./examples/example-tracing-manual.ts) for a full example of how to manually create spans including saving metrics and examples.
+
 ### Datasets
 
 See [example-datasets.ts](./examples/example-datasets.ts):
