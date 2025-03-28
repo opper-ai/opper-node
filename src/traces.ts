@@ -41,8 +41,10 @@ export class OpperTrace extends APIResource {
         start_time = new Date(),
         uuid = nanoId(),
         metadata,
+        type,
     }: SpanStartOptions & {
         uuid?: string;
+        type?: string;
     }) {
         const parent_uuid = this.uuid;
         const url = this.calcBaseURL();
@@ -54,6 +56,7 @@ export class OpperTrace extends APIResource {
             uuid,
             parent_uuid,
             metadata,
+            type,
         });
 
         return new OpperSpan({ uuid: data.uuid }, this);
@@ -132,7 +135,7 @@ class Traces extends APIResource {
     }
 
     /**
-     * Manually create a new child span of a given trace.
+     * Manually create a new span.
      */
     public async startSpan({
         uuid,
@@ -141,6 +144,7 @@ class Traces extends APIResource {
         input,
         start_time = new Date(),
         metadata,
+        type,
     }: SpanStartOptions & {
         /**
          * The uuid of the span to be created.
@@ -150,17 +154,23 @@ class Traces extends APIResource {
         /**
          * The uuid of the parent span.
          */
-        parent_uuid: string;
+        parent_uuid?: string;
+        /**
+         * The type of the span.
+         */
+        type?: string;
     }) {
-        const trace = new OpperTrace({ uuid: parent_uuid }, this);
-
-        return trace.startSpan({
+        const data = await this.doPost<{ uuid: string }>(`${this.baseURL}/v1/spans`, {
             name,
-            input,
+            input: stringify(input),
             start_time,
-            metadata,
             uuid,
+            type,
+            parent_uuid,
+            ...(metadata && { meta: metadata }),
         });
+
+        return new OpperTrace({ uuid: data.uuid }, this);
     }
 }
 
