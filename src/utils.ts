@@ -46,8 +46,10 @@ export class OpperMediaHandler {
                 return "image/png";
             case "mp3":
                 return "audio/mp3";
+            case "pdf":
+                return "application/pdf";
             default:
-                throw new Error("Unsupported file format. Supported types: jpg, jpeg, png, mp3");
+                throw new Error("Unsupported file format. Supported types: jpg, jpeg, png, mp3, pdf");
         }
     }
 
@@ -61,11 +63,11 @@ export class OpperMediaHandler {
 
     /**
      * Returns the media input in the format required by the Opper API.
-     * @returns An object with either _opper_image_input or _opper_audio_input key,
+     * @returns An object with _opper_image_input, _opper_audio_input, or _opper_pdf_input key,
      *          containing the base64-encoded data URL of the media file.
      * @throws Error if the media type is not supported.
      */
-    public getInput(): { _opper_image_input: string } | { _opper_audio_input: string } {
+    public getInput(): { _opper_image_input: string } | { _opper_audio_input: string } | { _opper_pdf_input: string } {
         const base64Data = this.getBase64Data();
         if (this.mimeType.startsWith("image/")) {
             return {
@@ -74,6 +76,10 @@ export class OpperMediaHandler {
         } else if (this.mimeType.startsWith("audio/")) {
             return {
                 _opper_audio_input: `data:${this.mimeType};base64,${base64Data}`,
+            };
+        } else if (this.mimeType === "application/pdf") {
+            return {
+                _opper_pdf_input: `data:${this.mimeType};base64,${base64Data}`,
             };
         }
         throw new Error("Unsupported media type");

@@ -14,6 +14,7 @@ This is the official Node.js SDK for Opper AI. It provides a simple and powerful
     - [Tracing](#tracing)
     - [Datasets](#datasets)
     - [Multimodal Inputs](#multimodal-inputs)
+    - [PDF Processing](#pdf-processing)
     - [Image Generation](#image-generation)
 4. [Advanced Usage](#advanced-usage)
     - [Structured Output with `fn` Helper](#structured-output-with-fn-helper)
@@ -210,6 +211,29 @@ const { message: audio_transcription } = await client.call({
     model: "gcp/gemini-1.5-flash-eu",
 });
 ```
+
+### PDF Processing
+
+Process PDF files using the OpperMediaHandler class:
+
+```typescript
+import { OpperMediaHandler } from "opperai";
+
+// Create a handler for the PDF file
+const pdf = new OpperMediaHandler("path/to/your.pdf");
+
+// Use it in a function call
+const result = await client.call({
+  name: "pdf_to_markdown",
+  model: "gcp/gemini-2.0-flash",
+  instructions: "Extract text content from this PDF document",
+  input: pdf.getInput()
+});
+
+console.log(result.message);
+```
+
+See the [PDF example](examples/example-pdf.ts) for a complete implementation of PDF to markdown conversion.
 
 ### Image Generation
 
