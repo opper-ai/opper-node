@@ -32,7 +32,7 @@ describe("Spans", () => {
             const spanUuid = "span-uuid";
             const mockFeedback: SpanMetric = {
                 dimension: "quality",
-                score: 0.9,
+                value: 0.9,
                 comment: "Good job",
             };
             (global.fetch as jest.Mock).mockResolvedValueOnce({

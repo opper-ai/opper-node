@@ -48,7 +48,7 @@ const sleepAndReturn = async (ms: number, returnValue: any) => {
     // A metric and/or comment can be saved to the span
     await span.saveMetric({
         dimension: "accuracy",
-        score: 1,
+        value: 1,
         comment: "This is a comment",
     });
 

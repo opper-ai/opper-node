@@ -257,6 +257,11 @@ export type SpanMetric = {
      */
     dimension?: string;
     /**
+     * Value of the metric. E.g. 0.95
+     */
+    value?: number;
+    /**
+     * @deprecated Use 'value' instead
      * Score of the metric. E.g. 0.95
      */
     score?: number;
