@@ -88,13 +88,13 @@ describe("Traces", () => {
 
             await span.saveMetric({
                 dimension: "accuracy",
-                score: 1,
+                value: 1,
                 comment: "This is a comment",
             });
 
             expect(metricSpy).toHaveBeenCalledWith({
                 dimension: "accuracy",
-                score: 1,
+                value: 1,
                 comment: "This is a comment",
             });
         });

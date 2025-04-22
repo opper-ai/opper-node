@@ -23,7 +23,7 @@ const client = new Client();
     // Save a metric for the above call
     await client.spans.saveMetric(span_id, {
         dimension: "accuracy",
-        score: 0.95,
+        value: 0.95,
         comment: "The answer is correct",
     });
 
