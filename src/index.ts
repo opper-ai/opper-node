@@ -4,6 +4,8 @@ import {
     OpperGenerateImage,
     OpperImageResponse,
     Options,
+    EvaluationOptions,
+    EvaluationResponse,
 } from "./types";
 
 import { OpperError } from "./errors";
@@ -12,6 +14,7 @@ import Functions from "./functions";
 import Indexes from "./indexes";
 import Spans from "./spans";
 import Traces, { OpperSpan, OpperTrace } from "./traces";
+import Evaluations from "./evaluations";
 
 class Client {
     public baseURL: string;
@@ -21,6 +24,7 @@ class Client {
     public readonly indexes: Indexes;
     public readonly spans: Spans;
     public readonly traces: Traces;
+    public readonly evaluations: Evaluations;
 
     constructor(
         { apiKey, baseURL, isUsingAuthorization, dangerouslyAllowBrowser }: Options = {
@@ -46,6 +50,7 @@ class Client {
         this.indexes = new Indexes(this);
         this.spans = new Spans(this);
         this.traces = new Traces(this);
+        this.evaluations = new Evaluations(this);
     }
 
     public async call(fn: OpperCall & { stream: true }): Promise<ReadableStream<unknown>>;
@@ -61,6 +66,15 @@ class Client {
     public generateImage = async (args: OpperGenerateImage): Promise<OpperImageResponse> => {
         return await this.functions.generateImage(args);
     };
+
+    /**
+     * Evaluate a span using the provided evaluators.
+     * @param options The evaluation options
+     * @returns The evaluation results
+     */
+    public async evaluate(options: EvaluationOptions): Promise<EvaluationResponse> {
+        return await this.evaluations.evaluate(options);
+    }
 
     private isRunningInBrowser = () => {
         return (
@@ -81,10 +95,13 @@ export {
     OpperCallExample,
     OpperCallExamples,
     OpperCallConfigurationParameters,
+    EvaluationOptions,
+    EvaluationResponse,
+    Metric,
 } from "./types";
 
 export { OpperMediaHandler } from "./utils";
-
+export { evaluator } from "./evaluators";
 export { type OpperSpan, type OpperTrace };
 
 export default Client;

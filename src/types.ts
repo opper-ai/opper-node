@@ -346,3 +346,37 @@ export interface APIClientContext {
     apiKey: string;
     isUsingAuthorization: boolean;
 }
+
+export type Metric = {
+    /**
+     * Dimension of the metric. E.g. "accuracy", "faithfulness", "fluency"
+     */
+    dimension: string;
+    /**
+     * Value of the metric, between 0 and 1.
+     */
+    value: number;
+    /**
+     * Comment explaining the metric or providing additional context.
+     */
+    comment?: string;
+};
+
+export type EvaluatorFn = (...args: any[]) => Promise<Metric[]> | Metric[];
+
+export type EvaluatorResult = Promise<Metric[]> | Metric[];
+
+export interface EvaluationResponse {
+    metrics: Record<string, Metric[]>;
+}
+
+export interface EvaluationOptions {
+    /**
+     * The span ID to associate the evaluation with
+     */
+    span_id: string;
+    /**
+     * The evaluators to run
+     */
+    evaluators: EvaluatorResult[];
+}

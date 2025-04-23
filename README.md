@@ -13,6 +13,7 @@ This is the official Node.js SDK for Opper AI. It provides a simple and powerful
     - [Indexes](#indexes)
     - [Tracing](#tracing)
     - [Datasets](#datasets)
+    - [Evaluations](#evaluations)
     - [Multimodal Inputs](#multimodal-inputs)
     - [PDF Processing](#pdf-processing)
     - [Image Generation](#image-generation)
@@ -189,6 +190,69 @@ const entry = await dataset.add({
 });
 ```
 
+### Evaluations
+
+Evaluate the quality and performance of model outputs using custom evaluators:
+
+```typescript
+import { evaluator } from "opperai";
+
+// Create an evaluator for checking line count
+const lineCountEvaluator = evaluator(
+    (result: string, minLines = 10, maxLines = 20) => {
+        // Count non-empty lines
+        const lines = result
+            .trim()
+            .split("\n")
+            .filter(line => line.trim().length > 0);
+        const lineCount = lines.length;
+
+        // Calculate score (0-1)
+        let score: number;
+        if (lineCount < minLines) {
+            score = lineCount / minLines;
+        } else if (lineCount > maxLines) {
+            const excess = lineCount - maxLines;
+            score = Math.max(0, 1 - (excess / maxLines));
+        } else {
+            score = 1.0;
+        }
+
+        return [
+            {
+                dimension: "line_count.score",
+                value: score,
+                comment: "Line count score",
+            },
+            {
+                dimension: "line_count.count",
+                value: Math.min(1.0, lineCount / maxLines),
+                comment: `Found ${lineCount} lines`,
+            },
+        ];
+    }
+);
+
+// Use the evaluator on a model response
+const { message, span_id } = await client.call({
+    name: "content_generation",
+    input: "Write a short paragraph about AI",
+});
+
+// Run evaluation
+const evaluation = await client.evaluate({
+    span_id,
+    evaluators: [
+        lineCountEvaluator(message, 4, 10),
+    ],
+});
+
+// View evaluation results
+console.log(evaluation.metrics);
+```
+
+See [example-evaluations.ts](./examples/example-evaluations.ts) for a complete example including evaluators that use an LLM call for assessment.
+
 ### Multimodal Inputs
 
 Handle various input types, including images and audio. See [example-calls-multimodal.ts](./examples/example-calls-multimodal.ts) for more examples:
@@ -293,6 +357,7 @@ The SDK includes several examples demonstrating various features:
 -   Multimodal inputs: `examples/example-calls-multimodal.ts`
 -   Indexing: `examples/example-indexes.ts`
 -   Manual tracing: `examples/example-tracing-manual.ts`
+-   Evaluations: `examples/example-evaluations.ts`
 -   Structured output with Zod: `examples/example-zod-fn.ts`
 -   Structured output with TypeBox: `examples/example-typebox-fn.ts`
 
