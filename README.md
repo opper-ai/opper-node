@@ -318,8 +318,8 @@ Create vector embeddings for text using Opper's embedding models:
 ```typescript
 // Create embeddings for a single string
 const singleEmbedding = await client.createEmbedding({
-    input: "This is a sample text to embed",
-    model: "text-embedding-3-small" // Optional, uses default model if not specified
+    model: "text-embedding-3-small",
+    input: "This is a sample text to embed"
 });
 
 console.log(`Created ${singleEmbedding.data[0].embedding.length}-dimensional embedding`);
