@@ -98,6 +98,7 @@ export const BASE_PATHS = {
     FUNCTIONS: "/api/v1/functions",
     GENERATE_IMAGE: "/v1/generate-image",
     DATASETS: "/v1/datasets",
+    EMBEDDINGS: "/v1/embeddings",
 };
 
 export class URLBuilder {

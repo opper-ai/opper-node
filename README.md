@@ -17,6 +17,7 @@ This is the official Node.js SDK for Opper AI. It provides a simple and powerful
     - [Multimodal Inputs](#multimodal-inputs)
     - [PDF Processing](#pdf-processing)
     - [Image Generation](#image-generation)
+    - [Embeddings](#embeddings)
 4. [Advanced Usage](#advanced-usage)
     - [Structured Output with `fn` Helper](#structured-output-with-fn-helper)
     - [OpenAI](#openai)
@@ -310,6 +311,32 @@ const generatedImage = await client.generateImage({
 // Save or process the generated image
 ```
 
+### Embeddings
+
+Create vector embeddings for text using Opper's embedding models:
+
+```typescript
+// Create embeddings for a single string
+const singleEmbedding = await client.createEmbedding({
+    input: "This is a sample text to embed",
+    model: "text-embedding-3-small" // Optional, uses default model if not specified
+});
+
+console.log(`Created ${singleEmbedding.data[0].embedding.length}-dimensional embedding`);
+console.log(`Used ${singleEmbedding.usage.prompt_tokens} tokens`);
+
+// Create embeddings for multiple strings in a single request
+const batchEmbeddings = await client.createEmbedding({
+    input: [
+        "First text to embed",
+        "Second text to embed",
+        "Third text to embed"
+    ]
+});
+
+console.log(`Created ${batchEmbeddings.data.length} embeddings`);
+```
+
 ## Advanced Usage
 
 ### Structured Output with `fn` Helper
@@ -358,6 +385,7 @@ The SDK includes several examples demonstrating various features:
 -   Indexing: `examples/example-indexes.ts`
 -   Manual tracing: `examples/example-tracing-manual.ts`
 -   Evaluations: `examples/example-evaluations.ts`
+-   Embeddings: `examples/example-embeddings.ts`
 -   Structured output with Zod: `examples/example-zod-fn.ts`
 -   Structured output with TypeBox: `examples/example-typebox-fn.ts`
 

@@ -6,6 +6,8 @@ import {
     Options,
     EvaluationOptions,
     EvaluationResponse,
+    EmbeddingRequest,
+    EmbeddingResponse,
 } from "./types";
 
 import { OpperError } from "./errors";
@@ -15,6 +17,7 @@ import Indexes from "./indexes";
 import Spans from "./spans";
 import Traces, { OpperSpan, OpperTrace } from "./traces";
 import Evaluations from "./evaluations";
+import Embeddings from "./embeddings";
 
 class Client {
     public baseURL: string;
@@ -25,6 +28,7 @@ class Client {
     public readonly spans: Spans;
     public readonly traces: Traces;
     public readonly evaluations: Evaluations;
+    public readonly embeddings: Embeddings;
 
     constructor(
         { apiKey, baseURL, isUsingAuthorization, dangerouslyAllowBrowser }: Options = {
@@ -51,6 +55,7 @@ class Client {
         this.spans = new Spans(this);
         this.traces = new Traces(this);
         this.evaluations = new Evaluations(this);
+        this.embeddings = new Embeddings(this);
     }
 
     public async call(fn: OpperCall & { stream: true }): Promise<ReadableStream<unknown>>;
@@ -66,6 +71,16 @@ class Client {
     public generateImage = async (args: OpperGenerateImage): Promise<OpperImageResponse> => {
         return await this.functions.generateImage(args);
     };
+
+    /**
+     * Creates embeddings for the provided input text.
+     * 
+     * @param request - The embedding request parameters
+     * @returns A promise that resolves to an EmbeddingResponse containing the generated embeddings
+     */
+    public async createEmbedding(request: EmbeddingRequest): Promise<EmbeddingResponse> {
+        return await this.embeddings.create(request);
+    }
 
     /**
      * Evaluate a span using the provided evaluators.
@@ -98,6 +113,8 @@ export {
     EvaluationOptions,
     EvaluationResponse,
     Metric,
+    EmbeddingRequest,
+    EmbeddingResponse,
 } from "./types";
 
 export { OpperMediaHandler } from "./utils";
