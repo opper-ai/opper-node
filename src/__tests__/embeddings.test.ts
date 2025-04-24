@@ -34,6 +34,7 @@ describe("Embeddings", () => {
         );
         
         const request: EmbeddingRequest = {
+            model: "text-embedding-ada-002",
             input: "This is a test input"
         };
         
@@ -74,8 +75,8 @@ describe("Embeddings", () => {
         );
         
         const request: EmbeddingRequest = {
-            input: ["First test input", "Second test input"],
-            model: "text-embedding-3-small"
+            model: "text-embedding-ada-002",
+            input: ["First test input", "Second test input"]
         };
         
         const response = await client.createEmbedding(request);
@@ -100,6 +101,7 @@ describe("Embeddings", () => {
         );
         
         const request: EmbeddingRequest = {
+            model: "text-embedding-ada-002",
             input: "Test input"
         };
         
