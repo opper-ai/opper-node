@@ -380,3 +380,69 @@ export interface EvaluationOptions {
      */
     evaluators: EvaluatorResult[];
 }
+
+export interface EmbeddingRequest {
+    /**
+     * The model to use for embedding generation.
+     * This is required for the API request.
+     */
+    model: string;
+    
+    /**
+     * Either a single string or an array of strings to embed.
+     */
+    input: string | string[];
+    
+    /**
+     * Optional format for the embedding vector data.
+     */
+    encoding_format?: string;
+    
+    /**
+     * Optional unique identifier for the end-user.
+     */
+    user?: string;
+    
+    /**
+     * This is used to attach to an existing span.
+     * If not provided, a new span will be created and displayed in the Opper UI.
+     */
+    parent_span_uuid?: string;
+}
+
+export interface EmbeddingResponse {
+    /**
+     * The span ID for this embedding request.
+     */
+    span_id: string;
+    
+    /**
+     * Array of embeddings, one for each input string.
+     */
+    data: {
+        /**
+         * The generated embedding vector.
+         */
+        embedding: number[];
+        
+        /**
+         * Additional properties provided by the embedding model.
+         */
+        [additionalProp1: string]: any;
+    }[];
+    
+    /**
+     * Additional usage information.
+     */
+    usage: {
+        /**
+         * Number of tokens in the input prompt.
+         */
+        prompt_tokens: number;
+        
+        /**
+         * Total tokens used.
+         */
+        total_tokens: number;
+    };
+}
