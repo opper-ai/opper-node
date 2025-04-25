@@ -12,18 +12,17 @@ async function run() {
     // Example 1: Create embedding for a single text input
     console.log("\n1. Creating embedding for a single text input:");
     const singleEmbedding = await client.createEmbedding({
-        model: "text-embedding-ada-002", // Model parameter is required
+        model: "openai/text-embedding-3-large", // Model parameter is required
         input: "The quick brown fox jumps over the lazy dog"
     });
 
     console.log(`  - Created a ${singleEmbedding.data[0].embedding.length}-dimensional embedding`);
     console.log(`  - Used ${singleEmbedding.usage.prompt_tokens} tokens`);
-    console.log(`  - Span ID: ${singleEmbedding.span_id}`);
 
     // Example 2: Create embeddings for multiple text inputs
     console.log("\n2. Creating embeddings for multiple text inputs:");
     const batchEmbeddings = await client.createEmbedding({
-        model: "text-embedding-ada-002", // Model parameter is required
+        model: "openai/text-embedding-3-large", // Model parameter is required
         input: [
             "Artificial intelligence is transforming industries",
             "Machine learning models continue to improve",
