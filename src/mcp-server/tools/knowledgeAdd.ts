@@ -3,7 +3,7 @@
  */
 
 import * as z from "zod";
-import { knowledgeAddKnowledgeKnowledgeBaseIdAddPost } from "../../funcs/knowledgeAddKnowledgeKnowledgeBaseIdAddPost.js";
+import { knowledgeAdd } from "../../funcs/knowledgeAdd.js";
 import * as models from "../../models/index.js";
 import { formatResult, ToolDefinition } from "../tools.js";
 
@@ -12,16 +12,14 @@ const args = {
   addRequest: models.AddRequest$inboundSchema,
 };
 
-export const tool$knowledgeAddKnowledgeKnowledgeBaseIdAddPost: ToolDefinition<
-  typeof args
-> = {
-  name: "knowledge-add-knowledge-knowledge-base-id-add-post",
+export const tool$knowledgeAdd: ToolDefinition<typeof args> = {
+  name: "knowledge-add",
   description: `Add
 
 Add data to a knowledge base`,
   args,
   tool: async (client, args, ctx) => {
-    const [result, apiCall] = await knowledgeAddKnowledgeKnowledgeBaseIdAddPost(
+    const [result, apiCall] = await knowledgeAdd(
       client,
       args.knowledgeBaseId,
       args.addRequest,

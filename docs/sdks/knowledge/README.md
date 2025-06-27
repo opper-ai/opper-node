@@ -5,7 +5,7 @@
 
 ### Available Operations
 
-* [create](#create) - Create Knowledge Base
+* [creat](#creat) - Create Knowledge Base
 * [list](#list) - List Knowledge Bases
 * [get](#get) - Get Knowledge Base
 * [delete](#delete) - Delete Knowledge Base
@@ -14,9 +14,9 @@
 * [registerFileUpload](#registerfileupload) - Register File Upload
 * [deleteFile](#deletefile) - Delete File From Knowledge Base
 * [query](#query) - Query Knowledge Base
-* [addKnowledgeKnowledgeBaseIdAddPost](#addknowledgeknowledgebaseidaddpost) - Add
+* [add](#add) - Add
 
-## create
+## creat
 
 Create a knowledge base
 
@@ -30,7 +30,7 @@ const opper = new Opper({
 });
 
 async function run() {
-  const result = await opper.knowledge.create({
+  const result = await opper.knowledge.creat({
     name: "<value>",
   });
 
@@ -46,7 +46,7 @@ The standalone function version of this method:
 
 ```typescript
 import { OpperCore } from "opperai/core.js";
-import { knowledgeCreate } from "opperai/funcs/knowledgeCreate.js";
+import { knowledgeCreat } from "opperai/funcs/knowledgeCreat.js";
 
 // Use `OpperCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -55,14 +55,14 @@ const opper = new OpperCore({
 });
 
 async function run() {
-  const res = await knowledgeCreate(opper, {
+  const res = await knowledgeCreat(opper, {
     name: "<value>",
   });
   if (res.ok) {
     const { value: result } = res;
     console.log(result);
   } else {
-    console.log("knowledgeCreate failed:", res.error);
+    console.log("knowledgeCreat failed:", res.error);
   }
 }
 
@@ -725,7 +725,7 @@ run();
 | errors.RequestValidationError | 422                           | application/json              |
 | errors.APIError               | 4XX, 5XX                      | \*/\*                         |
 
-## addKnowledgeKnowledgeBaseIdAddPost
+## add
 
 Add data to a knowledge base
 
@@ -739,7 +739,7 @@ const opper = new Opper({
 });
 
 async function run() {
-  const result = await opper.knowledge.addKnowledgeKnowledgeBaseIdAddPost("c441b497-32db-4e24-8f41-ab160e1329fc", {
+  const result = await opper.knowledge.add("c441b497-32db-4e24-8f41-ab160e1329fc", {
     key: "paris_123",
     content: "The capital of France is Paris",
     metadata: {
@@ -760,7 +760,7 @@ The standalone function version of this method:
 
 ```typescript
 import { OpperCore } from "opperai/core.js";
-import { knowledgeAddKnowledgeKnowledgeBaseIdAddPost } from "opperai/funcs/knowledgeAddKnowledgeKnowledgeBaseIdAddPost.js";
+import { knowledgeAdd } from "opperai/funcs/knowledgeAdd.js";
 
 // Use `OpperCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -769,7 +769,7 @@ const opper = new OpperCore({
 });
 
 async function run() {
-  const res = await knowledgeAddKnowledgeKnowledgeBaseIdAddPost(opper, "c441b497-32db-4e24-8f41-ab160e1329fc", {
+  const res = await knowledgeAdd(opper, "c441b497-32db-4e24-8f41-ab160e1329fc", {
     key: "paris_123",
     content: "The capital of France is Paris",
     metadata: {
@@ -781,7 +781,7 @@ async function run() {
     const { value: result } = res;
     console.log(result);
   } else {
-    console.log("knowledgeAddKnowledgeKnowledgeBaseIdAddPost failed:", res.error);
+    console.log("knowledgeAdd failed:", res.error);
   }
 }
 
