@@ -30,7 +30,10 @@ typescript:
     dependencies: {}
     devDependencies: {}
     peerDependencies: {}
-  additionalPackageJSON: {}
+  additionalPackageJSON:
+    repository:
+      type: git
+      url: https://github.com/opper-ai/opper-node
   author: Speakeasy
   baseErrorName: OpperError
   clientServerStatusCodesAsErrors: true
