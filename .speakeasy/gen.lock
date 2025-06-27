@@ -1,12 +1,12 @@
 lockVersion: 2.0.0
 id: 7fd487cb-2a73-459e-99e5-2c4e6547175f
 management:
-  docChecksum: 552d84cd05ab94ffe7766e00a1642d41
+  docChecksum: 68d583ca64d94087d715dd6f59a44c69
   docVersion: 2.0.0
-  speakeasyVersion: 1.570.2
-  generationVersion: 2.638.5
-  releaseVersion: 3.0.1
-  configChecksum: 6549545368c0003b6558bf8ab0c1c2e5
+  speakeasyVersion: 1.571.1
+  generationVersion: 2.640.2
+  releaseVersion: 3.1.0
+  configChecksum: 8f0883481a7d7a29790a592251334735
 features:
   typescript:
     additionalDependencies: 0.1.0
@@ -24,7 +24,6 @@ features:
     globalServerURLs: 2.82.5
     groups: 2.81.2
     mcpServer: 0.9.2
-    mockServer: 0.1.0
     nameOverrides: 2.81.2
     nullables: 0.1.1
     responseFormat: 0.2.3
@@ -284,233 +283,6 @@ generatedFiles:
   - eslint.config.mjs
   - jsr.json
   - package.json
-  - src/__tests__/mockserver/.gitignore
-  - src/__tests__/mockserver/Dockerfile
-  - src/__tests__/mockserver/Makefile
-  - src/__tests__/mockserver/README.md
-  - src/__tests__/mockserver/go.mod
-  - src/__tests__/mockserver/go.sum
-  - src/__tests__/mockserver/internal/handler/assert/contenttype.go
-  - src/__tests__/mockserver/internal/handler/assert/header.go
-  - src/__tests__/mockserver/internal/handler/assert/parameter.go
-  - src/__tests__/mockserver/internal/handler/assert/pointer.go
-  - src/__tests__/mockserver/internal/handler/assert/security.go
-  - src/__tests__/mockserver/internal/handler/doc.go
-  - src/__tests__/mockserver/internal/handler/generated_handler.go
-  - src/__tests__/mockserver/internal/handler/generated_handlers.go
-  - src/__tests__/mockserver/internal/handler/values/files.go
-  - src/__tests__/mockserver/internal/logging/doc.go
-  - src/__tests__/mockserver/internal/logging/formats.go
-  - src/__tests__/mockserver/internal/logging/http_file.go
-  - src/__tests__/mockserver/internal/logging/http_logger.go
-  - src/__tests__/mockserver/internal/logging/levels.go
-  - src/__tests__/mockserver/internal/logging/logger.go
-  - src/__tests__/mockserver/internal/logging/oas_operation.go
-  - src/__tests__/mockserver/internal/logging/oas_operation_call.go
-  - src/__tests__/mockserver/internal/sdk/models/components/addrequest.go
-  - src/__tests__/mockserver/internal/sdk/models/components/annotation.go
-  - src/__tests__/mockserver/internal/sdk/models/components/annotationurlcitation.go
-  - src/__tests__/mockserver/internal/sdk/models/components/appapipublicv2functioncallcallfunctionrequest.go
-  - src/__tests__/mockserver/internal/sdk/models/components/appapipublicv2functioncallcallfunctionresponse.go
-  - src/__tests__/mockserver/internal/sdk/models/components/appapipublicv2functionscallfunctionrequest.go
-  - src/__tests__/mockserver/internal/sdk/models/components/appapipublicv2functionscallfunctionresponse.go
-  - src/__tests__/mockserver/internal/sdk/models/components/audio.go
-  - src/__tests__/mockserver/internal/sdk/models/components/chatcompletion.go
-  - src/__tests__/mockserver/internal/sdk/models/components/chatcompletionassistantmessageparam.go
-  - src/__tests__/mockserver/internal/sdk/models/components/chatcompletionaudio.go
-  - src/__tests__/mockserver/internal/sdk/models/components/chatcompletionaudioparam.go
-  - src/__tests__/mockserver/internal/sdk/models/components/chatcompletioncontentpartimageparam.go
-  - src/__tests__/mockserver/internal/sdk/models/components/chatcompletioncontentpartinputaudioparam.go
-  - src/__tests__/mockserver/internal/sdk/models/components/chatcompletioncontentpartrefusalparam.go
-  - src/__tests__/mockserver/internal/sdk/models/components/chatcompletioncontentparttextparam.go
-  - src/__tests__/mockserver/internal/sdk/models/components/chatcompletiondevelopermessageparam.go
-  - src/__tests__/mockserver/internal/sdk/models/components/chatcompletionfunctioncalloptionparam.go
-  - src/__tests__/mockserver/internal/sdk/models/components/chatcompletionfunctionmessageparam.go
-  - src/__tests__/mockserver/internal/sdk/models/components/chatcompletionmessage.go
-  - src/__tests__/mockserver/internal/sdk/models/components/chatcompletionmessagetoolcall.go
-  - src/__tests__/mockserver/internal/sdk/models/components/chatcompletionmessagetoolcallparam.go
-  - src/__tests__/mockserver/internal/sdk/models/components/chatcompletionnamedtoolchoiceparam.go
-  - src/__tests__/mockserver/internal/sdk/models/components/chatcompletionnonstreaming.go
-  - src/__tests__/mockserver/internal/sdk/models/components/chatcompletionpredictioncontentparam.go
-  - src/__tests__/mockserver/internal/sdk/models/components/chatcompletionstreaming.go
-  - src/__tests__/mockserver/internal/sdk/models/components/chatcompletionstreamoptionsparam.go
-  - src/__tests__/mockserver/internal/sdk/models/components/chatcompletionsystemmessageparam.go
-  - src/__tests__/mockserver/internal/sdk/models/components/chatcompletiontokenlogprob.go
-  - src/__tests__/mockserver/internal/sdk/models/components/chatcompletiontoolmessageparam.go
-  - src/__tests__/mockserver/internal/sdk/models/components/chatcompletiontoolparam.go
-  - src/__tests__/mockserver/internal/sdk/models/components/chatcompletionusermessageparam.go
-  - src/__tests__/mockserver/internal/sdk/models/components/choice.go
-  - src/__tests__/mockserver/internal/sdk/models/components/choicelogprobs.go
-  - src/__tests__/mockserver/internal/sdk/models/components/completiontokensdetails.go
-  - src/__tests__/mockserver/internal/sdk/models/components/completionusage.go
-  - src/__tests__/mockserver/internal/sdk/models/components/createdatasetentryrequest.go
-  - src/__tests__/mockserver/internal/sdk/models/components/createdatasetentryresponse.go
-  - src/__tests__/mockserver/internal/sdk/models/components/createembeddingrequest.go
-  - src/__tests__/mockserver/internal/sdk/models/components/createembeddingresponse.go
-  - src/__tests__/mockserver/internal/sdk/models/components/createfunctionrequest.go
-  - src/__tests__/mockserver/internal/sdk/models/components/createfunctionresponse.go
-  - src/__tests__/mockserver/internal/sdk/models/components/createknowledgebaserequest.go
-  - src/__tests__/mockserver/internal/sdk/models/components/createknowledgebaseresponse.go
-  - src/__tests__/mockserver/internal/sdk/models/components/createspanmetricrequest.go
-  - src/__tests__/mockserver/internal/sdk/models/components/createspanmetricresponse.go
-  - src/__tests__/mockserver/internal/sdk/models/components/createspanrequest.go
-  - src/__tests__/mockserver/internal/sdk/models/components/createspanresponse.go
-  - src/__tests__/mockserver/internal/sdk/models/components/example.go
-  - src/__tests__/mockserver/internal/sdk/models/components/examplein.go
-  - src/__tests__/mockserver/internal/sdk/models/components/file.go
-  - src/__tests__/mockserver/internal/sdk/models/components/filefile.go
-  - src/__tests__/mockserver/internal/sdk/models/components/filter.go
-  - src/__tests__/mockserver/internal/sdk/models/components/functioncallconfiguration.go
-  - src/__tests__/mockserver/internal/sdk/models/components/functioncallinput.go
-  - src/__tests__/mockserver/internal/sdk/models/components/functioncalloutput.go
-  - src/__tests__/mockserver/internal/sdk/models/components/functiondefinition.go
-  - src/__tests__/mockserver/internal/sdk/models/components/functionoutput.go
-  - src/__tests__/mockserver/internal/sdk/models/components/getcustommodelresponse.go
-  - src/__tests__/mockserver/internal/sdk/models/components/getdatasetentriesresponse.go
-  - src/__tests__/mockserver/internal/sdk/models/components/getdatasetentryresponse.go
-  - src/__tests__/mockserver/internal/sdk/models/components/getfunctionresponse.go
-  - src/__tests__/mockserver/internal/sdk/models/components/getknowledgebaseresponse.go
-  - src/__tests__/mockserver/internal/sdk/models/components/getspanmetricresponse.go
-  - src/__tests__/mockserver/internal/sdk/models/components/getspanresponse.go
-  - src/__tests__/mockserver/internal/sdk/models/components/gettraceresponse.go
-  - src/__tests__/mockserver/internal/sdk/models/components/getuploadurlresponse.go
-  - src/__tests__/mockserver/internal/sdk/models/components/getusageresultitem.go
-  - src/__tests__/mockserver/internal/sdk/models/components/granularity.go
-  - src/__tests__/mockserver/internal/sdk/models/components/httpmetadata.go
-  - src/__tests__/mockserver/internal/sdk/models/components/imageurl.go
-  - src/__tests__/mockserver/internal/sdk/models/components/inputaudio.go
-  - src/__tests__/mockserver/internal/sdk/models/components/jsonschema.go
-  - src/__tests__/mockserver/internal/sdk/models/components/listcustommodelsresponseitem.go
-  - src/__tests__/mockserver/internal/sdk/models/components/listfunctionrevisionresponse.go
-  - src/__tests__/mockserver/internal/sdk/models/components/listfunctionsresponseitem.go
-  - src/__tests__/mockserver/internal/sdk/models/components/listknowledgebasesresponse.go
-  - src/__tests__/mockserver/internal/sdk/models/components/listlanguagemodelsresponse.go
-  - src/__tests__/mockserver/internal/sdk/models/components/listspanmetricsresponse.go
-  - src/__tests__/mockserver/internal/sdk/models/components/listtracesresponse.go
-  - src/__tests__/mockserver/internal/sdk/models/components/meta.go
-  - src/__tests__/mockserver/internal/sdk/models/components/model.go
-  - src/__tests__/mockserver/internal/sdk/models/components/op.go
-  - src/__tests__/mockserver/internal/sdk/models/components/openaitypeschatchatcompletionmessagetoolcallparamfunction.go
-  - src/__tests__/mockserver/internal/sdk/models/components/openaitypeschatchatcompletionnamedtoolchoiceparamfunction.go
-  - src/__tests__/mockserver/internal/sdk/models/components/openaitypeschatcompletioncreateparamsfunction.go
-  - src/__tests__/mockserver/internal/sdk/models/components/paginatedresponsegetdatasetentriesresponse.go
-  - src/__tests__/mockserver/internal/sdk/models/components/paginatedresponselistcustommodelsresponseitem.go
-  - src/__tests__/mockserver/internal/sdk/models/components/paginatedresponselistfunctionrevisionresponse.go
-  - src/__tests__/mockserver/internal/sdk/models/components/paginatedresponselistfunctionsresponseitem.go
-  - src/__tests__/mockserver/internal/sdk/models/components/paginatedresponselistknowledgebasesresponse.go
-  - src/__tests__/mockserver/internal/sdk/models/components/paginatedresponselistlanguagemodelsresponse.go
-  - src/__tests__/mockserver/internal/sdk/models/components/paginatedresponselistspanmetricsresponse.go
-  - src/__tests__/mockserver/internal/sdk/models/components/paginatedresponselisttracesresponse.go
-  - src/__tests__/mockserver/internal/sdk/models/components/prompttokensdetails.go
-  - src/__tests__/mockserver/internal/sdk/models/components/querydatasetentriesresponse.go
-  - src/__tests__/mockserver/internal/sdk/models/components/queryknowledgebaserequest.go
-  - src/__tests__/mockserver/internal/sdk/models/components/queryknowledgebaseresponse.go
-  - src/__tests__/mockserver/internal/sdk/models/components/registercustommodelrequest.go
-  - src/__tests__/mockserver/internal/sdk/models/components/registercustommodelresponse.go
-  - src/__tests__/mockserver/internal/sdk/models/components/registerfileuploadrequest.go
-  - src/__tests__/mockserver/internal/sdk/models/components/registerfileuploadresponse.go
-  - src/__tests__/mockserver/internal/sdk/models/components/responseformatjsonobject.go
-  - src/__tests__/mockserver/internal/sdk/models/components/responseformatjsonschema.go
-  - src/__tests__/mockserver/internal/sdk/models/components/responseformattext.go
-  - src/__tests__/mockserver/internal/sdk/models/components/savetodatasetresponse.go
-  - src/__tests__/mockserver/internal/sdk/models/components/security.go
-  - src/__tests__/mockserver/internal/sdk/models/components/spandata.go
-  - src/__tests__/mockserver/internal/sdk/models/components/spanmetricdata.go
-  - src/__tests__/mockserver/internal/sdk/models/components/spanschema.go
-  - src/__tests__/mockserver/internal/sdk/models/components/textprocessingconfiguration.go
-  - src/__tests__/mockserver/internal/sdk/models/components/tmodel.go
-  - src/__tests__/mockserver/internal/sdk/models/components/toplogprob.go
-  - src/__tests__/mockserver/internal/sdk/models/components/updatecustommodelrequest.go
-  - src/__tests__/mockserver/internal/sdk/models/components/updatecustommodelresponse.go
-  - src/__tests__/mockserver/internal/sdk/models/components/updatedatasetentryrequest.go
-  - src/__tests__/mockserver/internal/sdk/models/components/updatedatasetentryresponse.go
-  - src/__tests__/mockserver/internal/sdk/models/components/updatefunctionrequest.go
-  - src/__tests__/mockserver/internal/sdk/models/components/updatefunctionresponse.go
-  - src/__tests__/mockserver/internal/sdk/models/components/updatespanmetricrequest.go
-  - src/__tests__/mockserver/internal/sdk/models/components/updatespanmetricresponse.go
-  - src/__tests__/mockserver/internal/sdk/models/components/updatespanrequest.go
-  - src/__tests__/mockserver/internal/sdk/models/components/updatespanresponse.go
-  - src/__tests__/mockserver/internal/sdk/models/components/websearchoptions.go
-  - src/__tests__/mockserver/internal/sdk/models/components/websearchoptionsuserlocation.go
-  - src/__tests__/mockserver/internal/sdk/models/components/websearchoptionsuserlocationapproximate.go
-  - src/__tests__/mockserver/internal/sdk/models/operations/addknowledgeknowledgebaseidaddpost.go
-  - src/__tests__/mockserver/internal/sdk/models/operations/callfunctionfunctionsfunctionidcallpost.go
-  - src/__tests__/mockserver/internal/sdk/models/operations/callfunctionrevisionfunctionsfunctionidcallrevisionidpost.go
-  - src/__tests__/mockserver/internal/sdk/models/operations/chatcompletionsopenaichatcompletionspost.go
-  - src/__tests__/mockserver/internal/sdk/models/operations/createdatasetentrydatasetsdatasetidpost.go
-  - src/__tests__/mockserver/internal/sdk/models/operations/createembeddingembeddingspost.go
-  - src/__tests__/mockserver/internal/sdk/models/operations/createfunctionfunctionspost.go
-  - src/__tests__/mockserver/internal/sdk/models/operations/createknowledgebaseknowledgepost.go
-  - src/__tests__/mockserver/internal/sdk/models/operations/createmetricspansspanidmetricspost.go
-  - src/__tests__/mockserver/internal/sdk/models/operations/createspanspanspost.go
-  - src/__tests__/mockserver/internal/sdk/models/operations/deletecustommodelmodelscustommodeliddelete.go
-  - src/__tests__/mockserver/internal/sdk/models/operations/deletedatasetentrydatasetsdatasetidentriesentryiddelete.go
-  - src/__tests__/mockserver/internal/sdk/models/operations/deletefilefromknowledgebaseknowledgeknowledgebaseidfilesfileiddelete.go
-  - src/__tests__/mockserver/internal/sdk/models/operations/deletefunctionfunctionsfunctioniddelete.go
-  - src/__tests__/mockserver/internal/sdk/models/operations/deleteknowledgebaseknowledgeknowledgebaseiddelete.go
-  - src/__tests__/mockserver/internal/sdk/models/operations/deletemetricspansspanidmetricsmetriciddelete.go
-  - src/__tests__/mockserver/internal/sdk/models/operations/deletespanspansspaniddelete.go
-  - src/__tests__/mockserver/internal/sdk/models/operations/functioncallcallpost.go
-  - src/__tests__/mockserver/internal/sdk/models/operations/functionstreamcallstreampost.go
-  - src/__tests__/mockserver/internal/sdk/models/operations/getcustommodelbynamemodelscustombynamenameget.go
-  - src/__tests__/mockserver/internal/sdk/models/operations/getcustommodelmodelscustommodelidget.go
-  - src/__tests__/mockserver/internal/sdk/models/operations/getdatasetentrydatasetsdatasetidentriesentryidget.go
-  - src/__tests__/mockserver/internal/sdk/models/operations/getfunctionbynamefunctionsbynamenameget.go
-  - src/__tests__/mockserver/internal/sdk/models/operations/getfunctionbyrevisionfunctionsfunctionidrevisionsrevisionidget.go
-  - src/__tests__/mockserver/internal/sdk/models/operations/getfunctionfunctionsfunctionidget.go
-  - src/__tests__/mockserver/internal/sdk/models/operations/getknowledgebasebynameknowledgebynameknowledgebasenameget.go
-  - src/__tests__/mockserver/internal/sdk/models/operations/getknowledgebaseknowledgeknowledgebaseidget.go
-  - src/__tests__/mockserver/internal/sdk/models/operations/getmetricspansspanidmetricsmetricidget.go
-  - src/__tests__/mockserver/internal/sdk/models/operations/getspanspansspanidget.go
-  - src/__tests__/mockserver/internal/sdk/models/operations/gettracetracestraceidget.go
-  - src/__tests__/mockserver/internal/sdk/models/operations/getuploadurlknowledgeknowledgebaseiduploadurlget.go
-  - src/__tests__/mockserver/internal/sdk/models/operations/listcustommodelsmodelscustomget.go
-  - src/__tests__/mockserver/internal/sdk/models/operations/listdatasetentriesdatasetsdatasetidentriesget.go
-  - src/__tests__/mockserver/internal/sdk/models/operations/listfunctionrevisionsfunctionsfunctionidrevisionsget.go
-  - src/__tests__/mockserver/internal/sdk/models/operations/listfunctionsfunctionsget.go
-  - src/__tests__/mockserver/internal/sdk/models/operations/listknowledgebasesknowledgeget.go
-  - src/__tests__/mockserver/internal/sdk/models/operations/listmetricsspansspanidmetricsget.go
-  - src/__tests__/mockserver/internal/sdk/models/operations/listmodelsmodelsget.go
-  - src/__tests__/mockserver/internal/sdk/models/operations/listtracestracesget.go
-  - src/__tests__/mockserver/internal/sdk/models/operations/querydatasetentriesdatasetsdatasetidentriesquerypost.go
-  - src/__tests__/mockserver/internal/sdk/models/operations/queryknowledgebaseknowledgeknowledgebaseidquerypost.go
-  - src/__tests__/mockserver/internal/sdk/models/operations/registercustommodelmodelscustompost.go
-  - src/__tests__/mockserver/internal/sdk/models/operations/registerfileuploadknowledgeknowledgebaseidregisterfilepost.go
-  - src/__tests__/mockserver/internal/sdk/models/operations/savetodatasetspansspanidsaveexamplespost.go
-  - src/__tests__/mockserver/internal/sdk/models/operations/streamfunctionfunctionsfunctionidcallstreampost.go
-  - src/__tests__/mockserver/internal/sdk/models/operations/streamfunctionrevisionfunctionsfunctionidcallstreamrevisionidpost.go
-  - src/__tests__/mockserver/internal/sdk/models/operations/updatecustommodelmodelscustommodelidpatch.go
-  - src/__tests__/mockserver/internal/sdk/models/operations/updatedatasetentrydatasetsdatasetidentriesentryidpatch.go
-  - src/__tests__/mockserver/internal/sdk/models/operations/updatefunctionfunctionsfunctionidpatch.go
-  - src/__tests__/mockserver/internal/sdk/models/operations/updatemetricspansspanidmetricsmetricidpatch.go
-  - src/__tests__/mockserver/internal/sdk/models/operations/updatespanspansspanidpatch.go
-  - src/__tests__/mockserver/internal/sdk/models/operations/usageanalyticsusageget.go
-  - src/__tests__/mockserver/internal/sdk/models/sdkerrors/badrequesterror.go
-  - src/__tests__/mockserver/internal/sdk/models/sdkerrors/conflicterror.go
-  - src/__tests__/mockserver/internal/sdk/models/sdkerrors/error.go
-  - src/__tests__/mockserver/internal/sdk/models/sdkerrors/notfounderror.go
-  - src/__tests__/mockserver/internal/sdk/models/sdkerrors/requestvalidationerror.go
-  - src/__tests__/mockserver/internal/sdk/models/sdkerrors/unauthorizederror.go
-  - src/__tests__/mockserver/internal/sdk/types/bigint.go
-  - src/__tests__/mockserver/internal/sdk/types/date.go
-  - src/__tests__/mockserver/internal/sdk/types/datetime.go
-  - src/__tests__/mockserver/internal/sdk/types/decimal.go
-  - src/__tests__/mockserver/internal/sdk/types/jsonl/jsonl.go
-  - src/__tests__/mockserver/internal/sdk/types/pointers.go
-  - src/__tests__/mockserver/internal/sdk/types/stream/stream.go
-  - src/__tests__/mockserver/internal/sdk/utils/json.go
-  - src/__tests__/mockserver/internal/sdk/utils/reflect.go
-  - src/__tests__/mockserver/internal/sdk/utils/sort.go
-  - src/__tests__/mockserver/internal/server/doc.go
-  - src/__tests__/mockserver/internal/server/generated_handlers.go
-  - src/__tests__/mockserver/internal/server/internal_handlers.go
-  - src/__tests__/mockserver/internal/server/server.go
-  - src/__tests__/mockserver/internal/server/server_option.go
-  - src/__tests__/mockserver/internal/server/templates/log/index.html.tmpl
-  - src/__tests__/mockserver/internal/server/templates/log/operation.html.tmpl
-  - src/__tests__/mockserver/internal/server/templates/log/style.css.tmpl
-  - src/__tests__/mockserver/internal/tracking/requesttracker.go
-  - src/__tests__/mockserver/main.go
   - src/core.ts
   - src/funcs/analyticsGetUsage.ts
   - src/funcs/call.ts
@@ -534,7 +306,7 @@ generatedFiles:
   - src/funcs/functionsStreamRevision.ts
   - src/funcs/functionsUpdate.ts
   - src/funcs/knowledgeAdd.ts
-  - src/funcs/knowledgeCreat.ts
+  - src/funcs/knowledgeCreate.ts
   - src/funcs/knowledgeDelete.ts
   - src/funcs/knowledgeDeleteFile.ts
   - src/funcs/knowledgeGet.ts
@@ -620,7 +392,7 @@ generatedFiles:
   - src/mcp-server/tools/functionsStreamRevision.ts
   - src/mcp-server/tools/functionsUpdate.ts
   - src/mcp-server/tools/knowledgeAdd.ts
-  - src/mcp-server/tools/knowledgeCreat.ts
+  - src/mcp-server/tools/knowledgeCreate.ts
   - src/mcp-server/tools/knowledgeDelete.ts
   - src/mcp-server/tools/knowledgeDeleteFile.ts
   - src/mcp-server/tools/knowledgeGet.ts
@@ -1119,7 +891,7 @@ examples:
         path:
           span_id: "77b258a2-45c1-4b87-a50c-9116bc8ed1d6"
       requestBody:
-        application/json: {"name": "my span", "start_time": "2025-06-27T11:37:21.302644Z", "type": "email_tool", "end_time": "2025-06-27T11:37:21.302704Z", "input": "Hello, world!", "output": "Hello, world!", "error": "Exception: This is an error message", "meta": {"key": "value"}, "score": 10}
+        application/json: {"name": "my span", "start_time": "2025-06-27T11:37:30.236954Z", "type": "email_tool", "end_time": "2025-06-27T11:37:30.237016Z", "input": "Hello, world!", "output": "Hello, world!", "error": "Exception: This is an error message", "meta": {"key": "value"}, "score": 10}
       responses:
         "200":
           application/json: {"name": "my span", "start_time": "2024-03-20T10:00:00+00:00", "id": "84d9ffc8-336c-4953-b92f-fe05d5405951", "trace_id": "123e4567-e89b-12d3-a456-426614174000", "parent_id": "123e4567-e89b-12d3-a456-426614174000", "type": "email_tool", "end_time": "2024-03-20T10:00:10+00:00", "input": "Hello, world!", "output": "Hello, world!", "error": "Exception: This is an error message", "meta": {"key": "value"}, "score": 10}

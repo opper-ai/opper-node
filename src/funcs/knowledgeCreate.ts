@@ -31,7 +31,7 @@ import { Result } from "../types/fp.js";
  * @remarks
  * Create a knowledge base
  */
-export function knowledgeCreat(
+export function knowledgeCreate(
   client: OpperCore,
   request: models.CreateKnowledgeBaseRequest,
   options?: RequestOptions,
