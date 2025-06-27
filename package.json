@@ -1,12 +1,12 @@
 {
   "name": "opperai",
-  "version": "3.0.1",
+  "version": "3.1.0",
   "author": "Speakeasy",
-  "type": "module",
   "repository": {
     "type": "git",
     "url": "https://github.com/opper-ai/opper-node"
   },
+  "type": "module",
   "bin": {
     "mcp": "bin/mcp-server.js"
   },

@@ -7,7 +7,6 @@
 !/**/*.mjs
 !/**/*.json
 !/**/*.map
-!/dist/**
 
 /eslint.config.mjs
 /cjs

@@ -3,7 +3,7 @@
  */
 
 import { knowledgeAdd } from "../funcs/knowledgeAdd.js";
-import { knowledgeCreat } from "../funcs/knowledgeCreat.js";
+import { knowledgeCreate } from "../funcs/knowledgeCreate.js";
 import { knowledgeDelete } from "../funcs/knowledgeDelete.js";
 import { knowledgeDeleteFile } from "../funcs/knowledgeDeleteFile.js";
 import { knowledgeGet } from "../funcs/knowledgeGet.js";
@@ -23,11 +23,11 @@ export class Knowledge extends ClientSDK {
    * @remarks
    * Create a knowledge base
    */
-  async creat(
+  async create(
     request: models.CreateKnowledgeBaseRequest,
     options?: RequestOptions,
   ): Promise<models.CreateKnowledgeBaseResponse> {
-    return unwrapAsync(knowledgeCreat(
+    return unwrapAsync(knowledgeCreate(
       this,
       request,
       options,

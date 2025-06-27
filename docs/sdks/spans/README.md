@@ -201,9 +201,9 @@ const opper = new Opper({
 async function run() {
   const result = await opper.spans.update("77b258a2-45c1-4b87-a50c-9116bc8ed1d6", {
     name: "my span",
-    startTime: new Date("2025-06-27T11:37:21.302644Z"),
+    startTime: new Date("2025-06-27T11:37:30.236954Z"),
     type: "email_tool",
-    endTime: new Date("2025-06-27T11:37:21.302704Z"),
+    endTime: new Date("2025-06-27T11:37:30.237016Z"),
     input: "Hello, world!",
     output: "Hello, world!",
     error: "Exception: This is an error message",
@@ -236,9 +236,9 @@ const opper = new OpperCore({
 async function run() {
   const res = await spansUpdate(opper, "77b258a2-45c1-4b87-a50c-9116bc8ed1d6", {
     name: "my span",
-    startTime: new Date("2025-06-27T11:37:21.302644Z"),
+    startTime: new Date("2025-06-27T11:37:30.236954Z"),
     type: "email_tool",
-    endTime: new Date("2025-06-27T11:37:21.302704Z"),
+    endTime: new Date("2025-06-27T11:37:30.237016Z"),
     input: "Hello, world!",
     output: "Hello, world!",
     error: "Exception: This is an error message",

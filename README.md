@@ -381,7 +381,7 @@ run();
 
 ### [knowledge](docs/sdks/knowledge/README.md)
 
-* [creat](docs/sdks/knowledge/README.md#creat) - Create Knowledge Base
+* [create](docs/sdks/knowledge/README.md#create) - Create Knowledge Base
 * [list](docs/sdks/knowledge/README.md#list) - List Knowledge Bases
 * [get](docs/sdks/knowledge/README.md#get) - Get Knowledge Base
 * [delete](docs/sdks/knowledge/README.md#delete) - Delete Knowledge Base
@@ -472,7 +472,7 @@ To read more about standalone functions, check [FUNCTIONS.md](./FUNCTIONS.md).
 - [`functionsStreamRevision`](docs/sdks/functions/README.md#streamrevision) - Stream Function Revision
 - [`functionsUpdate`](docs/sdks/functions/README.md#update) - Update Function
 - [`knowledgeAdd`](docs/sdks/knowledge/README.md#add) - Add
-- [`knowledgeCreat`](docs/sdks/knowledge/README.md#creat) - Create Knowledge Base
+- [`knowledgeCreate`](docs/sdks/knowledge/README.md#create) - Create Knowledge Base
 - [`knowledgeDelete`](docs/sdks/knowledge/README.md#delete) - Delete Knowledge Base
 - [`knowledgeDeleteFile`](docs/sdks/knowledge/README.md#deletefile) - Delete File From Knowledge Base
 - [`knowledgeGet`](docs/sdks/knowledge/README.md#get) - Get Knowledge Base

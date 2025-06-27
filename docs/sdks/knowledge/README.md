@@ -5,7 +5,7 @@
 
 ### Available Operations
 
-* [creat](#creat) - Create Knowledge Base
+* [create](#create) - Create Knowledge Base
 * [list](#list) - List Knowledge Bases
 * [get](#get) - Get Knowledge Base
 * [delete](#delete) - Delete Knowledge Base
@@ -16,7 +16,7 @@
 * [query](#query) - Query Knowledge Base
 * [add](#add) - Add
 
-## creat
+## create
 
 Create a knowledge base
 
@@ -30,7 +30,7 @@ const opper = new Opper({
 });
 
 async function run() {
-  const result = await opper.knowledge.creat({
+  const result = await opper.knowledge.create({
     name: "<value>",
   });
 
@@ -46,7 +46,7 @@ The standalone function version of this method:
 
 ```typescript
 import { OpperCore } from "opperai/core.js";
-import { knowledgeCreat } from "opperai/funcs/knowledgeCreat.js";
+import { knowledgeCreate } from "opperai/funcs/knowledgeCreate.js";
 
 // Use `OpperCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -55,14 +55,14 @@ const opper = new OpperCore({
 });
 
 async function run() {
-  const res = await knowledgeCreat(opper, {
+  const res = await knowledgeCreate(opper, {
     name: "<value>",
   });
   if (res.ok) {
     const { value: result } = res;
     console.log(result);
   } else {
-    console.log("knowledgeCreat failed:", res.error);
+    console.log("knowledgeCreate failed:", res.error);
   }
 }
 

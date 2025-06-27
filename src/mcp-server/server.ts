@@ -35,7 +35,7 @@ import { tool$functionsStream } from "./tools/functionsStream.js";
 import { tool$functionsStreamRevision } from "./tools/functionsStreamRevision.js";
 import { tool$functionsUpdate } from "./tools/functionsUpdate.js";
 import { tool$knowledgeAdd } from "./tools/knowledgeAdd.js";
-import { tool$knowledgeCreat } from "./tools/knowledgeCreat.js";
+import { tool$knowledgeCreate } from "./tools/knowledgeCreate.js";
 import { tool$knowledgeDelete } from "./tools/knowledgeDelete.js";
 import { tool$knowledgeDeleteFile } from "./tools/knowledgeDeleteFile.js";
 import { tool$knowledgeGet } from "./tools/knowledgeGet.js";
@@ -76,7 +76,7 @@ export function createMCPServer(deps: {
 }) {
   const server = new McpServer({
     name: "Opper",
-    version: "3.0.1",
+    version: "3.1.0",
   });
 
   const client = new OpperCore({
@@ -108,7 +108,7 @@ export function createMCPServer(deps: {
 
   tool(tool$call);
   tool(tool$stream);
-  tool(tool$knowledgeCreat);
+  tool(tool$knowledgeCreate);
   tool(tool$knowledgeList);
   tool(tool$knowledgeGet);
   tool(tool$knowledgeDelete);
