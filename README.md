@@ -381,7 +381,7 @@ run();
 
 ### [knowledge](docs/sdks/knowledge/README.md)
 
-* [create](docs/sdks/knowledge/README.md#create) - Create Knowledge Base
+* [creat](docs/sdks/knowledge/README.md#creat) - Create Knowledge Base
 * [list](docs/sdks/knowledge/README.md#list) - List Knowledge Bases
 * [get](docs/sdks/knowledge/README.md#get) - Get Knowledge Base
 * [delete](docs/sdks/knowledge/README.md#delete) - Delete Knowledge Base
@@ -390,7 +390,7 @@ run();
 * [registerFileUpload](docs/sdks/knowledge/README.md#registerfileupload) - Register File Upload
 * [deleteFile](docs/sdks/knowledge/README.md#deletefile) - Delete File From Knowledge Base
 * [query](docs/sdks/knowledge/README.md#query) - Query Knowledge Base
-* [addKnowledgeKnowledgeBaseIdAddPost](docs/sdks/knowledge/README.md#addknowledgeknowledgebaseidaddpost) - Add
+* [add](docs/sdks/knowledge/README.md#add) - Add
 
 ### [languageModels](docs/sdks/languagemodels/README.md)
 
@@ -471,8 +471,8 @@ To read more about standalone functions, check [FUNCTIONS.md](./FUNCTIONS.md).
 - [`functionsStream`](docs/sdks/functions/README.md#stream) - Stream Function
 - [`functionsStreamRevision`](docs/sdks/functions/README.md#streamrevision) - Stream Function Revision
 - [`functionsUpdate`](docs/sdks/functions/README.md#update) - Update Function
-- [`knowledgeAddKnowledgeKnowledgeBaseIdAddPost`](docs/sdks/knowledge/README.md#addknowledgeknowledgebaseidaddpost) - Add
-- [`knowledgeCreate`](docs/sdks/knowledge/README.md#create) - Create Knowledge Base
+- [`knowledgeAdd`](docs/sdks/knowledge/README.md#add) - Add
+- [`knowledgeCreat`](docs/sdks/knowledge/README.md#creat) - Create Knowledge Base
 - [`knowledgeDelete`](docs/sdks/knowledge/README.md#delete) - Delete Knowledge Base
 - [`knowledgeDeleteFile`](docs/sdks/knowledge/README.md#deletefile) - Delete File From Knowledge Base
 - [`knowledgeGet`](docs/sdks/knowledge/README.md#get) - Get Knowledge Base

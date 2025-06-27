@@ -219,7 +219,7 @@ jobs:
           
           # Test npm pack (dry run)
           echo "📦 Testing package contents..."
-          npm pack --dry-run > pack-output.txt
+          npm pack --dry-run &> pack-output.txt
           
           # Check that important files are included
           if grep -q "src/" pack-output.txt; then

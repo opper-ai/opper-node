@@ -25,12 +25,15 @@ generation:
     generateNewTests: false
     skipResponseBodyAssertions: false
 typescript:
-  version: 3.0.0
+  version: 3.0.1
   additionalDependencies:
     dependencies: {}
     devDependencies: {}
     peerDependencies: {}
-  additionalPackageJSON: {}
+  additionalPackageJSON:
+    repository:
+      type: git
+      url: https://github.com/opper-ai/opper-node
   author: Speakeasy
   baseErrorName: OpperError
   clientServerStatusCodesAsErrors: true
