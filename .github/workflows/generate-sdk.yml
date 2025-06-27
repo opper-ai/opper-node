@@ -1,0 +1,252 @@
+name: Generate SDK
+
+on:
+  workflow_dispatch:
+    inputs:
+      create_pr:
+        description: 'Create PR if changes are detected'
+        type: boolean
+        default: true
+      target_branch:
+        description: 'Target branch for PR (default: main)'
+        type: string
+        default: 'main'
+  schedule:
+    # Run weekly on Mondays at 9 AM UTC
+    - cron: '0 9 * * 1'
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          registry-url: 'https://registry.npmjs.org'
+          cache: 'npm'
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Speakeasy CLI
+        run: |
+          curl -fsSL https://raw.githubusercontent.com/speakeasy-api/speakeasy/main/install.sh | sh
+          echo "$HOME/.speakeasy/bin" >> $GITHUB_PATH
+
+      - name: Verify Speakeasy installation
+        run: speakeasy --version
+
+      - name: Generate SDK
+        env:
+          SPEAKEASY_API_KEY: ${{ secrets.SPEAKEASY_API_KEY }}
+        run: |
+          echo "🚀 Starting SDK generation..."
+          
+          # Run speakeasy generation
+          speakeasy run
+          
+          echo "✅ SDK generation completed"
+
+      - name: Build and validate generated code
+        run: |
+          echo "🔨 Building generated code..."
+          
+          # Build the MCP server first
+          npm run build:mcp
+          
+          # Build the main SDK
+          npm run build
+          
+          echo "✅ Build completed successfully"
+
+      - name: Run linting and formatting
+        run: |
+          echo "🧹 Running linting and formatting..."
+          
+          # Run ESLint
+          npm run lint
+          
+          echo "✅ Linting completed"
+
+      - name: Run basic smoke tests
+        run: |
+          echo "🧪 Running basic smoke tests..."
+          
+          # Check if we can import the SDK
+          node -e "
+            try {
+              const { Opper } = require('./dist/commonjs/index.js');
+              console.log('✅ CommonJS import successful');
+              
+              // Basic instantiation test
+              const client = new Opper({ httpBearer: 'test' });
+              console.log('✅ SDK instantiation successful');
+            } catch (error) {
+              console.error('❌ Smoke test failed:', error.message);
+              process.exit(1);
+            }
+          "
+          
+          echo "✅ Smoke tests passed"
+
+      - name: Check for changes
+        id: changes
+        run: |
+          git add .
+          if [ -n "$(git status --porcelain --cached)" ]; then
+            echo "changes=true" >> $GITHUB_OUTPUT
+            echo "📝 Changes detected:"
+            git status --porcelain --cached
+            
+            # Show a summary of changed files
+            echo "📊 Summary of changes:"
+            git diff --cached --stat
+          else
+            echo "changes=false" >> $GITHUB_OUTPUT
+            echo "✅ No changes detected"
+          fi
+
+      - name: Create Pull Request
+        if: steps.changes.outputs.changes == 'true' && (github.event.inputs.create_pr == 'true' || github.event_name == 'schedule')
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Configure git
+          git config --global user.name "opper-bot"
+          git config --global user.email "bot@opper.ai"
+          
+          # Create a new branch with timestamp
+          BRANCH_NAME="sdk-update-$(date +%Y%m%d-%H%M%S)"
+          git checkout -b "$BRANCH_NAME"
+          
+          # Get version from package.json
+          CURRENT_VERSION=$(node -p "require('./package.json').version")
+          
+          # Stage and commit changes
+          git add .
+          git commit -m "chore: update TypeScript SDK via automated generation
+
+          🤖 Automated SDK update to version $CURRENT_VERSION
+
+          - ✅ Speakeasy SDK generation completed
+          - ✅ TypeScript compilation verified  
+          - ✅ ESLint validation passed
+          - ✅ Build artifacts generated
+          - ✅ Smoke tests passed
+
+          Generated on: $(date -u '+%Y-%m-%d %H:%M:%S UTC')
+          
+          This PR was created automatically by the SDK generation workflow."
+          
+          # Push the branch
+          git push origin "$BRANCH_NAME"
+          
+          # Create PR with detailed information
+          TARGET_BRANCH="${{ github.event.inputs.target_branch || 'main' }}"
+          gh pr create \
+            --title "🔄 Automated SDK Update - v$CURRENT_VERSION ($(date +%Y-%m-%d))" \
+            --body "$(cat <<EOF
+          ## 🤖 Automated SDK Generation
+
+          This PR contains updates from the latest TypeScript SDK generation run using Speakeasy.
+
+          ### 📊 Version Information
+          - **SDK Version**: \`$CURRENT_VERSION\`
+          - **Generated**: $(date -u '+%Y-%m-%d %H:%M:%S UTC')
+          - **Speakeasy Version**: \`$(speakeasy --version)\`
+
+          ### ✅ Validation Summary
+          - ✅ Speakeasy generation completed successfully
+          - ✅ TypeScript compilation passed
+          - ✅ ESLint validation passed
+          - ✅ Build artifacts generated (CommonJS + ESM)
+          - ✅ MCP server build successful
+          - ✅ Basic smoke tests passed
+
+          ### 📁 Generated/Updated Files
+          The following areas were automatically updated:
+          - \`src/\` - Core SDK source code
+          - \`docs/\` - API documentation
+          - \`README.md\` - Usage examples and documentation
+          - \`package.json\` - Version and metadata
+          - \`dist/\` - Built output files
+
+          ### 🔍 Review Checklist
+          - [ ] Review generated TypeScript types for correctness
+          - [ ] Verify no breaking changes in public API
+          - [ ] Check that examples in README still work
+          - [ ] Validate version bump is appropriate
+          - [ ] Test key SDK functionality manually
+
+          ### 🚀 Next Steps
+          After merging, the release workflow will automatically:
+          1. Publish to NPM registry
+          2. Create a GitHub release
+          3. Update documentation
+
+          ---
+
+          **🔗 Related Links**
+          - [Speakeasy Documentation](https://speakeasy.com/docs)
+          - [SDK Generation Workflow](.github/workflows/generate-sdk.yml)
+          - [Release Workflow](.github/workflows/release.yml)
+
+          🤖 *This PR was created automatically by the SDK generation workflow*
+          EOF
+          )" \
+            --base "$TARGET_BRANCH" \
+            --head "$BRANCH_NAME" \
+            --label "automated" \
+            --label "sdk-update" \
+            --label "dependencies"
+
+      - name: Summary
+        run: |
+          echo "📋 SDK Generation Summary"
+          echo "========================"
+          
+          if [ "${{ steps.changes.outputs.changes }}" == "true" ]; then
+            echo "✅ SDK generation completed with changes"
+            
+            # Get current version
+            CURRENT_VERSION=$(node -p "require('./package.json').version")
+            echo "📦 Version: $CURRENT_VERSION"
+            
+            if [ "${{ github.event.inputs.create_pr }}" == "true" ] || [ "${{ github.event_name }}" == "schedule" ]; then
+              echo "📝 Pull request created successfully"
+              echo "🔗 Check the PR tab to review changes"
+            else
+              echo "⚠️  Changes detected but PR creation was skipped"
+              echo "💡 Run workflow with 'create_pr: true' to create a PR"
+            fi
+          else
+            echo "✅ SDK generation completed - no changes needed"
+            echo "📦 Current version is up to date"
+          fi
+          
+          echo ""
+          echo "🎯 Next steps:"
+          if [ "${{ steps.changes.outputs.changes }}" == "true" ]; then
+            echo "  1. Review the generated PR"
+            echo "  2. Test the changes locally if needed"
+            echo "  3. Merge when ready (triggers automatic release)"
+          else
+            echo "  1. No action needed - SDK is current"
+          fi

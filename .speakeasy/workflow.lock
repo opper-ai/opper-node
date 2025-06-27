@@ -1,0 +1,38 @@
+speakeasyVersion: 1.570.2
+sources:
+    FastAPI:
+        sourceNamespace: fast-api
+        sourceRevisionDigest: sha256:a53a23e8eba125ebe15e6606056ec093369b35c2c1dd9add6ff0b7917e1b57c5
+        sourceBlobDigest: sha256:2d0fabb04105abfea1cd9fa962d4181cbbad0161e283d80ee2d377f4164f6aa4
+        tags:
+            - latest
+            - 2.0.0
+targets:
+    opper:
+        source: FastAPI
+        sourceNamespace: fast-api
+        sourceRevisionDigest: sha256:a53a23e8eba125ebe15e6606056ec093369b35c2c1dd9add6ff0b7917e1b57c5
+        sourceBlobDigest: sha256:2d0fabb04105abfea1cd9fa962d4181cbbad0161e283d80ee2d377f4164f6aa4
+        codeSamplesNamespace: fast-api-typescript-code-samples
+        codeSamplesRevisionDigest: sha256:d73911d1f77c559dcde589401aa75ffa28151a0f33b6516fd1adb91bd7798465
+workflow:
+    workflowVersion: 1.0.0
+    speakeasyVersion: latest
+    sources:
+        FastAPI:
+            inputs:
+                - location: https://api.opper.ai/v2/openapi.json
+            overlays:
+                - location: .speakeasy/speakeasy-modifications-overlay.yaml
+            registry:
+                location: registry.speakeasyapi.dev/opper/opper/fast-api
+    targets:
+        opper:
+            target: typescript
+            source: FastAPI
+            codeSamples:
+                registry:
+                    location: registry.speakeasyapi.dev/opper/opper/fast-api-typescript-code-samples
+                labelOverride:
+                    fixedValue: Typescript (SDK)
+                blocking: false

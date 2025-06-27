@@ -1,0 +1,41 @@
+# GetSpanResponse
+
+## Example Usage
+
+```typescript
+import { GetSpanResponse } from "opperai";
+
+let value: GetSpanResponse = {
+  name: "my span",
+  startTime: new Date("2024-03-20T10:00:00+00:00"),
+  id: "4f4a90b2-7e87-4c13-844d-03a59664b9b0",
+  traceId: "123e4567-e89b-12d3-a456-426614174000",
+  parentId: "123e4567-e89b-12d3-a456-426614174000",
+  type: "email_tool",
+  endTime: new Date("2024-03-20T10:00:10+00:00"),
+  input: "Hello, world!",
+  output: "Hello, world!",
+  error: "Exception: This is an error message",
+  meta: {
+    "key": "value",
+  },
+  score: 10,
+};
+```
+
+## Fields
+
+| Field                                                                                                     | Type                                                                                                      | Required                                                                                                  | Description                                                                                               | Example                                                                                                   |
+| --------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| `name`                                                                                                    | *string*                                                                                                  | :heavy_check_mark:                                                                                        | The name of the span, something descriptive about the span that will be used to identify it when querying | my span                                                                                                   |
+| `startTime`                                                                                               | [Date](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date)             | :heavy_minus_sign:                                                                                        | The start time of the span in UTC                                                                         | 2024-03-20T10:00:00+00:00                                                                                 |
+| `id`                                                                                                      | *string*                                                                                                  | :heavy_check_mark:                                                                                        | N/A                                                                                                       |                                                                                                           |
+| `traceId`                                                                                                 | *string*                                                                                                  | :heavy_minus_sign:                                                                                        | The id of the trace                                                                                       | 123e4567-e89b-12d3-a456-426614174000                                                                      |
+| `parentId`                                                                                                | *string*                                                                                                  | :heavy_minus_sign:                                                                                        | The id of the parent span                                                                                 | 123e4567-e89b-12d3-a456-426614174000                                                                      |
+| `type`                                                                                                    | *string*                                                                                                  | :heavy_minus_sign:                                                                                        | The type of the span                                                                                      | email_tool                                                                                                |
+| `endTime`                                                                                                 | [Date](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date)             | :heavy_minus_sign:                                                                                        | The end time of the span in UTC                                                                           | 2024-03-20T10:00:10+00:00                                                                                 |
+| `input`                                                                                                   | *any*                                                                                                     | :heavy_minus_sign:                                                                                        | The input of the span                                                                                     | Hello, world!                                                                                             |
+| `output`                                                                                                  | *any*                                                                                                     | :heavy_minus_sign:                                                                                        | The output of the span                                                                                    | Hello, world!                                                                                             |
+| `error`                                                                                                   | *string*                                                                                                  | :heavy_minus_sign:                                                                                        | In case of an error, the error message                                                                    | Exception: This is an error message                                                                       |
+| `meta`                                                                                                    | Record<string, *any*>                                                                                     | :heavy_minus_sign:                                                                                        | The metadata of the span                                                                                  | {<br/>"key": "value"<br/>}                                                                                |
+| `score`                                                                                                   | *number*                                                                                                  | :heavy_minus_sign:                                                                                        | The score of the span                                                                                     | 10                                                                                                        |

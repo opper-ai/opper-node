@@ -1,0 +1,20 @@
+workflowVersion: 1.0.0
+speakeasyVersion: latest
+sources:
+    FastAPI:
+        inputs:
+            - location: https://api.opper.ai/v2/openapi.json
+        overlays:
+            - location: .speakeasy/speakeasy-modifications-overlay.yaml
+        registry:
+            location: registry.speakeasyapi.dev/opper/opper/fast-api
+targets:
+    opper:
+        target: typescript
+        source: FastAPI
+        codeSamples:
+            registry:
+                location: registry.speakeasyapi.dev/opper/opper/fast-api-typescript-code-samples
+            labelOverride:
+                fixedValue: Typescript (SDK)
+            blocking: false

@@ -1,0 +1,24 @@
+# SpanData
+
+## Example Usage
+
+```typescript
+import { SpanData } from "opperai";
+
+let value: SpanData = {};
+```
+
+## Fields
+
+| Field                                                                                       | Type                                                                                        | Required                                                                                    | Description                                                                                 |
+| ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| `input`                                                                                     | *string*                                                                                    | :heavy_minus_sign:                                                                          | The input of the span                                                                       |
+| `output`                                                                                    | *string*                                                                                    | :heavy_minus_sign:                                                                          | The output of the span                                                                      |
+| `totalTokens`                                                                               | *number*                                                                                    | :heavy_minus_sign:                                                                          | The total tokens of the span                                                                |
+| `model`                                                                                     | *string*                                                                                    | :heavy_minus_sign:                                                                          | The model of the span                                                                       |
+| `instructions`                                                                              | *string*                                                                                    | :heavy_minus_sign:                                                                          | The instructions of the span in case of a generation span                                   |
+| `function`                                                                                  | *string*                                                                                    | :heavy_minus_sign:                                                                          | The function of the span                                                                    |
+| `tags`                                                                                      | *string*[]                                                                                  | :heavy_minus_sign:                                                                          | The tags of the span                                                                        |
+| `score`                                                                                     | *number*                                                                                    | :heavy_minus_sign:                                                                          | The score of the span, by default set to the evaluation score of the generation of the span |
+| `generationId`                                                                              | *string*                                                                                    | :heavy_minus_sign:                                                                          | The id of the generation of the span                                                        |
+| `observations`                                                                              | *string*                                                                                    | :heavy_minus_sign:                                                                          | The observations of the span in case of a generation span                                   |

@@ -1,396 +1,1072 @@
-# Opper Node SDK
+# opperai
 
-This is the official Node.js SDK for Opper AI. It provides a simple and powerful interface to interact with Opper's AI services, including function calls, indexing, and tracing.
+Developer-friendly & type-safe Typescript SDK specifically catered to leverage *opperai* API.
 
+<div align="left">
+    <a href="https://www.speakeasy.com/?utm_source=opperai&utm_campaign=typescript"><img src="https://custom-icon-badges.demolab.com/badge/-Built%20By%20Speakeasy-212015?style=for-the-badge&logoColor=FBE331&logo=speakeasy&labelColor=545454" /></a>
+    <a href="https://opensource.org/licenses/MIT">
+        <img src="https://img.shields.io/badge/License-MIT-blue.svg" style="width: 100px; height: 28px;" />
+    </a>
+</div>
+
+
+<br /><br />
+
+<!-- Start Summary [summary] -->
+## Summary
+
+
+<!-- End Summary [summary] -->
+
+<!-- Start Table of Contents [toc] -->
 ## Table of Contents
+<!-- $toc-max-depth=2 -->
+* [opperai](#opperai)
+  * [SDK Installation](#sdk-installation)
+  * [Requirements](#requirements)
+  * [SDK Example Usage](#sdk-example-usage)
+  * [Authentication](#authentication)
+  * [Available Resources and Operations](#available-resources-and-operations)
+  * [Standalone functions](#standalone-functions)
+  * [Server-sent event streaming](#server-sent-event-streaming)
+  * [Retries](#retries)
+  * [Error Handling](#error-handling)
+  * [Server Selection](#server-selection)
+  * [Custom HTTP Client](#custom-http-client)
+  * [Debugging](#debugging)
+* [Development](#development)
+  * [Maturity](#maturity)
+  * [Contributions](#contributions)
 
-1. [Installation](#installation)
-2. [Basic Usage](#basic-usage)
-3. [Features](#features)
-    - [Function Calls](#function-calls)
-    - [Structured Output](#structured-output)
-    - [Streaming Responses](#streaming-responses)
-    - [Indexes](#indexes)
-    - [Tracing](#tracing)
-    - [Datasets](#datasets)
-    - [Evaluations](#evaluations)
-    - [Multimodal Inputs](#multimodal-inputs)
-    - [PDF Processing](#pdf-processing)
-    - [Image Generation](#image-generation)
-    - [Embeddings](#embeddings)
-4. [Advanced Usage](#advanced-usage)
-    - [Structured Output with `fn` Helper](#structured-output-with-fn-helper)
-    - [OpenAI](#openai)
-5. [API Reference](#api-reference)
-6. [Examples](#examples)
-7. [License](#license)
+<!-- End Table of Contents [toc] -->
 
-## Installation
+<!-- Start SDK Installation [installation] -->
+## SDK Installation
 
-Install the Opper Node SDK using npm:
+> [!TIP]
+> To finish publishing your SDK to npm and others you must [run your first generation action](https://www.speakeasy.com/docs/github-setup#step-by-step-guide).
+
+
+The SDK can be installed with either [npm](https://www.npmjs.com/), [pnpm](https://pnpm.io/), [bun](https://bun.sh/) or [yarn](https://classic.yarnpkg.com/en/) package managers.
+
+### NPM
 
 ```bash
-npm install opperai
+npm add <UNSET>
 ```
 
-## Basic Usage
+### PNPM
+
+```bash
+pnpm add <UNSET>
+```
+
+### Bun
+
+```bash
+bun add <UNSET>
+```
+
+### Yarn
+
+```bash
+yarn add <UNSET> zod
+
+# Note that Yarn does not install peer dependencies automatically. You will need
+# to install zod as shown above.
+```
+
+> [!NOTE]
+> This package is published with CommonJS and ES Modules (ESM) support.
+
+
+### Model Context Protocol (MCP) Server
+
+This SDK is also an installable MCP server where the various SDK methods are
+exposed as tools that can be invoked by AI applications.
+
+> Node.js v20 or greater is required to run the MCP server from npm.
+
+<details>
+<summary>Claude installation steps</summary>
+
+Add the following server definition to your `claude_desktop_config.json` file:
+
+```json
+{
+  "mcpServers": {
+    "Opper": {
+      "command": "npx",
+      "args": [
+        "-y", "--package", "opperai",
+        "--",
+        "mcp", "start",
+        "--http-bearer", "..."
+      ]
+    }
+  }
+}
+```
+
+</details>
+
+<details>
+<summary>Cursor installation steps</summary>
+
+Create a `.cursor/mcp.json` file in your project root with the following content:
+
+```json
+{
+  "mcpServers": {
+    "Opper": {
+      "command": "npx",
+      "args": [
+        "-y", "--package", "opperai",
+        "--",
+        "mcp", "start",
+        "--http-bearer", "..."
+      ]
+    }
+  }
+}
+```
+
+</details>
+
+You can also run MCP servers as a standalone binary with no additional dependencies. You must pull these binaries from available Github releases:
+
+```bash
+curl -L -o mcp-server \
+    https://github.com/{org}/{repo}/releases/download/{tag}/mcp-server-bun-darwin-arm64 && \
+chmod +x mcp-server
+```
+
+If the repo is a private repo you must add your Github PAT to download a release `-H "Authorization: Bearer {GITHUB_PAT}"`.
+
+
+```json
+{
+  "mcpServers": {
+    "Todos": {
+      "command": "./DOWNLOAD/PATH/mcp-server",
+      "args": [
+        "start"
+      ]
+    }
+  }
+}
+```
+
+For a full list of server arguments, run:
+
+```sh
+npx -y --package opperai -- mcp start --help
+```
+<!-- End SDK Installation [installation] -->
+
+<!-- Start Requirements [requirements] -->
+## Requirements
+
+For supported JavaScript runtimes, please consult [RUNTIMES.md](RUNTIMES.md).
+<!-- End Requirements [requirements] -->
+
+<!-- Start SDK Example Usage [usage] -->
+## SDK Example Usage
+
+### Example
 
 ```typescript
-import Client from "opperai";
-// Your API key will be loaded from the environment variable OPPER_API_KEY if not provided
-const client = new Client();
+import { Opper } from "opperai";
 
-async function main() {
-    const { message } = await client.call({
-        input: "Hello, world!",
+const opper = new Opper({
+  httpBearer: process.env["OPPER_HTTP_BEARER"] ?? "",
+});
+
+async function run() {
+  const result = await opper.call({
+    name: "add_numbers",
+    instructions: "Calculate the sum of two numbers",
+    inputSchema: {
+      "properties": {
+        "x": {
+          "title": "X",
+          "type": "integer",
+        },
+        "y": {
+          "title": "Y",
+          "type": "integer",
+        },
+      },
+      "required": [
+        "x",
+        "y",
+      ],
+      "title": "OpperInputExample",
+      "type": "object",
+    },
+    outputSchema: {
+      "properties": {
+        "sum": {
+          "title": "Sum",
+          "type": "integer",
+        },
+      },
+      "required": [
+        "sum",
+      ],
+      "title": "OpperOutputExample",
+      "type": "object",
+    },
+    input: {
+      "x": 4,
+      "y": 5,
+    },
+    examples: [
+      {
+        input: {
+          "x": 1,
+          "y": 3,
+        },
+        output: {
+          "sum": 4,
+        },
+        comment: "Adds two numbers",
+      },
+    ],
+    parentSpanId: "123e4567-e89b-12d3-a456-426614174000",
+    tags: {
+      "project": "project_456",
+      "user": "company_123",
+    },
+    configuration: {},
+  });
+
+  console.log(result);
+}
+
+run();
+
+```
+<!-- End SDK Example Usage [usage] -->
+
+<!-- Start Authentication [security] -->
+## Authentication
+
+### Per-Client Security Schemes
+
+This SDK supports the following security scheme globally:
+
+| Name         | Type | Scheme      | Environment Variable |
+| ------------ | ---- | ----------- | -------------------- |
+| `httpBearer` | http | HTTP Bearer | `OPPER_HTTP_BEARER`  |
+
+To authenticate with the API the `httpBearer` parameter must be set when initializing the SDK client instance. For example:
+```typescript
+import { Opper } from "opperai";
+
+const opper = new Opper({
+  httpBearer: process.env["OPPER_HTTP_BEARER"] ?? "",
+});
+
+async function run() {
+  const result = await opper.call({
+    name: "add_numbers",
+    instructions: "Calculate the sum of two numbers",
+    inputSchema: {
+      "properties": {
+        "x": {
+          "title": "X",
+          "type": "integer",
+        },
+        "y": {
+          "title": "Y",
+          "type": "integer",
+        },
+      },
+      "required": [
+        "x",
+        "y",
+      ],
+      "title": "OpperInputExample",
+      "type": "object",
+    },
+    outputSchema: {
+      "properties": {
+        "sum": {
+          "title": "Sum",
+          "type": "integer",
+        },
+      },
+      "required": [
+        "sum",
+      ],
+      "title": "OpperOutputExample",
+      "type": "object",
+    },
+    input: {
+      "x": 4,
+      "y": 5,
+    },
+    examples: [
+      {
+        input: {
+          "x": 1,
+          "y": 3,
+        },
+        output: {
+          "sum": 4,
+        },
+        comment: "Adds two numbers",
+      },
+    ],
+    parentSpanId: "123e4567-e89b-12d3-a456-426614174000",
+    tags: {
+      "project": "project_456",
+      "user": "company_123",
+    },
+    configuration: {},
+  });
+
+  console.log(result);
+}
+
+run();
+
+```
+<!-- End Authentication [security] -->
+
+<!-- Start Available Resources and Operations [operations] -->
+## Available Resources and Operations
+
+<details open>
+<summary>Available methods</summary>
+
+### [analytics](docs/sdks/analytics/README.md)
+
+* [getUsage](docs/sdks/analytics/README.md#getusage) - Usage
+
+### [datasets](docs/sdks/datasets/README.md)
+
+* [createEntry](docs/sdks/datasets/README.md#createentry) - Create Dataset Entry
+* [listEntries](docs/sdks/datasets/README.md#listentries) - List Dataset Entries
+* [getEntry](docs/sdks/datasets/README.md#getentry) - Get Dataset Entry
+* [deleteEntry](docs/sdks/datasets/README.md#deleteentry) - Delete Dataset Entry
+* [queryEntries](docs/sdks/datasets/README.md#queryentries) - Query Dataset Entries
+
+#### [datasets.entries](docs/sdks/entries/README.md)
+
+* [update](docs/sdks/entries/README.md#update) - Update Dataset Entry
+
+### [embeddings](docs/sdks/embeddings/README.md)
+
+* [create](docs/sdks/embeddings/README.md#create) - Create Embedding
+
+### [functions](docs/sdks/functions/README.md)
+
+* [create](docs/sdks/functions/README.md#create) - Create Function
+* [list](docs/sdks/functions/README.md#list) - List Functions
+* [get](docs/sdks/functions/README.md#get) - Get Function
+* [update](docs/sdks/functions/README.md#update) - Update Function
+* [delete](docs/sdks/functions/README.md#delete) - Delete Function
+* [getByName](docs/sdks/functions/README.md#getbyname) - Get Function By Name
+* [getByRevision](docs/sdks/functions/README.md#getbyrevision) - Get Function By Revision
+* [call](docs/sdks/functions/README.md#call) - Call Function
+* [stream](docs/sdks/functions/README.md#stream) - Stream Function
+* [callRevision](docs/sdks/functions/README.md#callrevision) - Call Function Revision
+* [streamRevision](docs/sdks/functions/README.md#streamrevision) - Stream Function Revision
+
+#### [functions.revisions](docs/sdks/revisions/README.md)
+
+* [list](docs/sdks/revisions/README.md#list) - List Function Revisions
+
+### [knowledge](docs/sdks/knowledge/README.md)
+
+* [create](docs/sdks/knowledge/README.md#create) - Create Knowledge Base
+* [list](docs/sdks/knowledge/README.md#list) - List Knowledge Bases
+* [get](docs/sdks/knowledge/README.md#get) - Get Knowledge Base
+* [delete](docs/sdks/knowledge/README.md#delete) - Delete Knowledge Base
+* [getByName](docs/sdks/knowledge/README.md#getbyname) - Get Knowledge Base By Name
+* [getUploadUrl](docs/sdks/knowledge/README.md#getuploadurl) - Get Upload Url
+* [registerFileUpload](docs/sdks/knowledge/README.md#registerfileupload) - Register File Upload
+* [deleteFile](docs/sdks/knowledge/README.md#deletefile) - Delete File From Knowledge Base
+* [query](docs/sdks/knowledge/README.md#query) - Query Knowledge Base
+* [addKnowledgeKnowledgeBaseIdAddPost](docs/sdks/knowledge/README.md#addknowledgeknowledgebaseidaddpost) - Add
+
+### [languageModels](docs/sdks/languagemodels/README.md)
+
+* [list](docs/sdks/languagemodels/README.md#list) - List Models
+* [registerCustom](docs/sdks/languagemodels/README.md#registercustom) - Register Custom Model
+* [listCustom](docs/sdks/languagemodels/README.md#listcustom) - List Custom Models
+* [getCustom](docs/sdks/languagemodels/README.md#getcustom) - Get Custom Model
+* [updateCustom](docs/sdks/languagemodels/README.md#updatecustom) - Update Custom Model
+* [deleteCustom](docs/sdks/languagemodels/README.md#deletecustom) - Delete Custom Model
+* [getCustomByName](docs/sdks/languagemodels/README.md#getcustombyname) - Get Custom Model By Name
+
+### [openai](docs/sdks/openai/README.md)
+
+* [createChatCompletion](docs/sdks/openai/README.md#createchatcompletion) - Chat Completions
+
+### [Opper SDK](docs/sdks/opper/README.md)
+
+* [call](docs/sdks/opper/README.md#call) - Function Call
+* [stream](docs/sdks/opper/README.md#stream) - Function Stream
+
+### [spanMetrics](docs/sdks/spanmetrics/README.md)
+
+* [createMetric](docs/sdks/spanmetrics/README.md#createmetric) - Create Metric
+* [list](docs/sdks/spanmetrics/README.md#list) - List Metrics
+* [get](docs/sdks/spanmetrics/README.md#get) - Get Metric
+* [updateMetric](docs/sdks/spanmetrics/README.md#updatemetric) - Update Metric
+* [delete](docs/sdks/spanmetrics/README.md#delete) - Delete Metric
+
+### [spans](docs/sdks/spans/README.md)
+
+* [create](docs/sdks/spans/README.md#create) - Create Span
+* [get](docs/sdks/spans/README.md#get) - Get Span
+* [update](docs/sdks/spans/README.md#update) - Update Span
+* [delete](docs/sdks/spans/README.md#delete) - Delete Span
+* [saveExamples](docs/sdks/spans/README.md#saveexamples) - Save To Dataset
+
+### [traces](docs/sdks/traces/README.md)
+
+* [list](docs/sdks/traces/README.md#list) - List Traces
+* [get](docs/sdks/traces/README.md#get) - Get Trace
+
+</details>
+<!-- End Available Resources and Operations [operations] -->
+
+<!-- Start Standalone functions [standalone-funcs] -->
+## Standalone functions
+
+All the methods listed above are available as standalone functions. These
+functions are ideal for use in applications running in the browser, serverless
+runtimes or other environments where application bundle size is a primary
+concern. When using a bundler to build your application, all unused
+functionality will be either excluded from the final bundle or tree-shaken away.
+
+To read more about standalone functions, check [FUNCTIONS.md](./FUNCTIONS.md).
+
+<details>
+
+<summary>Available standalone functions</summary>
+
+- [`analyticsGetUsage`](docs/sdks/analytics/README.md#getusage) - Usage
+- [`call`](docs/sdks/opper/README.md#call) - Function Call
+- [`datasetsCreateEntry`](docs/sdks/datasets/README.md#createentry) - Create Dataset Entry
+- [`datasetsDeleteEntry`](docs/sdks/datasets/README.md#deleteentry) - Delete Dataset Entry
+- [`datasetsEntriesUpdate`](docs/sdks/entries/README.md#update) - Update Dataset Entry
+- [`datasetsGetEntry`](docs/sdks/datasets/README.md#getentry) - Get Dataset Entry
+- [`datasetsListEntries`](docs/sdks/datasets/README.md#listentries) - List Dataset Entries
+- [`datasetsQueryEntries`](docs/sdks/datasets/README.md#queryentries) - Query Dataset Entries
+- [`embeddingsCreate`](docs/sdks/embeddings/README.md#create) - Create Embedding
+- [`functionsCall`](docs/sdks/functions/README.md#call) - Call Function
+- [`functionsCallRevision`](docs/sdks/functions/README.md#callrevision) - Call Function Revision
+- [`functionsCreate`](docs/sdks/functions/README.md#create) - Create Function
+- [`functionsDelete`](docs/sdks/functions/README.md#delete) - Delete Function
+- [`functionsGet`](docs/sdks/functions/README.md#get) - Get Function
+- [`functionsGetByName`](docs/sdks/functions/README.md#getbyname) - Get Function By Name
+- [`functionsGetByRevision`](docs/sdks/functions/README.md#getbyrevision) - Get Function By Revision
+- [`functionsList`](docs/sdks/functions/README.md#list) - List Functions
+- [`functionsRevisionsList`](docs/sdks/revisions/README.md#list) - List Function Revisions
+- [`functionsStream`](docs/sdks/functions/README.md#stream) - Stream Function
+- [`functionsStreamRevision`](docs/sdks/functions/README.md#streamrevision) - Stream Function Revision
+- [`functionsUpdate`](docs/sdks/functions/README.md#update) - Update Function
+- [`knowledgeAddKnowledgeKnowledgeBaseIdAddPost`](docs/sdks/knowledge/README.md#addknowledgeknowledgebaseidaddpost) - Add
+- [`knowledgeCreate`](docs/sdks/knowledge/README.md#create) - Create Knowledge Base
+- [`knowledgeDelete`](docs/sdks/knowledge/README.md#delete) - Delete Knowledge Base
+- [`knowledgeDeleteFile`](docs/sdks/knowledge/README.md#deletefile) - Delete File From Knowledge Base
+- [`knowledgeGet`](docs/sdks/knowledge/README.md#get) - Get Knowledge Base
+- [`knowledgeGetByName`](docs/sdks/knowledge/README.md#getbyname) - Get Knowledge Base By Name
+- [`knowledgeGetUploadUrl`](docs/sdks/knowledge/README.md#getuploadurl) - Get Upload Url
+- [`knowledgeList`](docs/sdks/knowledge/README.md#list) - List Knowledge Bases
+- [`knowledgeQuery`](docs/sdks/knowledge/README.md#query) - Query Knowledge Base
+- [`knowledgeRegisterFileUpload`](docs/sdks/knowledge/README.md#registerfileupload) - Register File Upload
+- [`languageModelsDeleteCustom`](docs/sdks/languagemodels/README.md#deletecustom) - Delete Custom Model
+- [`languageModelsGetCustom`](docs/sdks/languagemodels/README.md#getcustom) - Get Custom Model
+- [`languageModelsGetCustomByName`](docs/sdks/languagemodels/README.md#getcustombyname) - Get Custom Model By Name
+- [`languageModelsList`](docs/sdks/languagemodels/README.md#list) - List Models
+- [`languageModelsListCustom`](docs/sdks/languagemodels/README.md#listcustom) - List Custom Models
+- [`languageModelsRegisterCustom`](docs/sdks/languagemodels/README.md#registercustom) - Register Custom Model
+- [`languageModelsUpdateCustom`](docs/sdks/languagemodels/README.md#updatecustom) - Update Custom Model
+- [`openaiCreateChatCompletion`](docs/sdks/openai/README.md#createchatcompletion) - Chat Completions
+- [`spanMetricsCreateMetric`](docs/sdks/spanmetrics/README.md#createmetric) - Create Metric
+- [`spanMetricsDelete`](docs/sdks/spanmetrics/README.md#delete) - Delete Metric
+- [`spanMetricsGet`](docs/sdks/spanmetrics/README.md#get) - Get Metric
+- [`spanMetricsList`](docs/sdks/spanmetrics/README.md#list) - List Metrics
+- [`spanMetricsUpdateMetric`](docs/sdks/spanmetrics/README.md#updatemetric) - Update Metric
+- [`spansCreate`](docs/sdks/spans/README.md#create) - Create Span
+- [`spansDelete`](docs/sdks/spans/README.md#delete) - Delete Span
+- [`spansGet`](docs/sdks/spans/README.md#get) - Get Span
+- [`spansSaveExamples`](docs/sdks/spans/README.md#saveexamples) - Save To Dataset
+- [`spansUpdate`](docs/sdks/spans/README.md#update) - Update Span
+- [`stream`](docs/sdks/opper/README.md#stream) - Function Stream
+- [`tracesGet`](docs/sdks/traces/README.md#get) - Get Trace
+- [`tracesList`](docs/sdks/traces/README.md#list) - List Traces
+
+</details>
+<!-- End Standalone functions [standalone-funcs] -->
+
+<!-- Start Server-sent event streaming [eventstream] -->
+## Server-sent event streaming
+
+[Server-sent events][mdn-sse] are used to stream content from certain
+operations. These operations will expose the stream as an async iterable that
+can be consumed using a [`for await...of`][mdn-for-await-of] loop. The loop will
+terminate when the server no longer has any events to send and closes the
+underlying connection.
+
+```typescript
+import { Opper } from "opperai";
+
+const opper = new Opper({
+  httpBearer: process.env["OPPER_HTTP_BEARER"] ?? "",
+});
+
+async function run() {
+  const result = await opper.stream({
+    name: "add_numbers",
+    instructions: "Calculate the sum of two numbers",
+    inputSchema: {
+      "properties": {
+        "x": {
+          "title": "X",
+          "type": "integer",
+        },
+        "y": {
+          "title": "Y",
+          "type": "integer",
+        },
+      },
+      "required": [
+        "x",
+        "y",
+      ],
+      "title": "OpperInputExample",
+      "type": "object",
+    },
+    outputSchema: {
+      "properties": {
+        "sum": {
+          "title": "Sum",
+          "type": "integer",
+        },
+      },
+      "required": [
+        "sum",
+      ],
+      "title": "OpperOutputExample",
+      "type": "object",
+    },
+    input: {
+      "x": 4,
+      "y": 5,
+    },
+    examples: [
+      {
+        input: {
+          "x": 1,
+          "y": 3,
+        },
+        output: {
+          "sum": 4,
+        },
+        comment: "Adds two numbers",
+      },
+    ],
+    parentSpanId: "123e4567-e89b-12d3-a456-426614174000",
+    tags: {
+      "project": "project_456",
+      "user": "company_123",
+    },
+  });
+
+  for await (const event of result) {
+    // Handle the event
+    console.log(event);
+  }
+}
+
+run();
+
+```
+
+[mdn-sse]: https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events
+[mdn-for-await-of]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for-await...of
+<!-- End Server-sent event streaming [eventstream] -->
+
+<!-- Start Retries [retries] -->
+## Retries
+
+Some of the endpoints in this SDK support retries.  If you use the SDK without any configuration, it will fall back to the default retry strategy provided by the API.  However, the default retry strategy can be overridden on a per-operation basis, or across the entire SDK.
+
+To change the default retry strategy for a single API call, simply provide a retryConfig object to the call:
+```typescript
+import { Opper } from "opperai";
+
+const opper = new Opper({
+  httpBearer: process.env["OPPER_HTTP_BEARER"] ?? "",
+});
+
+async function run() {
+  const result = await opper.call({
+    name: "add_numbers",
+    instructions: "Calculate the sum of two numbers",
+    inputSchema: {
+      "properties": {
+        "x": {
+          "title": "X",
+          "type": "integer",
+        },
+        "y": {
+          "title": "Y",
+          "type": "integer",
+        },
+      },
+      "required": [
+        "x",
+        "y",
+      ],
+      "title": "OpperInputExample",
+      "type": "object",
+    },
+    outputSchema: {
+      "properties": {
+        "sum": {
+          "title": "Sum",
+          "type": "integer",
+        },
+      },
+      "required": [
+        "sum",
+      ],
+      "title": "OpperOutputExample",
+      "type": "object",
+    },
+    input: {
+      "x": 4,
+      "y": 5,
+    },
+    examples: [
+      {
+        input: {
+          "x": 1,
+          "y": 3,
+        },
+        output: {
+          "sum": 4,
+        },
+        comment: "Adds two numbers",
+      },
+    ],
+    parentSpanId: "123e4567-e89b-12d3-a456-426614174000",
+    tags: {
+      "project": "project_456",
+      "user": "company_123",
+    },
+    configuration: {},
+  }, {
+    retries: {
+      strategy: "backoff",
+      backoff: {
+        initialInterval: 1,
+        maxInterval: 50,
+        exponent: 1.1,
+        maxElapsedTime: 100,
+      },
+      retryConnectionErrors: false,
+    },
+  });
+
+  console.log(result);
+}
+
+run();
+
+```
+
+If you'd like to override the default retry strategy for all operations that support retries, you can provide a retryConfig at SDK initialization:
+```typescript
+import { Opper } from "opperai";
+
+const opper = new Opper({
+  retryConfig: {
+    strategy: "backoff",
+    backoff: {
+      initialInterval: 1,
+      maxInterval: 50,
+      exponent: 1.1,
+      maxElapsedTime: 100,
+    },
+    retryConnectionErrors: false,
+  },
+  httpBearer: process.env["OPPER_HTTP_BEARER"] ?? "",
+});
+
+async function run() {
+  const result = await opper.call({
+    name: "add_numbers",
+    instructions: "Calculate the sum of two numbers",
+    inputSchema: {
+      "properties": {
+        "x": {
+          "title": "X",
+          "type": "integer",
+        },
+        "y": {
+          "title": "Y",
+          "type": "integer",
+        },
+      },
+      "required": [
+        "x",
+        "y",
+      ],
+      "title": "OpperInputExample",
+      "type": "object",
+    },
+    outputSchema: {
+      "properties": {
+        "sum": {
+          "title": "Sum",
+          "type": "integer",
+        },
+      },
+      "required": [
+        "sum",
+      ],
+      "title": "OpperOutputExample",
+      "type": "object",
+    },
+    input: {
+      "x": 4,
+      "y": 5,
+    },
+    examples: [
+      {
+        input: {
+          "x": 1,
+          "y": 3,
+        },
+        output: {
+          "sum": 4,
+        },
+        comment: "Adds two numbers",
+      },
+    ],
+    parentSpanId: "123e4567-e89b-12d3-a456-426614174000",
+    tags: {
+      "project": "project_456",
+      "user": "company_123",
+    },
+    configuration: {},
+  });
+
+  console.log(result);
+}
+
+run();
+
+```
+<!-- End Retries [retries] -->
+
+<!-- Start Error Handling [errors] -->
+## Error Handling
+
+[`OpperError`](./src/models/errors/oppererror.ts) is the base class for all HTTP error responses. It has the following properties:
+
+| Property            | Type       | Description                                                                             |
+| ------------------- | ---------- | --------------------------------------------------------------------------------------- |
+| `error.message`     | `string`   | Error message                                                                           |
+| `error.statusCode`  | `number`   | HTTP response status code eg `404`                                                      |
+| `error.headers`     | `Headers`  | HTTP response headers                                                                   |
+| `error.body`        | `string`   | HTTP body. Can be empty string if no body is returned.                                  |
+| `error.rawResponse` | `Response` | Raw HTTP response                                                                       |
+| `error.data$`       |            | Optional. Some errors may contain structured data. [See Error Classes](#error-classes). |
+
+### Example
+```typescript
+import { Opper } from "opperai";
+import * as errors from "opperai/models/errors";
+
+const opper = new Opper({
+  httpBearer: process.env["OPPER_HTTP_BEARER"] ?? "",
+});
+
+async function run() {
+  try {
+    const result = await opper.call({
+      name: "add_numbers",
+      instructions: "Calculate the sum of two numbers",
+      inputSchema: {
+        "properties": {
+          "x": {
+            "title": "X",
+            "type": "integer",
+          },
+          "y": {
+            "title": "Y",
+            "type": "integer",
+          },
+        },
+        "required": [
+          "x",
+          "y",
+        ],
+        "title": "OpperInputExample",
+        "type": "object",
+      },
+      outputSchema: {
+        "properties": {
+          "sum": {
+            "title": "Sum",
+            "type": "integer",
+          },
+        },
+        "required": [
+          "sum",
+        ],
+        "title": "OpperOutputExample",
+        "type": "object",
+      },
+      input: {
+        "x": 4,
+        "y": 5,
+      },
+      examples: [
+        {
+          input: {
+            "x": 1,
+            "y": 3,
+          },
+          output: {
+            "sum": 4,
+          },
+          comment: "Adds two numbers",
+        },
+      ],
+      parentSpanId: "123e4567-e89b-12d3-a456-426614174000",
+      tags: {
+        "project": "project_456",
+        "user": "company_123",
+      },
+      configuration: {},
     });
 
-    console.log(message);
-}
-main();
-```
+    console.log(result);
+  } catch (error) {
+    // The base class for HTTP error responses
+    if (error instanceof errors.OpperError) {
+      console.log(error.message);
+      console.log(error.statusCode);
+      console.log(error.body);
+      console.log(error.headers);
 
-## Features
-
-### Function Calls
-
-Use the `call` method to send messages to Opper AI and receive responses see [example-calls.ts](./examples/example-calls.ts) for more examples:
-
-```typescript
-const { message } = await client.call({
-    name: "your/function/name",
-    instructions: "An example message",
-});
-
-console.log(message);
-```
-
-### Structured Output
-
-The `call` method can be passed an `input_schema` and an `output_schema` to return structured output. See [example-calls.ts](./examples/example-calls.ts) for more examples or [Structured Output with `fn` Helper](#structured-output-with-fn-helper) for a more type-safe approach:
-
-```typescript
-const { json_payload } = await client.call({
-    name: "your/function/name",
-    instructions: "Extract temperature, location and wind speed.",
-    input: "In London its cloudy skies early, followed by partial clearing. Cooler. High 13C. Winds ENE at 15 to 20 km/h.",
-    output_schema: {
-        $schema: "https://json-schema.org/draft/2020-12/schema",
-        type: "object",
-        properties: {
-            temperature: {
-                description: "The temperature in Celsius",
-                type: "number",
-            },
-            location: {
-                description: "The location",
-                type: "string",
-            },
-            wind_speed: {
-                description: "The max wind speed in km/h",
-                type: "number",
-            },
-        },
-        required: ["temperature", "location", "wind_speed"],
-    },
-});
-console.log("JSON response: ", json_payload);
-```
-
-### Streaming Responses
-
-For long-running functions, you can stream the response by adding `stream: true,` to a function call. This will return a `ReadableStream` which can be processed as needed:
-
-```typescript
-const stream = await client.call({
-    name: "your/function/name",
-    instructions: "An example message",
-    stream: true,
-});
-// Process the stream as needed
-```
-
-For examples on how to use streaming with web frameworks:
-
--   Express: see [example-stream-express.ts](./examples/example-stream-express.ts)
--   Next.js: see [example-stream-nextjs.ts](./examples/example-stream-nextjs.ts)
-
-### Indexes
-
-Efficiently store and query documents using Opper's indexing feature:
-
-```typescript
-// Create or get an index
-let index = await client.indexes.get("support-tickets");
-if (!index) {
-    index = await client.indexes.create("support-tickets");
-}
-
-// Add documents
-await index.add({
-    content: "Slow response time. The response time for queries is too slow",
-    metadata: {
-        status: "open",
-        id: "1",
-    },
-});
-
-// Query the index
-const results = await index.query({
-    query: "Issue with slow response time",
-    k: 1,
-});
-console.log(results[0].content);
-```
-
-### Tracing
-
-Track and analyze your AI operations with Opper's tracing feature:
-
-```typescript
-const trace = await client.traces.start({
-    name: "example-trace",
-    input: "example input",
-});
-
-// Perform operations...
-await trace.end({
-    output: "example output",
-});
-```
-
-Manually create a child span for a given parent trace/span:
-
-```typescript
-const manualSpan = await client.traces.startSpan({
-    parent_uuid: trace.uuid,
-    name: "example-span",
-    input: "example input",
-});
-
-await manualSpan.end({
-    output: "example output",
-});
-```
-
-See [example-tracing-manual.ts](./examples/example-tracing-manual.ts) for a full example of how to manually create spans including saving metrics and examples.
-
-### Datasets
-
-See [example-datasets.ts](./examples/example-datasets.ts):
-
-```typescript
-// Get the dataset for a given function by name or uuid
-const dataset = await client.functions.dataset({ name: "node-sdk/datasets" });
-
-// Add an entry to the dataset
-const entry = await dataset.add({
-    input: "Hello, world!",
-    output: "Hello, world!",
-    expected: "Hello, world!",
-});
-```
-
-### Evaluations
-
-Evaluate the quality and performance of model outputs using custom evaluators:
-
-```typescript
-import { evaluator } from "opperai";
-
-// Create an evaluator for checking line count
-const lineCountEvaluator = evaluator(
-    (result: string, minLines = 10, maxLines = 20) => {
-        // Count non-empty lines
-        const lines = result
-            .trim()
-            .split("\n")
-            .filter(line => line.trim().length > 0);
-        const lineCount = lines.length;
-
-        // Calculate score (0-1)
-        let score: number;
-        if (lineCount < minLines) {
-            score = lineCount / minLines;
-        } else if (lineCount > maxLines) {
-            const excess = lineCount - maxLines;
-            score = Math.max(0, 1 - (excess / maxLines));
-        } else {
-            score = 1.0;
-        }
-
-        return [
-            {
-                dimension: "line_count.score",
-                value: score,
-                comment: "Line count score",
-            },
-            {
-                dimension: "line_count.count",
-                value: Math.min(1.0, lineCount / maxLines),
-                comment: `Found ${lineCount} lines`,
-            },
-        ];
+      // Depending on the method different errors may be thrown
+      if (error instanceof errors.BadRequestError) {
+        console.log(error.data$.type); // string
+        console.log(error.data$.message); // string
+        console.log(error.data$.detail); // any
+      }
     }
-);
+  }
+}
 
-// Use the evaluator on a model response
-const { message, span_id } = await client.call({
-    name: "content_generation",
-    input: "Write a short paragraph about AI",
-});
+run();
 
-// Run evaluation
-const evaluation = await client.evaluate({
-    span_id,
-    evaluators: [
-        lineCountEvaluator(message, 4, 10),
-    ],
-});
-
-// View evaluation results
-console.log(evaluation.metrics);
 ```
 
-See [example-evaluations.ts](./examples/example-evaluations.ts) for a complete example including evaluators that use an LLM call for assessment.
+### Error Classes
+**Primary errors:**
+* [`OpperError`](./src/models/errors/oppererror.ts): The base class for HTTP error responses.
+  * [`BadRequestError`](docs/models/errors/badrequesterror.md): Bad Request. Status code `400`.
+  * [`UnauthorizedError`](docs/models/errors/unauthorizederror.md): Unauthorized. Status code `401`.
+  * [`NotFoundError`](docs/models/errors/notfounderror.md): Not Found. Status code `404`.
+  * [`RequestValidationError`](docs/models/errors/requestvalidationerror.md): Request Validation Error. Status code `422`. *
 
-### Multimodal Inputs
+<details><summary>Less common errors (8)</summary>
 
-Handle various input types, including images and audio. See [example-calls-multimodal.ts](./examples/example-calls-multimodal.ts) for more examples:
+<br />
 
+**Network errors:**
+* [`ConnectionError`](./src/models/errors/httpclienterrors.ts): HTTP client was unable to make a request to a server.
+* [`RequestTimeoutError`](./src/models/errors/httpclienterrors.ts): HTTP request timed out due to an AbortSignal signal.
+* [`RequestAbortedError`](./src/models/errors/httpclienterrors.ts): HTTP request was aborted by the client.
+* [`InvalidRequestError`](./src/models/errors/httpclienterrors.ts): Any input used to create a request is invalid.
+* [`UnexpectedClientError`](./src/models/errors/httpclienterrors.ts): Unrecognised or unexpected error.
+
+
+**Inherit from [`OpperError`](./src/models/errors/oppererror.ts)**:
+* [`ConflictError`](docs/models/errors/conflicterror.md): Conflict. Status code `409`. Applicable to 3 of 52 methods.*
+* [`ErrorT`](docs/models/errors/errort.md): Request validation error. Applicable to 1 of 52 methods.*
+* [`ResponseValidationError`](./src/models/errors/responsevalidationerror.ts): Type mismatch between the data returned from the server and the structure expected by the SDK. See `error.rawValue` for the raw value and `error.pretty()` for a nicely formatted multi-line string.
+
+</details>
+
+\* Check [the method documentation](#available-resources-and-operations) to see if the error is applicable.
+<!-- End Error Handling [errors] -->
+
+<!-- Start Server Selection [server] -->
+## Server Selection
+
+### Override Server URL Per-Client
+
+The default server can be overridden globally by passing a URL to the `serverURL: string` optional parameter when initializing the SDK client instance. For example:
 ```typescript
-const image = new OpperMediaHandler("path/to/image.png");
-const audio = new OpperMediaHandler("path/to/audio.mp3");
+import { Opper } from "opperai";
 
-const { message: image_description } = await client.call({
-    name: "describe-image",
-    instructions: "Create a short description of the image",
-    input: image.getInput(),
-    model: "openai/gpt-4o",
+const opper = new Opper({
+  serverURL: "https://api.opper.ai/v2",
+  httpBearer: process.env["OPPER_HTTP_BEARER"] ?? "",
 });
 
-const { message: audio_transcription } = await client.call({
-    name: "transcribe-audio",
-    instructions: "Given an audio file, return the transcription of the audio",
-    input: audio.getInput(),
-    model: "gcp/gemini-1.5-flash-eu",
-});
-```
-
-### PDF Processing
-
-Process PDF files using the OpperMediaHandler class:
-
-```typescript
-import { OpperMediaHandler } from "opperai";
-
-// Create a handler for the PDF file
-const pdf = new OpperMediaHandler("path/to/your.pdf");
-
-// Use it in a function call
-const result = await client.call({
-  name: "pdf_to_markdown",
-  model: "gcp/gemini-2.0-flash",
-  instructions: "Extract text content from this PDF document",
-  input: pdf.getInput()
-});
-
-console.log(result.message);
-```
-
-See the [PDF example](examples/example-pdf.ts) for a complete implementation of PDF to markdown conversion.
-
-### Image Generation
-
-Generate images using Opper's AI models:
-
-```typescript
-const generatedImage = await client.generateImage({
-    prompt: "Create an image of a cat",
-});
-// Save or process the generated image
-```
-
-### Embeddings
-
-Create vector embeddings for text using Opper's embedding models:
-
-```typescript
-// Create embeddings for a single string
-const singleEmbedding = await client.createEmbedding({
-    model: "text-embedding-3-small",
-    input: "This is a sample text to embed"
-});
-
-console.log(`Created ${singleEmbedding.data[0].embedding.length}-dimensional embedding`);
-console.log(`Used ${singleEmbedding.usage.prompt_tokens} tokens`);
-
-// Create embeddings for multiple strings in a single request
-const batchEmbeddings = await client.createEmbedding({
-    input: [
-        "First text to embed",
-        "Second text to embed",
-        "Third text to embed"
-    ]
-});
-
-console.log(`Created ${batchEmbeddings.data.length} embeddings`);
-```
-
-## Advanced Usage
-
-### Structured Output with `fn` Helper
-
-Use the `fn` helper to create type-safe function calls with structured input and output. See the example folder for a full example of how to use the `fn` helper. We have supplied fn decorators for both [zod](./examples/zod-fn-decorator.ts) and [typebox](./examples/typebox-fn-decorator.ts):
-
-```typescript
-import { z } from "zod";
-// Copy the zod-fn-decorator.ts file from the examples directory into your project
-import fn from "./zod-fn-decorator";
-
-const TranslationSchema = z.object({
-    translation: z.string(),
-    sentiment: z.string(),
-});
-const translate = fn(
-    {
-        name: "translate",
-        instructions: "Translate the input text and analyze sentiment",
+async function run() {
+  const result = await opper.call({
+    name: "add_numbers",
+    instructions: "Calculate the sum of two numbers",
+    inputSchema: {
+      "properties": {
+        "x": {
+          "title": "X",
+          "type": "integer",
+        },
+        "y": {
+          "title": "Y",
+          "type": "integer",
+        },
+      },
+      "required": [
+        "x",
+        "y",
+      ],
+      "title": "OpperInputExample",
+      "type": "object",
     },
-    z.object({ text: z.string(), language: z.string() }),
-    TranslationSchema
-);
+    outputSchema: {
+      "properties": {
+        "sum": {
+          "title": "Sum",
+          "type": "integer",
+        },
+      },
+      "required": [
+        "sum",
+      ],
+      "title": "OpperOutputExample",
+      "type": "object",
+    },
+    input: {
+      "x": 4,
+      "y": 5,
+    },
+    examples: [
+      {
+        input: {
+          "x": 1,
+          "y": 3,
+        },
+        output: {
+          "sum": 4,
+        },
+        comment: "Adds two numbers",
+      },
+    ],
+    parentSpanId: "123e4567-e89b-12d3-a456-426614174000",
+    tags: {
+      "project": "project_456",
+      "user": "company_123",
+    },
+    configuration: {},
+  });
 
-const result = await translate({ text: "Hello, world!", language: "French" });
+  console.log(result);
+}
 
-console.log(result);
+run();
+
+```
+<!-- End Server Selection [server] -->
+
+<!-- Start Custom HTTP Client [http-client] -->
+## Custom HTTP Client
+
+The TypeScript SDK makes API calls using an `HTTPClient` that wraps the native
+[Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API). This
+client is a thin wrapper around `fetch` and provides the ability to attach hooks
+around the request lifecycle that can be used to modify the request or handle
+errors and response.
+
+The `HTTPClient` constructor takes an optional `fetcher` argument that can be
+used to integrate a third-party HTTP client or when writing tests to mock out
+the HTTP client and feed in fixtures.
+
+The following example shows how to use the `"beforeRequest"` hook to to add a
+custom header and a timeout to requests and how to use the `"requestError"` hook
+to log errors:
+
+```typescript
+import { Opper } from "opperai";
+import { HTTPClient } from "opperai/lib/http";
+
+const httpClient = new HTTPClient({
+  // fetcher takes a function that has the same signature as native `fetch`.
+  fetcher: (request) => {
+    return fetch(request);
+  }
+});
+
+httpClient.addHook("beforeRequest", (request) => {
+  const nextRequest = new Request(request, {
+    signal: request.signal || AbortSignal.timeout(5000)
+  });
+
+  nextRequest.headers.set("x-custom-header", "custom value");
+
+  return nextRequest;
+});
+
+httpClient.addHook("requestError", (error, request) => {
+  console.group("Request Error");
+  console.log("Reason:", `${error}`);
+  console.log("Endpoint:", `${request.method} ${request.url}`);
+  console.groupEnd();
+});
+
+const sdk = new Opper({ httpClient });
+```
+<!-- End Custom HTTP Client [http-client] -->
+
+<!-- Start Debugging [debug] -->
+## Debugging
+
+You can setup your SDK to emit debug logs for SDK requests and responses.
+
+You can pass a logger that matches `console`'s interface as an SDK option.
+
+> [!WARNING]
+> Beware that debug logging will reveal secrets, like API tokens in headers, in log messages printed to a console or files. It's recommended to use this feature only during local development and not in production.
+
+```typescript
+import { Opper } from "opperai";
+
+const sdk = new Opper({ debugLogger: console });
 ```
 
-### OpenAI
+You can also enable a default debug logger by setting an environment variable `OPPER_DEBUG` to true.
+<!-- End Debugging [debug] -->
 
-The Opper OpenAI compatibility layer allows you to use Opper models with the OpenAI API and SDKs. This gives you the ability to use any model provided by Opper in any project that uses the OpenAI API/SDKs.
+<!-- Placeholder for Future Speakeasy SDK Sections -->
 
-See [example-openai.ts](./examples/example-openai.ts) for an example of how to use the OpenAI compatibility layer.
+# Development
 
-## API Reference
+## Maturity
 
-For detailed API documentation, please refer to the [official Opper AI documentation](https://docs.opper.ai).
+This SDK is in beta, and there may be breaking changes between versions without a major version update. Therefore, we recommend pinning usage
+to a specific package version. This way, you can install the same version each time without breaking changes unless you are intentionally
+looking for the latest version.
 
-## Examples
+## Contributions
 
-The SDK includes several examples demonstrating various features:
+While we value open-source contributions to this SDK, this library is generated programmatically. Any manual changes added to internal files will be overwritten on the next generation. 
+We look forward to hearing your feedback. Feel free to open a PR or an issue with a proof of concept and we'll do our best to include it in a future release. 
 
--   Basic function calls: `examples/example-calls.ts`
--   Multimodal inputs: `examples/example-calls-multimodal.ts`
--   Indexing: `examples/example-indexes.ts`
--   Manual tracing: `examples/example-tracing-manual.ts`
--   Evaluations: `examples/example-evaluations.ts`
--   Embeddings: `examples/example-embeddings.ts`
--   Structured output with Zod: `examples/example-zod-fn.ts`
--   Structured output with TypeBox: `examples/example-typebox-fn.ts`
-
-To run an example:
-
-```bash
-npx ts-node ./examples/example-name.ts
-```
+### SDK Created by [Speakeasy](https://www.speakeasy.com/?utm_source=opperai&utm_campaign=typescript)

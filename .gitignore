@@ -1,41 +1,26 @@
-# Dependency directories
-node_modules/
-
-# Compiled JavaScript
-dist/
-*.js
-*.js.map
-
-# TypeScript v1 declaration files
-*.d.ts
-
-# Optional TypeScript cache
-*.tsbuildinfo
-
-# dotenv environment variable files
-.env
-.env.local
-
-# IDEs and editors
-/.idea
-*.sw*
-*~.nib
-local.properties
-/.vscode
-/.atom
-/.sublime
-/.history
-
-# OS files
+/models
+/models/errors
+/types
+/node_modules
+/lib
+/sdk
+/funcs
+/react-query
+/mcp-server
+/hooks
+/index.*
+/core.*
+/bin
+/cjs
+/esm
+/dist
+/.tsbuildinfo
+/.eslintcache
+/.tshy
+/.tshy-*
+/__tests__
 .DS_Store
-Thumbs.db
-
-# Temporary files
-*.tmp
-*.temp
-*.tscache
-
-# Other
-examples/package-lock.json
-/examples/fixtures/md.ts
-/examples/example-error.ts
+**/.speakeasy/temp/
+**/.speakeasy/logs/
+.DS_Store
+/.speakeasy/reports
