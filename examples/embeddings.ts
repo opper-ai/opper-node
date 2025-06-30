@@ -6,7 +6,6 @@ const opper = new Opper({
     httpBearer: process.env["OPPER_API_KEY"] ?? "",
 });
 
-// Main execution
 (async () => {
     // Example 1: Generate embeddings for a single string
     console.log("Example 1: Single text input");

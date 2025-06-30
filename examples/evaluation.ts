@@ -8,8 +8,10 @@ const opper = new Opper({
     httpBearer: process.env["OPPER_API_KEY"] ?? "",
 });
 
+/**
+ * Evaluator that checks if the text has enough lines.
+ */
 function linecountEvaluator(text: string, minLines = 10, maxLines = 20) {
-    /**Evaluator that checks if the text has enough lines.*/
     const lines = text
         .trim()
         .split("\n")
@@ -41,13 +43,14 @@ function linecountEvaluator(text: string, minLines = 10, maxLines = 20) {
     ];
 }
 
+/**
+ * Evaluator that checks sentiment of text using an LLM call.
+ */
 async function sentimentEvaluator(
     text: string,
     target = "positive",
     spanId?: string
 ) {
-    /**Evaluator that checks sentiment of text using an LLM call.*/
-
     // Define output schema for sentiment analysis
     const SentimentAnalysisSchema = z.object({
         sentiment: z

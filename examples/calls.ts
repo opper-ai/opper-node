@@ -8,7 +8,6 @@ const opper = new Opper({
     httpBearer: process.env["OPPER_API_KEY"] ?? "",
 });
 
-// Zod schemas (equivalent to Pydantic models in Python)
 const NumberSchema = z.object({
     x: z.number().int().min(0).describe("value of the number"),
 });
@@ -176,7 +175,6 @@ const EXAMPLES: Array<[string, () => Promise<void>]> = [
     ["Call with Structured Examples", callWithStructuredExamples],
 ];
 
-// Main execution logic
 (async () => {
     console.log("Running examples sequentially:");
     for (const [title, func] of EXAMPLES) {

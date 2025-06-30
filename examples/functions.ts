@@ -8,7 +8,6 @@ const opper = new Opper({
     httpBearer: process.env["OPPER_API_KEY"] ?? "",
 });
 
-// Zod schemas (equivalent to Pydantic models in Python)
 const MyInputSchema = z.object({
     name: z.string(),
 });

@@ -6,7 +6,6 @@ const opper = new Opper({
     httpBearer: process.env["OPPER_API_KEY"] ?? "",
 });
 
-// Main execution
 (async () => {
     const f = await opper.functions.create({
         name: "async_dataset_function",
