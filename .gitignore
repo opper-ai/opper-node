@@ -24,3 +24,4 @@
 **/.speakeasy/logs/
 .DS_Store
 /.speakeasy/reports
+/.env
