@@ -979,8 +979,10 @@ run();
 ```
 <!-- End Server Selection [server] -->
 </details>
+
 <!-- Start Custom HTTP Client [http-client] -->
 ## Custom HTTP Client
+
 <details>
 <summary>Custom HTTP Client</summary>
 
@@ -1030,6 +1032,7 @@ const sdk = new Opper({ httpClient });
 ```
 <!-- End Custom HTTP Client [http-client] -->
 </details>
+
 <!-- Start Debugging [debug] -->
 ## Debugging
 
