@@ -24,3 +24,7 @@
 **/.speakeasy/logs/
 .DS_Store
 /.speakeasy/reports
+/.env
+
+# Ignore generated images in fixtures folder
+examples/fixtures/generated_image*
