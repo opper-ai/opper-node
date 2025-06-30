@@ -751,9 +751,12 @@ run();
 
 ```
 <!-- End Retries [retries] -->
+
 </details>
+
 <!-- Start Error Handling [errors] -->
 ## Error Handling
+
 Check our detailed docs for [error handling](https://docs.opper.ai/api-reference/errors)
 
 
