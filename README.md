@@ -9,12 +9,18 @@ Developer-friendly & type-safe Typescript SDK specifically catered to leverage *
     </a>
 </div>
 
-
-<br /><br />
-
 <!-- Start Summary [summary] -->
 ## Summary
+[![Sign Up and Start Using Opper](https://img.shields.io/badge/Sign%20Up-Start%20Using%20Opper-blue?style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMTUgMzE1Ij48dGl0bGU+T3BwZXI8L3RpdGxlPjxnIGNsaXAtcGF0aD0idXJsKCNjbGlwMCkiPjxwYXRoIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNMTA1LjA0IDE1Ny41MkMxMjAuNiAxNTcuMzQgMTYwLjUyIDE1MS41NCAxNjAuNTIgOTYuNTYwMUMxNjAuNTIgMTUxLjU0IDIwMC40NCAxNTcuMzQgMjE2IDE1Ny41MkMxNjQuMSAxNjEuNjMgMTYwLjUyIDIxNy45OCAxNjAuNTIgMjE3Ljk4QzE2MC41MiAyMTcuOTggMTU2Ljk0IDE2MS42NSAxMDUuMDQgMTU3LjUyWk0xNTkuNzggMzE1QzcxLjUzIDMxNSAwIDI0NC40OSAwIDE1Ny41QzAgLTE4Ljk0OTkgMTU5Ljc4IDAuNjUwMDc1IDE1OS43OCAwLjY1MDA3NUMxNTkuNzggODcuMjIgODguMzYgMTU3LjQgMC4yIDE1Ny41QzE0OS44IDE1Ny42NCAxNTkuNzggMzE1IDE1OS43OCAzMTVaIiBmaWxsPSJ1cmwoI2dyYWQpIi8+PC9nPjxkZWZzPjxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZCIgeDE9IjcyLjM4IiB5MT0iNTQuNzgwMSIgeDI9IjEzOS41MiIgeTI9IjI3MC44IiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHN0b3Agc3RvcC1jb2xvcj0iIzhDRUNGMiIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI0Y5QjU4QyIvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPjwvc3ZnPg==
+)](https://opper.ai/)
 
+Welcome to the OpperAI python SDK
+
+Opper is a task completion platform for building reliable AI integrations. The Opper platform builds a happy path for declarative programming with AI models, combined with in context reinforcement learning, observability and cost tracking all in one platform - for reliable results in no time!
+
+This SDK is generated using Speakeasy — check out our detailed documentation with guides and examples:
+[![Explore Docs](https://img.shields.io/badge/OpperDocs-Read%20the%20Docs-black??style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMTUgMzE1Ij48dGl0bGU+T3BwZXI8L3RpdGxlPjxnIGNsaXAtcGF0aD0idXJsKCNjbGlwMCkiPjxwYXRoIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNMTA1LjA0IDE1Ny41MkMxMjAuNiAxNTcuMzQgMTYwLjUyIDE1MS41NCAxNjAuNTIgOTYuNTYwMUMxNjAuNTIgMTUxLjU0IDIwMC40NCAxNTcuMzQgMjE2IDE1Ny41MkMxNjQuMSAxNjEuNjMgMTYwLjUyIDIxNy45OCAxNjAuNTIgMjE3Ljk4QzE2MC41MiAyMTcuOTggMTU2Ljk0IDE2MS42NSAxMDUuMDQgMTU3LjUyWk0xNTkuNzggMzE1QzcxLjUzIDMxNSAwIDI0NC40OSAwIDE1Ny41QzAgLTE4Ljk0OTkgMTU5Ljc4IDAuNjUwMDc1IDE1OS43OCAwLjY1MDA3NUMxNTkuNzggODcuMjIgODguMzYgMTU3LjQgMC4yIDE1Ny41QzE0OS44IDE1Ny42NCAxNTkuNzggMzE1IDE1OS43OCAzMTVaIiBmaWxsPSJ1cmwoI2dyYWQpIi8+PC9nPjxkZWZzPjxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZCIgeDE9IjcyLjM4IiB5MT0iNTQuNzgwMSIgeDI9IjEzOS41MiIgeTI9IjI3MC44IiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHN0b3Agc3RvcC1jb2xvcj0iIzhDRUNGMiIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI0Y5QjU4QyIvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPjwvc3ZnPg==
+)](https://docs.opper.ai)
 
 <!-- End Summary [summary] -->
 
@@ -43,34 +49,30 @@ Developer-friendly & type-safe Typescript SDK specifically catered to leverage *
 <!-- Start SDK Installation [installation] -->
 ## SDK Installation
 
-> [!TIP]
-> To finish publishing your SDK to npm and others you must [run your first generation action](https://www.speakeasy.com/docs/github-setup#step-by-step-guide).
-
-
 The SDK can be installed with either [npm](https://www.npmjs.com/), [pnpm](https://pnpm.io/), [bun](https://bun.sh/) or [yarn](https://classic.yarnpkg.com/en/) package managers.
 
 ### NPM
 
 ```bash
-npm add <UNSET>
+npm add opperai
 ```
 
 ### PNPM
 
 ```bash
-pnpm add <UNSET>
+pnpm add opperai
 ```
 
 ### Bun
 
 ```bash
-bun add <UNSET>
+bun add opperai
 ```
 
 ### Yarn
 
 ```bash
-yarn add <UNSET> zod
+yarn add opperai zod
 
 # Note that Yarn does not install peer dependencies automatically. You will need
 # to install zod as shown above.
@@ -132,7 +134,8 @@ Create a `.cursor/mcp.json` file in your project root with the following content
 ```
 
 </details>
-
+<details>
+<summary> MCP standalone Binary </summary>
 You can also run MCP servers as a standalone binary with no additional dependencies. You must pull these binaries from available Github releases:
 
 ```bash
@@ -164,6 +167,7 @@ npx -y --package opperai -- mcp start --help
 ```
 <!-- End SDK Installation [installation] -->
 
+</details>
 <!-- Start Requirements [requirements] -->
 ## Requirements
 
@@ -172,9 +176,52 @@ For supported JavaScript runtimes, please consult [RUNTIMES.md](RUNTIMES.md).
 
 <!-- Start SDK Example Usage [usage] -->
 ## SDK Example Usage
+[![Explore Docs](https://img.shields.io/badge/Docs-Read%20the%20Docs-black??style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMTUgMzE1Ij48dGl0bGU+T3BwZXI8L3RpdGxlPjxnIGNsaXAtcGF0aD0idXJsKCNjbGlwMCkiPjxwYXRoIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNMTA1LjA0IDE1Ny41MkMxMjAuNiAxNTcuMzQgMTYwLjUyIDE1MS41NCAxNjAuNTIgOTYuNTYwMUMxNjAuNTIgMTUxLjU0IDIwMC40NCAxNTcuMzQgMjE2IDE1Ny41MkMxNjQuMSAxNjEuNjMgMTYwLjUyIDIxNy45OCAxNjAuNTIgMjE3Ljk4QzE2MC41MiAyMTcuOTggMTU2Ljk0IDE2MS42NSAxMDUuMDQgMTU3LjUyWk0xNTkuNzggMzE1QzcxLjUzIDMxNSAwIDI0NC40OSAwIDE1Ny41QzAgLTE4Ljk0OTkgMTU5Ljc4IDAuNjUwMDc1IDE1OS43OCAwLjY1MDA3NUMxNTkuNzggODcuMjIgODguMzYgMTU3LjQgMC4yIDE1Ny41QzE0OS44IDE1Ny42NCAxNTkuNzggMzE1IDE1OS43OCAzMTVaIiBmaWxsPSJ1cmwoI2dyYWQpIi8+PC9nPjxkZWZzPjxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZCIgeDE9IjcyLjM4IiB5MT0iNTQuNzgwMSIgeDI9IjEzOS41MiIgeTI9IjI3MC44IiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHN0b3Agc3RvcC1jb2xvcj0iIzhDRUNGMiIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI0Y5QjU4QyIvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPjwvc3ZnPg==
+)](https://docs.opper.ai)
+
+### First steps
+Log in at [opper](https://platform.opper.ai) and create your own API key in the top right menu. 
+Each api key is associated with a project, you will have all calls, functions, indexes and traces associated with this project. There is a default project for each organization but it is recommended to create a new project to better being able to separate the different applications and environments.
 
 ### Example
 
+#### Minimal call
+```typescript
+import { Opper } from "opperai";
+
+const opper = new Opper({
+  httpBearer: process.env["OPPER_HTTP_BEARER"] ?? "",
+});
+
+// Define the output structure (JSON Schema instead of Pydantic)
+const roomDescriptionSchema = {
+    type: "object",
+    properties: {
+        room_count: { type: "number" },
+        view: { type: "string" },
+        bed_size: { type: "string" },
+        hotel_name: { type: "string" },
+    },
+    required: ["room_count", "view", "bed_size", "hotel_name"],
+};
+
+async function main() {
+    // Complete a task
+    const completion = await opper.call({
+        name: "extractRoom",
+        instructions: "Extract details about the room from the provided text",
+        input: "The Grand Hotel offers a luxurious suite with 3 spacious rooms, each providing a breathtaking view of the ocean. The suite includes a king-sized bed, an en-suite bathroom, and a private balcony for an unforgettable stay.",
+        outputSchema: roomDescriptionSchema,
+    });
+
+    console.log(completion.jsonPayload);
+    // Expected: { room_count: 3, view: 'ocean', bed_size: 'king-sized', hotel_name: 'The Grand Hotel' }
+}
+
+main();
+```
+
+More advanced example
 ```typescript
 import { Opper } from "opperai";
 
@@ -233,7 +280,7 @@ async function run() {
         comment: "Adds two numbers",
       },
     ],
-    parentSpanId: "123e4567-e89b-12d3-a456-426614174000",
+    parentSpanId: "123e4567-e89b-12d3-a456-426614174000", // Pass the id you need
     tags: {
       "project": "project_456",
       "user": "company_123",
@@ -251,6 +298,9 @@ run();
 
 <!-- Start Authentication [security] -->
 ## Authentication
+See our authenthication docs
+ [![Explore Docs](https://img.shields.io/badge/Opper-Authentication%20-red??style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMTUgMzE1Ij48dGl0bGU+T3BwZXI8L3RpdGxlPjxnIGNsaXAtcGF0aD0idXJsKCNjbGlwMCkiPjxwYXRoIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNMTA1LjA0IDE1Ny41MkMxMjAuNiAxNTcuMzQgMTYwLjUyIDE1MS41NCAxNjAuNTIgOTYuNTYwMUMxNjAuNTIgMTUxLjU0IDIwMC40NCAxNTcuMzQgMjE2IDE1Ny41MkMxNjQuMSAxNjEuNjMgMTYwLjUyIDIxNy45OCAxNjAuNTIgMjE3Ljk4QzE2MC41MiAyMTcuOTggMTU2Ljk0IDE2MS42NSAxMDUuMDQgMTU3LjUyWk0xNTkuNzggMzE1QzcxLjUzIDMxNSAwIDI0NC40OSAwIDE1Ny41QzAgLTE4Ljk0OTkgMTU5Ljc4IDAuNjUwMDc1IDE1OS43OCAwLjY1MDA3NUMxNTkuNzggODcuMjIgODguMzYgMTU3LjQgMC4yIDE1Ny41QzE0OS44IDE1Ny42NCAxNTkuNzggMzE1IDE1OS43OCAzMTVaIiBmaWxsPSJ1cmwoI2dyYWQpIi8+PC9nPjxkZWZzPjxsaW5lYXJHcmFkaWVudCBpZD0iZ3JhZCIgeDE9IjcyLjM4IiB5MT0iNTQuNzgwMSIgeDI9IjEzOS41MiIgeTI9IjI3MC44IiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHN0b3Agc3RvcC1jb2xvcj0iIzhDRUNGMiIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI0Y5QjU4QyIvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPjwvc3ZnPg==
+)](https://docs.opper.ai/api-reference/authentication)
 
 ### Per-Client Security Schemes
 
@@ -267,70 +317,6 @@ import { Opper } from "opperai";
 const opper = new Opper({
   httpBearer: process.env["OPPER_HTTP_BEARER"] ?? "",
 });
-
-async function run() {
-  const result = await opper.call({
-    name: "add_numbers",
-    instructions: "Calculate the sum of two numbers",
-    inputSchema: {
-      "properties": {
-        "x": {
-          "title": "X",
-          "type": "integer",
-        },
-        "y": {
-          "title": "Y",
-          "type": "integer",
-        },
-      },
-      "required": [
-        "x",
-        "y",
-      ],
-      "title": "OpperInputExample",
-      "type": "object",
-    },
-    outputSchema: {
-      "properties": {
-        "sum": {
-          "title": "Sum",
-          "type": "integer",
-        },
-      },
-      "required": [
-        "sum",
-      ],
-      "title": "OpperOutputExample",
-      "type": "object",
-    },
-    input: {
-      "x": 4,
-      "y": 5,
-    },
-    examples: [
-      {
-        input: {
-          "x": 1,
-          "y": 3,
-        },
-        output: {
-          "sum": 4,
-        },
-        comment: "Adds two numbers",
-      },
-    ],
-    parentSpanId: "123e4567-e89b-12d3-a456-426614174000",
-    tags: {
-      "project": "project_456",
-      "user": "company_123",
-    },
-    configuration: {},
-  });
-
-  console.log(result);
-}
-
-run();
 
 ```
 <!-- End Authentication [security] -->
@@ -401,10 +387,6 @@ run();
 * [updateCustom](docs/sdks/languagemodels/README.md#updatecustom) - Update Custom Model
 * [deleteCustom](docs/sdks/languagemodels/README.md#deletecustom) - Delete Custom Model
 * [getCustomByName](docs/sdks/languagemodels/README.md#getcustombyname) - Get Custom Model By Name
-
-### [openai](docs/sdks/openai/README.md)
-
-* [createChatCompletion](docs/sdks/openai/README.md#createchatcompletion) - Chat Completions
 
 ### [Opper SDK](docs/sdks/opper/README.md)
 
@@ -598,7 +580,8 @@ run();
 ## Retries
 
 Some of the endpoints in this SDK support retries.  If you use the SDK without any configuration, it will fall back to the default retry strategy provided by the API.  However, the default retry strategy can be overridden on a per-operation basis, or across the entire SDK.
-
+<details>
+<summary>Change Retry Strategy</summary>
 To change the default retry strategy for a single API call, simply provide a retryConfig object to the call:
 ```typescript
 import { Opper } from "opperai";
@@ -768,9 +751,11 @@ run();
 
 ```
 <!-- End Retries [retries] -->
-
+</details>
 <!-- Start Error Handling [errors] -->
 ## Error Handling
+Check our detailed docs for [error handling](https://docs.opper.ai/api-reference/errors)
+
 
 [`OpperError`](./src/models/errors/oppererror.ts) is the base class for all HTTP error responses. It has the following properties:
 
@@ -783,7 +768,9 @@ run();
 | `error.rawResponse` | `Response` | Raw HTTP response                                                                       |
 | `error.data$`       |            | Optional. Some errors may contain structured data. [See Error Classes](#error-classes). |
 
-### Example
+<details>
+<summary> Example Error Handling </summary>
+
 ```typescript
 import { Opper } from "opperai";
 import * as errors from "opperai/models/errors";
@@ -883,6 +870,7 @@ run();
   * [`NotFoundError`](docs/models/errors/notfounderror.md): Not Found. Status code `404`.
   * [`RequestValidationError`](docs/models/errors/requestvalidationerror.md): Request Validation Error. Status code `422`. *
 
+</details>
 <details><summary>Less common errors (8)</summary>
 
 <br />
@@ -905,9 +893,11 @@ run();
 \* Check [the method documentation](#available-resources-and-operations) to see if the error is applicable.
 <!-- End Error Handling [errors] -->
 
+
 <!-- Start Server Selection [server] -->
 ## Server Selection
-
+<details>
+<summary>Server Selection</summary>
 ### Override Server URL Per-Client
 
 The default server can be overridden globally by passing a URL to the `serverURL: string` optional parameter when initializing the SDK client instance. For example:
@@ -985,9 +975,11 @@ run();
 
 ```
 <!-- End Server Selection [server] -->
-
+</details>
 <!-- Start Custom HTTP Client [http-client] -->
 ## Custom HTTP Client
+<details>
+<summary>Custom HTTP Client</summary>
 
 The TypeScript SDK makes API calls using an `HTTPClient` that wraps the native
 [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API). This
@@ -1034,7 +1026,7 @@ httpClient.addHook("requestError", (error, request) => {
 const sdk = new Opper({ httpClient });
 ```
 <!-- End Custom HTTP Client [http-client] -->
-
+</details>
 <!-- Start Debugging [debug] -->
 ## Debugging
 
