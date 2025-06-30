@@ -183,6 +183,8 @@ For supported JavaScript runtimes, please consult [RUNTIMES.md](RUNTIMES.md).
 Log in at [opper](https://platform.opper.ai) and create your own API key in the top right menu. 
 Each api key is associated with a project, you will have all calls, functions, indexes and traces associated with this project. There is a default project for each organization but it is recommended to create a new project to better being able to separate the different applications and environments.
 
+There are plenty of guides and example code in our [examples](./examples/)
+
 ### Example
 
 #### Minimal call
