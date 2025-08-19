@@ -64,8 +64,14 @@ jobs:
         run: |
           echo "🚀 Starting SDK generation..."
           
+          # Save the original README.md
+          cp README.md README.md.original
+          
           # Run speakeasy generation
           speakeasy run
+          
+          # Restore the original README.md
+          mv README.md.original README.md
           
           echo "✅ SDK generation completed"
 
@@ -184,14 +190,15 @@ jobs:
           - ✅ Build artifacts generated (CommonJS + ESM)
           - ✅ MCP server build successful
           - ✅ Basic smoke tests passed
+          - ℹ️ README.md intentionally preserved (not updated)
 
           ### 📁 Generated/Updated Files
           The following areas were automatically updated:
           - \`src/\` - Core SDK source code
           - \`docs/\` - API documentation
-          - \`README.md\` - Usage examples and documentation
           - \`package.json\` - Version and metadata
           - \`dist/\` - Built output files
+          - ℹ️ \`README.md\` - Intentionally preserved (not updated)
 
           ### 🔍 Review Checklist
           - [ ] Review generated TypeScript types for correctness
