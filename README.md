@@ -72,11 +72,14 @@ bun add opperai
 ### Yarn
 
 ```bash
-yarn add opperai zod
+yarn add opperai
 
-# Note that Yarn does not install peer dependencies automatically. You will need
-# to install zod as shown above.
+# Note that Yarn does not install peer dependencies automatically. Run
+# `yarn add zod@^3.23.8` as well if you haven't already.
 ```
+
+> [!IMPORTANT]
+> This SDK currently supports Zod v3.x. Ensure your project installs `zod@^3.23.8` (or another `3.x` release) and avoids Zod v4 releases.
 
 > [!NOTE]
 > This package is published with CommonJS and ES Modules (ESM) support.
