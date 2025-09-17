@@ -54,28 +54,28 @@ The SDK can be installed with either [npm](https://www.npmjs.com/), [pnpm](https
 ### NPM
 
 ```bash
-npm add opperai zod@^3.23.8
+npm add opperai
 ```
 
 ### PNPM
 
 ```bash
-pnpm add opperai zod@^3.23.8
+pnpm add opperai
 ```
 
 ### Bun
 
 ```bash
-bun add opperai zod@^3.23.8
+bun add opperai
 ```
 
 ### Yarn
 
 ```bash
-yarn add opperai zod@^3.23.8
+yarn add opperai
 
-# Note that Yarn does not install peer dependencies automatically. You will need
-# to install zod v3.x, as shown above.
+# Note that Yarn does not install peer dependencies automatically. Run
+# `yarn add zod@^3.23.8` as well if you haven't already.
 ```
 
 > [!IMPORTANT]
