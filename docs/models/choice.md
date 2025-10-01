@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { Choice } from "opperai";
+import { Choice } from "opperai/models";
 
 let value: Choice = {
   finishReason: "length",

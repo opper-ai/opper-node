@@ -7,6 +7,27 @@ import { CallFunctionFunctionsFunctionIdCallPostRequest } from "opperai/models/o
 
 let value: CallFunctionFunctionsFunctionIdCallPostRequest = {
   functionId: "771b74ef-3e63-4e30-89a1-837525070c24",
+  appApiPublicV2FunctionsCallFunctionRequest: {
+    input: {
+      "x": 4,
+      "y": 5,
+    },
+    examples: [
+      {
+        input: {
+          "x": 1,
+          "y": 3,
+        },
+        output: {
+          "sum": 4,
+        },
+        comment: "Adds two numbers",
+      },
+    ],
+    tags: {
+      "tag": "value",
+    },
+  },
 };
 ```
 

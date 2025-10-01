@@ -17,6 +17,7 @@ Create Dataset Entry
 
 ### Example Usage
 
+<!-- UsageSnippet language="typescript" operationID="create_dataset_entry_datasets__dataset_id__post" method="post" path="/datasets/{dataset_id}" -->
 ```typescript
 import { Opper } from "opperai";
 
@@ -110,6 +111,7 @@ List Dataset Entries
 
 ### Example Usage
 
+<!-- UsageSnippet language="typescript" operationID="list_dataset_entries_datasets__dataset_id__entries_get" method="get" path="/datasets/{dataset_id}/entries" -->
 ```typescript
 import { Opper } from "opperai";
 
@@ -184,6 +186,7 @@ Get Dataset Entry
 
 ### Example Usage
 
+<!-- UsageSnippet language="typescript" operationID="get_dataset_entry_datasets__dataset_id__entries__entry_id__get" method="get" path="/datasets/{dataset_id}/entries/{entry_id}" -->
 ```typescript
 import { Opper } from "opperai";
 
@@ -257,6 +260,7 @@ Delete Dataset Entry
 
 ### Example Usage
 
+<!-- UsageSnippet language="typescript" operationID="delete_dataset_entry_datasets__dataset_id__entries__entry_id__delete" method="delete" path="/datasets/{dataset_id}/entries/{entry_id}" -->
 ```typescript
 import { Opper } from "opperai";
 
@@ -330,6 +334,7 @@ Query Dataset Entries
 
 ### Example Usage
 
+<!-- UsageSnippet language="typescript" operationID="query_dataset_entries_datasets__dataset_id__entries_query_post" method="post" path="/datasets/{dataset_id}/entries/query" -->
 ```typescript
 import { Opper } from "opperai";
 

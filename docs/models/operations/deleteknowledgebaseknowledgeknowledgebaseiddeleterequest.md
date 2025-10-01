@@ -12,6 +12,6 @@ let value: DeleteKnowledgeBaseKnowledgeKnowledgeBaseIdDeleteRequest = {
 
 ## Fields
 
-| Field                                  | Type                                   | Required                               | Description                            |
-| -------------------------------------- | -------------------------------------- | -------------------------------------- | -------------------------------------- |
-| `knowledgeBaseId`                      | *string*                               | :heavy_check_mark:                     | The id of the knowledge base to delete |
+| Field                                                           | Type                                                            | Required                                                        | Description                                                     |
+| --------------------------------------------------------------- | --------------------------------------------------------------- | --------------------------------------------------------------- | --------------------------------------------------------------- |
+| `knowledgeBaseId`                                               | *string*                                                        | :heavy_check_mark:                                              | The id of the knowledge base to delete or delete documents from |

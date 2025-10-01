@@ -19,13 +19,14 @@ generation:
   auth:
     oAuth2ClientCredentialsEnabled: true
     oAuth2PasswordEnabled: true
+    hoistGlobalSecurity: true
   sdkHooksConfigAccess: true
   tests:
     generateTests: true
     generateNewTests: false
     skipResponseBodyAssertions: false
 typescript:
-  version: 3.1.0
+  version: 3.1.1
   additionalDependencies:
     dependencies: {}
     devDependencies: {}
@@ -46,6 +47,7 @@ typescript:
   envVarPrefix: OPPER
   flattenGlobalSecurity: true
   flatteningOrder: parameters-first
+  generateExamples: true
   imports:
     option: openapi
     paths:
@@ -58,9 +60,12 @@ typescript:
   jsonpath: rfc9535
   maxMethodParams: 99
   methodArguments: require-security-and-request
+  modelPropertyCasing: camel
   moduleFormat: dual
   outputModelSuffix: output
   packageName: opperai
   responseFormat: flat
+  sseFlatResponse: false
   templateVersion: v2
+  usageSDKInitImports: []
   useIndexModules: true

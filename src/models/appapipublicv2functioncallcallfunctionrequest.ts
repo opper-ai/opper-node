@@ -41,6 +41,10 @@ export type AppApiPublicV2FunctionCallCallFunctionRequest = {
   inputSchema?: { [k: string]: any } | null | undefined;
   /**
    * Optionally provide an output schema for the task. Response is guaranteed to match the schema or throw an error. Can preferably include field descriptions to allow the model to reason about the output variables. With the Opper SDKs you can define these schemas through libraries like Pydantic and Zod. For schemas with definitions, prefer using '$defs' and '#/$defs/...' references.
+   *
+   * @remarks
+   *
+   * **Streaming with output_schema:** When used with streaming endpoints, enables precise field tracking via json_path. Each streaming chunk includes the exact schema field being populated (e.g., 'response.people[0].name'), allowing real-time UI updates by routing content to specific components.
    */
   outputSchema?: { [k: string]: any } | null | undefined;
   /**

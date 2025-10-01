@@ -7,6 +7,27 @@ import { StreamFunctionFunctionsFunctionIdCallStreamPostRequest } from "opperai/
 
 let value: StreamFunctionFunctionsFunctionIdCallStreamPostRequest = {
   functionId: "c3ca1b27-b06d-4da0-9bb3-c09b9a4e67bb",
+  appApiPublicV2FunctionsCallFunctionRequest: {
+    input: {
+      "x": 4,
+      "y": 5,
+    },
+    examples: [
+      {
+        input: {
+          "x": 1,
+          "y": 3,
+        },
+        output: {
+          "sum": 4,
+        },
+        comment: "Adds two numbers",
+      },
+    ],
+    tags: {
+      "tag": "value",
+    },
+  },
 };
 ```
 

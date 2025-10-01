@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { ChatCompletionContentPartInputAudioParam } from "opperai";
+import { ChatCompletionContentPartInputAudioParam } from "opperai/models";
 
 let value: ChatCompletionContentPartInputAudioParam = {
   inputAudio: {

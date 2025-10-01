@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { AppApiPublicV2FunctionsCallFunctionRequest } from "opperai";
+import { AppApiPublicV2FunctionsCallFunctionRequest } from "opperai/models";
 
 let value: AppApiPublicV2FunctionsCallFunctionRequest = {
   input: {

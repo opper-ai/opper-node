@@ -28,6 +28,8 @@ export const ChatCompletionServiceTier = {
   Auto: "auto",
   Default: "default",
   Flex: "flex",
+  Scale: "scale",
+  Priority: "priority",
 } as const;
 export type ChatCompletionServiceTier = ClosedEnum<
   typeof ChatCompletionServiceTier

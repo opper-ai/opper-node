@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { WebSearchOptionsUserLocation } from "opperai";
+import { WebSearchOptionsUserLocation } from "opperai/models";
 
 let value: WebSearchOptionsUserLocation = {
   approximate: {},

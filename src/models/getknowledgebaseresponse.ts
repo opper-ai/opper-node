@@ -13,6 +13,7 @@ export type GetKnowledgeBaseResponse = {
   name: string;
   createdAt: Date;
   embeddingModel: string;
+  count: number;
 };
 
 /** @internal */
@@ -25,6 +26,7 @@ export const GetKnowledgeBaseResponse$inboundSchema: z.ZodType<
   name: z.string(),
   created_at: z.string().datetime({ offset: true }).transform(v => new Date(v)),
   embedding_model: z.string(),
+  count: z.number().int(),
 }).transform((v) => {
   return remap$(v, {
     "created_at": "createdAt",
@@ -38,6 +40,7 @@ export type GetKnowledgeBaseResponse$Outbound = {
   name: string;
   created_at: string;
   embedding_model: string;
+  count: number;
 };
 
 /** @internal */
@@ -50,6 +53,7 @@ export const GetKnowledgeBaseResponse$outboundSchema: z.ZodType<
   name: z.string(),
   createdAt: z.date().transform(v => v.toISOString()),
   embeddingModel: z.string(),
+  count: z.number().int(),
 }).transform((v) => {
   return remap$(v, {
     createdAt: "created_at",

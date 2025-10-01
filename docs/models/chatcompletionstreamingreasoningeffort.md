@@ -3,13 +3,13 @@
 ## Example Usage
 
 ```typescript
-import { ChatCompletionStreamingReasoningEffort } from "opperai";
+import { ChatCompletionStreamingReasoningEffort } from "opperai/models";
 
-let value: ChatCompletionStreamingReasoningEffort = "medium";
+let value: ChatCompletionStreamingReasoningEffort = "low";
 ```
 
 ## Values
 
 ```typescript
-"low" | "medium" | "high"
+"minimal" | "low" | "medium" | "high"
 ```

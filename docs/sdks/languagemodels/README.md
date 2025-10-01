@@ -21,6 +21,7 @@ For more information on the models available, see the [Opper Models](https://doc
 
 ### Example Usage
 
+<!-- UsageSnippet language="typescript" operationID="list_models_models_get" method="get" path="/models" -->
 ```typescript
 import { Opper } from "opperai";
 
@@ -94,6 +95,7 @@ Register a custom language model with the organization that owns the API key.
 
 ### Example Usage
 
+<!-- UsageSnippet language="typescript" operationID="register_custom_model_models_custom_post" method="post" path="/models/custom" -->
 ```typescript
 import { Opper } from "opperai";
 
@@ -173,6 +175,7 @@ List all custom language models for the organization that owns the API key.
 
 ### Example Usage
 
+<!-- UsageSnippet language="typescript" operationID="list_custom_models_models_custom_get" method="get" path="/models/custom" -->
 ```typescript
 import { Opper } from "opperai";
 
@@ -246,6 +249,7 @@ Get a custom language model by its ID.
 
 ### Example Usage
 
+<!-- UsageSnippet language="typescript" operationID="get_custom_model_models_custom__model_id__get" method="get" path="/models/custom/{model_id}" -->
 ```typescript
 import { Opper } from "opperai";
 
@@ -318,6 +322,7 @@ Update a custom language model.
 
 ### Example Usage
 
+<!-- UsageSnippet language="typescript" operationID="update_custom_model_models_custom__model_id__patch" method="patch" path="/models/custom/{model_id}" -->
 ```typescript
 import { Opper } from "opperai";
 
@@ -391,6 +396,7 @@ Delete a custom language model.
 
 ### Example Usage
 
+<!-- UsageSnippet language="typescript" operationID="delete_custom_model_models_custom__model_id__delete" method="delete" path="/models/custom/{model_id}" -->
 ```typescript
 import { Opper } from "opperai";
 
@@ -463,6 +469,7 @@ Get a custom language model by its name.
 
 ### Example Usage
 
+<!-- UsageSnippet language="typescript" operationID="get_custom_model_by_name_models_custom_by_name__name__get" method="get" path="/models/custom/by-name/{name}" -->
 ```typescript
 import { Opper } from "opperai";
 

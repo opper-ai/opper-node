@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { CreateEmbeddingResponse } from "opperai";
+import { CreateEmbeddingResponse } from "opperai/models";
 
 let value: CreateEmbeddingResponse = {
   model: "text-embedding-3-large",

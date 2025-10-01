@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { Filter } from "opperai";
+import { Filter } from "opperai/models";
 
 let value: Filter = {
   field: "category",

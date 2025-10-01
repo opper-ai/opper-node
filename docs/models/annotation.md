@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { Annotation } from "opperai";
+import { Annotation } from "opperai/models";
 
 let value: Annotation = {
   urlCitation: {

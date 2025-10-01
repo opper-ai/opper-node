@@ -17,6 +17,7 @@ Create a new metric for a span
 
 ### Example Usage
 
+<!-- UsageSnippet language="typescript" operationID="create_metric_spans__span_id__metrics_post" method="post" path="/spans/{span_id}/metrics" -->
 ```typescript
 import { Opper } from "opperai";
 
@@ -97,6 +98,7 @@ List metrics for a span
 
 ### Example Usage
 
+<!-- UsageSnippet language="typescript" operationID="list_metrics_spans__span_id__metrics_get" method="get" path="/spans/{span_id}/metrics" -->
 ```typescript
 import { Opper } from "opperai";
 
@@ -171,6 +173,7 @@ Get a metric for a span
 
 ### Example Usage
 
+<!-- UsageSnippet language="typescript" operationID="get_metric_spans__span_id__metrics__metric_id__get" method="get" path="/spans/{span_id}/metrics/{metric_id}" -->
 ```typescript
 import { Opper } from "opperai";
 
@@ -244,6 +247,7 @@ Update a metric for a span
 
 ### Example Usage
 
+<!-- UsageSnippet language="typescript" operationID="update_metric_spans__span_id__metrics__metric_id__patch" method="patch" path="/spans/{span_id}/metrics/{metric_id}" -->
 ```typescript
 import { Opper } from "opperai";
 
@@ -318,6 +322,7 @@ Delete a metric for a span
 
 ### Example Usage
 
+<!-- UsageSnippet language="typescript" operationID="delete_metric_spans__span_id__metrics__metric_id__delete" method="delete" path="/spans/{span_id}/metrics/{metric_id}" -->
 ```typescript
 import { Opper } from "opperai";
 

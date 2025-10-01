@@ -13,6 +13,7 @@ Usage
 
 ### Example Usage
 
+<!-- UsageSnippet language="typescript" operationID="usage_analytics_usage_get" method="get" path="/analytics/usage" -->
 ```typescript
 import { Opper } from "opperai";
 
@@ -21,7 +22,7 @@ const opper = new Opper({
 });
 
 async function run() {
-  const result = await opper.analytics.getUsage([
+  const result = await opper.analytics.getUsage(undefined, undefined, undefined, [
     "completion_tokens",
     "total_tokens",
   ], [
@@ -50,7 +51,7 @@ const opper = new OpperCore({
 });
 
 async function run() {
-  const res = await analyticsGetUsage(opper, [
+  const res = await analyticsGetUsage(opper, undefined, undefined, undefined, [
     "completion_tokens",
     "total_tokens",
   ], [

@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { QueryKnowledgeBaseResponse } from "opperai";
+import { QueryKnowledgeBaseResponse } from "opperai/models";
 
 let value: QueryKnowledgeBaseResponse = {
   id: "892ec47b-5977-485f-82db-c42628816bfa",

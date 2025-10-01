@@ -37,6 +37,7 @@ import { tool$functionsUpdate } from "./tools/functionsUpdate.js";
 import { tool$knowledgeAdd } from "./tools/knowledgeAdd.js";
 import { tool$knowledgeCreate } from "./tools/knowledgeCreate.js";
 import { tool$knowledgeDelete } from "./tools/knowledgeDelete.js";
+import { tool$knowledgeDeleteDocumentsKnowledgeKnowledgeBaseIdQueryDelete } from "./tools/knowledgeDeleteDocumentsKnowledgeKnowledgeBaseIdQueryDelete.js";
 import { tool$knowledgeDeleteFile } from "./tools/knowledgeDeleteFile.js";
 import { tool$knowledgeGet } from "./tools/knowledgeGet.js";
 import { tool$knowledgeGetByName } from "./tools/knowledgeGetByName.js";
@@ -51,6 +52,12 @@ import { tool$languageModelsList } from "./tools/languageModelsList.js";
 import { tool$languageModelsListCustom } from "./tools/languageModelsListCustom.js";
 import { tool$languageModelsRegisterCustom } from "./tools/languageModelsRegisterCustom.js";
 import { tool$languageModelsUpdateCustom } from "./tools/languageModelsUpdateCustom.js";
+import { tool$modelsCreateModelAliasModelsAliasesPost } from "./tools/modelsCreateModelAliasModelsAliasesPost.js";
+import { tool$modelsDeleteModelAliasModelsAliasesAliasIdDelete } from "./tools/modelsDeleteModelAliasModelsAliasesAliasIdDelete.js";
+import { tool$modelsGetModelAliasByNameModelsAliasesByNameNameGet } from "./tools/modelsGetModelAliasByNameModelsAliasesByNameNameGet.js";
+import { tool$modelsGetModelAliasModelsAliasesAliasIdGet } from "./tools/modelsGetModelAliasModelsAliasesAliasIdGet.js";
+import { tool$modelsListModelAliasesModelsAliasesGet } from "./tools/modelsListModelAliasesModelsAliasesGet.js";
+import { tool$modelsUpdateModelAliasModelsAliasesAliasIdPatch } from "./tools/modelsUpdateModelAliasModelsAliasesAliasIdPatch.js";
 import { tool$openaiCreateChatCompletion } from "./tools/openaiCreateChatCompletion.js";
 import { tool$spanMetricsCreateMetric } from "./tools/spanMetricsCreateMetric.js";
 import { tool$spanMetricsDelete } from "./tools/spanMetricsDelete.js";
@@ -76,7 +83,7 @@ export function createMCPServer(deps: {
 }) {
   const server = new McpServer({
     name: "Opper",
-    version: "3.1.0",
+    version: "3.1.1",
   });
 
   const client = new OpperCore({
@@ -117,6 +124,7 @@ export function createMCPServer(deps: {
   tool(tool$knowledgeRegisterFileUpload);
   tool(tool$knowledgeDeleteFile);
   tool(tool$knowledgeQuery);
+  tool(tool$knowledgeDeleteDocumentsKnowledgeKnowledgeBaseIdQueryDelete);
   tool(tool$knowledgeAdd);
   tool(tool$tracesList);
   tool(tool$tracesGet);
@@ -154,6 +162,12 @@ export function createMCPServer(deps: {
   tool(tool$languageModelsUpdateCustom);
   tool(tool$languageModelsDeleteCustom);
   tool(tool$languageModelsGetCustomByName);
+  tool(tool$modelsCreateModelAliasModelsAliasesPost);
+  tool(tool$modelsListModelAliasesModelsAliasesGet);
+  tool(tool$modelsGetModelAliasModelsAliasesAliasIdGet);
+  tool(tool$modelsUpdateModelAliasModelsAliasesAliasIdPatch);
+  tool(tool$modelsDeleteModelAliasModelsAliasesAliasIdDelete);
+  tool(tool$modelsGetModelAliasByNameModelsAliasesByNameNameGet);
   tool(tool$openaiCreateChatCompletion);
   tool(tool$analyticsGetUsage);
   tool(tool$datasetsEntriesUpdate);

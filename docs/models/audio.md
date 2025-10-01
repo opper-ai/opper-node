@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { Audio } from "opperai";
+import { Audio } from "opperai/models";
 
 let value: Audio = {
   id: "<id>",

@@ -8,6 +8,7 @@ import { UpdateMetricSpansSpanIdMetricsMetricIdPatchRequest } from "opperai/mode
 let value: UpdateMetricSpansSpanIdMetricsMetricIdPatchRequest = {
   spanId: "e987b39d-f263-494e-a919-91046b02e1a6",
   metricId: "fd1a1dbd-bc97-464a-8dec-2edb491c8a6d",
+  updateSpanMetricRequest: {},
 };
 ```
 
