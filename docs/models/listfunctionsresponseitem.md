@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { ListFunctionsResponseItem } from "opperai";
+import { ListFunctionsResponseItem } from "opperai/models";
 
 let value: ListFunctionsResponseItem = {
   id: "de4d3f01-4815-4bf2-8db1-c7371a2e3679",

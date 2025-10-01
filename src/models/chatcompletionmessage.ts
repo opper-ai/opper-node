@@ -22,11 +22,17 @@ import {
   ChatCompletionAudio$outboundSchema,
 } from "./chatcompletionaudio.js";
 import {
-  ChatCompletionMessageToolCall,
-  ChatCompletionMessageToolCall$inboundSchema,
-  ChatCompletionMessageToolCall$Outbound,
-  ChatCompletionMessageToolCall$outboundSchema,
-} from "./chatcompletionmessagetoolcall.js";
+  ChatCompletionMessageCustomToolCall,
+  ChatCompletionMessageCustomToolCall$inboundSchema,
+  ChatCompletionMessageCustomToolCall$Outbound,
+  ChatCompletionMessageCustomToolCall$outboundSchema,
+} from "./chatcompletionmessagecustomtoolcall.js";
+import {
+  ChatCompletionMessageFunctionToolCall,
+  ChatCompletionMessageFunctionToolCall$inboundSchema,
+  ChatCompletionMessageFunctionToolCall$Outbound,
+  ChatCompletionMessageFunctionToolCall$outboundSchema,
+} from "./chatcompletionmessagefunctiontoolcall.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
   FunctionCallOutput,
@@ -35,6 +41,10 @@ import {
   FunctionCallOutput$outboundSchema,
 } from "./functioncalloutput.js";
 
+export type ChatCompletionMessageToolCall =
+  | ChatCompletionMessageFunctionToolCall
+  | ChatCompletionMessageCustomToolCall;
+
 export type ChatCompletionMessage = {
   content?: string | null | undefined;
   refusal?: string | null | undefined;
@@ -42,9 +52,73 @@ export type ChatCompletionMessage = {
   annotations?: Array<Annotation> | null | undefined;
   audio?: ChatCompletionAudio | null | undefined;
   functionCall?: FunctionCallOutput | null | undefined;
-  toolCalls?: Array<ChatCompletionMessageToolCall> | null | undefined;
+  toolCalls?:
+    | Array<
+      | ChatCompletionMessageFunctionToolCall
+      | ChatCompletionMessageCustomToolCall
+    >
+    | null
+    | undefined;
   additionalProperties?: { [k: string]: any };
 };
+
+/** @internal */
+export const ChatCompletionMessageToolCall$inboundSchema: z.ZodType<
+  ChatCompletionMessageToolCall,
+  z.ZodTypeDef,
+  unknown
+> = z.union([
+  ChatCompletionMessageFunctionToolCall$inboundSchema,
+  ChatCompletionMessageCustomToolCall$inboundSchema,
+]);
+
+/** @internal */
+export type ChatCompletionMessageToolCall$Outbound =
+  | ChatCompletionMessageFunctionToolCall$Outbound
+  | ChatCompletionMessageCustomToolCall$Outbound;
+
+/** @internal */
+export const ChatCompletionMessageToolCall$outboundSchema: z.ZodType<
+  ChatCompletionMessageToolCall$Outbound,
+  z.ZodTypeDef,
+  ChatCompletionMessageToolCall
+> = z.union([
+  ChatCompletionMessageFunctionToolCall$outboundSchema,
+  ChatCompletionMessageCustomToolCall$outboundSchema,
+]);
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace ChatCompletionMessageToolCall$ {
+  /** @deprecated use `ChatCompletionMessageToolCall$inboundSchema` instead. */
+  export const inboundSchema = ChatCompletionMessageToolCall$inboundSchema;
+  /** @deprecated use `ChatCompletionMessageToolCall$outboundSchema` instead. */
+  export const outboundSchema = ChatCompletionMessageToolCall$outboundSchema;
+  /** @deprecated use `ChatCompletionMessageToolCall$Outbound` instead. */
+  export type Outbound = ChatCompletionMessageToolCall$Outbound;
+}
+
+export function chatCompletionMessageToolCallToJSON(
+  chatCompletionMessageToolCall: ChatCompletionMessageToolCall,
+): string {
+  return JSON.stringify(
+    ChatCompletionMessageToolCall$outboundSchema.parse(
+      chatCompletionMessageToolCall,
+    ),
+  );
+}
+
+export function chatCompletionMessageToolCallFromJSON(
+  jsonString: string,
+): SafeParseResult<ChatCompletionMessageToolCall, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => ChatCompletionMessageToolCall$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ChatCompletionMessageToolCall' from JSON`,
+  );
+}
 
 /** @internal */
 export const ChatCompletionMessage$inboundSchema: z.ZodType<
@@ -59,8 +133,14 @@ export const ChatCompletionMessage$inboundSchema: z.ZodType<
     annotations: z.nullable(z.array(Annotation$inboundSchema)).optional(),
     audio: z.nullable(ChatCompletionAudio$inboundSchema).optional(),
     function_call: z.nullable(FunctionCallOutput$inboundSchema).optional(),
-    tool_calls: z.nullable(z.array(ChatCompletionMessageToolCall$inboundSchema))
-      .optional(),
+    tool_calls: z.nullable(
+      z.array(
+        z.union([
+          ChatCompletionMessageFunctionToolCall$inboundSchema,
+          ChatCompletionMessageCustomToolCall$inboundSchema,
+        ]),
+      ),
+    ).optional(),
   }).catchall(z.any()),
   "additionalProperties",
   true,
@@ -79,7 +159,13 @@ export type ChatCompletionMessage$Outbound = {
   annotations?: Array<Annotation$Outbound> | null | undefined;
   audio?: ChatCompletionAudio$Outbound | null | undefined;
   function_call?: FunctionCallOutput$Outbound | null | undefined;
-  tool_calls?: Array<ChatCompletionMessageToolCall$Outbound> | null | undefined;
+  tool_calls?:
+    | Array<
+      | ChatCompletionMessageFunctionToolCall$Outbound
+      | ChatCompletionMessageCustomToolCall$Outbound
+    >
+    | null
+    | undefined;
   [additionalProperties: string]: unknown;
 };
 
@@ -95,8 +181,14 @@ export const ChatCompletionMessage$outboundSchema: z.ZodType<
   annotations: z.nullable(z.array(Annotation$outboundSchema)).optional(),
   audio: z.nullable(ChatCompletionAudio$outboundSchema).optional(),
   functionCall: z.nullable(FunctionCallOutput$outboundSchema).optional(),
-  toolCalls: z.nullable(z.array(ChatCompletionMessageToolCall$outboundSchema))
-    .optional(),
+  toolCalls: z.nullable(
+    z.array(
+      z.union([
+        ChatCompletionMessageFunctionToolCall$outboundSchema,
+        ChatCompletionMessageCustomToolCall$outboundSchema,
+      ]),
+    ),
+  ).optional(),
   additionalProperties: z.record(z.any()),
 }).transform((v) => {
   return {

@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { ResponseFormatJSONObject } from "opperai";
+import { ResponseFormatJSONObject } from "opperai/models";
 
 let value: ResponseFormatJSONObject = {};
 ```

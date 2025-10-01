@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { SpanMetricData } from "opperai";
+import { SpanMetricData } from "opperai/models";
 
 let value: SpanMetricData = {
   id: "de116402-1961-4e94-a679-5e1364da7d48",

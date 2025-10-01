@@ -13,23 +13,27 @@ import {
   Model$outboundSchema,
 } from "./model.js";
 
-export type TModel1 = Model | string;
+export type TModel1 = Model | string | { [k: string]: any };
 
-export type TModel = Model | string | Array<Model | string>;
+export type TModel =
+  | Model
+  | string
+  | { [k: string]: any }
+  | Array<Model | string | { [k: string]: any }>;
 
 /** @internal */
 export const TModel1$inboundSchema: z.ZodType<TModel1, z.ZodTypeDef, unknown> =
-  z.union([Model$inboundSchema, z.string()]);
+  z.union([Model$inboundSchema, z.string(), z.record(z.any())]);
 
 /** @internal */
-export type TModel1$Outbound = Model$Outbound | string;
+export type TModel1$Outbound = Model$Outbound | string | { [k: string]: any };
 
 /** @internal */
 export const TModel1$outboundSchema: z.ZodType<
   TModel1$Outbound,
   z.ZodTypeDef,
   TModel1
-> = z.union([Model$outboundSchema, z.string()]);
+> = z.union([Model$outboundSchema, z.string(), z.record(z.any())]);
 
 /**
  * @internal
@@ -63,14 +67,16 @@ export const TModel$inboundSchema: z.ZodType<TModel, z.ZodTypeDef, unknown> = z
   .union([
     Model$inboundSchema,
     z.string(),
-    z.array(z.union([Model$inboundSchema, z.string()])),
+    z.record(z.any()),
+    z.array(z.union([Model$inboundSchema, z.string(), z.record(z.any())])),
   ]);
 
 /** @internal */
 export type TModel$Outbound =
   | Model$Outbound
   | string
-  | Array<Model$Outbound | string>;
+  | { [k: string]: any }
+  | Array<Model$Outbound | string | { [k: string]: any }>;
 
 /** @internal */
 export const TModel$outboundSchema: z.ZodType<
@@ -80,7 +86,8 @@ export const TModel$outboundSchema: z.ZodType<
 > = z.union([
   Model$outboundSchema,
   z.string(),
-  z.array(z.union([Model$outboundSchema, z.string()])),
+  z.record(z.any()),
+  z.array(z.union([Model$outboundSchema, z.string(), z.record(z.any())])),
 ]);
 
 /**

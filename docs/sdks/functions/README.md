@@ -23,6 +23,7 @@ Create a function
 
 ### Example Usage
 
+<!-- UsageSnippet language="typescript" operationID="create_function_functions_post" method="post" path="/functions" -->
 ```typescript
 import { Opper } from "opperai";
 
@@ -66,7 +67,11 @@ async function run() {
       "title": "OpperOutputExample",
       "type": "object",
     },
-    configuration: {},
+    configuration: {
+      betaEvaluation: {
+        scorers: "base",
+      },
+    },
   });
 
   console.log(result);
@@ -125,7 +130,11 @@ async function run() {
       "title": "OpperOutputExample",
       "type": "object",
     },
-    configuration: {},
+    configuration: {
+      betaEvaluation: {
+        scorers: "base",
+      },
+    },
   });
   if (res.ok) {
     const { value: result } = res;
@@ -168,6 +177,7 @@ List existing functions with the most recent revision in the current project
 
 ### Example Usage
 
+<!-- UsageSnippet language="typescript" operationID="list_functions_functions_get" method="get" path="/functions" -->
 ```typescript
 import { Opper } from "opperai";
 
@@ -243,6 +253,7 @@ Get the latest revision of a function by ID
 
 ### Example Usage
 
+<!-- UsageSnippet language="typescript" operationID="get_function_functions__function_id__get" method="get" path="/functions/{function_id}" -->
 ```typescript
 import { Opper } from "opperai";
 
@@ -315,6 +326,7 @@ Update a function, this will create a new revision of the function
 
 ### Example Usage
 
+<!-- UsageSnippet language="typescript" operationID="update_function_functions__function_id__patch" method="patch" path="/functions/{function_id}" -->
 ```typescript
 import { Opper } from "opperai";
 
@@ -359,7 +371,13 @@ async function run() {
       "type": "object",
     },
     configuration: {
+      "beta.evaluation": {
+        "enabled": true,
+        "scorers": "base",
+      },
       "beta.evaluation.enabled": true,
+      "beta.invocation.input_validation.enabled": false,
+      "beta.invocation.xml_mode.enabled": false,
       "invocation.cache.ttl": 0,
       "invocation.few_shot.count": 0,
       "invocation.structured_generation.max_attempts": 5,
@@ -423,7 +441,13 @@ async function run() {
       "type": "object",
     },
     configuration: {
+      "beta.evaluation": {
+        "enabled": true,
+        "scorers": "base",
+      },
       "beta.evaluation.enabled": true,
+      "beta.invocation.input_validation.enabled": false,
+      "beta.invocation.xml_mode.enabled": false,
       "invocation.cache.ttl": 0,
       "invocation.few_shot.count": 0,
       "invocation.structured_generation.max_attempts": 5,
@@ -470,6 +494,7 @@ Delete a function by ID
 
 ### Example Usage
 
+<!-- UsageSnippet language="typescript" operationID="delete_function_functions__function_id__delete" method="delete" path="/functions/{function_id}" -->
 ```typescript
 import { Opper } from "opperai";
 
@@ -542,6 +567,7 @@ Get the latest revision of a function by name
 
 ### Example Usage
 
+<!-- UsageSnippet language="typescript" operationID="get_function_by_name_functions_by_name__name__get" method="get" path="/functions/by-name/{name}" -->
 ```typescript
 import { Opper } from "opperai";
 
@@ -614,6 +640,7 @@ Get a function by ID with a specific revision
 
 ### Example Usage
 
+<!-- UsageSnippet language="typescript" operationID="get_function_by_revision_functions__function_id__revisions__revision_id__get" method="get" path="/functions/{function_id}/revisions/{revision_id}" -->
 ```typescript
 import { Opper } from "opperai";
 
@@ -687,6 +714,7 @@ Call a function
 
 ### Example Usage
 
+<!-- UsageSnippet language="typescript" operationID="call_function_functions__function_id__call_post" method="post" path="/functions/{function_id}/call" -->
 ```typescript
 import { Opper } from "opperai";
 
@@ -814,6 +842,7 @@ The data payload includes:
 
 ### Example Usage
 
+<!-- UsageSnippet language="typescript" operationID="stream_function_functions__function_id__call_stream_post" method="post" path="/functions/{function_id}/call/stream" -->
 ```typescript
 import { Opper } from "opperai";
 
@@ -845,7 +874,6 @@ async function run() {
   });
 
   for await (const event of result) {
-    // Handle the event
     console.log(event);
   }
 }
@@ -892,7 +920,6 @@ async function run() {
   if (res.ok) {
     const { value: result } = res;
     for await (const event of result) {
-    // Handle the event
     console.log(event);
   }
   } else {
@@ -933,6 +960,7 @@ Call a function
 
 ### Example Usage
 
+<!-- UsageSnippet language="typescript" operationID="call_function_revision_functions__function_id__call__revision_id__post" method="post" path="/functions/{function_id}/call/{revision_id}" -->
 ```typescript
 import { Opper } from "opperai";
 
@@ -1061,6 +1089,7 @@ The data payload includes:
 
 ### Example Usage
 
+<!-- UsageSnippet language="typescript" operationID="stream_function_revision_functions__function_id__call_stream__revision_id__post" method="post" path="/functions/{function_id}/call/stream/{revision_id}" -->
 ```typescript
 import { Opper } from "opperai";
 
@@ -1092,7 +1121,6 @@ async function run() {
   });
 
   for await (const event of result) {
-    // Handle the event
     console.log(event);
   }
 }
@@ -1139,7 +1167,6 @@ async function run() {
   if (res.ok) {
     const { value: result } = res;
     for await (const event of result) {
-    // Handle the event
     console.log(event);
   }
   } else {

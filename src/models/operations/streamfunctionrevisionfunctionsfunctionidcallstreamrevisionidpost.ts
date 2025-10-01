@@ -345,17 +345,17 @@ export const StreamFunctionRevisionFunctionsFunctionIdCallStreamRevisionIdPostRe
     unknown
   > = z.object({
     Headers: z.record(z.array(z.string())),
-    Result: z.instanceof(ReadableStream<Uint8Array>).transform(stream => {
-      return new EventStream({
-        stream,
-        decoder(rawEvent) {
-          const schema = z.lazy(() =>
-            StreamFunctionRevisionFunctionsFunctionIdCallStreamRevisionIdPostResponseBody$inboundSchema
-          );
-          return schema.parse(rawEvent);
-        },
-      });
-    }),
+    Result: z
+      .instanceof(ReadableStream<Uint8Array>)
+      .transform(stream => {
+        return new EventStream(stream, rawEvent => {
+          return {
+            value: z.lazy(() =>
+              StreamFunctionRevisionFunctionsFunctionIdCallStreamRevisionIdPostResponseBody$inboundSchema
+            ).parse(rawEvent),
+          };
+        });
+      }),
   }).transform((v) => {
     return remap$(v, {
       "Headers": "headers",

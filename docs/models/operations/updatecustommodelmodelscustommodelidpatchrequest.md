@@ -7,6 +7,7 @@ import { UpdateCustomModelModelsCustomModelIdPatchRequest } from "opperai/models
 
 let value: UpdateCustomModelModelsCustomModelIdPatchRequest = {
   modelId: "94355625-8250-4390-8764-7e6e0fb25bf0",
+  updateCustomModelRequest: {},
 };
 ```
 

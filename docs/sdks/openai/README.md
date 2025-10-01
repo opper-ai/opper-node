@@ -13,6 +13,7 @@ Chat Completions
 
 ### Example Usage
 
+<!-- UsageSnippet language="typescript" operationID="chat_completions_openai_chat_completions_post" method="post" path="/openai/chat/completions" -->
 ```typescript
 import { Opper } from "opperai";
 
@@ -23,6 +24,7 @@ const opper = new Opper({
 async function run() {
   const result = await opper.openai.createChatCompletion({
     messages: [],
+    stream: false,
   });
 
   console.log(result);
@@ -48,6 +50,7 @@ const opper = new OpperCore({
 async function run() {
   const res = await openaiCreateChatCompletion(opper, {
     messages: [],
+    stream: false,
   });
   if (res.ok) {
     const { value: result } = res;

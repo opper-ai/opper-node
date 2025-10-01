@@ -32,22 +32,72 @@ import { Result } from "../types/fp.js";
  * @remarks
  * Stream a function call execution in real-time using Server-Sent Events (SSE).
  *
- * This endpoint returns a continuous stream of ServerSentEvent objects as the function executes,
- * allowing for real-time streaming of responses. The response follows the Server-Sent Events
- * specification with proper event structure for SDK compatibility.
+ * This endpoint provides continuous streaming of function execution results, supporting both
+ * unstructured text streaming and structured JSON streaming with precise field tracking.
  *
- * Each ServerSentEvent contains:
+ * ## Streaming Modes
+ *
+ * **Text Mode (no output_schema):**
+ * - Streams incremental text content via the `delta` field
+ * - `chunk_type` will be "text"
+ * - Best for conversational AI, creative writing, open-ended responses
+ *
+ * **Structured Mode (with output_schema):**
+ * - Streams structured JSON with precise field tracking via `json_path`
+ * - `chunk_type` will be "json"
+ * - Enables real-time UI updates by showing which schema field is being populated
+ * - Perfect for forms, dashboards, structured data display
+ *
+ * ## JSON Path Feature
+ *
+ * When using `output_schema`, each streaming chunk includes a `json_path` field showing exactly
+ * which field in your schema is being populated:
+ *
+ * - `response.summary` → Top-level string field
+ * - `response.people[0].name` → Name of first person in array
+ * - `response.people[1].role` → Role of second person
+ * - `response.metadata.created_at` → Nested object field
+ *
+ * This enables precise UI updates where you can route streaming content to specific components
+ * based on the path, creating responsive real-time interfaces.
+ *
+ * ## Response Structure
+ *
+ * Each Server-Sent Event contains:
  * - `id`: Optional event identifier
- * - `event`: Optional event type
- * - `data`: StreamingChunk with actual content
- * - `retry`: Optional retry interval
+ * - `event`: Optional event type (typically "message")
+ * - `data`: StreamingChunk with the actual streaming content
+ * - `retry`: Optional retry interval for reconnection
  *
- * The StreamingChunk data payload includes:
- * - `delta`: Incremental text content (if any)
- * - `span_id`: Unique identifier for the execution span (when available)
+ * The StreamingChunk data payload varies by mode:
  *
- * Note: When streaming is enabled, any output_schema will be ignored as structured output
- * cannot be streamed. The response will be unstructured text content.
+ * **Text Mode:**
+ * - `delta`: Incremental text content
+ * - `span_id`: Execution span ID (first chunk)
+ * - `chunk_type`: "text"
+ *
+ * **Structured Mode:**
+ * - `delta`: Actual field values being streamed
+ * - `json_path`: Dot-notation path to current field
+ * - `span_id`: Execution span ID (first chunk)
+ * - `chunk_type`: "json"
+ *
+ * ## Examples
+ *
+ * Text streaming events:
+ * ```
+ * data: {"span_id": "123e4567-e89b-12d3-a456-426614174000"}
+ * data: {"delta": "Hello", "chunk_type": "text"}
+ * data: {"delta": " world", "chunk_type": "text"}
+ * ```
+ *
+ * Structured streaming events:
+ * ```
+ * data: {"span_id": "123e4567-e89b-12d3-a456-426614174000"}
+ * data: {"delta": "John", "json_path": "response.name", "chunk_type": "json"}
+ * data: {"delta": " Doe", "json_path": "response.name", "chunk_type": "json"}
+ * data: {"delta": "Engineer", "json_path": "response.role", "chunk_type": "json"}
+ * ```
  */
 export function stream(
   client: OpperCore,

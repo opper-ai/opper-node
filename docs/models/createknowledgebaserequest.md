@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { CreateKnowledgeBaseRequest } from "opperai";
+import { CreateKnowledgeBaseRequest } from "opperai/models";
 
 let value: CreateKnowledgeBaseRequest = {
   name: "<value>",

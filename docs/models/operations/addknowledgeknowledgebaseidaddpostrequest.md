@@ -7,6 +7,14 @@ import { AddKnowledgeKnowledgeBaseIdAddPostRequest } from "opperai/models/operat
 
 let value: AddKnowledgeKnowledgeBaseIdAddPostRequest = {
   knowledgeBaseId: "e9857567-c492-43e1-b32c-3a33d11848ee",
+  addRequest: {
+    key: "paris_123",
+    content: "The capital of France is Paris",
+    metadata: {
+      "category": "product",
+      "price": 100,
+    },
+  },
 };
 ```
 

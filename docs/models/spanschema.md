@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { SpanSchema } from "opperai";
+import { SpanSchema } from "opperai/models";
 
 let value: SpanSchema = {
   type: "generation",

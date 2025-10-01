@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { Meta } from "opperai";
+import { Meta } from "opperai/models";
 
 let value: Meta = {
   totalCount: 1,

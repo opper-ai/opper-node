@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { Security } from "opperai";
+import { Security } from "opperai/models";
 
 let value: Security = {};
 ```
