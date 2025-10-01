@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { ChatCompletionContentPartImageParam } from "opperai";
+import { ChatCompletionContentPartImageParam } from "opperai/models";
 
 let value: ChatCompletionContentPartImageParam = {
   imageUrl: {

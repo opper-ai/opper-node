@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { GetUploadUrlResponse } from "opperai";
+import { GetUploadUrlResponse } from "opperai/models";
 
 let value: GetUploadUrlResponse = {
   url: "https://authorized-cake.name/",

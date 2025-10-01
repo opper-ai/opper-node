@@ -17,6 +17,7 @@ Create a new span
 
 ### Example Usage
 
+<!-- UsageSnippet language="typescript" operationID="create_span_spans_post" method="post" path="/spans" -->
 ```typescript
 import { Opper } from "opperai";
 
@@ -119,6 +120,7 @@ Get a span
 
 ### Example Usage
 
+<!-- UsageSnippet language="typescript" operationID="get_span_spans__span_id__get" method="get" path="/spans/{span_id}" -->
 ```typescript
 import { Opper } from "opperai";
 
@@ -191,6 +193,7 @@ Update a span
 
 ### Example Usage
 
+<!-- UsageSnippet language="typescript" operationID="update_span_spans__span_id__patch" method="patch" path="/spans/{span_id}" -->
 ```typescript
 import { Opper } from "opperai";
 
@@ -201,9 +204,9 @@ const opper = new Opper({
 async function run() {
   const result = await opper.spans.update("77b258a2-45c1-4b87-a50c-9116bc8ed1d6", {
     name: "my span",
-    startTime: new Date("2025-06-27T11:37:30.236954Z"),
+    startTime: new Date("2025-10-01T07:05:26.431558Z"),
     type: "email_tool",
-    endTime: new Date("2025-06-27T11:37:30.237016Z"),
+    endTime: new Date("2025-10-01T07:05:26.431655Z"),
     input: "Hello, world!",
     output: "Hello, world!",
     error: "Exception: This is an error message",
@@ -236,9 +239,9 @@ const opper = new OpperCore({
 async function run() {
   const res = await spansUpdate(opper, "77b258a2-45c1-4b87-a50c-9116bc8ed1d6", {
     name: "my span",
-    startTime: new Date("2025-06-27T11:37:30.236954Z"),
+    startTime: new Date("2025-10-01T07:05:26.431558Z"),
     type: "email_tool",
-    endTime: new Date("2025-06-27T11:37:30.237016Z"),
+    endTime: new Date("2025-10-01T07:05:26.431655Z"),
     input: "Hello, world!",
     output: "Hello, world!",
     error: "Exception: This is an error message",
@@ -288,6 +291,7 @@ Delete a span by its id
 
 ### Example Usage
 
+<!-- UsageSnippet language="typescript" operationID="delete_span_spans__span_id__delete" method="delete" path="/spans/{span_id}" -->
 ```typescript
 import { Opper } from "opperai";
 
@@ -360,6 +364,7 @@ Save all generation spans to the dataset
 
 ### Example Usage
 
+<!-- UsageSnippet language="typescript" operationID="save_to_dataset_spans__span_id__save_examples_post" method="post" path="/spans/{span_id}/save_examples" -->
 ```typescript
 import { Opper } from "opperai";
 

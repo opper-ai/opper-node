@@ -14,6 +14,7 @@
 * [registerFileUpload](#registerfileupload) - Register File Upload
 * [deleteFile](#deletefile) - Delete File From Knowledge Base
 * [query](#query) - Query Knowledge Base
+* [deleteDocumentsKnowledgeKnowledgeBaseIdQueryDelete](#deletedocumentsknowledgeknowledgebaseidquerydelete) - Delete Documents
 * [add](#add) - Add
 
 ## create
@@ -22,6 +23,7 @@ Create a knowledge base
 
 ### Example Usage
 
+<!-- UsageSnippet language="typescript" operationID="create_knowledge_base_knowledge_post" method="post" path="/knowledge" -->
 ```typescript
 import { Opper } from "opperai";
 
@@ -98,6 +100,7 @@ List all knowledge bases for the current project
 
 ### Example Usage
 
+<!-- UsageSnippet language="typescript" operationID="list_knowledge_bases_knowledge_get" method="get" path="/knowledge" -->
 ```typescript
 import { Opper } from "opperai";
 
@@ -171,6 +174,7 @@ Get a knowledge base by its id
 
 ### Example Usage
 
+<!-- UsageSnippet language="typescript" operationID="get_knowledge_base_knowledge__knowledge_base_id__get" method="get" path="/knowledge/{knowledge_base_id}" -->
 ```typescript
 import { Opper } from "opperai";
 
@@ -239,10 +243,11 @@ run();
 
 ## delete
 
-Delete a knowledge base by its id
+Delete a knowledge base
 
 ### Example Usage
 
+<!-- UsageSnippet language="typescript" operationID="delete_knowledge_base_knowledge__knowledge_base_id__delete" method="delete" path="/knowledge/{knowledge_base_id}" -->
 ```typescript
 import { Opper } from "opperai";
 
@@ -290,7 +295,7 @@ run();
 
 | Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `knowledgeBaseId`                                                                                                                                                              | *string*                                                                                                                                                                       | :heavy_check_mark:                                                                                                                                                             | The id of the knowledge base to delete                                                                                                                                         |
+| `knowledgeBaseId`                                                                                                                                                              | *string*                                                                                                                                                                       | :heavy_check_mark:                                                                                                                                                             | The id of the knowledge base to delete or delete documents from                                                                                                                |
 | `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
 | `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
 | `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
@@ -315,6 +320,7 @@ Get a knowledge base by its name
 
 ### Example Usage
 
+<!-- UsageSnippet language="typescript" operationID="get_knowledge_base_by_name_knowledge_by_name__knowledge_base_name__get" method="get" path="/knowledge/by-name/{knowledge_base_name}" -->
 ```typescript
 import { Opper } from "opperai";
 
@@ -392,6 +398,7 @@ Uploading files is a three step process:
 
 ### Example Usage
 
+<!-- UsageSnippet language="typescript" operationID="get_upload_url_knowledge__knowledge_base_id__upload_url_get" method="get" path="/knowledge/{knowledge_base_id}/upload_url" -->
 ```typescript
 import { Opper } from "opperai";
 
@@ -470,6 +477,7 @@ Registering a file upload is a three step process:
 
 ### Example Usage
 
+<!-- UsageSnippet language="typescript" operationID="register_file_upload_knowledge__knowledge_base_id__register_file_post" method="post" path="/knowledge/{knowledge_base_id}/register_file" -->
 ```typescript
 import { Opper } from "opperai";
 
@@ -551,6 +559,7 @@ Delete a file from a knowledge base by its id
 
 ### Example Usage
 
+<!-- UsageSnippet language="typescript" operationID="delete_file_from_knowledge_base_knowledge__knowledge_base_id__files__file_id__delete" method="delete" path="/knowledge/{knowledge_base_id}/files/{file_id}" -->
 ```typescript
 import { Opper } from "opperai";
 
@@ -624,6 +633,7 @@ Query a knowledge base by its id
 
 ### Example Usage
 
+<!-- UsageSnippet language="typescript" operationID="query_knowledge_base_knowledge__knowledge_base_id__query_post" method="post" path="/knowledge/{knowledge_base_id}/query" -->
 ```typescript
 import { Opper } from "opperai";
 
@@ -725,12 +735,87 @@ run();
 | errors.RequestValidationError | 422                           | application/json              |
 | errors.APIError               | 4XX, 5XX                      | \*/\*                         |
 
+## deleteDocumentsKnowledgeKnowledgeBaseIdQueryDelete
+
+Delete documents from a knowledge base based on filters
+
+### Example Usage
+
+<!-- UsageSnippet language="typescript" operationID="delete_documents_knowledge__knowledge_base_id__query_delete" method="delete" path="/knowledge/{knowledge_base_id}/query" -->
+```typescript
+import { Opper } from "opperai";
+
+const opper = new Opper({
+  httpBearer: process.env["OPPER_HTTP_BEARER"] ?? "",
+});
+
+async function run() {
+  const result = await opper.knowledge.deleteDocumentsKnowledgeKnowledgeBaseIdQueryDelete("7418a0c9-d40d-4761-8b00-e8948f7d8426", null);
+
+  console.log(result);
+}
+
+run();
+```
+
+### Standalone function
+
+The standalone function version of this method:
+
+```typescript
+import { OpperCore } from "opperai/core.js";
+import { knowledgeDeleteDocumentsKnowledgeKnowledgeBaseIdQueryDelete } from "opperai/funcs/knowledgeDeleteDocumentsKnowledgeKnowledgeBaseIdQueryDelete.js";
+
+// Use `OpperCore` for best tree-shaking performance.
+// You can create one instance of it to use across an application.
+const opper = new OpperCore({
+  httpBearer: process.env["OPPER_HTTP_BEARER"] ?? "",
+});
+
+async function run() {
+  const res = await knowledgeDeleteDocumentsKnowledgeKnowledgeBaseIdQueryDelete(opper, "7418a0c9-d40d-4761-8b00-e8948f7d8426", null);
+  if (res.ok) {
+    const { value: result } = res;
+    console.log(result);
+  } else {
+    console.log("knowledgeDeleteDocumentsKnowledgeKnowledgeBaseIdQueryDelete failed:", res.error);
+  }
+}
+
+run();
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `knowledgeBaseId`                                                                                                                                                              | *string*                                                                                                                                                                       | :heavy_check_mark:                                                                                                                                                             | The id of the knowledge base to delete or delete documents from                                                                                                                |
+| `deleteKnowledgeBaseRequest`                                                                                                                                                   | [models.DeleteKnowledgeBaseRequest](../../models/deleteknowledgebaserequest.md)                                                                                                | :heavy_minus_sign:                                                                                                                                                             | N/A                                                                                                                                                                            |
+| `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
+| `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+
+### Response
+
+**Promise\<[models.DeleteKnowledgeBaseResponse](../../models/deleteknowledgebaseresponse.md)\>**
+
+### Errors
+
+| Error Type                    | Status Code                   | Content Type                  |
+| ----------------------------- | ----------------------------- | ----------------------------- |
+| errors.BadRequestError        | 400                           | application/json              |
+| errors.UnauthorizedError      | 401                           | application/json              |
+| errors.NotFoundError          | 404                           | application/json              |
+| errors.RequestValidationError | 422                           | application/json              |
+| errors.APIError               | 4XX, 5XX                      | \*/\*                         |
+
 ## add
 
 Add data to a knowledge base
 
 ### Example Usage
 
+<!-- UsageSnippet language="typescript" operationID="add_knowledge__knowledge_base_id__add_post" method="post" path="/knowledge/{knowledge_base_id}/add" -->
 ```typescript
 import { Opper } from "opperai";
 

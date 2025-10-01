@@ -13,6 +13,7 @@ Create embeddings for a given string or list of strings
 
 ### Example Usage
 
+<!-- UsageSnippet language="typescript" operationID="create_embedding_embeddings_post" method="post" path="/embeddings" -->
 ```typescript
 import { Opper } from "opperai";
 

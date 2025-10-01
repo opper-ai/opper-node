@@ -25,11 +25,17 @@ import {
   ChatCompletionContentPartTextParam$outboundSchema,
 } from "./chatcompletioncontentparttextparam.js";
 import {
-  ChatCompletionMessageToolCallParam,
-  ChatCompletionMessageToolCallParam$inboundSchema,
-  ChatCompletionMessageToolCallParam$Outbound,
-  ChatCompletionMessageToolCallParam$outboundSchema,
-} from "./chatcompletionmessagetoolcallparam.js";
+  ChatCompletionMessageCustomToolCallParam,
+  ChatCompletionMessageCustomToolCallParam$inboundSchema,
+  ChatCompletionMessageCustomToolCallParam$Outbound,
+  ChatCompletionMessageCustomToolCallParam$outboundSchema,
+} from "./chatcompletionmessagecustomtoolcallparam.js";
+import {
+  ChatCompletionMessageFunctionToolCallParam,
+  ChatCompletionMessageFunctionToolCallParam$inboundSchema,
+  ChatCompletionMessageFunctionToolCallParam$Outbound,
+  ChatCompletionMessageFunctionToolCallParam$outboundSchema,
+} from "./chatcompletionmessagefunctiontoolcallparam.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
   FunctionCallInput,
@@ -48,6 +54,10 @@ export type ChatCompletionAssistantMessageParamContent2 =
     ChatCompletionContentPartTextParam | ChatCompletionContentPartRefusalParam
   >;
 
+export type ChatCompletionAssistantMessageParamToolCall =
+  | ChatCompletionMessageFunctionToolCallParam
+  | ChatCompletionMessageCustomToolCallParam;
+
 export type ChatCompletionAssistantMessageParam = {
   role?: "assistant" | undefined;
   audio?: Audio | null | undefined;
@@ -61,7 +71,12 @@ export type ChatCompletionAssistantMessageParam = {
   functionCall?: FunctionCallInput | null | undefined;
   name?: string | undefined;
   refusal?: string | null | undefined;
-  toolCalls?: Array<ChatCompletionMessageToolCallParam> | undefined;
+  toolCalls?:
+    | Array<
+      | ChatCompletionMessageFunctionToolCallParam
+      | ChatCompletionMessageCustomToolCallParam
+    >
+    | undefined;
 };
 
 /** @internal */
@@ -216,6 +231,75 @@ export function chatCompletionAssistantMessageParamContent2FromJSON(
 }
 
 /** @internal */
+export const ChatCompletionAssistantMessageParamToolCall$inboundSchema:
+  z.ZodType<
+    ChatCompletionAssistantMessageParamToolCall,
+    z.ZodTypeDef,
+    unknown
+  > = z.union([
+    ChatCompletionMessageFunctionToolCallParam$inboundSchema,
+    ChatCompletionMessageCustomToolCallParam$inboundSchema,
+  ]);
+
+/** @internal */
+export type ChatCompletionAssistantMessageParamToolCall$Outbound =
+  | ChatCompletionMessageFunctionToolCallParam$Outbound
+  | ChatCompletionMessageCustomToolCallParam$Outbound;
+
+/** @internal */
+export const ChatCompletionAssistantMessageParamToolCall$outboundSchema:
+  z.ZodType<
+    ChatCompletionAssistantMessageParamToolCall$Outbound,
+    z.ZodTypeDef,
+    ChatCompletionAssistantMessageParamToolCall
+  > = z.union([
+    ChatCompletionMessageFunctionToolCallParam$outboundSchema,
+    ChatCompletionMessageCustomToolCallParam$outboundSchema,
+  ]);
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace ChatCompletionAssistantMessageParamToolCall$ {
+  /** @deprecated use `ChatCompletionAssistantMessageParamToolCall$inboundSchema` instead. */
+  export const inboundSchema =
+    ChatCompletionAssistantMessageParamToolCall$inboundSchema;
+  /** @deprecated use `ChatCompletionAssistantMessageParamToolCall$outboundSchema` instead. */
+  export const outboundSchema =
+    ChatCompletionAssistantMessageParamToolCall$outboundSchema;
+  /** @deprecated use `ChatCompletionAssistantMessageParamToolCall$Outbound` instead. */
+  export type Outbound = ChatCompletionAssistantMessageParamToolCall$Outbound;
+}
+
+export function chatCompletionAssistantMessageParamToolCallToJSON(
+  chatCompletionAssistantMessageParamToolCall:
+    ChatCompletionAssistantMessageParamToolCall,
+): string {
+  return JSON.stringify(
+    ChatCompletionAssistantMessageParamToolCall$outboundSchema.parse(
+      chatCompletionAssistantMessageParamToolCall,
+    ),
+  );
+}
+
+export function chatCompletionAssistantMessageParamToolCallFromJSON(
+  jsonString: string,
+): SafeParseResult<
+  ChatCompletionAssistantMessageParamToolCall,
+  SDKValidationError
+> {
+  return safeParse(
+    jsonString,
+    (x) =>
+      ChatCompletionAssistantMessageParamToolCall$inboundSchema.parse(
+        JSON.parse(x),
+      ),
+    `Failed to parse 'ChatCompletionAssistantMessageParamToolCall' from JSON`,
+  );
+}
+
+/** @internal */
 export const ChatCompletionAssistantMessageParam$inboundSchema: z.ZodType<
   ChatCompletionAssistantMessageParam,
   z.ZodTypeDef,
@@ -237,8 +321,12 @@ export const ChatCompletionAssistantMessageParam$inboundSchema: z.ZodType<
   function_call: z.nullable(FunctionCallInput$inboundSchema).optional(),
   name: z.string().optional(),
   refusal: z.nullable(z.string()).optional(),
-  tool_calls: z.array(ChatCompletionMessageToolCallParam$inboundSchema)
-    .optional(),
+  tool_calls: z.array(
+    z.union([
+      ChatCompletionMessageFunctionToolCallParam$inboundSchema,
+      ChatCompletionMessageCustomToolCallParam$inboundSchema,
+    ]),
+  ).optional(),
 }).transform((v) => {
   return remap$(v, {
     "function_call": "functionCall",
@@ -261,7 +349,12 @@ export type ChatCompletionAssistantMessageParam$Outbound = {
   function_call?: FunctionCallInput$Outbound | null | undefined;
   name?: string | undefined;
   refusal?: string | null | undefined;
-  tool_calls?: Array<ChatCompletionMessageToolCallParam$Outbound> | undefined;
+  tool_calls?:
+    | Array<
+      | ChatCompletionMessageFunctionToolCallParam$Outbound
+      | ChatCompletionMessageCustomToolCallParam$Outbound
+    >
+    | undefined;
 };
 
 /** @internal */
@@ -286,8 +379,12 @@ export const ChatCompletionAssistantMessageParam$outboundSchema: z.ZodType<
   functionCall: z.nullable(FunctionCallInput$outboundSchema).optional(),
   name: z.string().optional(),
   refusal: z.nullable(z.string()).optional(),
-  toolCalls: z.array(ChatCompletionMessageToolCallParam$outboundSchema)
-    .optional(),
+  toolCalls: z.array(
+    z.union([
+      ChatCompletionMessageFunctionToolCallParam$outboundSchema,
+      ChatCompletionMessageCustomToolCallParam$outboundSchema,
+    ]),
+  ).optional(),
 }).transform((v) => {
   return remap$(v, {
     functionCall: "function_call",

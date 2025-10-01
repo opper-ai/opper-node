@@ -84,7 +84,11 @@ async function run() {
       "project": "project_456",
       "user": "company_123",
     },
-    configuration: {},
+    configuration: {
+      betaEvaluation: {
+        scorers: "base",
+      },
+    },
   });
   if (res.ok) {
     const { value: result } = res;

@@ -3,11 +3,11 @@
 ## Example Usage
 
 ```typescript
-import { ChatCompletionAudioParam } from "opperai";
+import { ChatCompletionAudioParam } from "opperai/models";
 
 let value: ChatCompletionAudioParam = {
   format: "wav",
-  voice: "sage",
+  voice: "shimmer",
 };
 ```
 

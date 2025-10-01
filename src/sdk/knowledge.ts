@@ -5,6 +5,7 @@
 import { knowledgeAdd } from "../funcs/knowledgeAdd.js";
 import { knowledgeCreate } from "../funcs/knowledgeCreate.js";
 import { knowledgeDelete } from "../funcs/knowledgeDelete.js";
+import { knowledgeDeleteDocumentsKnowledgeKnowledgeBaseIdQueryDelete } from "../funcs/knowledgeDeleteDocumentsKnowledgeKnowledgeBaseIdQueryDelete.js";
 import { knowledgeDeleteFile } from "../funcs/knowledgeDeleteFile.js";
 import { knowledgeGet } from "../funcs/knowledgeGet.js";
 import { knowledgeGetByName } from "../funcs/knowledgeGetByName.js";
@@ -74,7 +75,7 @@ export class Knowledge extends ClientSDK {
    * Delete Knowledge Base
    *
    * @remarks
-   * Delete a knowledge base by its id
+   * Delete a knowledge base
    */
   async delete(
     knowledgeBaseId: string,
@@ -188,6 +189,30 @@ export class Knowledge extends ClientSDK {
       queryKnowledgeBaseRequest,
       options,
     ));
+  }
+
+  /**
+   * Delete Documents
+   *
+   * @remarks
+   * Delete documents from a knowledge base based on filters
+   */
+  async deleteDocumentsKnowledgeKnowledgeBaseIdQueryDelete(
+    knowledgeBaseId: string,
+    deleteKnowledgeBaseRequest?:
+      | models.DeleteKnowledgeBaseRequest
+      | null
+      | undefined,
+    options?: RequestOptions,
+  ): Promise<models.DeleteKnowledgeBaseResponse> {
+    return unwrapAsync(
+      knowledgeDeleteDocumentsKnowledgeKnowledgeBaseIdQueryDelete(
+        this,
+        knowledgeBaseId,
+        deleteKnowledgeBaseRequest,
+        options,
+      ),
+    );
   }
 
   /**

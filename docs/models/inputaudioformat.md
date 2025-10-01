@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { InputAudioFormat } from "opperai";
+import { InputAudioFormat } from "opperai/models";
 
 let value: InputAudioFormat = "wav";
 ```

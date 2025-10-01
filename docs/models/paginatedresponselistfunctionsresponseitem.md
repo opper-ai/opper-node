@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { PaginatedResponseListFunctionsResponseItem } from "opperai";
+import { PaginatedResponseListFunctionsResponseItem } from "opperai/models";
 
 let value: PaginatedResponseListFunctionsResponseItem = {
   meta: {

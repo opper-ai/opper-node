@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { AnnotationURLCitation } from "opperai";
+import { AnnotationURLCitation } from "opperai/models";
 
 let value: AnnotationURLCitation = {
   endIndex: 95056,

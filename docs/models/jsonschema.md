@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { JSONSchema } from "opperai";
+import { JSONSchema } from "opperai/models";
 
 let value: JSONSchema = {
   name: "<value>",

@@ -14,6 +14,7 @@ List traces
 
 ### Example Usage
 
+<!-- UsageSnippet language="typescript" operationID="list_traces_traces_get" method="get" path="/traces" -->
 ```typescript
 import { Opper } from "opperai";
 
@@ -88,6 +89,7 @@ Get a trace by its id
 
 ### Example Usage
 
+<!-- UsageSnippet language="typescript" operationID="get_trace_traces__trace_id__get" method="get" path="/traces/{trace_id}" -->
 ```typescript
 import { Opper } from "opperai";
 
