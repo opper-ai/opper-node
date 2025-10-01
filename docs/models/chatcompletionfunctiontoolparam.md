@@ -1,11 +1,11 @@
-# ChatCompletionToolParam
+# ChatCompletionFunctionToolParam
 
 ## Example Usage
 
 ```typescript
-import { ChatCompletionToolParam } from "opperai";
+import { ChatCompletionFunctionToolParam } from "opperai/models";
 
-let value: ChatCompletionToolParam = {
+let value: ChatCompletionFunctionToolParam = {
   function: {
     name: "<value>",
   },

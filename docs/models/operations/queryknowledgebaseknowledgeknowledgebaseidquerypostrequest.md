@@ -7,6 +7,24 @@ import { QueryKnowledgeBaseKnowledgeKnowledgeBaseIdQueryPostRequest } from "oppe
 
 let value: QueryKnowledgeBaseKnowledgeKnowledgeBaseIdQueryPostRequest = {
   knowledgeBaseId: "ea035277-cfde-4959-851d-1fb240bbd4ba",
+  queryKnowledgeBaseRequest: {
+    query: "What is the capital of France?",
+    filters: [
+      {
+        field: "price",
+        operation: ">",
+        value: 100,
+      },
+      {
+        field: "category",
+        operation: "in",
+        value: [
+          "product",
+          "service",
+        ],
+      },
+    ],
+  },
 };
 ```
 

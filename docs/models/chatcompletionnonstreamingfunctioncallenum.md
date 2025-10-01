@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { ChatCompletionNonStreamingFunctionCallEnum } from "opperai";
+import { ChatCompletionNonStreamingFunctionCallEnum } from "opperai/models";
 
 let value: ChatCompletionNonStreamingFunctionCallEnum = "none";
 ```

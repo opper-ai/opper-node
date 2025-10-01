@@ -7,6 +7,12 @@ import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import {
+  EvaluationConfig,
+  EvaluationConfig$inboundSchema,
+  EvaluationConfig$Outbound,
+  EvaluationConfig$outboundSchema,
+} from "./evaluationconfig.js";
 
 export type FunctionCallConfiguration = {
   /**
@@ -14,9 +20,22 @@ export type FunctionCallConfiguration = {
    */
   invocationFewShotCount?: number | undefined;
   /**
-   * Whether to enable evaluation for the call. Evaluation is a beta feature and is enabled by default.
+   * [Deprecated] Use 'beta.evaluation' object. Whether to enable evaluation for the call. Evaluation is a beta feature and is enabled by default.
    */
   betaEvaluationEnabled?: boolean | undefined;
+  /**
+   * Configuration for evaluation features stored under 'beta.evaluation'.
+   *
+   * @remarks
+   *
+   * - enabled: master switch
+   * - scorers: which evaluators to run. Accepts:
+   *     - string: "base" | "rubrics"
+   *     - dict: { "rubrics": RubricDefinition-like payload }
+   *     - list[str | dict]
+   *   "base" is the default scorer.
+   */
+  betaEvaluation?: EvaluationConfig | undefined;
   /**
    * The maximum number of attempts to make when generating a response matching the output schema if provided.
    */
@@ -25,6 +44,14 @@ export type FunctionCallConfiguration = {
    * The time to live for the cache in seconds. If 0, the cache is disabled.
    */
   invocationCacheTtl?: number | undefined;
+  /**
+   * Whether to enable input validation against the input schema. This is a beta feature and is disabled by default.
+   */
+  betaInvocationInputValidationEnabled?: boolean | undefined;
+  /**
+   * Experimental: enable XML structured output. The model receives an XML schema and its response is converted back to JSON. We have observed better adherence to multi-paragraph text fields (especially with Anthropic models) when this is enabled.
+   */
+  betaInvocationXmlModeEnabled?: boolean | undefined;
 };
 
 /** @internal */
@@ -35,15 +62,22 @@ export const FunctionCallConfiguration$inboundSchema: z.ZodType<
 > = z.object({
   "invocation.few_shot.count": z.number().int().default(0),
   "beta.evaluation.enabled": z.boolean().default(true),
+  "beta.evaluation": EvaluationConfig$inboundSchema.optional(),
   "invocation.structured_generation.max_attempts": z.number().int().default(5),
   "invocation.cache.ttl": z.number().int().default(0),
+  "beta.invocation.input_validation.enabled": z.boolean().default(false),
+  "beta.invocation.xml_mode.enabled": z.boolean().default(false),
 }).transform((v) => {
   return remap$(v, {
     "invocation.few_shot.count": "invocationFewShotCount",
     "beta.evaluation.enabled": "betaEvaluationEnabled",
+    "beta.evaluation": "betaEvaluation",
     "invocation.structured_generation.max_attempts":
       "invocationStructuredGenerationMaxAttempts",
     "invocation.cache.ttl": "invocationCacheTtl",
+    "beta.invocation.input_validation.enabled":
+      "betaInvocationInputValidationEnabled",
+    "beta.invocation.xml_mode.enabled": "betaInvocationXmlModeEnabled",
   });
 });
 
@@ -51,8 +85,11 @@ export const FunctionCallConfiguration$inboundSchema: z.ZodType<
 export type FunctionCallConfiguration$Outbound = {
   "invocation.few_shot.count": number;
   "beta.evaluation.enabled": boolean;
+  "beta.evaluation"?: EvaluationConfig$Outbound | undefined;
   "invocation.structured_generation.max_attempts": number;
   "invocation.cache.ttl": number;
+  "beta.invocation.input_validation.enabled": boolean;
+  "beta.invocation.xml_mode.enabled": boolean;
 };
 
 /** @internal */
@@ -63,15 +100,22 @@ export const FunctionCallConfiguration$outboundSchema: z.ZodType<
 > = z.object({
   invocationFewShotCount: z.number().int().default(0),
   betaEvaluationEnabled: z.boolean().default(true),
+  betaEvaluation: EvaluationConfig$outboundSchema.optional(),
   invocationStructuredGenerationMaxAttempts: z.number().int().default(5),
   invocationCacheTtl: z.number().int().default(0),
+  betaInvocationInputValidationEnabled: z.boolean().default(false),
+  betaInvocationXmlModeEnabled: z.boolean().default(false),
 }).transform((v) => {
   return remap$(v, {
     invocationFewShotCount: "invocation.few_shot.count",
     betaEvaluationEnabled: "beta.evaluation.enabled",
+    betaEvaluation: "beta.evaluation",
     invocationStructuredGenerationMaxAttempts:
       "invocation.structured_generation.max_attempts",
     invocationCacheTtl: "invocation.cache.ttl",
+    betaInvocationInputValidationEnabled:
+      "beta.invocation.input_validation.enabled",
+    betaInvocationXmlModeEnabled: "beta.invocation.xml_mode.enabled",
   });
 });
 

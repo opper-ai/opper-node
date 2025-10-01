@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { GetTraceResponse } from "opperai";
+import { GetTraceResponse } from "opperai/models";
 
 let value: GetTraceResponse = {
   id: "5d792c77-d050-453b-a6b4-130a679997ac",

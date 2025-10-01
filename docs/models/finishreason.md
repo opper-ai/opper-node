@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { FinishReason } from "opperai";
+import { FinishReason } from "opperai/models";
 
 let value: FinishReason = "content_filter";
 ```

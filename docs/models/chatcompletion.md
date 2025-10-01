@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { ChatCompletion } from "opperai";
+import { ChatCompletion } from "opperai/models";
 
 let value: ChatCompletion = {
   id: "<id>",

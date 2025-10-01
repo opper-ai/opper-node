@@ -17,7 +17,7 @@ import {
   FunctionOutput$outboundSchema,
 } from "./functionoutput.js";
 
-export type ChatCompletionMessageToolCall = {
+export type ChatCompletionMessageFunctionToolCall = {
   id: string;
   function: FunctionOutput;
   type?: "function" | undefined;
@@ -25,8 +25,8 @@ export type ChatCompletionMessageToolCall = {
 };
 
 /** @internal */
-export const ChatCompletionMessageToolCall$inboundSchema: z.ZodType<
-  ChatCompletionMessageToolCall,
+export const ChatCompletionMessageFunctionToolCall$inboundSchema: z.ZodType<
+  ChatCompletionMessageFunctionToolCall,
   z.ZodTypeDef,
   unknown
 > = collectExtraKeys$(
@@ -40,7 +40,7 @@ export const ChatCompletionMessageToolCall$inboundSchema: z.ZodType<
 );
 
 /** @internal */
-export type ChatCompletionMessageToolCall$Outbound = {
+export type ChatCompletionMessageFunctionToolCall$Outbound = {
   id: string;
   function: FunctionOutput$Outbound;
   type: "function";
@@ -48,10 +48,10 @@ export type ChatCompletionMessageToolCall$Outbound = {
 };
 
 /** @internal */
-export const ChatCompletionMessageToolCall$outboundSchema: z.ZodType<
-  ChatCompletionMessageToolCall$Outbound,
+export const ChatCompletionMessageFunctionToolCall$outboundSchema: z.ZodType<
+  ChatCompletionMessageFunctionToolCall$Outbound,
   z.ZodTypeDef,
-  ChatCompletionMessageToolCall
+  ChatCompletionMessageFunctionToolCall
 > = z.object({
   id: z.string(),
   function: FunctionOutput$outboundSchema,
@@ -70,31 +70,34 @@ export const ChatCompletionMessageToolCall$outboundSchema: z.ZodType<
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace ChatCompletionMessageToolCall$ {
-  /** @deprecated use `ChatCompletionMessageToolCall$inboundSchema` instead. */
-  export const inboundSchema = ChatCompletionMessageToolCall$inboundSchema;
-  /** @deprecated use `ChatCompletionMessageToolCall$outboundSchema` instead. */
-  export const outboundSchema = ChatCompletionMessageToolCall$outboundSchema;
-  /** @deprecated use `ChatCompletionMessageToolCall$Outbound` instead. */
-  export type Outbound = ChatCompletionMessageToolCall$Outbound;
+export namespace ChatCompletionMessageFunctionToolCall$ {
+  /** @deprecated use `ChatCompletionMessageFunctionToolCall$inboundSchema` instead. */
+  export const inboundSchema =
+    ChatCompletionMessageFunctionToolCall$inboundSchema;
+  /** @deprecated use `ChatCompletionMessageFunctionToolCall$outboundSchema` instead. */
+  export const outboundSchema =
+    ChatCompletionMessageFunctionToolCall$outboundSchema;
+  /** @deprecated use `ChatCompletionMessageFunctionToolCall$Outbound` instead. */
+  export type Outbound = ChatCompletionMessageFunctionToolCall$Outbound;
 }
 
-export function chatCompletionMessageToolCallToJSON(
-  chatCompletionMessageToolCall: ChatCompletionMessageToolCall,
+export function chatCompletionMessageFunctionToolCallToJSON(
+  chatCompletionMessageFunctionToolCall: ChatCompletionMessageFunctionToolCall,
 ): string {
   return JSON.stringify(
-    ChatCompletionMessageToolCall$outboundSchema.parse(
-      chatCompletionMessageToolCall,
+    ChatCompletionMessageFunctionToolCall$outboundSchema.parse(
+      chatCompletionMessageFunctionToolCall,
     ),
   );
 }
 
-export function chatCompletionMessageToolCallFromJSON(
+export function chatCompletionMessageFunctionToolCallFromJSON(
   jsonString: string,
-): SafeParseResult<ChatCompletionMessageToolCall, SDKValidationError> {
+): SafeParseResult<ChatCompletionMessageFunctionToolCall, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => ChatCompletionMessageToolCall$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'ChatCompletionMessageToolCall' from JSON`,
+    (x) =>
+      ChatCompletionMessageFunctionToolCall$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ChatCompletionMessageFunctionToolCall' from JSON`,
   );
 }

@@ -14,7 +14,7 @@ export const tool$knowledgeDelete: ToolDefinition<typeof args> = {
   name: "knowledge-delete",
   description: `Delete Knowledge Base
 
-Delete a knowledge base by its id`,
+Delete a knowledge base`,
   args,
   tool: async (client, args, ctx) => {
     const [result, apiCall] = await knowledgeDelete(

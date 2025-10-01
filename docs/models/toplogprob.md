@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { TopLogprob } from "opperai";
+import { TopLogprob } from "opperai/models";
 
 let value: TopLogprob = {
   token: "<value>",

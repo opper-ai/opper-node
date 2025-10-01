@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { SaveToDatasetResponse } from "opperai";
+import { SaveToDatasetResponse } from "opperai/models";
 
 let value: SaveToDatasetResponse = {
   datasetId: "c0221260-9884-45d7-aac5-f4095f6edf22",

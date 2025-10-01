@@ -9,6 +9,7 @@ import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export type ChatCompletionStreamOptionsParam = {
+  includeObfuscation?: boolean | undefined;
   includeUsage?: boolean | undefined;
 };
 
@@ -18,15 +19,18 @@ export const ChatCompletionStreamOptionsParam$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.object({
+  include_obfuscation: z.boolean().optional(),
   include_usage: z.boolean().optional(),
 }).transform((v) => {
   return remap$(v, {
+    "include_obfuscation": "includeObfuscation",
     "include_usage": "includeUsage",
   });
 });
 
 /** @internal */
 export type ChatCompletionStreamOptionsParam$Outbound = {
+  include_obfuscation?: boolean | undefined;
   include_usage?: boolean | undefined;
 };
 
@@ -36,9 +40,11 @@ export const ChatCompletionStreamOptionsParam$outboundSchema: z.ZodType<
   z.ZodTypeDef,
   ChatCompletionStreamOptionsParam
 > = z.object({
+  includeObfuscation: z.boolean().optional(),
   includeUsage: z.boolean().optional(),
 }).transform((v) => {
   return remap$(v, {
+    includeObfuscation: "include_obfuscation",
     includeUsage: "include_usage",
   });
 });

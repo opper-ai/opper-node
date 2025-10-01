@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { ChatCompletionTokenLogprob } from "opperai";
+import { ChatCompletionTokenLogprob } from "opperai/models";
 
 let value: ChatCompletionTokenLogprob = {
   token: "<value>",

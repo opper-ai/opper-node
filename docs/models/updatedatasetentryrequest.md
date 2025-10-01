@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { UpdateDatasetEntryRequest } from "opperai";
+import { UpdateDatasetEntryRequest } from "opperai/models";
 
 let value: UpdateDatasetEntryRequest = {
   input: "Given this input, what is the output?",

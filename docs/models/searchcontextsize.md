@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { SearchContextSize } from "opperai";
+import { SearchContextSize } from "opperai/models";
 
 let value: SearchContextSize = "high";
 ```

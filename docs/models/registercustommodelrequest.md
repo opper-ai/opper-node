@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { RegisterCustomModelRequest } from "opperai";
+import { RegisterCustomModelRequest } from "opperai/models";
 
 let value: RegisterCustomModelRequest = {
   name: "<value>",

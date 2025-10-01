@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { RegisterFileUploadRequest } from "opperai";
+import { RegisterFileUploadRequest } from "opperai/models";
 
 let value: RegisterFileUploadRequest = {
   filename: "example.pdf",

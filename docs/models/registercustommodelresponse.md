@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { RegisterCustomModelResponse } from "opperai";
+import { RegisterCustomModelResponse } from "opperai/models";
 
 let value: RegisterCustomModelResponse = {
   id: "46cc7832-4309-4950-89ff-03ef58ee15fe",

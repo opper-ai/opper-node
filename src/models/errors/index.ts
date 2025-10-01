@@ -8,6 +8,7 @@ export * from "./conflicterror.js";
 export * from "./error.js";
 export * from "./httpclienterrors.js";
 export * from "./notfounderror.js";
+export * from "./oppererror.js";
 export * from "./requestvalidationerror.js";
 export * from "./responsevalidationerror.js";
 export * from "./sdkvalidationerror.js";

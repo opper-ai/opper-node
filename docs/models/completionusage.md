@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { CompletionUsage } from "opperai";
+import { CompletionUsage } from "opperai/models";
 
 let value: CompletionUsage = {
   completionTokens: 394512,

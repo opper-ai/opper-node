@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { ImageURL } from "opperai";
+import { ImageURL } from "opperai/models";
 
 let value: ImageURL = {
   url: "https://known-longboat.biz",
