@@ -2,8 +2,8 @@ speakeasyVersion: 1.631.5
 sources:
     FastAPI:
         sourceNamespace: fast-api
-        sourceRevisionDigest: sha256:cfa98dd8f5d94d16728f58d78c0ef804ecaf7f42a14859e31f1252d349d36a58
-        sourceBlobDigest: sha256:7780ee4afd1fa15c7ca41c618d7f049a024629d9ec8ef8bc0c5bdd30f36013c6
+        sourceRevisionDigest: sha256:81dd3d0af66c49115b4f76073faf523af37677ff88fccf1a327c99b750dc6c53
+        sourceBlobDigest: sha256:4e8ab6e2a7edd16da947b6704ba60550f741772b0726330ac903c9d68d2148ef
         tags:
             - latest
             - main
@@ -12,10 +12,10 @@ targets:
     opper:
         source: FastAPI
         sourceNamespace: fast-api
-        sourceRevisionDigest: sha256:cfa98dd8f5d94d16728f58d78c0ef804ecaf7f42a14859e31f1252d349d36a58
-        sourceBlobDigest: sha256:7780ee4afd1fa15c7ca41c618d7f049a024629d9ec8ef8bc0c5bdd30f36013c6
+        sourceRevisionDigest: sha256:81dd3d0af66c49115b4f76073faf523af37677ff88fccf1a327c99b750dc6c53
+        sourceBlobDigest: sha256:4e8ab6e2a7edd16da947b6704ba60550f741772b0726330ac903c9d68d2148ef
         codeSamplesNamespace: fast-api-typescript-code-samples
-        codeSamplesRevisionDigest: sha256:610f955ce3cf5780e1c3f67d5823cc6c7d4790effd93e3522323c4d3138e10d4
+        codeSamplesRevisionDigest: sha256:619120c69aa45ea19a8eb3185c0c209461fce4830a832da6726cec6f3a5921d6
 workflow:
     workflowVersion: 1.0.0
     speakeasyVersion: latest

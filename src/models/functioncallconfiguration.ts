@@ -20,10 +20,6 @@ export type FunctionCallConfiguration = {
    */
   invocationFewShotCount?: number | undefined;
   /**
-   * [Deprecated] Use 'beta.evaluation' object. Whether to enable evaluation for the call. Evaluation is a beta feature and is enabled by default.
-   */
-  betaEvaluationEnabled?: boolean | undefined;
-  /**
    * Configuration for evaluation features stored under 'beta.evaluation'.
    *
    * @remarks
@@ -61,7 +57,6 @@ export const FunctionCallConfiguration$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   "invocation.few_shot.count": z.number().int().default(0),
-  "beta.evaluation.enabled": z.boolean().default(true),
   "beta.evaluation": EvaluationConfig$inboundSchema.optional(),
   "invocation.structured_generation.max_attempts": z.number().int().default(5),
   "invocation.cache.ttl": z.number().int().default(0),
@@ -70,7 +65,6 @@ export const FunctionCallConfiguration$inboundSchema: z.ZodType<
 }).transform((v) => {
   return remap$(v, {
     "invocation.few_shot.count": "invocationFewShotCount",
-    "beta.evaluation.enabled": "betaEvaluationEnabled",
     "beta.evaluation": "betaEvaluation",
     "invocation.structured_generation.max_attempts":
       "invocationStructuredGenerationMaxAttempts",
@@ -84,7 +78,6 @@ export const FunctionCallConfiguration$inboundSchema: z.ZodType<
 /** @internal */
 export type FunctionCallConfiguration$Outbound = {
   "invocation.few_shot.count": number;
-  "beta.evaluation.enabled": boolean;
   "beta.evaluation"?: EvaluationConfig$Outbound | undefined;
   "invocation.structured_generation.max_attempts": number;
   "invocation.cache.ttl": number;
@@ -99,7 +92,6 @@ export const FunctionCallConfiguration$outboundSchema: z.ZodType<
   FunctionCallConfiguration
 > = z.object({
   invocationFewShotCount: z.number().int().default(0),
-  betaEvaluationEnabled: z.boolean().default(true),
   betaEvaluation: EvaluationConfig$outboundSchema.optional(),
   invocationStructuredGenerationMaxAttempts: z.number().int().default(5),
   invocationCacheTtl: z.number().int().default(0),
@@ -108,7 +100,6 @@ export const FunctionCallConfiguration$outboundSchema: z.ZodType<
 }).transform((v) => {
   return remap$(v, {
     invocationFewShotCount: "invocation.few_shot.count",
-    betaEvaluationEnabled: "beta.evaluation.enabled",
     betaEvaluation: "beta.evaluation",
     invocationStructuredGenerationMaxAttempts:
       "invocation.structured_generation.max_attempts",

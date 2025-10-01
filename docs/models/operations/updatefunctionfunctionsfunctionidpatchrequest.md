@@ -49,7 +49,6 @@ let value: UpdateFunctionFunctionsFunctionIdPatchRequest = {
         "enabled": true,
         "scorers": "base",
       },
-      "beta.evaluation.enabled": true,
       "beta.invocation.input_validation.enabled": false,
       "beta.invocation.xml_mode.enabled": false,
       "invocation.cache.ttl": 0,

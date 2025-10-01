@@ -10,25 +10,49 @@ import { Result as SafeParseResult } from "../../types/fp.js";
 import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 
 /**
- * The streaming chunk data payload. Content depends on streaming mode: both modes use 'delta', structured mode adds 'json_path' for field tracking
+ * Incremental content for streaming. Used for both unstructured text streaming (when no output_schema) and structured streaming (when output_schema is provided). For structured streaming, contains actual field values being streamed to the json_path location. Supports all JSON types: strings, numbers, booleans.
  */
-export type FunctionStreamCallStreamPostData = {
+export type Delta = string | number | number | boolean;
+
+/**
+ * Represents the data payload within a Server-Sent Event for streaming function execution.
+ *
+ * @remarks
+ *
+ * This model contains the JSON content sent in the 'data' field of each SSE event.
+ * The fields present depend on the streaming mode:
+ *
+ * **Text Mode (no output_schema):**
+ * - Uses `delta` field for incremental text content
+ * - `chunk_type` will be "text"
+ *
+ * **Structured Mode (with output_schema):**
+ * - Uses `delta` and `json_path` for precise field tracking
+ * - Enables real-time UI updates by showing which schema field is being populated
+ * - `chunk_type` will be "json"
+ *
+ * **JSON Path Examples:**
+ * - `response.summary` - Top-level string field
+ * - `response.people[0].name` - Name of first person in array
+ * - `response.metadata.created_at` - Nested object field
+ */
+export type StreamingChunk = {
   /**
-   * Incremental content for both unstructured and structured streaming. For structured streaming, contains actual field values being streamed to the json_path location
+   * Incremental content for streaming. Used for both unstructured text streaming (when no output_schema) and structured streaming (when output_schema is provided). For structured streaming, contains actual field values being streamed to the json_path location. Supports all JSON types: strings, numbers, booleans.
    */
-  delta?: string | undefined;
+  delta?: string | number | number | boolean | null | undefined;
   /**
-   * Dot-notation path showing which output_schema field is being populated. Enables precise UI updates by routing content to specific components.
+   * Dot-notation path showing exactly which field in your output_schema is being populated. Enables precise UI updates by routing content to specific components. Format: field[index].nested_field
    */
-  jsonPath?: string | undefined;
+  jsonPath?: string | null | undefined;
   /**
-   * Unique identifier for the execution span, included in first streaming chunk
+   * Unique identifier for the execution span, included in the first streaming chunk for tracing
    */
-  spanId?: string | undefined;
+  spanId?: string | null | undefined;
   /**
-   * Streaming mode: 'text' for unstructured, 'json' for structured with output_schema
+   * Indicates the streaming mode: 'text' for unstructured streaming, 'json' for structured streaming with output_schema. Only present when delta content is included.
    */
-  chunkType?: string | undefined;
+  chunkType?: string | null | undefined;
 };
 
 /**
@@ -44,9 +68,28 @@ export type FunctionStreamCallStreamPostResponseBody = {
    */
   event?: string | undefined;
   /**
-   * The streaming chunk data payload. Content depends on streaming mode: both modes use 'delta', structured mode adds 'json_path' for field tracking
+   * Represents the data payload within a Server-Sent Event for streaming function execution.
+   *
+   * @remarks
+   *
+   * This model contains the JSON content sent in the 'data' field of each SSE event.
+   * The fields present depend on the streaming mode:
+   *
+   * **Text Mode (no output_schema):**
+   * - Uses `delta` field for incremental text content
+   * - `chunk_type` will be "text"
+   *
+   * **Structured Mode (with output_schema):**
+   * - Uses `delta` and `json_path` for precise field tracking
+   * - Enables real-time UI updates by showing which schema field is being populated
+   * - `chunk_type` will be "json"
+   *
+   * **JSON Path Examples:**
+   * - `response.summary` - Top-level string field
+   * - `response.people[0].name` - Name of first person in array
+   * - `response.metadata.created_at` - Nested object field
    */
-  data: FunctionStreamCallStreamPostData;
+  data: StreamingChunk;
   /**
    * Retry interval in milliseconds for the SSE connection
    */
@@ -59,15 +102,58 @@ export type FunctionStreamCallStreamPostResponse = {
 };
 
 /** @internal */
-export const FunctionStreamCallStreamPostData$inboundSchema: z.ZodType<
-  FunctionStreamCallStreamPostData,
+export const Delta$inboundSchema: z.ZodType<Delta, z.ZodTypeDef, unknown> = z
+  .union([z.string(), z.number().int(), z.number(), z.boolean()]);
+
+/** @internal */
+export type Delta$Outbound = string | number | number | boolean;
+
+/** @internal */
+export const Delta$outboundSchema: z.ZodType<
+  Delta$Outbound,
+  z.ZodTypeDef,
+  Delta
+> = z.union([z.string(), z.number().int(), z.number(), z.boolean()]);
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace Delta$ {
+  /** @deprecated use `Delta$inboundSchema` instead. */
+  export const inboundSchema = Delta$inboundSchema;
+  /** @deprecated use `Delta$outboundSchema` instead. */
+  export const outboundSchema = Delta$outboundSchema;
+  /** @deprecated use `Delta$Outbound` instead. */
+  export type Outbound = Delta$Outbound;
+}
+
+export function deltaToJSON(delta: Delta): string {
+  return JSON.stringify(Delta$outboundSchema.parse(delta));
+}
+
+export function deltaFromJSON(
+  jsonString: string,
+): SafeParseResult<Delta, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => Delta$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'Delta' from JSON`,
+  );
+}
+
+/** @internal */
+export const StreamingChunk$inboundSchema: z.ZodType<
+  StreamingChunk,
   z.ZodTypeDef,
   unknown
 > = z.object({
-  delta: z.string().optional(),
-  json_path: z.string().optional(),
-  span_id: z.string().optional(),
-  chunk_type: z.string().optional(),
+  delta: z.nullable(
+    z.union([z.string(), z.number().int(), z.number(), z.boolean()]),
+  ).optional(),
+  json_path: z.nullable(z.string()).optional(),
+  span_id: z.nullable(z.string()).optional(),
+  chunk_type: z.nullable(z.string()).optional(),
 }).transform((v) => {
   return remap$(v, {
     "json_path": "jsonPath",
@@ -77,23 +163,25 @@ export const FunctionStreamCallStreamPostData$inboundSchema: z.ZodType<
 });
 
 /** @internal */
-export type FunctionStreamCallStreamPostData$Outbound = {
-  delta?: string | undefined;
-  json_path?: string | undefined;
-  span_id?: string | undefined;
-  chunk_type?: string | undefined;
+export type StreamingChunk$Outbound = {
+  delta?: string | number | number | boolean | null | undefined;
+  json_path?: string | null | undefined;
+  span_id?: string | null | undefined;
+  chunk_type?: string | null | undefined;
 };
 
 /** @internal */
-export const FunctionStreamCallStreamPostData$outboundSchema: z.ZodType<
-  FunctionStreamCallStreamPostData$Outbound,
+export const StreamingChunk$outboundSchema: z.ZodType<
+  StreamingChunk$Outbound,
   z.ZodTypeDef,
-  FunctionStreamCallStreamPostData
+  StreamingChunk
 > = z.object({
-  delta: z.string().optional(),
-  jsonPath: z.string().optional(),
-  spanId: z.string().optional(),
-  chunkType: z.string().optional(),
+  delta: z.nullable(
+    z.union([z.string(), z.number().int(), z.number(), z.boolean()]),
+  ).optional(),
+  jsonPath: z.nullable(z.string()).optional(),
+  spanId: z.nullable(z.string()).optional(),
+  chunkType: z.nullable(z.string()).optional(),
 }).transform((v) => {
   return remap$(v, {
     jsonPath: "json_path",
@@ -106,32 +194,26 @@ export const FunctionStreamCallStreamPostData$outboundSchema: z.ZodType<
  * @internal
  * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
  */
-export namespace FunctionStreamCallStreamPostData$ {
-  /** @deprecated use `FunctionStreamCallStreamPostData$inboundSchema` instead. */
-  export const inboundSchema = FunctionStreamCallStreamPostData$inboundSchema;
-  /** @deprecated use `FunctionStreamCallStreamPostData$outboundSchema` instead. */
-  export const outboundSchema = FunctionStreamCallStreamPostData$outboundSchema;
-  /** @deprecated use `FunctionStreamCallStreamPostData$Outbound` instead. */
-  export type Outbound = FunctionStreamCallStreamPostData$Outbound;
+export namespace StreamingChunk$ {
+  /** @deprecated use `StreamingChunk$inboundSchema` instead. */
+  export const inboundSchema = StreamingChunk$inboundSchema;
+  /** @deprecated use `StreamingChunk$outboundSchema` instead. */
+  export const outboundSchema = StreamingChunk$outboundSchema;
+  /** @deprecated use `StreamingChunk$Outbound` instead. */
+  export type Outbound = StreamingChunk$Outbound;
 }
 
-export function functionStreamCallStreamPostDataToJSON(
-  functionStreamCallStreamPostData: FunctionStreamCallStreamPostData,
-): string {
-  return JSON.stringify(
-    FunctionStreamCallStreamPostData$outboundSchema.parse(
-      functionStreamCallStreamPostData,
-    ),
-  );
+export function streamingChunkToJSON(streamingChunk: StreamingChunk): string {
+  return JSON.stringify(StreamingChunk$outboundSchema.parse(streamingChunk));
 }
 
-export function functionStreamCallStreamPostDataFromJSON(
+export function streamingChunkFromJSON(
   jsonString: string,
-): SafeParseResult<FunctionStreamCallStreamPostData, SDKValidationError> {
+): SafeParseResult<StreamingChunk, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) => FunctionStreamCallStreamPostData$inboundSchema.parse(JSON.parse(x)),
-    `Failed to parse 'FunctionStreamCallStreamPostData' from JSON`,
+    (x) => StreamingChunk$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'StreamingChunk' from JSON`,
   );
 }
 
@@ -153,7 +235,7 @@ export const FunctionStreamCallStreamPostResponseBody$inboundSchema: z.ZodType<
       });
       return z.NEVER;
     }
-  }).pipe(z.lazy(() => FunctionStreamCallStreamPostData$inboundSchema)),
+  }).pipe(z.lazy(() => StreamingChunk$inboundSchema)),
   retry: z.number().int().optional(),
 });
 
@@ -161,7 +243,7 @@ export const FunctionStreamCallStreamPostResponseBody$inboundSchema: z.ZodType<
 export type FunctionStreamCallStreamPostResponseBody$Outbound = {
   id?: string | undefined;
   event?: string | undefined;
-  data: FunctionStreamCallStreamPostData$Outbound;
+  data: StreamingChunk$Outbound;
   retry?: number | undefined;
 };
 
@@ -173,7 +255,7 @@ export const FunctionStreamCallStreamPostResponseBody$outboundSchema: z.ZodType<
 > = z.object({
   id: z.string().optional(),
   event: z.string().optional(),
-  data: z.lazy(() => FunctionStreamCallStreamPostData$outboundSchema),
+  data: z.lazy(() => StreamingChunk$outboundSchema),
   retry: z.number().int().optional(),
 });
 
