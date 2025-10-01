@@ -120,18 +120,13 @@ jobs:
       - name: Check for changes
         id: changes
         run: |
-          git add .
-          if [ -n "$(git status --porcelain --cached)" ]; then
+          if [ -n "$(git status --porcelain)" ]; then
             echo "changes=true" >> $GITHUB_OUTPUT
-            echo "📝 Changes detected:"
-            git status --porcelain --cached
-            
-            # Show a summary of changed files
-            echo "📊 Summary of changes:"
-            git diff --cached --stat
+            echo "Changes detected:"
+            git status --porcelain
           else
             echo "changes=false" >> $GITHUB_OUTPUT
-            echo "✅ No changes detected"
+            echo "No changes detected"
           fi
 
       - name: Create Pull Request
