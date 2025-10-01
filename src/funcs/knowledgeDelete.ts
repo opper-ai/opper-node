@@ -30,7 +30,7 @@ import { Result } from "../types/fp.js";
  * Delete Knowledge Base
  *
  * @remarks
- * Delete a knowledge base by its id
+ * Delete a knowledge base
  */
 export function knowledgeDelete(
   client: OpperCore,

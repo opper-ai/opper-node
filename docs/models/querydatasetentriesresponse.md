@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { QueryDatasetEntriesResponse } from "opperai";
+import { QueryDatasetEntriesResponse } from "opperai/models";
 
 let value: QueryDatasetEntriesResponse = {
   id: "a6f08e44-d3a3-42f5-815b-077859cbbc15",

@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { TextProcessingConfiguration } from "opperai";
+import { TextProcessingConfiguration } from "opperai/models";
 
 let value: TextProcessingConfiguration = {};
 ```

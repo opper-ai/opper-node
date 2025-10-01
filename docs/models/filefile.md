@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { FileFile } from "opperai";
+import { FileFile } from "opperai/models";
 
 let value: FileFile = {};
 ```

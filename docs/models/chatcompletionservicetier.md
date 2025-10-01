@@ -3,13 +3,13 @@
 ## Example Usage
 
 ```typescript
-import { ChatCompletionServiceTier } from "opperai";
+import { ChatCompletionServiceTier } from "opperai/models";
 
-let value: ChatCompletionServiceTier = "flex";
+let value: ChatCompletionServiceTier = "scale";
 ```
 
 ## Values
 
 ```typescript
-"auto" | "default" | "flex"
+"auto" | "default" | "flex" | "scale" | "priority"
 ```

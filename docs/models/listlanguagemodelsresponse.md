@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { ListLanguageModelsResponse } from "opperai";
+import { ListLanguageModelsResponse } from "opperai/models";
 
 let value: ListLanguageModelsResponse = {
   hostingProvider: "azure",

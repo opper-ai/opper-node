@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { UpdateSpanResponse } from "opperai";
+import { UpdateSpanResponse } from "opperai/models";
 
 let value: UpdateSpanResponse = {
   name: "my span",

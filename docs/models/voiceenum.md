@@ -3,13 +3,13 @@
 ## Example Usage
 
 ```typescript
-import { VoiceEnum } from "opperai";
+import { VoiceEnum } from "opperai/models";
 
-let value: VoiceEnum = "fable";
+let value: VoiceEnum = "echo";
 ```
 
 ## Values
 
 ```typescript
-"alloy" | "ash" | "ballad" | "coral" | "echo" | "fable" | "onyx" | "nova" | "sage" | "shimmer" | "verse"
+"alloy" | "ash" | "ballad" | "coral" | "echo" | "sage" | "shimmer" | "verse"
 ```

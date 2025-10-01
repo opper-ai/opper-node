@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { FunctionCallOutput } from "opperai";
+import { FunctionCallOutput } from "opperai/models";
 
 let value: FunctionCallOutput = {
   arguments: "<value>",

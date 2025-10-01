@@ -1,11 +1,12 @@
 # ChatCompletionMessageToolCall
 
-## Example Usage
+
+## Supported Types
+
+### `models.ChatCompletionMessageFunctionToolCall`
 
 ```typescript
-import { ChatCompletionMessageToolCall } from "opperai";
-
-let value: ChatCompletionMessageToolCall = {
+const value: models.ChatCompletionMessageFunctionToolCall = {
   id: "<id>",
   function: {
     arguments: "<value>",
@@ -14,11 +15,15 @@ let value: ChatCompletionMessageToolCall = {
 };
 ```
 
-## Fields
+### `models.ChatCompletionMessageCustomToolCall`
 
-| Field                                                | Type                                                 | Required                                             | Description                                          |
-| ---------------------------------------------------- | ---------------------------------------------------- | ---------------------------------------------------- | ---------------------------------------------------- |
-| `id`                                                 | *string*                                             | :heavy_check_mark:                                   | N/A                                                  |
-| `function`                                           | [models.FunctionOutput](../models/functionoutput.md) | :heavy_check_mark:                                   | N/A                                                  |
-| `type`                                               | *string*                                             | :heavy_check_mark:                                   | N/A                                                  |
-| `additionalProperties`                               | Record<string, *any*>                                | :heavy_minus_sign:                                   | N/A                                                  |
+```typescript
+const value: models.ChatCompletionMessageCustomToolCall = {
+  id: "<id>",
+  custom: {
+    input: "<value>",
+    name: "<value>",
+  },
+};
+```
+

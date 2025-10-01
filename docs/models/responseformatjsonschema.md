@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { ResponseFormatJSONSchema } from "opperai";
+import { ResponseFormatJSONSchema } from "opperai/models";
 
 let value: ResponseFormatJSONSchema = {
   jsonSchema: {

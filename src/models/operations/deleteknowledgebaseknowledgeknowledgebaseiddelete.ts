@@ -10,7 +10,7 @@ import { SDKValidationError } from "../errors/sdkvalidationerror.js";
 
 export type DeleteKnowledgeBaseKnowledgeKnowledgeBaseIdDeleteRequest = {
   /**
-   * The id of the knowledge base to delete
+   * The id of the knowledge base to delete or delete documents from
    */
   knowledgeBaseId: string;
 };

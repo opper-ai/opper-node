@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { CreateDatasetEntryRequest } from "opperai";
+import { CreateDatasetEntryRequest } from "opperai/models";
 
 let value: CreateDatasetEntryRequest = {
   input: {

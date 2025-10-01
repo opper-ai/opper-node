@@ -13,6 +13,7 @@ Update Dataset Entry
 
 ### Example Usage
 
+<!-- UsageSnippet language="typescript" operationID="update_dataset_entry_datasets__dataset_id__entries__entry_id__patch" method="patch" path="/datasets/{dataset_id}/entries/{entry_id}" -->
 ```typescript
 import { Opper } from "opperai";
 

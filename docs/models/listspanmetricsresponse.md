@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { ListSpanMetricsResponse } from "opperai";
+import { ListSpanMetricsResponse } from "opperai/models";
 
 let value: ListSpanMetricsResponse = {
   dimension: "<value>",

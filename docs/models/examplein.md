@@ -3,7 +3,7 @@
 ## Example Usage
 
 ```typescript
-import { ExampleIn } from "opperai";
+import { ExampleIn } from "opperai/models";
 
 let value: ExampleIn = {
   input: "<value>",

@@ -7,6 +7,10 @@ import { CreateMetricSpansSpanIdMetricsPostRequest } from "opperai/models/operat
 
 let value: CreateMetricSpansSpanIdMetricsPostRequest = {
   spanId: "77e87166-1070-405a-b846-55ac0400f27c",
+  createSpanMetricRequest: {
+    dimension: "<value>",
+    value: 1101.07,
+  },
 };
 ```
 

@@ -8,6 +8,12 @@ import { safeParse } from "../lib/schemas.js";
 import { ClosedEnum } from "../types/enums.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import {
+  ChatCompletionAllowedToolChoiceParam,
+  ChatCompletionAllowedToolChoiceParam$inboundSchema,
+  ChatCompletionAllowedToolChoiceParam$Outbound,
+  ChatCompletionAllowedToolChoiceParam$outboundSchema,
+} from "./chatcompletionallowedtoolchoiceparam.js";
+import {
   ChatCompletionAssistantMessageParam,
   ChatCompletionAssistantMessageParam$inboundSchema,
   ChatCompletionAssistantMessageParam$Outbound,
@@ -19,6 +25,12 @@ import {
   ChatCompletionAudioParam$Outbound,
   ChatCompletionAudioParam$outboundSchema,
 } from "./chatcompletionaudioparam.js";
+import {
+  ChatCompletionCustomToolParam,
+  ChatCompletionCustomToolParam$inboundSchema,
+  ChatCompletionCustomToolParam$Outbound,
+  ChatCompletionCustomToolParam$outboundSchema,
+} from "./chatcompletioncustomtoolparam.js";
 import {
   ChatCompletionDeveloperMessageParam,
   ChatCompletionDeveloperMessageParam$inboundSchema,
@@ -37,6 +49,18 @@ import {
   ChatCompletionFunctionMessageParam$Outbound,
   ChatCompletionFunctionMessageParam$outboundSchema,
 } from "./chatcompletionfunctionmessageparam.js";
+import {
+  ChatCompletionFunctionToolParam,
+  ChatCompletionFunctionToolParam$inboundSchema,
+  ChatCompletionFunctionToolParam$Outbound,
+  ChatCompletionFunctionToolParam$outboundSchema,
+} from "./chatcompletionfunctiontoolparam.js";
+import {
+  ChatCompletionNamedToolChoiceCustomParam,
+  ChatCompletionNamedToolChoiceCustomParam$inboundSchema,
+  ChatCompletionNamedToolChoiceCustomParam$Outbound,
+  ChatCompletionNamedToolChoiceCustomParam$outboundSchema,
+} from "./chatcompletionnamedtoolchoicecustomparam.js";
 import {
   ChatCompletionNamedToolChoiceParam,
   ChatCompletionNamedToolChoiceParam$inboundSchema,
@@ -67,12 +91,6 @@ import {
   ChatCompletionToolMessageParam$Outbound,
   ChatCompletionToolMessageParam$outboundSchema,
 } from "./chatcompletiontoolmessageparam.js";
-import {
-  ChatCompletionToolParam,
-  ChatCompletionToolParam$inboundSchema,
-  ChatCompletionToolParam$Outbound,
-  ChatCompletionToolParam$outboundSchema,
-} from "./chatcompletiontoolparam.js";
 import {
   ChatCompletionUserMessageParam,
   ChatCompletionUserMessageParam$inboundSchema,
@@ -146,6 +164,7 @@ export type ChatCompletionNonStreamingModality = ClosedEnum<
 >;
 
 export const ChatCompletionNonStreamingReasoningEffort = {
+  Minimal: "minimal",
   Low: "low",
   Medium: "medium",
   High: "high",
@@ -163,6 +182,8 @@ export const ChatCompletionNonStreamingServiceTier = {
   Auto: "auto",
   Default: "default",
   Flex: "flex",
+  Scale: "scale",
+  Priority: "priority",
 } as const;
 export type ChatCompletionNonStreamingServiceTier = ClosedEnum<
   typeof ChatCompletionNonStreamingServiceTier
@@ -180,8 +201,23 @@ export type ChatCompletionNonStreamingToolChoiceEnum = ClosedEnum<
 >;
 
 export type ChatCompletionNonStreamingToolChoiceUnion =
+  | ChatCompletionAllowedToolChoiceParam
   | ChatCompletionNamedToolChoiceParam
+  | ChatCompletionNamedToolChoiceCustomParam
   | ChatCompletionNonStreamingToolChoiceEnum;
+
+export type ChatCompletionNonStreamingTool =
+  | ChatCompletionFunctionToolParam
+  | ChatCompletionCustomToolParam;
+
+export const ChatCompletionNonStreamingVerbosity = {
+  Low: "low",
+  Medium: "medium",
+  High: "high",
+} as const;
+export type ChatCompletionNonStreamingVerbosity = ClosedEnum<
+  typeof ChatCompletionNonStreamingVerbosity
+>;
 
 export type ChatCompletionNonStreaming = {
   messages: Array<
@@ -210,6 +246,7 @@ export type ChatCompletionNonStreaming = {
   parallelToolCalls?: boolean | undefined;
   prediction?: ChatCompletionPredictionContentParam | null | undefined;
   presencePenalty?: number | null | undefined;
+  promptCacheKey?: string | undefined;
   reasoningEffort?:
     | ChatCompletionNonStreamingReasoningEffort
     | null
@@ -219,6 +256,7 @@ export type ChatCompletionNonStreaming = {
     | ResponseFormatText
     | ResponseFormatJSONObject
     | undefined;
+  safetyIdentifier?: string | undefined;
   seed?: number | null | undefined;
   serviceTier?: ChatCompletionNonStreamingServiceTier | null | undefined;
   stop?: string | Array<string> | null | undefined;
@@ -226,13 +264,18 @@ export type ChatCompletionNonStreaming = {
   streamOptions?: ChatCompletionStreamOptionsParam | null | undefined;
   temperature?: number | null | undefined;
   toolChoice?:
+    | ChatCompletionAllowedToolChoiceParam
     | ChatCompletionNamedToolChoiceParam
+    | ChatCompletionNamedToolChoiceCustomParam
     | ChatCompletionNonStreamingToolChoiceEnum
     | undefined;
-  tools?: Array<ChatCompletionToolParam> | undefined;
+  tools?:
+    | Array<ChatCompletionFunctionToolParam | ChatCompletionCustomToolParam>
+    | undefined;
   topLogprobs?: number | null | undefined;
   topP?: number | null | undefined;
   user?: string | undefined;
+  verbosity?: ChatCompletionNonStreamingVerbosity | null | undefined;
   webSearchOptions?: WebSearchOptions | undefined;
   stream?: false | null | undefined;
   tags?: { [k: string]: any } | null | undefined;
@@ -620,13 +663,17 @@ export const ChatCompletionNonStreamingToolChoiceUnion$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.union([
+  ChatCompletionAllowedToolChoiceParam$inboundSchema,
   ChatCompletionNamedToolChoiceParam$inboundSchema,
+  ChatCompletionNamedToolChoiceCustomParam$inboundSchema,
   ChatCompletionNonStreamingToolChoiceEnum$inboundSchema,
 ]);
 
 /** @internal */
 export type ChatCompletionNonStreamingToolChoiceUnion$Outbound =
+  | ChatCompletionAllowedToolChoiceParam$Outbound
   | ChatCompletionNamedToolChoiceParam$Outbound
+  | ChatCompletionNamedToolChoiceCustomParam$Outbound
   | string;
 
 /** @internal */
@@ -636,7 +683,9 @@ export const ChatCompletionNonStreamingToolChoiceUnion$outboundSchema:
     z.ZodTypeDef,
     ChatCompletionNonStreamingToolChoiceUnion
   > = z.union([
+    ChatCompletionAllowedToolChoiceParam$outboundSchema,
     ChatCompletionNamedToolChoiceParam$outboundSchema,
+    ChatCompletionNamedToolChoiceCustomParam$outboundSchema,
     ChatCompletionNonStreamingToolChoiceEnum$outboundSchema,
   ]);
 
@@ -683,6 +732,87 @@ export function chatCompletionNonStreamingToolChoiceUnionFromJSON(
 }
 
 /** @internal */
+export const ChatCompletionNonStreamingTool$inboundSchema: z.ZodType<
+  ChatCompletionNonStreamingTool,
+  z.ZodTypeDef,
+  unknown
+> = z.union([
+  ChatCompletionFunctionToolParam$inboundSchema,
+  ChatCompletionCustomToolParam$inboundSchema,
+]);
+
+/** @internal */
+export type ChatCompletionNonStreamingTool$Outbound =
+  | ChatCompletionFunctionToolParam$Outbound
+  | ChatCompletionCustomToolParam$Outbound;
+
+/** @internal */
+export const ChatCompletionNonStreamingTool$outboundSchema: z.ZodType<
+  ChatCompletionNonStreamingTool$Outbound,
+  z.ZodTypeDef,
+  ChatCompletionNonStreamingTool
+> = z.union([
+  ChatCompletionFunctionToolParam$outboundSchema,
+  ChatCompletionCustomToolParam$outboundSchema,
+]);
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace ChatCompletionNonStreamingTool$ {
+  /** @deprecated use `ChatCompletionNonStreamingTool$inboundSchema` instead. */
+  export const inboundSchema = ChatCompletionNonStreamingTool$inboundSchema;
+  /** @deprecated use `ChatCompletionNonStreamingTool$outboundSchema` instead. */
+  export const outboundSchema = ChatCompletionNonStreamingTool$outboundSchema;
+  /** @deprecated use `ChatCompletionNonStreamingTool$Outbound` instead. */
+  export type Outbound = ChatCompletionNonStreamingTool$Outbound;
+}
+
+export function chatCompletionNonStreamingToolToJSON(
+  chatCompletionNonStreamingTool: ChatCompletionNonStreamingTool,
+): string {
+  return JSON.stringify(
+    ChatCompletionNonStreamingTool$outboundSchema.parse(
+      chatCompletionNonStreamingTool,
+    ),
+  );
+}
+
+export function chatCompletionNonStreamingToolFromJSON(
+  jsonString: string,
+): SafeParseResult<ChatCompletionNonStreamingTool, SDKValidationError> {
+  return safeParse(
+    jsonString,
+    (x) => ChatCompletionNonStreamingTool$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'ChatCompletionNonStreamingTool' from JSON`,
+  );
+}
+
+/** @internal */
+export const ChatCompletionNonStreamingVerbosity$inboundSchema: z.ZodNativeEnum<
+  typeof ChatCompletionNonStreamingVerbosity
+> = z.nativeEnum(ChatCompletionNonStreamingVerbosity);
+
+/** @internal */
+export const ChatCompletionNonStreamingVerbosity$outboundSchema:
+  z.ZodNativeEnum<typeof ChatCompletionNonStreamingVerbosity> =
+    ChatCompletionNonStreamingVerbosity$inboundSchema;
+
+/**
+ * @internal
+ * @deprecated This namespace will be removed in future versions. Use schemas and types that are exported directly from this module.
+ */
+export namespace ChatCompletionNonStreamingVerbosity$ {
+  /** @deprecated use `ChatCompletionNonStreamingVerbosity$inboundSchema` instead. */
+  export const inboundSchema =
+    ChatCompletionNonStreamingVerbosity$inboundSchema;
+  /** @deprecated use `ChatCompletionNonStreamingVerbosity$outboundSchema` instead. */
+  export const outboundSchema =
+    ChatCompletionNonStreamingVerbosity$outboundSchema;
+}
+
+/** @internal */
 export const ChatCompletionNonStreaming$inboundSchema: z.ZodType<
   ChatCompletionNonStreaming,
   z.ZodTypeDef,
@@ -721,6 +851,7 @@ export const ChatCompletionNonStreaming$inboundSchema: z.ZodType<
   prediction: z.nullable(ChatCompletionPredictionContentParam$inboundSchema)
     .optional(),
   presence_penalty: z.nullable(z.number()).optional(),
+  prompt_cache_key: z.string().optional(),
   reasoning_effort: z.nullable(
     ChatCompletionNonStreamingReasoningEffort$inboundSchema,
   ).optional(),
@@ -729,6 +860,7 @@ export const ChatCompletionNonStreaming$inboundSchema: z.ZodType<
     ResponseFormatText$inboundSchema,
     ResponseFormatJSONObject$inboundSchema,
   ]).optional(),
+  safety_identifier: z.string().optional(),
   seed: z.nullable(z.number().int()).optional(),
   service_tier: z.nullable(ChatCompletionNonStreamingServiceTier$inboundSchema)
     .optional(),
@@ -738,13 +870,22 @@ export const ChatCompletionNonStreaming$inboundSchema: z.ZodType<
     .optional(),
   temperature: z.nullable(z.number()).optional(),
   tool_choice: z.union([
+    ChatCompletionAllowedToolChoiceParam$inboundSchema,
     ChatCompletionNamedToolChoiceParam$inboundSchema,
+    ChatCompletionNamedToolChoiceCustomParam$inboundSchema,
     ChatCompletionNonStreamingToolChoiceEnum$inboundSchema,
   ]).optional(),
-  tools: z.array(ChatCompletionToolParam$inboundSchema).optional(),
+  tools: z.array(
+    z.union([
+      ChatCompletionFunctionToolParam$inboundSchema,
+      ChatCompletionCustomToolParam$inboundSchema,
+    ]),
+  ).optional(),
   top_logprobs: z.nullable(z.number().int()).optional(),
   top_p: z.nullable(z.number()).optional(),
   user: z.string().optional(),
+  verbosity: z.nullable(ChatCompletionNonStreamingVerbosity$inboundSchema)
+    .optional(),
   web_search_options: WebSearchOptions$inboundSchema.optional(),
   stream: z.nullable(z.literal(false).default(false)).optional(),
   tags: z.nullable(z.record(z.any())).optional(),
@@ -758,8 +899,10 @@ export const ChatCompletionNonStreaming$inboundSchema: z.ZodType<
     "max_tokens": "maxTokens",
     "parallel_tool_calls": "parallelToolCalls",
     "presence_penalty": "presencePenalty",
+    "prompt_cache_key": "promptCacheKey",
     "reasoning_effort": "reasoningEffort",
     "response_format": "responseFormat",
+    "safety_identifier": "safetyIdentifier",
     "service_tier": "serviceTier",
     "stream_options": "streamOptions",
     "tool_choice": "toolChoice",
@@ -800,12 +943,14 @@ export type ChatCompletionNonStreaming$Outbound = {
   parallel_tool_calls?: boolean | undefined;
   prediction?: ChatCompletionPredictionContentParam$Outbound | null | undefined;
   presence_penalty?: number | null | undefined;
+  prompt_cache_key?: string | undefined;
   reasoning_effort?: string | null | undefined;
   response_format?:
     | ResponseFormatJSONSchema$Outbound
     | ResponseFormatText$Outbound
     | ResponseFormatJSONObject$Outbound
     | undefined;
+  safety_identifier?: string | undefined;
   seed?: number | null | undefined;
   service_tier?: string | null | undefined;
   stop?: string | Array<string> | null | undefined;
@@ -813,13 +958,21 @@ export type ChatCompletionNonStreaming$Outbound = {
   stream_options?: ChatCompletionStreamOptionsParam$Outbound | null | undefined;
   temperature?: number | null | undefined;
   tool_choice?:
+    | ChatCompletionAllowedToolChoiceParam$Outbound
     | ChatCompletionNamedToolChoiceParam$Outbound
+    | ChatCompletionNamedToolChoiceCustomParam$Outbound
     | string
     | undefined;
-  tools?: Array<ChatCompletionToolParam$Outbound> | undefined;
+  tools?:
+    | Array<
+      | ChatCompletionFunctionToolParam$Outbound
+      | ChatCompletionCustomToolParam$Outbound
+    >
+    | undefined;
   top_logprobs?: number | null | undefined;
   top_p?: number | null | undefined;
   user?: string | undefined;
+  verbosity?: string | null | undefined;
   web_search_options?: WebSearchOptions$Outbound | undefined;
   stream: false | null;
   tags?: { [k: string]: any } | null | undefined;
@@ -865,6 +1018,7 @@ export const ChatCompletionNonStreaming$outboundSchema: z.ZodType<
   prediction: z.nullable(ChatCompletionPredictionContentParam$outboundSchema)
     .optional(),
   presencePenalty: z.nullable(z.number()).optional(),
+  promptCacheKey: z.string().optional(),
   reasoningEffort: z.nullable(
     ChatCompletionNonStreamingReasoningEffort$outboundSchema,
   ).optional(),
@@ -873,6 +1027,7 @@ export const ChatCompletionNonStreaming$outboundSchema: z.ZodType<
     ResponseFormatText$outboundSchema,
     ResponseFormatJSONObject$outboundSchema,
   ]).optional(),
+  safetyIdentifier: z.string().optional(),
   seed: z.nullable(z.number().int()).optional(),
   serviceTier: z.nullable(ChatCompletionNonStreamingServiceTier$outboundSchema)
     .optional(),
@@ -882,13 +1037,22 @@ export const ChatCompletionNonStreaming$outboundSchema: z.ZodType<
     .optional(),
   temperature: z.nullable(z.number()).optional(),
   toolChoice: z.union([
+    ChatCompletionAllowedToolChoiceParam$outboundSchema,
     ChatCompletionNamedToolChoiceParam$outboundSchema,
+    ChatCompletionNamedToolChoiceCustomParam$outboundSchema,
     ChatCompletionNonStreamingToolChoiceEnum$outboundSchema,
   ]).optional(),
-  tools: z.array(ChatCompletionToolParam$outboundSchema).optional(),
+  tools: z.array(
+    z.union([
+      ChatCompletionFunctionToolParam$outboundSchema,
+      ChatCompletionCustomToolParam$outboundSchema,
+    ]),
+  ).optional(),
   topLogprobs: z.nullable(z.number().int()).optional(),
   topP: z.nullable(z.number()).optional(),
   user: z.string().optional(),
+  verbosity: z.nullable(ChatCompletionNonStreamingVerbosity$outboundSchema)
+    .optional(),
   webSearchOptions: WebSearchOptions$outboundSchema.optional(),
   stream: z.nullable(z.literal(false).default(false as const)),
   tags: z.nullable(z.record(z.any())).optional(),
@@ -902,8 +1066,10 @@ export const ChatCompletionNonStreaming$outboundSchema: z.ZodType<
     maxTokens: "max_tokens",
     parallelToolCalls: "parallel_tool_calls",
     presencePenalty: "presence_penalty",
+    promptCacheKey: "prompt_cache_key",
     reasoningEffort: "reasoning_effort",
     responseFormat: "response_format",
+    safetyIdentifier: "safety_identifier",
     serviceTier: "service_tier",
     streamOptions: "stream_options",
     toolChoice: "tool_choice",
