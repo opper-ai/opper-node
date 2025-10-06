@@ -6,7 +6,7 @@
 ### `models.ScorersEnum2`
 
 ```typescript
-const value: models.ScorersEnum2 = "rubrics";
+const value: models.ScorersEnum2 = "max_length";
 ```
 
 ### `{ [k: string]: any }`
