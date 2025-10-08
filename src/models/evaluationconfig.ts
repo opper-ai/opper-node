@@ -15,6 +15,12 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 export const ScorersEnum2 = {
   Base: "base",
   Rubrics: "rubrics",
+  Toxicity: "toxicity",
+  Hallucination: "hallucination",
+  Qa: "qa",
+  AgentToolSelection: "agent_tool_selection",
+  Regex: "regex",
+  MaxLength: "max_length",
 } as const;
 export type ScorersEnum2 = ClosedEnum<typeof ScorersEnum2>;
 
@@ -23,11 +29,17 @@ export type ScorersUnion1 = ScorersEnum2 | { [k: string]: any };
 export const ScorersEnum1 = {
   Base: "base",
   Rubrics: "rubrics",
+  Toxicity: "toxicity",
+  Hallucination: "hallucination",
+  Qa: "qa",
+  AgentToolSelection: "agent_tool_selection",
+  Regex: "regex",
+  MaxLength: "max_length",
 } as const;
 export type ScorersEnum1 = ClosedEnum<typeof ScorersEnum1>;
 
 /**
- * Evaluation scorers to run: 'base', 'rubrics', or a list of them.
+ * Evaluation scorers to run: 'base', 'rubrics', 'toxicity', 'hallucination', 'qa', 'agent_tool_selection', 'regex', 'max_length', or a list of them.
  */
 export type ScorersUnion2 =
   | ScorersEnum1
@@ -41,7 +53,7 @@ export type ScorersUnion2 =
  *
  * - enabled: master switch
  * - scorers: which evaluators to run. Accepts:
- *     - string: "base" | "rubrics"
+ *     - string: "base" | "rubrics" | "toxicity" | "hallucination" | "qa"
  *     - dict: { "rubrics": RubricDefinition-like payload }
  *     - list[str | dict]
  *   "base" is the default scorer.
@@ -52,7 +64,7 @@ export type EvaluationConfig = {
    */
   enabled?: boolean | undefined;
   /**
-   * Evaluation scorers to run: 'base', 'rubrics', or a list of them.
+   * Evaluation scorers to run: 'base', 'rubrics', 'toxicity', 'hallucination', 'qa', 'agent_tool_selection', 'regex', 'max_length', or a list of them.
    */
   scorers?:
     | ScorersEnum1
