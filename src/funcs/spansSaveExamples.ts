@@ -122,7 +122,7 @@ async function $do(
     options: client._options,
     baseURL: options?.serverURL ?? client._baseURL ?? "",
     operationID: "save_to_dataset_spans__span_id__save_examples_post",
-    oAuth2Scopes: [],
+    oAuth2Scopes: null,
 
     resolvedSecurity: requestSecurity,
 
