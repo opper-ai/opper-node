@@ -71,7 +71,7 @@ export type EvaluationConfig = {
     | { [k: string]: any }
     | Array<ScorersEnum2 | { [k: string]: any }>
     | undefined;
-  additionalProperties?: { [k: string]: any };
+  additionalProperties?: { [k: string]: any } | undefined;
 };
 
 /** @internal */
@@ -252,7 +252,7 @@ export const EvaluationConfig$outboundSchema: z.ZodType<
     z.record(z.any()),
     z.array(z.union([ScorersEnum2$outboundSchema, z.record(z.any())])),
   ]).optional(),
-  additionalProperties: z.record(z.any()),
+  additionalProperties: z.record(z.any()).optional(),
 }).transform((v) => {
   return {
     ...v.additionalProperties,

@@ -44,7 +44,7 @@ export type ChatCompletion = {
   serviceTier?: ChatCompletionServiceTier | null | undefined;
   systemFingerprint?: string | null | undefined;
   usage?: CompletionUsage | null | undefined;
-  additionalProperties?: { [k: string]: any };
+  additionalProperties?: { [k: string]: any } | undefined;
 };
 
 /** @internal */
@@ -121,7 +121,7 @@ export const ChatCompletion$outboundSchema: z.ZodType<
   serviceTier: z.nullable(ChatCompletionServiceTier$outboundSchema).optional(),
   systemFingerprint: z.nullable(z.string()).optional(),
   usage: z.nullable(CompletionUsage$outboundSchema).optional(),
-  additionalProperties: z.record(z.any()),
+  additionalProperties: z.record(z.any()).optional(),
 }).transform((v) => {
   return {
     ...v.additionalProperties,

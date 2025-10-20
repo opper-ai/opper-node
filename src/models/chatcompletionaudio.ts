@@ -16,7 +16,7 @@ export type ChatCompletionAudio = {
   data: string;
   expiresAt: number;
   transcript: string;
-  additionalProperties?: { [k: string]: any };
+  additionalProperties?: { [k: string]: any } | undefined;
 };
 
 /** @internal */
@@ -58,7 +58,7 @@ export const ChatCompletionAudio$outboundSchema: z.ZodType<
   data: z.string(),
   expiresAt: z.number().int(),
   transcript: z.string(),
-  additionalProperties: z.record(z.any()),
+  additionalProperties: z.record(z.any()).optional(),
 }).transform((v) => {
   return {
     ...v.additionalProperties,

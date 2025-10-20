@@ -21,7 +21,7 @@ export type ChatCompletionMessageFunctionToolCall = {
   id: string;
   function: FunctionOutput;
   type?: "function" | undefined;
-  additionalProperties?: { [k: string]: any };
+  additionalProperties?: { [k: string]: any } | undefined;
 };
 
 /** @internal */
@@ -56,7 +56,7 @@ export const ChatCompletionMessageFunctionToolCall$outboundSchema: z.ZodType<
   id: z.string(),
   function: FunctionOutput$outboundSchema,
   type: z.literal("function").default("function" as const),
-  additionalProperties: z.record(z.any()),
+  additionalProperties: z.record(z.any()).optional(),
 }).transform((v) => {
   return {
     ...v.additionalProperties,

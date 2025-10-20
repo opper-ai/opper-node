@@ -59,7 +59,7 @@ export type ChatCompletionMessage = {
     >
     | null
     | undefined;
-  additionalProperties?: { [k: string]: any };
+  additionalProperties?: { [k: string]: any } | undefined;
 };
 
 /** @internal */
@@ -189,7 +189,7 @@ export const ChatCompletionMessage$outboundSchema: z.ZodType<
       ]),
     ),
   ).optional(),
-  additionalProperties: z.record(z.any()),
+  additionalProperties: z.record(z.any()).optional(),
 }).transform((v) => {
   return {
     ...v.additionalProperties,

@@ -14,7 +14,7 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 export type CustomOutput = {
   input: string;
   name: string;
-  additionalProperties?: { [k: string]: any };
+  additionalProperties?: { [k: string]: any } | undefined;
 };
 
 /** @internal */
@@ -46,7 +46,7 @@ export const CustomOutput$outboundSchema: z.ZodType<
 > = z.object({
   input: z.string(),
   name: z.string(),
-  additionalProperties: z.record(z.any()),
+  additionalProperties: z.record(z.any()).optional(),
 }).transform((v) => {
   return {
     ...v.additionalProperties,

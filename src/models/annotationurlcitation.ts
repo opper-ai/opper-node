@@ -16,7 +16,7 @@ export type AnnotationURLCitation = {
   startIndex: number;
   title: string;
   url: string;
-  additionalProperties?: { [k: string]: any };
+  additionalProperties?: { [k: string]: any } | undefined;
 };
 
 /** @internal */
@@ -59,7 +59,7 @@ export const AnnotationURLCitation$outboundSchema: z.ZodType<
   startIndex: z.number().int(),
   title: z.string(),
   url: z.string(),
-  additionalProperties: z.record(z.any()),
+  additionalProperties: z.record(z.any()).optional(),
 }).transform((v) => {
   return {
     ...v.additionalProperties,

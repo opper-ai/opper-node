@@ -15,7 +15,7 @@ export type TopLogprob = {
   token: string;
   bytes?: Array<number> | null | undefined;
   logprob: number;
-  additionalProperties?: { [k: string]: any };
+  additionalProperties?: { [k: string]: any } | undefined;
 };
 
 /** @internal */
@@ -50,7 +50,7 @@ export const TopLogprob$outboundSchema: z.ZodType<
   token: z.string(),
   bytes: z.nullable(z.array(z.number().int())).optional(),
   logprob: z.number(),
-  additionalProperties: z.record(z.any()),
+  additionalProperties: z.record(z.any()).optional(),
 }).transform((v) => {
   return {
     ...v.additionalProperties,

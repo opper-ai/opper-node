@@ -20,7 +20,7 @@ export type GetUsageResultItem = {
    * The cost in USD for the time bucket
    */
   cost: string;
-  additionalProperties?: { [k: string]: any };
+  additionalProperties?: { [k: string]: any } | undefined;
 };
 
 /** @internal */
@@ -58,7 +58,7 @@ export const GetUsageResultItem$outboundSchema: z.ZodType<
 > = z.object({
   timeBucket: z.date().transform(v => v.toISOString()),
   cost: z.string(),
-  additionalProperties: z.record(z.any()),
+  additionalProperties: z.record(z.any()).optional(),
 }).transform((v) => {
   return {
     ...v.additionalProperties,

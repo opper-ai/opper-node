@@ -22,7 +22,7 @@ export type ChatCompletionTokenLogprob = {
   bytes?: Array<number> | null | undefined;
   logprob: number;
   topLogprobs: Array<TopLogprob>;
-  additionalProperties?: { [k: string]: any };
+  additionalProperties?: { [k: string]: any } | undefined;
 };
 
 /** @internal */
@@ -64,7 +64,7 @@ export const ChatCompletionTokenLogprob$outboundSchema: z.ZodType<
   bytes: z.nullable(z.array(z.number().int())).optional(),
   logprob: z.number(),
   topLogprobs: z.array(TopLogprob$outboundSchema),
-  additionalProperties: z.record(z.any()),
+  additionalProperties: z.record(z.any()).optional(),
 }).transform((v) => {
   return {
     ...v.additionalProperties,

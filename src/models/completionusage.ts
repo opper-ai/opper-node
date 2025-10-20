@@ -29,7 +29,7 @@ export type CompletionUsage = {
   totalTokens: number;
   completionTokensDetails?: CompletionTokensDetails | null | undefined;
   promptTokensDetails?: PromptTokensDetails | null | undefined;
-  additionalProperties?: { [k: string]: any };
+  additionalProperties?: { [k: string]: any } | undefined;
 };
 
 /** @internal */
@@ -85,7 +85,7 @@ export const CompletionUsage$outboundSchema: z.ZodType<
     .optional(),
   promptTokensDetails: z.nullable(PromptTokensDetails$outboundSchema)
     .optional(),
-  additionalProperties: z.record(z.any()),
+  additionalProperties: z.record(z.any()).optional(),
 }).transform((v) => {
   return {
     ...v.additionalProperties,

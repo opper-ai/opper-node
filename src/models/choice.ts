@@ -38,7 +38,7 @@ export type Choice = {
   index: number;
   logprobs?: ChoiceLogprobs | null | undefined;
   message: ChatCompletionMessage;
-  additionalProperties?: { [k: string]: any };
+  additionalProperties?: { [k: string]: any } | undefined;
 };
 
 /** @internal */
@@ -96,7 +96,7 @@ export const Choice$outboundSchema: z.ZodType<
   index: z.number().int(),
   logprobs: z.nullable(ChoiceLogprobs$outboundSchema).optional(),
   message: ChatCompletionMessage$outboundSchema,
-  additionalProperties: z.record(z.any()),
+  additionalProperties: z.record(z.any()).optional(),
 }).transform((v) => {
   return {
     ...v.additionalProperties,

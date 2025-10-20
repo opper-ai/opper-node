@@ -14,7 +14,7 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 export type PromptTokensDetails = {
   audioTokens?: number | null | undefined;
   cachedTokens?: number | null | undefined;
-  additionalProperties?: { [k: string]: any };
+  additionalProperties?: { [k: string]: any } | undefined;
 };
 
 /** @internal */
@@ -51,7 +51,7 @@ export const PromptTokensDetails$outboundSchema: z.ZodType<
 > = z.object({
   audioTokens: z.nullable(z.number().int()).optional(),
   cachedTokens: z.nullable(z.number().int()).optional(),
-  additionalProperties: z.record(z.any()),
+  additionalProperties: z.record(z.any()).optional(),
 }).transform((v) => {
   return {
     ...v.additionalProperties,

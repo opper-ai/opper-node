@@ -20,7 +20,7 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 export type ChoiceLogprobs = {
   content?: Array<ChatCompletionTokenLogprob> | null | undefined;
   refusal?: Array<ChatCompletionTokenLogprob> | null | undefined;
-  additionalProperties?: { [k: string]: any };
+  additionalProperties?: { [k: string]: any } | undefined;
 };
 
 /** @internal */
@@ -56,7 +56,7 @@ export const ChoiceLogprobs$outboundSchema: z.ZodType<
     .optional(),
   refusal: z.nullable(z.array(ChatCompletionTokenLogprob$outboundSchema))
     .optional(),
-  additionalProperties: z.record(z.any()),
+  additionalProperties: z.record(z.any()).optional(),
 }).transform((v) => {
   return {
     ...v.additionalProperties,
