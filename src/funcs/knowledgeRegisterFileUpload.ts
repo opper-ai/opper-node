@@ -141,7 +141,7 @@ async function $do(
     baseURL: options?.serverURL ?? client._baseURL ?? "",
     operationID:
       "register_file_upload_knowledge__knowledge_base_id__register_file_post",
-    oAuth2Scopes: [],
+    oAuth2Scopes: null,
 
     resolvedSecurity: requestSecurity,
 

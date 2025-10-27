@@ -1,14 +1,14 @@
-# ListFunctionsResponseItem
+# ListFunctionsResponseItemOutput
 
 ## Example Usage
 
 ```typescript
-import { ListFunctionsResponseItem } from "opperai/models";
+import { ListFunctionsResponseItemOutput } from "opperai/models";
 
-let value: ListFunctionsResponseItem = {
-  id: "de4d3f01-4815-4bf2-8db1-c7371a2e3679",
+let value: ListFunctionsResponseItemOutput = {
+  id: "5b5f1e7b-57a1-46bb-85f6-d8f5b064b0d9",
   name: "my-function",
-  revisionId: "8d3f4d1a-320c-4855-ba5b-547a63cb0c82",
+  revisionId: "1384e066-9b29-416c-b154-fdccf865822f",
 };
 ```
 

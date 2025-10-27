@@ -1,11 +1,11 @@
-# FunctionCallInput
+# OpenaiTypesChatChatCompletionAssistantMessageParamFunctionCall
 
 ## Example Usage
 
 ```typescript
-import { FunctionCallInput } from "opperai/models";
+import { OpenaiTypesChatChatCompletionAssistantMessageParamFunctionCall } from "opperai/models";
 
-let value: FunctionCallInput = {
+let value: OpenaiTypesChatChatCompletionAssistantMessageParamFunctionCall = {
   arguments: "<value>",
   name: "<value>",
 };

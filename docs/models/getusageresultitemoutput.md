@@ -1,13 +1,13 @@
-# GetUsageResultItem
+# GetUsageResultItemOutput
 
 ## Example Usage
 
 ```typescript
-import { GetUsageResultItem } from "opperai/models";
+import { GetUsageResultItemOutput } from "opperai/models";
 
-let value: GetUsageResultItem = {
-  timeBucket: new Date("2025-04-06T02:05:28.462Z"),
-  cost: "997.89",
+let value: GetUsageResultItemOutput = {
+  timeBucket: new Date("2024-02-11T03:08:43.876Z"),
+  cost: "303.09",
 };
 ```
 

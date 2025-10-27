@@ -136,7 +136,7 @@ async function $do(
     baseURL: options?.serverURL ?? client._baseURL ?? "",
     operationID:
       "get_function_by_revision_functions__function_id__revisions__revision_id__get",
-    oAuth2Scopes: [],
+    oAuth2Scopes: null,
 
     resolvedSecurity: requestSecurity,
 

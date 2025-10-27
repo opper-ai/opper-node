@@ -1,11 +1,11 @@
-# ChatCompletionMessageCustomToolCall
+# ChatCompletionMessageCustomToolCallOutput
 
 ## Example Usage
 
 ```typescript
-import { ChatCompletionMessageCustomToolCall } from "opperai/models";
+import { ChatCompletionMessageCustomToolCallOutput } from "opperai/models";
 
-let value: ChatCompletionMessageCustomToolCall = {
+let value: ChatCompletionMessageCustomToolCallOutput = {
   id: "<id>",
   custom: {
     input: "<value>",

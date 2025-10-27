@@ -1,11 +1,11 @@
-# ChoiceLogprobs
+# ChoiceLogprobsOutput
 
 ## Example Usage
 
 ```typescript
-import { ChoiceLogprobs } from "opperai/models";
+import { ChoiceLogprobsOutput } from "opperai/models";
 
-let value: ChoiceLogprobs = {};
+let value: ChoiceLogprobsOutput = {};
 ```
 
 ## Fields

@@ -129,7 +129,7 @@ async function $do(
     baseURL: options?.serverURL ?? client._baseURL ?? "",
     operationID:
       "get_knowledge_base_by_name_knowledge_by_name__knowledge_base_name__get",
-    oAuth2Scopes: [],
+    oAuth2Scopes: null,
 
     resolvedSecurity: requestSecurity,
 

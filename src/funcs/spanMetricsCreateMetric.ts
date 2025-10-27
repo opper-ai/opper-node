@@ -132,7 +132,7 @@ async function $do(
     options: client._options,
     baseURL: options?.serverURL ?? client._baseURL ?? "",
     operationID: "create_metric_spans__span_id__metrics_post",
-    oAuth2Scopes: [],
+    oAuth2Scopes: null,
 
     resolvedSecurity: requestSecurity,
 

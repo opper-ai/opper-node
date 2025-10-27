@@ -1,11 +1,11 @@
-# ChatCompletionMessageFunctionToolCall
+# ChatCompletionMessageFunctionToolCallOutput
 
 ## Example Usage
 
 ```typescript
-import { ChatCompletionMessageFunctionToolCall } from "opperai/models";
+import { ChatCompletionMessageFunctionToolCallOutput } from "opperai/models";
 
-let value: ChatCompletionMessageFunctionToolCall = {
+let value: ChatCompletionMessageFunctionToolCallOutput = {
   id: "<id>",
   function: {
     arguments: "<value>",

@@ -18,7 +18,7 @@ export class Analytics extends ClientSDK {
     fields?: Array<string> | null | undefined,
     groupBy?: Array<string> | null | undefined,
     options?: RequestOptions,
-  ): Promise<Array<models.GetUsageResultItem>> {
+  ): Promise<Array<models.GetUsageResultItemOutput>> {
     return unwrapAsync(analyticsGetUsage(
       this,
       fromDate,

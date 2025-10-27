@@ -84,7 +84,7 @@ run();
 
 ### Response
 
-**Promise\<[models.GetUsageResultItem[]](../../models/.md)\>**
+**Promise\<[models.GetUsageResultItemOutput[]](../../models/.md)\>**
 
 ### Errors
 
