@@ -59,6 +59,8 @@ import { tool$modelsGetModelAliasModelsAliasesAliasIdGet } from "./tools/modelsG
 import { tool$modelsListModelAliasesModelsAliasesGet } from "./tools/modelsListModelAliasesModelsAliasesGet.js";
 import { tool$modelsUpdateModelAliasModelsAliasesAliasIdPatch } from "./tools/modelsUpdateModelAliasModelsAliasesAliasIdPatch.js";
 import { tool$openaiCreateChatCompletion } from "./tools/openaiCreateChatCompletion.js";
+import { tool$rerankListRerankModelsRerankModelsGet } from "./tools/rerankListRerankModelsRerankModelsGet.js";
+import { tool$rerankRerankDocumentsRerankPost } from "./tools/rerankRerankDocumentsRerankPost.js";
 import { tool$spanMetricsCreateMetric } from "./tools/spanMetricsCreateMetric.js";
 import { tool$spanMetricsDelete } from "./tools/spanMetricsDelete.js";
 import { tool$spanMetricsGet } from "./tools/spanMetricsGet.js";
@@ -83,7 +85,7 @@ export function createMCPServer(deps: {
 }) {
   const server = new McpServer({
     name: "Opper",
-    version: "3.2.0",
+    version: "3.3.0",
   });
 
   const client = new OpperCore({
@@ -169,6 +171,8 @@ export function createMCPServer(deps: {
   tool(tool$modelsDeleteModelAliasModelsAliasesAliasIdDelete);
   tool(tool$modelsGetModelAliasByNameModelsAliasesByNameNameGet);
   tool(tool$openaiCreateChatCompletion);
+  tool(tool$rerankRerankDocumentsRerankPost);
+  tool(tool$rerankListRerankModelsRerankModelsGet);
   tool(tool$analyticsGetUsage);
   tool(tool$datasetsEntriesUpdate);
   tool(tool$functionsRevisionsList);

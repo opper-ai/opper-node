@@ -16,6 +16,7 @@ import { Knowledge } from "./knowledge.js";
 import { LanguageModels } from "./languagemodels.js";
 import { Models } from "./models.js";
 import { Openai } from "./openai.js";
+import { Rerank } from "./rerank.js";
 import { SpanMetrics } from "./spanmetrics.js";
 import { Spans } from "./spans.js";
 import { Traces } from "./traces.js";
@@ -69,6 +70,11 @@ export class Opper extends ClientSDK {
   private _openai?: Openai;
   get openai(): Openai {
     return (this._openai ??= new Openai(this._options));
+  }
+
+  private _rerank?: Rerank;
+  get rerank(): Rerank {
+    return (this._rerank ??= new Rerank(this._options));
   }
 
   private _analytics?: Analytics;

@@ -1,18 +1,18 @@
 lockVersion: 2.0.0
 id: 7fd487cb-2a73-459e-99e5-2c4e6547175f
 management:
-  docChecksum: f153c67b5c6879442d610c3c4ad3544e
+  docChecksum: aa88d07957f16c0b385e8d391e8503c1
   docVersion: 2.0.0
-  speakeasyVersion: 1.634.2
-  generationVersion: 2.721.3
-  releaseVersion: 3.2.0
-  configChecksum: 6ebc6cac070d05eea4b6913bd730c2cc
+  speakeasyVersion: 1.645.2
+  generationVersion: 2.735.1
+  releaseVersion: 3.3.0
+  configChecksum: 0b80764b0dc789efff29694a4ecd7425
 features:
   typescript:
     additionalDependencies: 0.1.0
-    additionalProperties: 0.1.1
+    additionalProperties: 0.1.2
     constsAndDefaults: 0.1.12
-    core: 3.21.26
+    core: 3.24.2
     defaultEnabledRetries: 0.1.0
     devContainers: 2.90.1
     enumUnions: 0.1.0
@@ -21,15 +21,15 @@ features:
     globalSecurity: 2.82.14
     globalSecurityCallbacks: 0.1.0
     globalSecurityFlattening: 0.1.0
-    globalServerURLs: 2.82.5
-    groups: 2.81.2
+    globalServerURLs: 2.83.0
+    groups: 2.81.3
     mcpServer: 0.9.3
     nameOverrides: 2.81.2
     nullables: 0.1.1
     responseFormat: 0.2.3
     retries: 2.83.0
     sdkHooks: 0.3.0
-    serverEvents: 0.1.10
+    serverEvents: 0.1.12
     unions: 2.86.0
 generatedFiles:
   - .devcontainer/README.md
@@ -183,6 +183,7 @@ generatedFiles:
   - docs/models/listknowledgebasesresponse.md
   - docs/models/listlanguagemodelsresponse.md
   - docs/models/listmodelaliasesresponseitem.md
+  - docs/models/listrerankmodelsresponse.md
   - docs/models/listspanmetricsresponse.md
   - docs/models/listtracesresponse.md
   - docs/models/meta.md
@@ -263,6 +264,7 @@ generatedFiles:
   - docs/models/paginatedresponselistknowledgebasesresponse.md
   - docs/models/paginatedresponselistlanguagemodelsresponse.md
   - docs/models/paginatedresponselistmodelaliasesresponseitem.md
+  - docs/models/paginatedresponselistrerankmodelsresponse.md
   - docs/models/paginatedresponselistspanmetricsresponse.md
   - docs/models/paginatedresponselisttracesresponse.md
   - docs/models/prompttokensdetails.md
@@ -273,6 +275,11 @@ generatedFiles:
   - docs/models/registercustommodelresponse.md
   - docs/models/registerfileuploadrequest.md
   - docs/models/registerfileuploadresponse.md
+  - docs/models/rerankcost.md
+  - docs/models/rerankdocument.md
+  - docs/models/rerankrequestmodel.md
+  - docs/models/rerankresponsemodel.md
+  - docs/models/rerankresult.md
   - docs/models/responseformatjsonobject.md
   - docs/models/responseformatjsonschema.md
   - docs/models/responseformattext.md
@@ -320,6 +327,7 @@ generatedFiles:
   - docs/sdks/models/README.md
   - docs/sdks/openai/README.md
   - docs/sdks/opper/README.md
+  - docs/sdks/rerank/README.md
   - docs/sdks/revisions/README.md
   - docs/sdks/spanmetrics/README.md
   - docs/sdks/spans/README.md
@@ -378,6 +386,8 @@ generatedFiles:
   - src/funcs/modelsListModelAliasesModelsAliasesGet.ts
   - src/funcs/modelsUpdateModelAliasModelsAliasesAliasIdPatch.ts
   - src/funcs/openaiCreateChatCompletion.ts
+  - src/funcs/rerankListRerankModelsRerankModelsGet.ts
+  - src/funcs/rerankRerankDocumentsRerankPost.ts
   - src/funcs/spanMetricsCreateMetric.ts
   - src/funcs/spanMetricsDelete.ts
   - src/funcs/spanMetricsGet.ts
@@ -471,6 +481,8 @@ generatedFiles:
   - src/mcp-server/tools/modelsListModelAliasesModelsAliasesGet.ts
   - src/mcp-server/tools/modelsUpdateModelAliasModelsAliasesAliasIdPatch.ts
   - src/mcp-server/tools/openaiCreateChatCompletion.ts
+  - src/mcp-server/tools/rerankListRerankModelsRerankModelsGet.ts
+  - src/mcp-server/tools/rerankRerankDocumentsRerankPost.ts
   - src/mcp-server/tools/spanMetricsCreateMetric.ts
   - src/mcp-server/tools/spanMetricsDelete.ts
   - src/mcp-server/tools/spanMetricsGet.ts
@@ -591,6 +603,7 @@ generatedFiles:
   - src/models/listknowledgebasesresponse.ts
   - src/models/listlanguagemodelsresponse.ts
   - src/models/listmodelaliasesresponseitem.ts
+  - src/models/listrerankmodelsresponse.ts
   - src/models/listspanmetricsresponse.ts
   - src/models/listtracesresponse.ts
   - src/models/meta.ts
@@ -662,6 +675,7 @@ generatedFiles:
   - src/models/paginatedresponselistknowledgebasesresponse.ts
   - src/models/paginatedresponselistlanguagemodelsresponse.ts
   - src/models/paginatedresponselistmodelaliasesresponseitem.ts
+  - src/models/paginatedresponselistrerankmodelsresponse.ts
   - src/models/paginatedresponselistspanmetricsresponse.ts
   - src/models/paginatedresponselisttracesresponse.ts
   - src/models/prompttokensdetails.ts
@@ -672,6 +686,11 @@ generatedFiles:
   - src/models/registercustommodelresponse.ts
   - src/models/registerfileuploadrequest.ts
   - src/models/registerfileuploadresponse.ts
+  - src/models/rerankcost.ts
+  - src/models/rerankdocument.ts
+  - src/models/rerankrequestmodel.ts
+  - src/models/rerankresponsemodel.ts
+  - src/models/rerankresult.ts
   - src/models/responseformatjsonobject.ts
   - src/models/responseformatjsonschema.ts
   - src/models/responseformattext.ts
@@ -708,6 +727,7 @@ generatedFiles:
   - src/sdk/languagemodels.ts
   - src/sdk/models.ts
   - src/sdk/openai.ts
+  - src/sdk/rerank.ts
   - src/sdk/revisions.ts
   - src/sdk/sdk.ts
   - src/sdk/spanmetrics.ts
@@ -1001,7 +1021,7 @@ examples:
         path:
           span_id: "77b258a2-45c1-4b87-a50c-9116bc8ed1d6"
       requestBody:
-        application/json: {"name": "my span", "start_time": "2025-10-06T07:45:28.269423Z", "type": "email_tool", "end_time": "2025-10-06T07:45:28.269488Z", "input": "Hello, world!", "output": "Hello, world!", "error": "Exception: This is an error message", "meta": {"key": "value"}, "score": 10}
+        application/json: {"name": "my span", "start_time": "2025-11-01T20:55:14.992513Z", "type": "email_tool", "end_time": "2025-11-01T20:55:14.992612Z", "input": "Hello, world!", "output": "Hello, world!", "error": "Exception: This is an error message", "meta": {"key": "value"}, "score": 10}
       responses:
         "200":
           application/json: {"name": "my span", "start_time": "2024-03-20T10:00:00+00:00", "id": "84d9ffc8-336c-4953-b92f-fe05d5405951", "trace_id": "123e4567-e89b-12d3-a456-426614174000", "parent_id": "123e4567-e89b-12d3-a456-426614174000", "type": "email_tool", "end_time": "2024-03-20T10:00:10+00:00", "input": "Hello, world!", "output": "Hello, world!", "error": "Exception: This is an error message", "meta": {"key": "value"}, "score": 10}
@@ -1913,6 +1933,34 @@ examples:
       responses:
         "200":
           application/json: {"id": "aa643f83-7979-4c73-8382-fa6d10384a41", "name": "<value>", "fallback_models": ["<value 1>", "<value 2>", "<value 3>"]}
+        "400":
+          application/json: {"type": "BadRequestError", "message": "The request is invalid", "detail": "The request is invalid"}
+        "401":
+          application/json: {"type": "UnauthorizedError", "message": "The request is unauthorized", "detail": "The API key is invalid"}
+        "404":
+          application/json: {"type": "NotFoundError", "message": "The resource was not found", "detail": "Span 123e4567-e89b-12d3-a456-426614174000 not found"}
+        "422":
+          application/json: {"type": "RequestValidationError", "message": "The request is invalid", "detail": {"input": "input value", "loc": ["path", "to", "error"], "msg": "error message", "type": "type of error"}}
+  rerank_documents_rerank_post:
+    speakeasy-default-rerank-documents-rerank-post:
+      requestBody:
+        application/json: {"query": "<value>", "documents": [{"text": "<value>"}], "model": "Mustang", "return_documents": true}
+      responses:
+        "200":
+          application/json: {"id": "<id>", "results": [], "model": "Model Y", "usage": {}}
+        "400":
+          application/json: {"type": "BadRequestError", "message": "The request is invalid", "detail": "The request is invalid"}
+        "401":
+          application/json: {"type": "UnauthorizedError", "message": "The request is unauthorized", "detail": "The API key is invalid"}
+        "404":
+          application/json: {"type": "NotFoundError", "message": "The resource was not found", "detail": "Span 123e4567-e89b-12d3-a456-426614174000 not found"}
+        "422":
+          application/json: {"type": "RequestValidationError", "message": "The request is invalid", "detail": {"input": "input value", "loc": ["path", "to", "error"], "msg": "error message", "type": "type of error"}}
+  list_rerank_models_rerank_models_get:
+    speakeasy-default-list-rerank-models-rerank-models-get:
+      responses:
+        "200":
+          application/json: {"meta": {"total_count": 1}, "data": [{"hosting_provider": "Cohere", "name": "rerank-v3.5", "location": "US", "cost_per_request": 0.002}]}
         "400":
           application/json: {"type": "BadRequestError", "message": "The request is invalid", "detail": "The request is invalid"}
         "401":
