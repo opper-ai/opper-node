@@ -32,7 +32,7 @@ import { Result } from "../types/fp.js";
  * @remarks
  * Delete documents from a knowledge base based on filters
  */
-export function knowledgeDeleteDocumentsKnowledgeKnowledgeBaseIdQueryDelete(
+export function knowledgeDeleteDocuments(
   client: OpperCore,
   knowledgeBaseId: string,
   deleteKnowledgeBaseRequest?:

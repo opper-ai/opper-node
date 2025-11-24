@@ -1,12 +1,12 @@
 lockVersion: 2.0.0
 id: 7fd487cb-2a73-459e-99e5-2c4e6547175f
 management:
-  docChecksum: 75a7e0a795d8f03dd63f3bf55e9bd31b
+  docChecksum: 8a701aa5036da0a2919658f49f4c88f3
   docVersion: 2.0.0
   speakeasyVersion: 1.660.0
   generationVersion: 2.760.2
-  releaseVersion: 3.3.0
-  configChecksum: 5fe0329aefdad6d4a4b068c7242bdeb4
+  releaseVersion: 3.3.1
+  configChecksum: 18bd011b72904dd62ac5fb36d42f1066
 features:
   typescript:
     additionalDependencies: 0.1.0
@@ -363,13 +363,13 @@ generatedFiles:
   - src/funcs/knowledgeAdd.ts
   - src/funcs/knowledgeCreate.ts
   - src/funcs/knowledgeDelete.ts
-  - src/funcs/knowledgeDeleteDocumentsKnowledgeKnowledgeBaseIdQueryDelete.ts
+  - src/funcs/knowledgeDeleteDocuments.ts
   - src/funcs/knowledgeDeleteFile.ts
   - src/funcs/knowledgeGet.ts
   - src/funcs/knowledgeGetByName.ts
   - src/funcs/knowledgeGetUploadUrl.ts
   - src/funcs/knowledgeList.ts
-  - src/funcs/knowledgeListFilesKnowledgeKnowledgeBaseIdFilesGet.ts
+  - src/funcs/knowledgeListFiles.ts
   - src/funcs/knowledgeQuery.ts
   - src/funcs/knowledgeRegisterFileUpload.ts
   - src/funcs/languageModelsDeleteCustom.ts
@@ -459,13 +459,13 @@ generatedFiles:
   - src/mcp-server/tools/knowledgeAdd.ts
   - src/mcp-server/tools/knowledgeCreate.ts
   - src/mcp-server/tools/knowledgeDelete.ts
-  - src/mcp-server/tools/knowledgeDeleteDocumentsKnowledgeKnowledgeBaseIdQueryDelete.ts
+  - src/mcp-server/tools/knowledgeDeleteDocuments.ts
   - src/mcp-server/tools/knowledgeDeleteFile.ts
   - src/mcp-server/tools/knowledgeGet.ts
   - src/mcp-server/tools/knowledgeGetByName.ts
   - src/mcp-server/tools/knowledgeGetUploadUrl.ts
   - src/mcp-server/tools/knowledgeList.ts
-  - src/mcp-server/tools/knowledgeListFilesKnowledgeKnowledgeBaseIdFilesGet.ts
+  - src/mcp-server/tools/knowledgeListFiles.ts
   - src/mcp-server/tools/knowledgeQuery.ts
   - src/mcp-server/tools/knowledgeRegisterFileUpload.ts
   - src/mcp-server/tools/languageModelsDeleteCustom.ts

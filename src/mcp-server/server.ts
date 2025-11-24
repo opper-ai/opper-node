@@ -37,13 +37,13 @@ import { tool$functionsUpdate } from "./tools/functionsUpdate.js";
 import { tool$knowledgeAdd } from "./tools/knowledgeAdd.js";
 import { tool$knowledgeCreate } from "./tools/knowledgeCreate.js";
 import { tool$knowledgeDelete } from "./tools/knowledgeDelete.js";
-import { tool$knowledgeDeleteDocumentsKnowledgeKnowledgeBaseIdQueryDelete } from "./tools/knowledgeDeleteDocumentsKnowledgeKnowledgeBaseIdQueryDelete.js";
+import { tool$knowledgeDeleteDocuments } from "./tools/knowledgeDeleteDocuments.js";
 import { tool$knowledgeDeleteFile } from "./tools/knowledgeDeleteFile.js";
 import { tool$knowledgeGet } from "./tools/knowledgeGet.js";
 import { tool$knowledgeGetByName } from "./tools/knowledgeGetByName.js";
 import { tool$knowledgeGetUploadUrl } from "./tools/knowledgeGetUploadUrl.js";
 import { tool$knowledgeList } from "./tools/knowledgeList.js";
-import { tool$knowledgeListFilesKnowledgeKnowledgeBaseIdFilesGet } from "./tools/knowledgeListFilesKnowledgeKnowledgeBaseIdFilesGet.js";
+import { tool$knowledgeListFiles } from "./tools/knowledgeListFiles.js";
 import { tool$knowledgeQuery } from "./tools/knowledgeQuery.js";
 import { tool$knowledgeRegisterFileUpload } from "./tools/knowledgeRegisterFileUpload.js";
 import { tool$languageModelsDeleteCustom } from "./tools/languageModelsDeleteCustom.js";
@@ -86,7 +86,7 @@ export function createMCPServer(deps: {
 }) {
   const server = new McpServer({
     name: "Opper",
-    version: "3.3.0",
+    version: "3.3.1",
   });
 
   const client = new OpperCore({
@@ -126,9 +126,9 @@ export function createMCPServer(deps: {
   tool(tool$knowledgeGetUploadUrl);
   tool(tool$knowledgeRegisterFileUpload);
   tool(tool$knowledgeDeleteFile);
-  tool(tool$knowledgeListFilesKnowledgeKnowledgeBaseIdFilesGet);
+  tool(tool$knowledgeListFiles);
   tool(tool$knowledgeQuery);
-  tool(tool$knowledgeDeleteDocumentsKnowledgeKnowledgeBaseIdQueryDelete);
+  tool(tool$knowledgeDeleteDocuments);
   tool(tool$knowledgeAdd);
   tool(tool$tracesList);
   tool(tool$tracesGet);

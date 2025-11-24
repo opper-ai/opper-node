@@ -5,13 +5,13 @@
 import { knowledgeAdd } from "../funcs/knowledgeAdd.js";
 import { knowledgeCreate } from "../funcs/knowledgeCreate.js";
 import { knowledgeDelete } from "../funcs/knowledgeDelete.js";
-import { knowledgeDeleteDocumentsKnowledgeKnowledgeBaseIdQueryDelete } from "../funcs/knowledgeDeleteDocumentsKnowledgeKnowledgeBaseIdQueryDelete.js";
+import { knowledgeDeleteDocuments } from "../funcs/knowledgeDeleteDocuments.js";
 import { knowledgeDeleteFile } from "../funcs/knowledgeDeleteFile.js";
 import { knowledgeGet } from "../funcs/knowledgeGet.js";
 import { knowledgeGetByName } from "../funcs/knowledgeGetByName.js";
 import { knowledgeGetUploadUrl } from "../funcs/knowledgeGetUploadUrl.js";
 import { knowledgeList } from "../funcs/knowledgeList.js";
-import { knowledgeListFilesKnowledgeKnowledgeBaseIdFilesGet } from "../funcs/knowledgeListFilesKnowledgeKnowledgeBaseIdFilesGet.js";
+import { knowledgeListFiles } from "../funcs/knowledgeListFiles.js";
 import { knowledgeQuery } from "../funcs/knowledgeQuery.js";
 import { knowledgeRegisterFileUpload } from "../funcs/knowledgeRegisterFileUpload.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
@@ -179,13 +179,13 @@ export class Knowledge extends ClientSDK {
    * @remarks
    * List all files in a knowledge base
    */
-  async listFilesKnowledgeKnowledgeBaseIdFilesGet(
+  async listFiles(
     knowledgeBaseId: string,
     offset?: number | undefined,
     limit?: number | undefined,
     options?: RequestOptions,
   ): Promise<models.PaginatedResponseListFilesResponse> {
-    return unwrapAsync(knowledgeListFilesKnowledgeKnowledgeBaseIdFilesGet(
+    return unwrapAsync(knowledgeListFiles(
       this,
       knowledgeBaseId,
       offset,
@@ -219,7 +219,7 @@ export class Knowledge extends ClientSDK {
    * @remarks
    * Delete documents from a knowledge base based on filters
    */
-  async deleteDocumentsKnowledgeKnowledgeBaseIdQueryDelete(
+  async deleteDocuments(
     knowledgeBaseId: string,
     deleteKnowledgeBaseRequest?:
       | models.DeleteKnowledgeBaseRequest
@@ -227,14 +227,12 @@ export class Knowledge extends ClientSDK {
       | undefined,
     options?: RequestOptions,
   ): Promise<models.DeleteKnowledgeBaseResponse> {
-    return unwrapAsync(
-      knowledgeDeleteDocumentsKnowledgeKnowledgeBaseIdQueryDelete(
-        this,
-        knowledgeBaseId,
-        deleteKnowledgeBaseRequest,
-        options,
-      ),
-    );
+    return unwrapAsync(knowledgeDeleteDocuments(
+      this,
+      knowledgeBaseId,
+      deleteKnowledgeBaseRequest,
+      options,
+    ));
   }
 
   /**

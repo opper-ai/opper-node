@@ -13,9 +13,9 @@
 * [getUploadUrl](#getuploadurl) - Get Upload Url
 * [registerFileUpload](#registerfileupload) - Register File Upload
 * [deleteFile](#deletefile) - Delete File From Knowledge Base
-* [listFilesKnowledgeKnowledgeBaseIdFilesGet](#listfilesknowledgeknowledgebaseidfilesget) - List Files
+* [listFiles](#listfiles) - List Files
 * [query](#query) - Query Knowledge Base
-* [deleteDocumentsKnowledgeKnowledgeBaseIdQueryDelete](#deletedocumentsknowledgeknowledgebaseidquerydelete) - Delete Documents
+* [deleteDocuments](#deletedocuments) - Delete Documents
 * [add](#add) - Add
 
 ## create
@@ -628,7 +628,7 @@ run();
 | errors.RequestValidationError | 422                           | application/json              |
 | errors.APIError               | 4XX, 5XX                      | \*/\*                         |
 
-## listFilesKnowledgeKnowledgeBaseIdFilesGet
+## listFiles
 
 List all files in a knowledge base
 
@@ -643,7 +643,7 @@ const opper = new Opper({
 });
 
 async function run() {
-  const result = await opper.knowledge.listFilesKnowledgeKnowledgeBaseIdFilesGet("53b2ef93-22ff-4826-aac5-a53c7fa8e075");
+  const result = await opper.knowledge.listFiles("53b2ef93-22ff-4826-aac5-a53c7fa8e075");
 
   console.log(result);
 }
@@ -657,7 +657,7 @@ The standalone function version of this method:
 
 ```typescript
 import { OpperCore } from "opperai/core.js";
-import { knowledgeListFilesKnowledgeKnowledgeBaseIdFilesGet } from "opperai/funcs/knowledgeListFilesKnowledgeKnowledgeBaseIdFilesGet.js";
+import { knowledgeListFiles } from "opperai/funcs/knowledgeListFiles.js";
 
 // Use `OpperCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -666,12 +666,12 @@ const opper = new OpperCore({
 });
 
 async function run() {
-  const res = await knowledgeListFilesKnowledgeKnowledgeBaseIdFilesGet(opper, "53b2ef93-22ff-4826-aac5-a53c7fa8e075");
+  const res = await knowledgeListFiles(opper, "53b2ef93-22ff-4826-aac5-a53c7fa8e075");
   if (res.ok) {
     const { value: result } = res;
     console.log(result);
   } else {
-    console.log("knowledgeListFilesKnowledgeKnowledgeBaseIdFilesGet failed:", res.error);
+    console.log("knowledgeListFiles failed:", res.error);
   }
 }
 
@@ -811,7 +811,7 @@ run();
 | errors.RequestValidationError | 422                           | application/json              |
 | errors.APIError               | 4XX, 5XX                      | \*/\*                         |
 
-## deleteDocumentsKnowledgeKnowledgeBaseIdQueryDelete
+## deleteDocuments
 
 Delete documents from a knowledge base based on filters
 
@@ -826,7 +826,7 @@ const opper = new Opper({
 });
 
 async function run() {
-  const result = await opper.knowledge.deleteDocumentsKnowledgeKnowledgeBaseIdQueryDelete("7418a0c9-d40d-4761-8b00-e8948f7d8426", null);
+  const result = await opper.knowledge.deleteDocuments("7418a0c9-d40d-4761-8b00-e8948f7d8426", null);
 
   console.log(result);
 }
@@ -840,7 +840,7 @@ The standalone function version of this method:
 
 ```typescript
 import { OpperCore } from "opperai/core.js";
-import { knowledgeDeleteDocumentsKnowledgeKnowledgeBaseIdQueryDelete } from "opperai/funcs/knowledgeDeleteDocumentsKnowledgeKnowledgeBaseIdQueryDelete.js";
+import { knowledgeDeleteDocuments } from "opperai/funcs/knowledgeDeleteDocuments.js";
 
 // Use `OpperCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -849,12 +849,12 @@ const opper = new OpperCore({
 });
 
 async function run() {
-  const res = await knowledgeDeleteDocumentsKnowledgeKnowledgeBaseIdQueryDelete(opper, "7418a0c9-d40d-4761-8b00-e8948f7d8426", null);
+  const res = await knowledgeDeleteDocuments(opper, "7418a0c9-d40d-4761-8b00-e8948f7d8426", null);
   if (res.ok) {
     const { value: result } = res;
     console.log(result);
   } else {
-    console.log("knowledgeDeleteDocumentsKnowledgeKnowledgeBaseIdQueryDelete failed:", res.error);
+    console.log("knowledgeDeleteDocuments failed:", res.error);
   }
 }
 

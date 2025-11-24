@@ -718,3 +718,21 @@ actions:
       created_at: 1751029113444
       reviewed_at: 1751029118113
       type: method-name
+  - target: $["paths"]["/knowledge/{knowledge_base_id}/query"]["delete"]
+    update:
+      x-speakeasy-name-override: deleteDocuments
+    x-speakeasy-metadata:
+      after: sdk.knowledge.deleteDocuments()
+      before: sdk.knowledge.deleteDocumentsKnowledgeKnowledgeBaseIdQueryDelete()
+      created_at: 1751029113444
+      reviewed_at: 1751029118113
+      type: method-name
+  - target: $["paths"]["/knowledge/{knowledge_base_id}/files"]["get"]
+    update:
+      x-speakeasy-name-override: listFiles
+    x-speakeasy-metadata:
+      after: sdk.knowledge.listFiles()
+      before: sdk.knowledge.listFilesKnowledgeKnowledgeBaseIdFilesGet()
+      created_at: 1732439000000
+      reviewed_at: 1732439000000
+      type: method-name

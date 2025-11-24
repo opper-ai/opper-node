@@ -32,7 +32,7 @@ import { Result } from "../types/fp.js";
  * @remarks
  * List all files in a knowledge base
  */
-export function knowledgeListFilesKnowledgeKnowledgeBaseIdFilesGet(
+export function knowledgeListFiles(
   client: OpperCore,
   knowledgeBaseId: string,
   offset?: number | undefined,
