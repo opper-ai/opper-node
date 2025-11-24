@@ -34,6 +34,7 @@ export * from "./gettracetracestraceidget.js";
 export * from "./getuploadurlknowledgeknowledgebaseiduploadurlget.js";
 export * from "./listcustommodelsmodelscustomget.js";
 export * from "./listdatasetentriesdatasetsdatasetidentriesget.js";
+export * from "./listfilesknowledgeknowledgebaseidfilesget.js";
 export * from "./listfunctionrevisionsfunctionsfunctionidrevisionsget.js";
 export * from "./listfunctionsfunctionsget.js";
 export * from "./listknowledgebasesknowledgeget.js";

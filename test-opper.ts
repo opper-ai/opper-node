@@ -3,7 +3,12 @@
 import { Opper } from "./src/index.js";
 
 // Configuration - you can set these environment variables or modify them here
-const OPPER_API_KEY = process.env.OPPER_API_KEY || process.env.OPPER_HTTP_BEARER || "op-4UO3MLQJ59M8W27EP108";
+const OPPER_API_KEY = process.env.OPPER_API_KEY || process.env.OPPER_HTTP_BEARER;
+
+if (!OPPER_API_KEY) {
+  console.error("Error: OPPER_API_KEY or OPPER_HTTP_BEARER environment variable required");
+  process.exit(1);
+}
 const OPPER_SERVER_URL = process.env.OPPER_SERVER_URL || "https://api.opper.ai/v2";
 
 function printSection(title: string): void {
@@ -25,7 +30,7 @@ class OpperComprehensiveExample {
     try {
       // Create knowledge base
       console.log("📚 Creating knowledge base...");
-      const kbResponse = await this.opper.knowledge.createBase({
+      const kbResponse = await this.opper.knowledge.create({
         name: `test_knowledge_${Date.now()}`,
         embeddingModel: "azure/text-embedding-3-large"
       });
@@ -55,25 +60,19 @@ class OpperComprehensiveExample {
       // Add documents
       console.log("📝 Adding sample documents...");
       for (const doc of sampleDocs) {
-        await this.opper.knowledge.addData({
-          indexId: this.knowledgeBaseId,
-          addRequest: {
-            content: doc.content,
-            key: doc.key,
-            metadata: doc.metadata
-          }
+        await this.opper.knowledge.add(this.knowledgeBaseId, {
+          content: doc.content,
+          key: doc.key,
+          metadata: doc.metadata
         });
         console.log(`  ✅ Added: ${doc.key}`);
       }
 
       // Test querying
       console.log("🔍 Testing knowledge base queries...");
-      const searchResults = await this.opper.knowledge.query({
-        indexId: this.knowledgeBaseId,
-        queryKnowledgeBaseRequest: {
-          query: "laptops for developers",
-          topK: 2
-        }
+      const searchResults = await this.opper.knowledge.query(this.knowledgeBaseId, {
+        query: "laptops for developers",
+        topK: 2
       });
 
       console.log(`  📋 Found ${searchResults.length} relevant documents`);
@@ -98,12 +97,9 @@ class OpperComprehensiveExample {
 
     try {
       // Query knowledge base for context
-      const contextDocs = await this.opper.knowledge.query({
-        indexId: this.knowledgeBaseId,
-        queryKnowledgeBaseRequest: {
-          query: "smartphones comparison",
-          topK: 3
-        }
+      const contextDocs = await this.opper.knowledge.query(this.knowledgeBaseId!, {
+        query: "smartphones comparison",
+        topK: 3
       });
 
       const context = contextDocs.map(doc => doc.content).join('\n');
@@ -201,12 +197,12 @@ class OpperComprehensiveExample {
     try {
       // Test functions listing
       console.log("📋 Listing functions...");
-      const functions = await this.opper.functions.list({});
+      const functions = await this.opper.functions.list();
       console.log(`  ✅ Found ${functions.data?.length || 0} functions`);
 
       // Test language models
       console.log("🤖 Listing language models...");
-      const models = await this.opper.languageModels.list({});
+      const models = await this.opper.languageModels.list();
       console.log(`  ✅ Found ${models.data?.length || 0} language models`);
       if (models.data && models.data.length > 0) {
         console.log(`  📝 Available models: ${models.data.slice(0, 3).map(m => m.name).join(', ')}`);
@@ -214,7 +210,7 @@ class OpperComprehensiveExample {
 
       // Test traces
       console.log("🔍 Listing recent traces...");
-      const traces = await this.opper.traces.list({});
+      const traces = await this.opper.traces.list();
       console.log(`  ✅ Found ${traces.data?.length || 0} traces`);
 
       // Test embeddings
@@ -240,12 +236,9 @@ class OpperComprehensiveExample {
 
       // Step 1: Search knowledge base
       console.log("  📖 Step 1: Searching knowledge base...");
-      const relevantDocs = await this.opper.knowledge.query({
-        indexId: this.knowledgeBaseId!,
-        queryKnowledgeBaseRequest: {
-          query: researchQuery,
-          topK: 3
-        }
+      const relevantDocs = await this.opper.knowledge.query(this.knowledgeBaseId!, {
+        query: researchQuery,
+        topK: 3
       });
 
       // Step 2: Generate embedding for query analysis  
@@ -323,7 +316,7 @@ class OpperComprehensiveExample {
     if (this.knowledgeBaseId) {
       try {
         console.log(`\n🧹 Cleaning up knowledge base: ${this.knowledgeBaseId}`);
-        await this.opper.knowledge.delete({ indexId: this.knowledgeBaseId });
+        await this.opper.knowledge.delete(this.knowledgeBaseId);
         console.log("✅ Cleanup completed");
       } catch (error) {
         console.log(`⚠️ Warning: Could not delete knowledge base: ${error}`);
@@ -410,10 +403,10 @@ async function testListOperations() {
 
   try {
     const [functions, knowledge, models, traces] = await Promise.all([
-      opper.functions.list({}),
-      opper.knowledge.list({}),
-      opper.languageModels.list({}),
-      opper.traces.list({})
+      opper.functions.list(),
+      opper.knowledge.list(),
+      opper.languageModels.list(),
+      opper.traces.list()
     ]);
 
     console.log("✅ List operations successful!");
@@ -532,12 +525,6 @@ Examples:
   OPPER_API_KEY=your-key npx tsx test-opper.ts
 `);
   process.exit(0);
-}
-
-if (OPPER_API_KEY === "your-api-key-here") {
-  console.error("❌ Please set OPPER_API_KEY or OPPER_HTTP_BEARER environment variable");
-  console.error("Example: OPPER_API_KEY=your-key npx tsx test-opper.ts");
-  process.exit(1);
 }
 
 // Run the tests

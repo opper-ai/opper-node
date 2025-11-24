@@ -2,6 +2,15 @@
 
 import { Opper } from "./src/index.js";
 
+// Configuration - use environment variables or defaults
+const OPPER_API_KEY = process.env.OPPER_API_KEY || process.env.OPPER_HTTP_BEARER;
+
+if (!OPPER_API_KEY) {
+  console.error("Error: OPPER_API_KEY or OPPER_HTTP_BEARER environment variable required");
+  process.exit(1);
+}
+const OPPER_SERVER_URL = process.env.OPPER_SERVER_URL || "https://api.opper.ai/v2";
+
 // Define input and output interfaces (TypeScript equivalent of Pydantic models)
 interface CountryInput {
   country: string;
@@ -25,7 +34,7 @@ const countryInputSchema = {
 } as const;
 
 const capitalOutputSchema = {
-  type: "object", 
+  type: "object",
   properties: {
     capital: {
       type: "string",
@@ -40,12 +49,9 @@ const capitalOutputSchema = {
 } as const;
 
 // Create Opper client
-// opper = Opper(
-//     http_bearer="op-4UO3MLQJ59M8W27EP108", server_url="https://api.opper.ai/v2"
-// )
 const opper = new Opper({
-  httpBearer: "op-1VYR5RFOLDDWKKCE9DTF",
-  serverURL: "http://localhost:8000/v2"
+  httpBearer: OPPER_API_KEY,
+  serverURL: OPPER_SERVER_URL
 });
 
 const inputData: CountryInput = { country: "Sweden" };

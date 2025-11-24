@@ -21,12 +21,15 @@ generation:
     oAuth2PasswordEnabled: true
     hoistGlobalSecurity: true
   sdkHooksConfigAccess: true
+  schemas:
+    allOfMergeStrategy: shallowMerge
+  requestBodyFieldName: ""
   tests:
     generateTests: true
     generateNewTests: false
     skipResponseBodyAssertions: false
 typescript:
-  version: 3.2.0
+  version: 3.3.1
   acceptHeaderEnum: true
   additionalDependencies:
     dependencies: {}
@@ -36,6 +39,8 @@ typescript:
     repository:
       type: git
       url: https://github.com/opper-ai/opper-node
+  additionalScripts: {}
+  alwaysIncludeInboundAndOutbound: false
   author: Speakeasy
   baseErrorName: OpperError
   clientServerStatusCodesAsErrors: true
@@ -46,8 +51,10 @@ typescript:
   enableReactQuery: false
   enumFormat: union
   envVarPrefix: OPPER
+  exportZodModelNamespace: false
   flattenGlobalSecurity: true
   flatteningOrder: parameters-first
+  forwardCompatibleEnumsByDefault: false
   generateExamples: true
   imports:
     option: openapi
@@ -59,6 +66,7 @@ typescript:
       webhooks: models/webhooks
   inputModelSuffix: input
   jsonpath: rfc9535
+  laxMode: strict
   maxMethodParams: 99
   methodArguments: require-security-and-request
   modelPropertyCasing: camel
@@ -68,5 +76,7 @@ typescript:
   responseFormat: flat
   sseFlatResponse: false
   templateVersion: v2
+  unionStrategy: left-to-right
   usageSDKInitImports: []
   useIndexModules: true
+  zodVersion: v3

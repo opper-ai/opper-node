@@ -13,8 +13,9 @@
 * [getUploadUrl](#getuploadurl) - Get Upload Url
 * [registerFileUpload](#registerfileupload) - Register File Upload
 * [deleteFile](#deletefile) - Delete File From Knowledge Base
+* [listFiles](#listfiles) - List Files
 * [query](#query) - Query Knowledge Base
-* [deleteDocumentsKnowledgeKnowledgeBaseIdQueryDelete](#deletedocumentsknowledgeknowledgebaseidquerydelete) - Delete Documents
+* [deleteDocuments](#deletedocuments) - Delete Documents
 * [add](#add) - Add
 
 ## create
@@ -627,6 +628,81 @@ run();
 | errors.RequestValidationError | 422                           | application/json              |
 | errors.APIError               | 4XX, 5XX                      | \*/\*                         |
 
+## listFiles
+
+List all files in a knowledge base
+
+### Example Usage
+
+<!-- UsageSnippet language="typescript" operationID="list_files_knowledge__knowledge_base_id__files_get" method="get" path="/knowledge/{knowledge_base_id}/files" -->
+```typescript
+import { Opper } from "opperai";
+
+const opper = new Opper({
+  httpBearer: process.env["OPPER_HTTP_BEARER"] ?? "",
+});
+
+async function run() {
+  const result = await opper.knowledge.listFiles("53b2ef93-22ff-4826-aac5-a53c7fa8e075");
+
+  console.log(result);
+}
+
+run();
+```
+
+### Standalone function
+
+The standalone function version of this method:
+
+```typescript
+import { OpperCore } from "opperai/core.js";
+import { knowledgeListFiles } from "opperai/funcs/knowledgeListFiles.js";
+
+// Use `OpperCore` for best tree-shaking performance.
+// You can create one instance of it to use across an application.
+const opper = new OpperCore({
+  httpBearer: process.env["OPPER_HTTP_BEARER"] ?? "",
+});
+
+async function run() {
+  const res = await knowledgeListFiles(opper, "53b2ef93-22ff-4826-aac5-a53c7fa8e075");
+  if (res.ok) {
+    const { value: result } = res;
+    console.log(result);
+  } else {
+    console.log("knowledgeListFiles failed:", res.error);
+  }
+}
+
+run();
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `knowledgeBaseId`                                                                                                                                                              | *string*                                                                                                                                                                       | :heavy_check_mark:                                                                                                                                                             | The id of the knowledge base to list files from                                                                                                                                |
+| `offset`                                                                                                                                                                       | *number*                                                                                                                                                                       | :heavy_minus_sign:                                                                                                                                                             | The offset to start the list from                                                                                                                                              |
+| `limit`                                                                                                                                                                        | *number*                                                                                                                                                                       | :heavy_minus_sign:                                                                                                                                                             | The number of files to return                                                                                                                                                  |
+| `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
+| `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+
+### Response
+
+**Promise\<[models.PaginatedResponseListFilesResponse](../../models/paginatedresponselistfilesresponse.md)\>**
+
+### Errors
+
+| Error Type                    | Status Code                   | Content Type                  |
+| ----------------------------- | ----------------------------- | ----------------------------- |
+| errors.BadRequestError        | 400                           | application/json              |
+| errors.UnauthorizedError      | 401                           | application/json              |
+| errors.NotFoundError          | 404                           | application/json              |
+| errors.RequestValidationError | 422                           | application/json              |
+| errors.APIError               | 4XX, 5XX                      | \*/\*                         |
+
 ## query
 
 Query a knowledge base by its id
@@ -735,7 +811,7 @@ run();
 | errors.RequestValidationError | 422                           | application/json              |
 | errors.APIError               | 4XX, 5XX                      | \*/\*                         |
 
-## deleteDocumentsKnowledgeKnowledgeBaseIdQueryDelete
+## deleteDocuments
 
 Delete documents from a knowledge base based on filters
 
@@ -750,7 +826,7 @@ const opper = new Opper({
 });
 
 async function run() {
-  const result = await opper.knowledge.deleteDocumentsKnowledgeKnowledgeBaseIdQueryDelete("7418a0c9-d40d-4761-8b00-e8948f7d8426", null);
+  const result = await opper.knowledge.deleteDocuments("7418a0c9-d40d-4761-8b00-e8948f7d8426", null);
 
   console.log(result);
 }
@@ -764,7 +840,7 @@ The standalone function version of this method:
 
 ```typescript
 import { OpperCore } from "opperai/core.js";
-import { knowledgeDeleteDocumentsKnowledgeKnowledgeBaseIdQueryDelete } from "opperai/funcs/knowledgeDeleteDocumentsKnowledgeKnowledgeBaseIdQueryDelete.js";
+import { knowledgeDeleteDocuments } from "opperai/funcs/knowledgeDeleteDocuments.js";
 
 // Use `OpperCore` for best tree-shaking performance.
 // You can create one instance of it to use across an application.
@@ -773,12 +849,12 @@ const opper = new OpperCore({
 });
 
 async function run() {
-  const res = await knowledgeDeleteDocumentsKnowledgeKnowledgeBaseIdQueryDelete(opper, "7418a0c9-d40d-4761-8b00-e8948f7d8426", null);
+  const res = await knowledgeDeleteDocuments(opper, "7418a0c9-d40d-4761-8b00-e8948f7d8426", null);
   if (res.ok) {
     const { value: result } = res;
     console.log(result);
   } else {
-    console.log("knowledgeDeleteDocumentsKnowledgeKnowledgeBaseIdQueryDelete failed:", res.error);
+    console.log("knowledgeDeleteDocuments failed:", res.error);
   }
 }
 
