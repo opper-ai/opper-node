@@ -11,6 +11,7 @@ import { knowledgeGet } from "../funcs/knowledgeGet.js";
 import { knowledgeGetByName } from "../funcs/knowledgeGetByName.js";
 import { knowledgeGetUploadUrl } from "../funcs/knowledgeGetUploadUrl.js";
 import { knowledgeList } from "../funcs/knowledgeList.js";
+import { knowledgeListFilesKnowledgeKnowledgeBaseIdFilesGet } from "../funcs/knowledgeListFilesKnowledgeKnowledgeBaseIdFilesGet.js";
 import { knowledgeQuery } from "../funcs/knowledgeQuery.js";
 import { knowledgeRegisterFileUpload } from "../funcs/knowledgeRegisterFileUpload.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
@@ -168,6 +169,27 @@ export class Knowledge extends ClientSDK {
       this,
       knowledgeBaseId,
       fileId,
+      options,
+    ));
+  }
+
+  /**
+   * List Files
+   *
+   * @remarks
+   * List all files in a knowledge base
+   */
+  async listFilesKnowledgeKnowledgeBaseIdFilesGet(
+    knowledgeBaseId: string,
+    offset?: number | undefined,
+    limit?: number | undefined,
+    options?: RequestOptions,
+  ): Promise<models.PaginatedResponseListFilesResponse> {
+    return unwrapAsync(knowledgeListFilesKnowledgeKnowledgeBaseIdFilesGet(
+      this,
+      knowledgeBaseId,
+      offset,
+      limit,
       options,
     ));
   }

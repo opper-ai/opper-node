@@ -62,11 +62,7 @@ async function run() {
       "project": "project_456",
       "user": "company_123",
     },
-    configuration: {
-      betaEvaluation: {
-        scorers: "base",
-      },
-    },
+    configuration: {},
   });
 
   console.log(result);

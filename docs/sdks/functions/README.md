@@ -67,11 +67,7 @@ async function run() {
       "title": "OpperOutputExample",
       "type": "object",
     },
-    configuration: {
-      betaEvaluation: {
-        scorers: "base",
-      },
-    },
+    configuration: {},
   });
 
   console.log(result);
@@ -130,11 +126,7 @@ async function run() {
       "title": "OpperOutputExample",
       "type": "object",
     },
-    configuration: {
-      betaEvaluation: {
-        scorers: "base",
-      },
-    },
+    configuration: {},
   });
   if (res.ok) {
     const { value: result } = res;
@@ -371,10 +363,6 @@ async function run() {
       "type": "object",
     },
     configuration: {
-      "beta.evaluation": {
-        "enabled": true,
-        "scorers": "base",
-      },
       "beta.invocation.input_validation.enabled": false,
       "beta.invocation.xml_mode.enabled": false,
       "invocation.cache.ttl": 0,
@@ -440,10 +428,6 @@ async function run() {
       "type": "object",
     },
     configuration: {
-      "beta.evaluation": {
-        "enabled": true,
-        "scorers": "base",
-      },
       "beta.invocation.input_validation.enabled": false,
       "beta.invocation.xml_mode.enabled": false,
       "invocation.cache.ttl": 0,

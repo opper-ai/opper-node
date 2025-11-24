@@ -43,6 +43,7 @@ import { tool$knowledgeGet } from "./tools/knowledgeGet.js";
 import { tool$knowledgeGetByName } from "./tools/knowledgeGetByName.js";
 import { tool$knowledgeGetUploadUrl } from "./tools/knowledgeGetUploadUrl.js";
 import { tool$knowledgeList } from "./tools/knowledgeList.js";
+import { tool$knowledgeListFilesKnowledgeKnowledgeBaseIdFilesGet } from "./tools/knowledgeListFilesKnowledgeKnowledgeBaseIdFilesGet.js";
 import { tool$knowledgeQuery } from "./tools/knowledgeQuery.js";
 import { tool$knowledgeRegisterFileUpload } from "./tools/knowledgeRegisterFileUpload.js";
 import { tool$languageModelsDeleteCustom } from "./tools/languageModelsDeleteCustom.js";
@@ -59,6 +60,8 @@ import { tool$modelsGetModelAliasModelsAliasesAliasIdGet } from "./tools/modelsG
 import { tool$modelsListModelAliasesModelsAliasesGet } from "./tools/modelsListModelAliasesModelsAliasesGet.js";
 import { tool$modelsUpdateModelAliasModelsAliasesAliasIdPatch } from "./tools/modelsUpdateModelAliasModelsAliasesAliasIdPatch.js";
 import { tool$openaiCreateChatCompletion } from "./tools/openaiCreateChatCompletion.js";
+import { tool$rerankListRerankModelsRerankModelsGet } from "./tools/rerankListRerankModelsRerankModelsGet.js";
+import { tool$rerankRerankDocumentsRerankPost } from "./tools/rerankRerankDocumentsRerankPost.js";
 import { tool$spanMetricsCreateMetric } from "./tools/spanMetricsCreateMetric.js";
 import { tool$spanMetricsDelete } from "./tools/spanMetricsDelete.js";
 import { tool$spanMetricsGet } from "./tools/spanMetricsGet.js";
@@ -83,7 +86,7 @@ export function createMCPServer(deps: {
 }) {
   const server = new McpServer({
     name: "Opper",
-    version: "3.2.0",
+    version: "3.3.0",
   });
 
   const client = new OpperCore({
@@ -123,6 +126,7 @@ export function createMCPServer(deps: {
   tool(tool$knowledgeGetUploadUrl);
   tool(tool$knowledgeRegisterFileUpload);
   tool(tool$knowledgeDeleteFile);
+  tool(tool$knowledgeListFilesKnowledgeKnowledgeBaseIdFilesGet);
   tool(tool$knowledgeQuery);
   tool(tool$knowledgeDeleteDocumentsKnowledgeKnowledgeBaseIdQueryDelete);
   tool(tool$knowledgeAdd);
@@ -169,6 +173,8 @@ export function createMCPServer(deps: {
   tool(tool$modelsDeleteModelAliasModelsAliasesAliasIdDelete);
   tool(tool$modelsGetModelAliasByNameModelsAliasesByNameNameGet);
   tool(tool$openaiCreateChatCompletion);
+  tool(tool$rerankRerankDocumentsRerankPost);
+  tool(tool$rerankListRerankModelsRerankModelsGet);
   tool(tool$analyticsGetUsage);
   tool(tool$datasetsEntriesUpdate);
   tool(tool$functionsRevisionsList);
