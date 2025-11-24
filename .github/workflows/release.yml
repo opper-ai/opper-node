@@ -218,17 +218,19 @@ jobs:
 
       - name: Publish to NPM
         if: github.event.inputs.dry_run != 'true'
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
           echo "🚀 Publishing to NPM..."
-          
+
           # Show what will be published
           echo "📦 Package info:"
           npm pack --dry-run | head -10
-          
+
           # Publish with provenance
           if npm publish --access public --provenance; then
             echo "✅ Successfully published to NPM"
-            
+
             # Show published package info
             VERSION="${{ needs.check-version.outputs.version }}"
             echo "🔗 NPM Package: https://www.npmjs.com/package/opperai/v/$VERSION"
