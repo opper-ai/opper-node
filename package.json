@@ -1,10 +1,10 @@
 {
   "name": "opperai",
-  "version": "3.3.1",
+  "version": "3.3.2",
   "author": "Speakeasy",
   "repository": {
-    "type": "git",
-    "url": "https://github.com/opper-ai/opper-node"
+    "url": "https://github.com/opper-ai/opper-node",
+    "type": "git"
   },
   "type": "module",
   "bin": {

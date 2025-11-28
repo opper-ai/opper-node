@@ -67,6 +67,7 @@ export * from "./deleteknowledgebaseresponse.js";
 export * from "./example.js";
 export * from "./examplein.js";
 export * from "./file.js";
+export * from "./filedownloadurlresponse.js";
 export * from "./filefile.js";
 export * from "./filter.js";
 export * from "./functioncallconfigurationinput.js";

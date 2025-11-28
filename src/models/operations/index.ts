@@ -21,6 +21,7 @@ export * from "./functionstreamcallstreampost.js";
 export * from "./getcustommodelbynamemodelscustombynamenameget.js";
 export * from "./getcustommodelmodelscustommodelidget.js";
 export * from "./getdatasetentrydatasetsdatasetidentriesentryidget.js";
+export * from "./getfiledownloadurlknowledgeknowledgebaseidfilesfileiddownloadurlget.js";
 export * from "./getfunctionbynamefunctionsbynamenameget.js";
 export * from "./getfunctionbyrevisionfunctionsfunctionidrevisionsrevisionidget.js";
 export * from "./getfunctionfunctionsfunctionidget.js";

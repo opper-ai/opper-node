@@ -736,3 +736,12 @@ actions:
       created_at: 1732439000000
       reviewed_at: 1732439000000
       type: method-name
+  - target: $["paths"]["/knowledge/{knowledge_base_id}/files/{file_id}/download_url"]["get"]
+    update:
+      x-speakeasy-name-override: getFileDownloadUrl
+    x-speakeasy-metadata:
+      after: sdk.knowledge.getFileDownloadUrl()
+      before: sdk.knowledge.get_file_download_url_knowledge__knowledge_base_id__files__file_id__download_url_get()
+      created_at: 1732872000000
+      reviewed_at: 1732872000000
+      type: method-name
