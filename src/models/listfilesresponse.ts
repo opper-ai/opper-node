@@ -29,6 +29,10 @@ export type ListFilesResponse = {
    * The id of the associated document
    */
   documentId: number;
+  /**
+   * The metadata attached to the file
+   */
+  metadata?: { [k: string]: any } | undefined;
 };
 
 /** @internal */
@@ -42,6 +46,7 @@ export const ListFilesResponse$inboundSchema: z.ZodType<
   size: z.number().int(),
   status: z.string(),
   document_id: z.number().int(),
+  metadata: z.record(z.any()).optional(),
 }).transform((v) => {
   return remap$(v, {
     "original_filename": "originalFilename",
@@ -55,6 +60,7 @@ export type ListFilesResponse$Outbound = {
   size: number;
   status: string;
   document_id: number;
+  metadata?: { [k: string]: any } | undefined;
 };
 
 /** @internal */
@@ -68,6 +74,7 @@ export const ListFilesResponse$outboundSchema: z.ZodType<
   size: z.number().int(),
   status: z.string(),
   documentId: z.number().int(),
+  metadata: z.record(z.any()).optional(),
 }).transform((v) => {
   return remap$(v, {
     originalFilename: "original_filename",

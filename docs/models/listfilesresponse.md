@@ -11,15 +11,20 @@ let value: ListFilesResponse = {
   size: 351349,
   status: "<value>",
   documentId: 118298,
+  metadata: {
+    "category": "legal",
+    "client": "acme",
+  },
 };
 ```
 
 ## Fields
 
-| Field                             | Type                              | Required                          | Description                       |
-| --------------------------------- | --------------------------------- | --------------------------------- | --------------------------------- |
-| `id`                              | *string*                          | :heavy_check_mark:                | The id of the file                |
-| `originalFilename`                | *string*                          | :heavy_check_mark:                | The original filename             |
-| `size`                            | *number*                          | :heavy_check_mark:                | The size of the file in bytes     |
-| `status`                          | *string*                          | :heavy_check_mark:                | The indexing status of the file   |
-| `documentId`                      | *number*                          | :heavy_check_mark:                | The id of the associated document |
+| Field                                     | Type                                      | Required                                  | Description                               | Example                                   |
+| ----------------------------------------- | ----------------------------------------- | ----------------------------------------- | ----------------------------------------- | ----------------------------------------- |
+| `id`                                      | *string*                                  | :heavy_check_mark:                        | The id of the file                        |                                           |
+| `originalFilename`                        | *string*                                  | :heavy_check_mark:                        | The original filename                     |                                           |
+| `size`                                    | *number*                                  | :heavy_check_mark:                        | The size of the file in bytes             |                                           |
+| `status`                                  | *string*                                  | :heavy_check_mark:                        | The indexing status of the file           |                                           |
+| `documentId`                              | *number*                                  | :heavy_check_mark:                        | The id of the associated document         |                                           |
+| `metadata`                                | Record<string, *any*>                     | :heavy_minus_sign:                        | The metadata attached to the file         | {<br/>"category": "legal",<br/>"client": "acme"<br/>} |

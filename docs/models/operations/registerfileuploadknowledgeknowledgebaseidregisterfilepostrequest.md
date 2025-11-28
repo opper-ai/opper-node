@@ -11,6 +11,10 @@ let value: RegisterFileUploadKnowledgeKnowledgeBaseIdRegisterFilePostRequest = {
     filename: "example.pdf",
     fileId: "1ea8fd4c-c52c-4100-8653-01ab93359ed1",
     contentType: "application/pdf",
+    metadata: {
+      "category": "legal",
+      "client": "acme",
+    },
   },
 };
 ```

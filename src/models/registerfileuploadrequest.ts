@@ -31,6 +31,10 @@ export type RegisterFileUploadRequest = {
    * The configuration for the file to register
    */
   configuration?: TextProcessingConfiguration | null | undefined;
+  /**
+   * Optional metadata to attach to the file
+   */
+  metadata?: { [k: string]: any } | null | undefined;
 };
 
 /** @internal */
@@ -44,6 +48,7 @@ export const RegisterFileUploadRequest$inboundSchema: z.ZodType<
   content_type: z.string(),
   configuration: z.nullable(TextProcessingConfiguration$inboundSchema)
     .optional(),
+  metadata: z.nullable(z.record(z.any())).optional(),
 }).transform((v) => {
   return remap$(v, {
     "file_id": "fileId",
@@ -56,6 +61,7 @@ export type RegisterFileUploadRequest$Outbound = {
   file_id: string;
   content_type: string;
   configuration?: TextProcessingConfiguration$Outbound | null | undefined;
+  metadata?: { [k: string]: any } | null | undefined;
 };
 
 /** @internal */
@@ -69,6 +75,7 @@ export const RegisterFileUploadRequest$outboundSchema: z.ZodType<
   contentType: z.string(),
   configuration: z.nullable(TextProcessingConfiguration$outboundSchema)
     .optional(),
+  metadata: z.nullable(z.record(z.any())).optional(),
 }).transform((v) => {
   return remap$(v, {
     fileId: "file_id",

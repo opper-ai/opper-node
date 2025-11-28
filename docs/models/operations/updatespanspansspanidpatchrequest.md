@@ -9,9 +9,9 @@ let value: UpdateSpanSpansSpanIdPatchRequest = {
   spanId: "c4686ca8-5f9f-483e-8cc2-e12731bcf9e5",
   updateSpanRequest: {
     name: "my span",
-    startTime: new Date("2025-11-21T16:13:26.520750Z"),
+    startTime: new Date("2025-11-28T13:52:10.973675Z"),
     type: "email_tool",
-    endTime: new Date("2025-11-21T16:13:26.520845Z"),
+    endTime: new Date("2025-11-28T13:52:10.973828Z"),
     input: "Hello, world!",
     output: "Hello, world!",
     error: "Exception: This is an error message",

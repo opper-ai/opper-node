@@ -41,6 +41,9 @@ import { tool$knowledgeDeleteDocuments } from "./tools/knowledgeDeleteDocuments.
 import { tool$knowledgeDeleteFile } from "./tools/knowledgeDeleteFile.js";
 import { tool$knowledgeGet } from "./tools/knowledgeGet.js";
 import { tool$knowledgeGetByName } from "./tools/knowledgeGetByName.js";
+import {
+  tool$knowledgeGetFileDownloadUrlKnowledgeKnowledgeBaseIdFilesFileIdDownloadUrlGet,
+} from "./tools/knowledgeGetFileDownloadUrlKnowledgeKnowledgeBaseIdFilesFileIdDownloadUrlGet.js";
 import { tool$knowledgeGetUploadUrl } from "./tools/knowledgeGetUploadUrl.js";
 import { tool$knowledgeList } from "./tools/knowledgeList.js";
 import { tool$knowledgeListFiles } from "./tools/knowledgeListFiles.js";
@@ -86,7 +89,7 @@ export function createMCPServer(deps: {
 }) {
   const server = new McpServer({
     name: "Opper",
-    version: "3.3.1",
+    version: "3.3.2",
   });
 
   const client = new OpperCore({
@@ -126,6 +129,9 @@ export function createMCPServer(deps: {
   tool(tool$knowledgeGetUploadUrl);
   tool(tool$knowledgeRegisterFileUpload);
   tool(tool$knowledgeDeleteFile);
+  tool(
+    tool$knowledgeGetFileDownloadUrlKnowledgeKnowledgeBaseIdFilesFileIdDownloadUrlGet,
+  );
   tool(tool$knowledgeListFiles);
   tool(tool$knowledgeQuery);
   tool(tool$knowledgeDeleteDocuments);

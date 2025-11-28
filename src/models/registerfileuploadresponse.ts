@@ -13,6 +13,7 @@ export type RegisterFileUploadResponse = {
   key: string;
   originalFilename: string;
   documentId: number;
+  metadata?: { [k: string]: any } | undefined;
 };
 
 /** @internal */
@@ -25,6 +26,7 @@ export const RegisterFileUploadResponse$inboundSchema: z.ZodType<
   key: z.string(),
   original_filename: z.string(),
   document_id: z.number().int(),
+  metadata: z.record(z.any()).optional(),
 }).transform((v) => {
   return remap$(v, {
     "original_filename": "originalFilename",
@@ -37,6 +39,7 @@ export type RegisterFileUploadResponse$Outbound = {
   key: string;
   original_filename: string;
   document_id: number;
+  metadata?: { [k: string]: any } | undefined;
 };
 
 /** @internal */
@@ -49,6 +52,7 @@ export const RegisterFileUploadResponse$outboundSchema: z.ZodType<
   key: z.string(),
   originalFilename: z.string(),
   documentId: z.number().int(),
+  metadata: z.record(z.any()).optional(),
 }).transform((v) => {
   return remap$(v, {
     originalFilename: "original_filename",
