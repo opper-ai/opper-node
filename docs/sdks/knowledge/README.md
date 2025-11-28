@@ -13,6 +13,7 @@
 * [getUploadUrl](#getuploadurl) - Get Upload Url
 * [registerFileUpload](#registerfileupload) - Register File Upload
 * [deleteFile](#deletefile) - Delete File From Knowledge Base
+* [getFileDownloadUrlKnowledgeKnowledgeBaseIdFilesFileIdDownloadUrlGet](#getfiledownloadurlknowledgeknowledgebaseidfilesfileiddownloadurlget) - Get File Download Url
 * [listFiles](#listfiles) - List Files
 * [query](#query) - Query Knowledge Base
 * [deleteDocuments](#deletedocuments) - Delete Documents
@@ -491,6 +492,10 @@ async function run() {
     filename: "example.pdf",
     fileId: "0dff5851-c155-4a46-8450-5b96eb017ae5",
     contentType: "application/pdf",
+    metadata: {
+      "category": "legal",
+      "client": "acme",
+    },
   });
 
   console.log(result);
@@ -518,6 +523,10 @@ async function run() {
     filename: "example.pdf",
     fileId: "0dff5851-c155-4a46-8450-5b96eb017ae5",
     contentType: "application/pdf",
+    metadata: {
+      "category": "legal",
+      "client": "acme",
+    },
   });
   if (res.ok) {
     const { value: result } = res;
@@ -617,6 +626,80 @@ run();
 ### Response
 
 **Promise\<void\>**
+
+### Errors
+
+| Error Type                    | Status Code                   | Content Type                  |
+| ----------------------------- | ----------------------------- | ----------------------------- |
+| errors.BadRequestError        | 400                           | application/json              |
+| errors.UnauthorizedError      | 401                           | application/json              |
+| errors.NotFoundError          | 404                           | application/json              |
+| errors.RequestValidationError | 422                           | application/json              |
+| errors.APIError               | 4XX, 5XX                      | \*/\*                         |
+
+## getFileDownloadUrlKnowledgeKnowledgeBaseIdFilesFileIdDownloadUrlGet
+
+Get a presigned URL to download a file from a knowledge base
+
+### Example Usage
+
+<!-- UsageSnippet language="typescript" operationID="get_file_download_url_knowledge__knowledge_base_id__files__file_id__download_url_get" method="get" path="/knowledge/{knowledge_base_id}/files/{file_id}/download_url" -->
+```typescript
+import { Opper } from "opperai";
+
+const opper = new Opper({
+  httpBearer: process.env["OPPER_HTTP_BEARER"] ?? "",
+});
+
+async function run() {
+  const result = await opper.knowledge.getFileDownloadUrlKnowledgeKnowledgeBaseIdFilesFileIdDownloadUrlGet("3d6f9cb0-cbf2-4c9a-8995-331034439b8d", "d917ff5b-acf0-4e5c-943a-7d584204a9f3");
+
+  console.log(result);
+}
+
+run();
+```
+
+### Standalone function
+
+The standalone function version of this method:
+
+```typescript
+import { OpperCore } from "opperai/core.js";
+import { knowledgeGetFileDownloadUrlKnowledgeKnowledgeBaseIdFilesFileIdDownloadUrlGet } from "opperai/funcs/knowledgeGetFileDownloadUrlKnowledgeKnowledgeBaseIdFilesFileIdDownloadUrlGet.js";
+
+// Use `OpperCore` for best tree-shaking performance.
+// You can create one instance of it to use across an application.
+const opper = new OpperCore({
+  httpBearer: process.env["OPPER_HTTP_BEARER"] ?? "",
+});
+
+async function run() {
+  const res = await knowledgeGetFileDownloadUrlKnowledgeKnowledgeBaseIdFilesFileIdDownloadUrlGet(opper, "3d6f9cb0-cbf2-4c9a-8995-331034439b8d", "d917ff5b-acf0-4e5c-943a-7d584204a9f3");
+  if (res.ok) {
+    const { value: result } = res;
+    console.log(result);
+  } else {
+    console.log("knowledgeGetFileDownloadUrlKnowledgeKnowledgeBaseIdFilesFileIdDownloadUrlGet failed:", res.error);
+  }
+}
+
+run();
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `knowledgeBaseId`                                                                                                                                                              | *string*                                                                                                                                                                       | :heavy_check_mark:                                                                                                                                                             | The id of the knowledge base                                                                                                                                                   |
+| `fileId`                                                                                                                                                                       | *string*                                                                                                                                                                       | :heavy_check_mark:                                                                                                                                                             | The id of the file                                                                                                                                                             |
+| `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
+| `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+
+### Response
+
+**Promise\<[models.FileDownloadUrlResponse](../../models/filedownloadurlresponse.md)\>**
 
 ### Errors
 

@@ -15,9 +15,10 @@ let value: RegisterFileUploadResponse = {
 
 ## Fields
 
-| Field              | Type               | Required           | Description        |
-| ------------------ | ------------------ | ------------------ | ------------------ |
-| `id`               | *string*           | :heavy_check_mark: | N/A                |
-| `key`              | *string*           | :heavy_check_mark: | N/A                |
-| `originalFilename` | *string*           | :heavy_check_mark: | N/A                |
-| `documentId`       | *number*           | :heavy_check_mark: | N/A                |
+| Field                 | Type                  | Required              | Description           |
+| --------------------- | --------------------- | --------------------- | --------------------- |
+| `id`                  | *string*              | :heavy_check_mark:    | N/A                   |
+| `key`                 | *string*              | :heavy_check_mark:    | N/A                   |
+| `originalFilename`    | *string*              | :heavy_check_mark:    | N/A                   |
+| `documentId`          | *number*              | :heavy_check_mark:    | N/A                   |
+| `metadata`            | Record<string, *any*> | :heavy_minus_sign:    | N/A                   |

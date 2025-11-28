@@ -9,6 +9,7 @@ import { knowledgeDeleteDocuments } from "../funcs/knowledgeDeleteDocuments.js";
 import { knowledgeDeleteFile } from "../funcs/knowledgeDeleteFile.js";
 import { knowledgeGet } from "../funcs/knowledgeGet.js";
 import { knowledgeGetByName } from "../funcs/knowledgeGetByName.js";
+import { knowledgeGetFileDownloadUrlKnowledgeKnowledgeBaseIdFilesFileIdDownloadUrlGet } from "../funcs/knowledgeGetFileDownloadUrlKnowledgeKnowledgeBaseIdFilesFileIdDownloadUrlGet.js";
 import { knowledgeGetUploadUrl } from "../funcs/knowledgeGetUploadUrl.js";
 import { knowledgeList } from "../funcs/knowledgeList.js";
 import { knowledgeListFiles } from "../funcs/knowledgeListFiles.js";
@@ -171,6 +172,27 @@ export class Knowledge extends ClientSDK {
       fileId,
       options,
     ));
+  }
+
+  /**
+   * Get File Download Url
+   *
+   * @remarks
+   * Get a presigned URL to download a file from a knowledge base
+   */
+  async getFileDownloadUrlKnowledgeKnowledgeBaseIdFilesFileIdDownloadUrlGet(
+    knowledgeBaseId: string,
+    fileId: string,
+    options?: RequestOptions,
+  ): Promise<models.FileDownloadUrlResponse> {
+    return unwrapAsync(
+      knowledgeGetFileDownloadUrlKnowledgeKnowledgeBaseIdFilesFileIdDownloadUrlGet(
+        this,
+        knowledgeBaseId,
+        fileId,
+        options,
+      ),
+    );
   }
 
   /**
