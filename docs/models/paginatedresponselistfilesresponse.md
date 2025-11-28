@@ -16,6 +16,10 @@ let value: PaginatedResponseListFilesResponse = {
       size: 283826,
       status: "<value>",
       documentId: 185150,
+      metadata: {
+        "category": "legal",
+        "client": "acme",
+      },
     },
   ],
 };
