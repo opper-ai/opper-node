@@ -32,28 +32,28 @@ import {
 } from "./file.js";
 
 export type ChatCompletionUserMessageParamContent1 =
-  | ChatCompletionContentPartTextParam
-  | ChatCompletionContentPartImageParam
-  | ChatCompletionContentPartInputAudioParam
-  | FileT;
+  | (ChatCompletionContentPartTextParam & { type: "text" })
+  | (ChatCompletionContentPartImageParam & { type: "image_url" })
+  | (ChatCompletionContentPartInputAudioParam & { type: "input_audio" })
+  | (FileT & { type: "file" });
 
 export type ChatCompletionUserMessageParamContent2 =
   | string
   | Array<
-    | ChatCompletionContentPartTextParam
-    | ChatCompletionContentPartImageParam
-    | ChatCompletionContentPartInputAudioParam
-    | FileT
+    | (ChatCompletionContentPartTextParam & { type: "text" })
+    | (ChatCompletionContentPartImageParam & { type: "image_url" })
+    | (ChatCompletionContentPartInputAudioParam & { type: "input_audio" })
+    | (FileT & { type: "file" })
   >;
 
 export type ChatCompletionUserMessageParam = {
   content:
     | string
     | Array<
-      | ChatCompletionContentPartTextParam
-      | ChatCompletionContentPartImageParam
-      | ChatCompletionContentPartInputAudioParam
-      | FileT
+      | (ChatCompletionContentPartTextParam & { type: "text" })
+      | (ChatCompletionContentPartImageParam & { type: "image_url" })
+      | (ChatCompletionContentPartInputAudioParam & { type: "input_audio" })
+      | (FileT & { type: "file" })
     >;
   role?: "user" | undefined;
   name?: string | undefined;
@@ -65,17 +65,25 @@ export const ChatCompletionUserMessageParamContent1$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.union([
-  ChatCompletionContentPartTextParam$inboundSchema,
-  ChatCompletionContentPartImageParam$inboundSchema,
-  ChatCompletionContentPartInputAudioParam$inboundSchema,
-  FileT$inboundSchema,
+  ChatCompletionContentPartTextParam$inboundSchema.and(
+    z.object({ type: z.literal("text") }),
+  ),
+  ChatCompletionContentPartImageParam$inboundSchema.and(
+    z.object({ type: z.literal("image_url") }),
+  ),
+  ChatCompletionContentPartInputAudioParam$inboundSchema.and(
+    z.object({ type: z.literal("input_audio") }),
+  ),
+  FileT$inboundSchema.and(z.object({ type: z.literal("file") })),
 ]);
 /** @internal */
 export type ChatCompletionUserMessageParamContent1$Outbound =
-  | ChatCompletionContentPartTextParam$Outbound
-  | ChatCompletionContentPartImageParam$Outbound
-  | ChatCompletionContentPartInputAudioParam$Outbound
-  | FileT$Outbound;
+  | (ChatCompletionContentPartTextParam$Outbound & { type: "text" })
+  | (ChatCompletionContentPartImageParam$Outbound & { type: "image_url" })
+  | (ChatCompletionContentPartInputAudioParam$Outbound & {
+    type: "input_audio";
+  })
+  | (FileT$Outbound & { type: "file" });
 
 /** @internal */
 export const ChatCompletionUserMessageParamContent1$outboundSchema: z.ZodType<
@@ -83,10 +91,16 @@ export const ChatCompletionUserMessageParamContent1$outboundSchema: z.ZodType<
   z.ZodTypeDef,
   ChatCompletionUserMessageParamContent1
 > = z.union([
-  ChatCompletionContentPartTextParam$outboundSchema,
-  ChatCompletionContentPartImageParam$outboundSchema,
-  ChatCompletionContentPartInputAudioParam$outboundSchema,
-  FileT$outboundSchema,
+  ChatCompletionContentPartTextParam$outboundSchema.and(
+    z.object({ type: z.literal("text") }),
+  ),
+  ChatCompletionContentPartImageParam$outboundSchema.and(
+    z.object({ type: z.literal("image_url") }),
+  ),
+  ChatCompletionContentPartInputAudioParam$outboundSchema.and(
+    z.object({ type: z.literal("input_audio") }),
+  ),
+  FileT$outboundSchema.and(z.object({ type: z.literal("file") })),
 ]);
 
 export function chatCompletionUserMessageParamContent1ToJSON(
@@ -119,10 +133,16 @@ export const ChatCompletionUserMessageParamContent2$inboundSchema: z.ZodType<
   z.string(),
   z.array(
     z.union([
-      ChatCompletionContentPartTextParam$inboundSchema,
-      ChatCompletionContentPartImageParam$inboundSchema,
-      ChatCompletionContentPartInputAudioParam$inboundSchema,
-      FileT$inboundSchema,
+      ChatCompletionContentPartTextParam$inboundSchema.and(
+        z.object({ type: z.literal("text") }),
+      ),
+      ChatCompletionContentPartImageParam$inboundSchema.and(
+        z.object({ type: z.literal("image_url") }),
+      ),
+      ChatCompletionContentPartInputAudioParam$inboundSchema.and(
+        z.object({ type: z.literal("input_audio") }),
+      ),
+      FileT$inboundSchema.and(z.object({ type: z.literal("file") })),
     ]),
   ),
 ]);
@@ -130,10 +150,12 @@ export const ChatCompletionUserMessageParamContent2$inboundSchema: z.ZodType<
 export type ChatCompletionUserMessageParamContent2$Outbound =
   | string
   | Array<
-    | ChatCompletionContentPartTextParam$Outbound
-    | ChatCompletionContentPartImageParam$Outbound
-    | ChatCompletionContentPartInputAudioParam$Outbound
-    | FileT$Outbound
+    | (ChatCompletionContentPartTextParam$Outbound & { type: "text" })
+    | (ChatCompletionContentPartImageParam$Outbound & { type: "image_url" })
+    | (ChatCompletionContentPartInputAudioParam$Outbound & {
+      type: "input_audio";
+    })
+    | (FileT$Outbound & { type: "file" })
   >;
 
 /** @internal */
@@ -145,10 +167,16 @@ export const ChatCompletionUserMessageParamContent2$outboundSchema: z.ZodType<
   z.string(),
   z.array(
     z.union([
-      ChatCompletionContentPartTextParam$outboundSchema,
-      ChatCompletionContentPartImageParam$outboundSchema,
-      ChatCompletionContentPartInputAudioParam$outboundSchema,
-      FileT$outboundSchema,
+      ChatCompletionContentPartTextParam$outboundSchema.and(
+        z.object({ type: z.literal("text") }),
+      ),
+      ChatCompletionContentPartImageParam$outboundSchema.and(
+        z.object({ type: z.literal("image_url") }),
+      ),
+      ChatCompletionContentPartInputAudioParam$outboundSchema.and(
+        z.object({ type: z.literal("input_audio") }),
+      ),
+      FileT$outboundSchema.and(z.object({ type: z.literal("file") })),
     ]),
   ),
 ]);
@@ -184,10 +212,16 @@ export const ChatCompletionUserMessageParam$inboundSchema: z.ZodType<
     z.string(),
     z.array(
       z.union([
-        ChatCompletionContentPartTextParam$inboundSchema,
-        ChatCompletionContentPartImageParam$inboundSchema,
-        ChatCompletionContentPartInputAudioParam$inboundSchema,
-        FileT$inboundSchema,
+        ChatCompletionContentPartTextParam$inboundSchema.and(
+          z.object({ type: z.literal("text") }),
+        ),
+        ChatCompletionContentPartImageParam$inboundSchema.and(
+          z.object({ type: z.literal("image_url") }),
+        ),
+        ChatCompletionContentPartInputAudioParam$inboundSchema.and(
+          z.object({ type: z.literal("input_audio") }),
+        ),
+        FileT$inboundSchema.and(z.object({ type: z.literal("file") })),
       ]),
     ),
   ]),
@@ -199,10 +233,12 @@ export type ChatCompletionUserMessageParam$Outbound = {
   content:
     | string
     | Array<
-      | ChatCompletionContentPartTextParam$Outbound
-      | ChatCompletionContentPartImageParam$Outbound
-      | ChatCompletionContentPartInputAudioParam$Outbound
-      | FileT$Outbound
+      | (ChatCompletionContentPartTextParam$Outbound & { type: "text" })
+      | (ChatCompletionContentPartImageParam$Outbound & { type: "image_url" })
+      | (ChatCompletionContentPartInputAudioParam$Outbound & {
+        type: "input_audio";
+      })
+      | (FileT$Outbound & { type: "file" })
     >;
   role: "user";
   name?: string | undefined;
@@ -218,10 +254,16 @@ export const ChatCompletionUserMessageParam$outboundSchema: z.ZodType<
     z.string(),
     z.array(
       z.union([
-        ChatCompletionContentPartTextParam$outboundSchema,
-        ChatCompletionContentPartImageParam$outboundSchema,
-        ChatCompletionContentPartInputAudioParam$outboundSchema,
-        FileT$outboundSchema,
+        ChatCompletionContentPartTextParam$outboundSchema.and(
+          z.object({ type: z.literal("text") }),
+        ),
+        ChatCompletionContentPartImageParam$outboundSchema.and(
+          z.object({ type: z.literal("image_url") }),
+        ),
+        ChatCompletionContentPartInputAudioParam$outboundSchema.and(
+          z.object({ type: z.literal("input_audio") }),
+        ),
+        FileT$outboundSchema.and(z.object({ type: z.literal("file") })),
       ]),
     ),
   ]),
