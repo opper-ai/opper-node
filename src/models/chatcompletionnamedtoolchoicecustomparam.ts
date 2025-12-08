@@ -15,7 +15,7 @@ import {
 
 export type ChatCompletionNamedToolChoiceCustomParam = {
   custom: OpenaiTypesChatChatCompletionNamedToolChoiceCustomParamCustom;
-  type?: "custom" | undefined;
+  type: "custom";
 };
 
 /** @internal */
@@ -26,7 +26,7 @@ export const ChatCompletionNamedToolChoiceCustomParam$inboundSchema: z.ZodType<
 > = z.object({
   custom:
     OpenaiTypesChatChatCompletionNamedToolChoiceCustomParamCustom$inboundSchema,
-  type: z.literal("custom").default("custom").optional(),
+  type: z.literal("custom"),
 });
 /** @internal */
 export type ChatCompletionNamedToolChoiceCustomParam$Outbound = {

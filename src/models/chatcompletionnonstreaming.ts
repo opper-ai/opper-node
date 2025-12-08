@@ -136,12 +136,12 @@ import {
 } from "./websearchoptions.js";
 
 export type ChatCompletionNonStreamingMessage =
-  | (ChatCompletionToolMessageParam & { role: "tool" })
-  | (ChatCompletionFunctionMessageParam & { role: "function" })
-  | (ChatCompletionDeveloperMessageParam & { role: "developer" })
-  | (ChatCompletionSystemMessageParam & { role: "system" })
-  | (ChatCompletionUserMessageParam & { role: "user" })
-  | (ChatCompletionAssistantMessageParam & { role: "assistant" });
+  | ChatCompletionDeveloperMessageParam
+  | ChatCompletionSystemMessageParam
+  | ChatCompletionUserMessageParam
+  | ChatCompletionAssistantMessageParam
+  | ChatCompletionToolMessageParam
+  | ChatCompletionFunctionMessageParam;
 
 export const ChatCompletionNonStreamingFunctionCallEnum = {
   None: "none",
@@ -174,9 +174,9 @@ export type ChatCompletionNonStreamingReasoningEffort = ClosedEnum<
 >;
 
 export type ChatCompletionNonStreamingResponseFormat =
-  | (ResponseFormatJSONSchema & { type: "json_schema" })
-  | (ResponseFormatText & { type: "text" })
-  | (ResponseFormatJSONObject & { type: "json_object" });
+  | ResponseFormatText
+  | ResponseFormatJSONSchema
+  | ResponseFormatJSONObject;
 
 export const ChatCompletionNonStreamingServiceTier = {
   Auto: "auto",
@@ -207,8 +207,8 @@ export type ChatCompletionNonStreamingToolChoiceUnion =
   | ChatCompletionNonStreamingToolChoiceEnum;
 
 export type ChatCompletionNonStreamingTool =
-  | (ChatCompletionFunctionToolParam & { type: "function" })
-  | (ChatCompletionCustomToolParam & { type: "custom" });
+  | ChatCompletionFunctionToolParam
+  | ChatCompletionCustomToolParam;
 
 export const ChatCompletionNonStreamingVerbosity = {
   Low: "low",
@@ -221,12 +221,12 @@ export type ChatCompletionNonStreamingVerbosity = ClosedEnum<
 
 export type ChatCompletionNonStreaming = {
   messages: Array<
-    | (ChatCompletionToolMessageParam & { role: "tool" })
-    | (ChatCompletionFunctionMessageParam & { role: "function" })
-    | (ChatCompletionDeveloperMessageParam & { role: "developer" })
-    | (ChatCompletionSystemMessageParam & { role: "system" })
-    | (ChatCompletionUserMessageParam & { role: "user" })
-    | (ChatCompletionAssistantMessageParam & { role: "assistant" })
+    | ChatCompletionDeveloperMessageParam
+    | ChatCompletionSystemMessageParam
+    | ChatCompletionUserMessageParam
+    | ChatCompletionAssistantMessageParam
+    | ChatCompletionToolMessageParam
+    | ChatCompletionFunctionMessageParam
   >;
   model?: TModel | undefined;
   audio?: ChatCompletionAudioParam | null | undefined;
@@ -252,9 +252,9 @@ export type ChatCompletionNonStreaming = {
     | null
     | undefined;
   responseFormat?:
-    | (ResponseFormatJSONSchema & { type: "json_schema" })
-    | (ResponseFormatText & { type: "text" })
-    | (ResponseFormatJSONObject & { type: "json_object" })
+    | ResponseFormatText
+    | ResponseFormatJSONSchema
+    | ResponseFormatJSONObject
     | undefined;
   safetyIdentifier?: string | undefined;
   seed?: number | null | undefined;
@@ -270,10 +270,7 @@ export type ChatCompletionNonStreaming = {
     | ChatCompletionNonStreamingToolChoiceEnum
     | undefined;
   tools?:
-    | Array<
-      | (ChatCompletionFunctionToolParam & { type: "function" })
-      | (ChatCompletionCustomToolParam & { type: "custom" })
-    >
+    | Array<ChatCompletionFunctionToolParam | ChatCompletionCustomToolParam>
     | undefined;
   topLogprobs?: number | null | undefined;
   topP?: number | null | undefined;
@@ -291,33 +288,21 @@ export const ChatCompletionNonStreamingMessage$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.union([
-  ChatCompletionToolMessageParam$inboundSchema.and(
-    z.object({ role: z.literal("tool") }),
-  ),
-  ChatCompletionFunctionMessageParam$inboundSchema.and(
-    z.object({ role: z.literal("function") }),
-  ),
-  ChatCompletionDeveloperMessageParam$inboundSchema.and(
-    z.object({ role: z.literal("developer") }),
-  ),
-  ChatCompletionSystemMessageParam$inboundSchema.and(
-    z.object({ role: z.literal("system") }),
-  ),
-  ChatCompletionUserMessageParam$inboundSchema.and(
-    z.object({ role: z.literal("user") }),
-  ),
-  ChatCompletionAssistantMessageParam$inboundSchema.and(
-    z.object({ role: z.literal("assistant") }),
-  ),
+  ChatCompletionDeveloperMessageParam$inboundSchema,
+  ChatCompletionSystemMessageParam$inboundSchema,
+  ChatCompletionUserMessageParam$inboundSchema,
+  ChatCompletionAssistantMessageParam$inboundSchema,
+  ChatCompletionToolMessageParam$inboundSchema,
+  ChatCompletionFunctionMessageParam$inboundSchema,
 ]);
 /** @internal */
 export type ChatCompletionNonStreamingMessage$Outbound =
-  | (ChatCompletionToolMessageParam$Outbound & { role: "tool" })
-  | (ChatCompletionFunctionMessageParam$Outbound & { role: "function" })
-  | (ChatCompletionDeveloperMessageParam$Outbound & { role: "developer" })
-  | (ChatCompletionSystemMessageParam$Outbound & { role: "system" })
-  | (ChatCompletionUserMessageParam$Outbound & { role: "user" })
-  | (ChatCompletionAssistantMessageParam$Outbound & { role: "assistant" });
+  | ChatCompletionDeveloperMessageParam$Outbound
+  | ChatCompletionSystemMessageParam$Outbound
+  | ChatCompletionUserMessageParam$Outbound
+  | ChatCompletionAssistantMessageParam$Outbound
+  | ChatCompletionToolMessageParam$Outbound
+  | ChatCompletionFunctionMessageParam$Outbound;
 
 /** @internal */
 export const ChatCompletionNonStreamingMessage$outboundSchema: z.ZodType<
@@ -325,24 +310,12 @@ export const ChatCompletionNonStreamingMessage$outboundSchema: z.ZodType<
   z.ZodTypeDef,
   ChatCompletionNonStreamingMessage
 > = z.union([
-  ChatCompletionToolMessageParam$outboundSchema.and(
-    z.object({ role: z.literal("tool") }),
-  ),
-  ChatCompletionFunctionMessageParam$outboundSchema.and(
-    z.object({ role: z.literal("function") }),
-  ),
-  ChatCompletionDeveloperMessageParam$outboundSchema.and(
-    z.object({ role: z.literal("developer") }),
-  ),
-  ChatCompletionSystemMessageParam$outboundSchema.and(
-    z.object({ role: z.literal("system") }),
-  ),
-  ChatCompletionUserMessageParam$outboundSchema.and(
-    z.object({ role: z.literal("user") }),
-  ),
-  ChatCompletionAssistantMessageParam$outboundSchema.and(
-    z.object({ role: z.literal("assistant") }),
-  ),
+  ChatCompletionDeveloperMessageParam$outboundSchema,
+  ChatCompletionSystemMessageParam$outboundSchema,
+  ChatCompletionUserMessageParam$outboundSchema,
+  ChatCompletionAssistantMessageParam$outboundSchema,
+  ChatCompletionToolMessageParam$outboundSchema,
+  ChatCompletionFunctionMessageParam$outboundSchema,
 ]);
 
 export function chatCompletionNonStreamingMessageToJSON(
@@ -449,19 +422,15 @@ export const ChatCompletionNonStreamingResponseFormat$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.union([
-  ResponseFormatJSONSchema$inboundSchema.and(
-    z.object({ type: z.literal("json_schema") }),
-  ),
-  ResponseFormatText$inboundSchema.and(z.object({ type: z.literal("text") })),
-  ResponseFormatJSONObject$inboundSchema.and(
-    z.object({ type: z.literal("json_object") }),
-  ),
+  ResponseFormatText$inboundSchema,
+  ResponseFormatJSONSchema$inboundSchema,
+  ResponseFormatJSONObject$inboundSchema,
 ]);
 /** @internal */
 export type ChatCompletionNonStreamingResponseFormat$Outbound =
-  | (ResponseFormatJSONSchema$Outbound & { type: "json_schema" })
-  | (ResponseFormatText$Outbound & { type: "text" })
-  | (ResponseFormatJSONObject$Outbound & { type: "json_object" });
+  | ResponseFormatText$Outbound
+  | ResponseFormatJSONSchema$Outbound
+  | ResponseFormatJSONObject$Outbound;
 
 /** @internal */
 export const ChatCompletionNonStreamingResponseFormat$outboundSchema: z.ZodType<
@@ -469,13 +438,9 @@ export const ChatCompletionNonStreamingResponseFormat$outboundSchema: z.ZodType<
   z.ZodTypeDef,
   ChatCompletionNonStreamingResponseFormat
 > = z.union([
-  ResponseFormatJSONSchema$outboundSchema.and(
-    z.object({ type: z.literal("json_schema") }),
-  ),
-  ResponseFormatText$outboundSchema.and(z.object({ type: z.literal("text") })),
-  ResponseFormatJSONObject$outboundSchema.and(
-    z.object({ type: z.literal("json_object") }),
-  ),
+  ResponseFormatText$outboundSchema,
+  ResponseFormatJSONSchema$outboundSchema,
+  ResponseFormatJSONObject$outboundSchema,
 ]);
 
 export function chatCompletionNonStreamingResponseFormatToJSON(
@@ -621,17 +586,13 @@ export const ChatCompletionNonStreamingTool$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.union([
-  ChatCompletionFunctionToolParam$inboundSchema.and(
-    z.object({ type: z.literal("function") }),
-  ),
-  ChatCompletionCustomToolParam$inboundSchema.and(
-    z.object({ type: z.literal("custom") }),
-  ),
+  ChatCompletionFunctionToolParam$inboundSchema,
+  ChatCompletionCustomToolParam$inboundSchema,
 ]);
 /** @internal */
 export type ChatCompletionNonStreamingTool$Outbound =
-  | (ChatCompletionFunctionToolParam$Outbound & { type: "function" })
-  | (ChatCompletionCustomToolParam$Outbound & { type: "custom" });
+  | ChatCompletionFunctionToolParam$Outbound
+  | ChatCompletionCustomToolParam$Outbound;
 
 /** @internal */
 export const ChatCompletionNonStreamingTool$outboundSchema: z.ZodType<
@@ -639,12 +600,8 @@ export const ChatCompletionNonStreamingTool$outboundSchema: z.ZodType<
   z.ZodTypeDef,
   ChatCompletionNonStreamingTool
 > = z.union([
-  ChatCompletionFunctionToolParam$outboundSchema.and(
-    z.object({ type: z.literal("function") }),
-  ),
-  ChatCompletionCustomToolParam$outboundSchema.and(
-    z.object({ type: z.literal("custom") }),
-  ),
+  ChatCompletionFunctionToolParam$outboundSchema,
+  ChatCompletionCustomToolParam$outboundSchema,
 ]);
 
 export function chatCompletionNonStreamingToolToJSON(
@@ -683,24 +640,12 @@ export const ChatCompletionNonStreaming$inboundSchema: z.ZodType<
 > = z.object({
   messages: z.array(
     z.union([
-      ChatCompletionToolMessageParam$inboundSchema.and(
-        z.object({ role: z.literal("tool") }),
-      ),
-      ChatCompletionFunctionMessageParam$inboundSchema.and(
-        z.object({ role: z.literal("function") }),
-      ),
-      ChatCompletionDeveloperMessageParam$inboundSchema.and(
-        z.object({ role: z.literal("developer") }),
-      ),
-      ChatCompletionSystemMessageParam$inboundSchema.and(
-        z.object({ role: z.literal("system") }),
-      ),
-      ChatCompletionUserMessageParam$inboundSchema.and(
-        z.object({ role: z.literal("user") }),
-      ),
-      ChatCompletionAssistantMessageParam$inboundSchema.and(
-        z.object({ role: z.literal("assistant") }),
-      ),
+      ChatCompletionDeveloperMessageParam$inboundSchema,
+      ChatCompletionSystemMessageParam$inboundSchema,
+      ChatCompletionUserMessageParam$inboundSchema,
+      ChatCompletionAssistantMessageParam$inboundSchema,
+      ChatCompletionToolMessageParam$inboundSchema,
+      ChatCompletionFunctionMessageParam$inboundSchema,
     ]),
   ),
   model: TModel$inboundSchema.optional(),
@@ -731,13 +676,9 @@ export const ChatCompletionNonStreaming$inboundSchema: z.ZodType<
     ChatCompletionNonStreamingReasoningEffort$inboundSchema,
   ).optional(),
   response_format: z.union([
-    ResponseFormatJSONSchema$inboundSchema.and(
-      z.object({ type: z.literal("json_schema") }),
-    ),
-    ResponseFormatText$inboundSchema.and(z.object({ type: z.literal("text") })),
-    ResponseFormatJSONObject$inboundSchema.and(
-      z.object({ type: z.literal("json_object") }),
-    ),
+    ResponseFormatText$inboundSchema,
+    ResponseFormatJSONSchema$inboundSchema,
+    ResponseFormatJSONObject$inboundSchema,
   ]).optional(),
   safety_identifier: z.string().optional(),
   seed: z.nullable(z.number().int()).optional(),
@@ -756,12 +697,8 @@ export const ChatCompletionNonStreaming$inboundSchema: z.ZodType<
   ]).optional(),
   tools: z.array(
     z.union([
-      ChatCompletionFunctionToolParam$inboundSchema.and(
-        z.object({ type: z.literal("function") }),
-      ),
-      ChatCompletionCustomToolParam$inboundSchema.and(
-        z.object({ type: z.literal("custom") }),
-      ),
+      ChatCompletionFunctionToolParam$inboundSchema,
+      ChatCompletionCustomToolParam$inboundSchema,
     ]),
   ).optional(),
   top_logprobs: z.nullable(z.number().int()).optional(),
@@ -770,7 +707,7 @@ export const ChatCompletionNonStreaming$inboundSchema: z.ZodType<
   verbosity: z.nullable(ChatCompletionNonStreamingVerbosity$inboundSchema)
     .optional(),
   web_search_options: WebSearchOptions$inboundSchema.optional(),
-  stream: z.nullable(z.literal(false).default(false)).optional(),
+  stream: z.nullable(z.literal(false)).optional(),
   tags: z.nullable(z.record(z.any())).optional(),
   parent_span_id: z.nullable(z.string()).optional(),
 }).transform((v) => {
@@ -798,12 +735,12 @@ export const ChatCompletionNonStreaming$inboundSchema: z.ZodType<
 /** @internal */
 export type ChatCompletionNonStreaming$Outbound = {
   messages: Array<
-    | (ChatCompletionToolMessageParam$Outbound & { role: "tool" })
-    | (ChatCompletionFunctionMessageParam$Outbound & { role: "function" })
-    | (ChatCompletionDeveloperMessageParam$Outbound & { role: "developer" })
-    | (ChatCompletionSystemMessageParam$Outbound & { role: "system" })
-    | (ChatCompletionUserMessageParam$Outbound & { role: "user" })
-    | (ChatCompletionAssistantMessageParam$Outbound & { role: "assistant" })
+    | ChatCompletionDeveloperMessageParam$Outbound
+    | ChatCompletionSystemMessageParam$Outbound
+    | ChatCompletionUserMessageParam$Outbound
+    | ChatCompletionAssistantMessageParam$Outbound
+    | ChatCompletionToolMessageParam$Outbound
+    | ChatCompletionFunctionMessageParam$Outbound
   >;
   model?: TModel$Outbound | undefined;
   audio?: ChatCompletionAudioParam$Outbound | null | undefined;
@@ -828,9 +765,9 @@ export type ChatCompletionNonStreaming$Outbound = {
   prompt_cache_key?: string | undefined;
   reasoning_effort?: string | null | undefined;
   response_format?:
-    | (ResponseFormatJSONSchema$Outbound & { type: "json_schema" })
-    | (ResponseFormatText$Outbound & { type: "text" })
-    | (ResponseFormatJSONObject$Outbound & { type: "json_object" })
+    | ResponseFormatText$Outbound
+    | ResponseFormatJSONSchema$Outbound
+    | ResponseFormatJSONObject$Outbound
     | undefined;
   safety_identifier?: string | undefined;
   seed?: number | null | undefined;
@@ -847,8 +784,8 @@ export type ChatCompletionNonStreaming$Outbound = {
     | undefined;
   tools?:
     | Array<
-      | (ChatCompletionFunctionToolParam$Outbound & { type: "function" })
-      | (ChatCompletionCustomToolParam$Outbound & { type: "custom" })
+      | ChatCompletionFunctionToolParam$Outbound
+      | ChatCompletionCustomToolParam$Outbound
     >
     | undefined;
   top_logprobs?: number | null | undefined;
@@ -856,7 +793,7 @@ export type ChatCompletionNonStreaming$Outbound = {
   user?: string | undefined;
   verbosity?: string | null | undefined;
   web_search_options?: WebSearchOptions$Outbound | undefined;
-  stream: false | null;
+  stream?: false | null | undefined;
   tags?: { [k: string]: any } | null | undefined;
   parent_span_id?: string | null | undefined;
 };
@@ -869,24 +806,12 @@ export const ChatCompletionNonStreaming$outboundSchema: z.ZodType<
 > = z.object({
   messages: z.array(
     z.union([
-      ChatCompletionToolMessageParam$outboundSchema.and(
-        z.object({ role: z.literal("tool") }),
-      ),
-      ChatCompletionFunctionMessageParam$outboundSchema.and(
-        z.object({ role: z.literal("function") }),
-      ),
-      ChatCompletionDeveloperMessageParam$outboundSchema.and(
-        z.object({ role: z.literal("developer") }),
-      ),
-      ChatCompletionSystemMessageParam$outboundSchema.and(
-        z.object({ role: z.literal("system") }),
-      ),
-      ChatCompletionUserMessageParam$outboundSchema.and(
-        z.object({ role: z.literal("user") }),
-      ),
-      ChatCompletionAssistantMessageParam$outboundSchema.and(
-        z.object({ role: z.literal("assistant") }),
-      ),
+      ChatCompletionDeveloperMessageParam$outboundSchema,
+      ChatCompletionSystemMessageParam$outboundSchema,
+      ChatCompletionUserMessageParam$outboundSchema,
+      ChatCompletionAssistantMessageParam$outboundSchema,
+      ChatCompletionToolMessageParam$outboundSchema,
+      ChatCompletionFunctionMessageParam$outboundSchema,
     ]),
   ),
   model: TModel$outboundSchema.optional(),
@@ -917,15 +842,9 @@ export const ChatCompletionNonStreaming$outboundSchema: z.ZodType<
     ChatCompletionNonStreamingReasoningEffort$outboundSchema,
   ).optional(),
   responseFormat: z.union([
-    ResponseFormatJSONSchema$outboundSchema.and(
-      z.object({ type: z.literal("json_schema") }),
-    ),
-    ResponseFormatText$outboundSchema.and(
-      z.object({ type: z.literal("text") }),
-    ),
-    ResponseFormatJSONObject$outboundSchema.and(
-      z.object({ type: z.literal("json_object") }),
-    ),
+    ResponseFormatText$outboundSchema,
+    ResponseFormatJSONSchema$outboundSchema,
+    ResponseFormatJSONObject$outboundSchema,
   ]).optional(),
   safetyIdentifier: z.string().optional(),
   seed: z.nullable(z.number().int()).optional(),
@@ -944,12 +863,8 @@ export const ChatCompletionNonStreaming$outboundSchema: z.ZodType<
   ]).optional(),
   tools: z.array(
     z.union([
-      ChatCompletionFunctionToolParam$outboundSchema.and(
-        z.object({ type: z.literal("function") }),
-      ),
-      ChatCompletionCustomToolParam$outboundSchema.and(
-        z.object({ type: z.literal("custom") }),
-      ),
+      ChatCompletionFunctionToolParam$outboundSchema,
+      ChatCompletionCustomToolParam$outboundSchema,
     ]),
   ).optional(),
   topLogprobs: z.nullable(z.number().int()).optional(),
@@ -958,7 +873,7 @@ export const ChatCompletionNonStreaming$outboundSchema: z.ZodType<
   verbosity: z.nullable(ChatCompletionNonStreamingVerbosity$outboundSchema)
     .optional(),
   webSearchOptions: WebSearchOptions$outboundSchema.optional(),
-  stream: z.nullable(z.literal(false)),
+  stream: z.nullable(z.literal(false)).optional(),
   tags: z.nullable(z.record(z.any())).optional(),
   parentSpanId: z.nullable(z.string()).optional(),
 }).transform((v) => {

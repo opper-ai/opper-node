@@ -6,7 +6,9 @@
 ### `models.CustomFormatText`
 
 ```typescript
-const value: models.CustomFormatText = {};
+const value: models.CustomFormatText = {
+  type: "text",
+};
 ```
 
 ### `models.CustomFormatGrammar`
@@ -17,6 +19,7 @@ const value: models.CustomFormatGrammar = {
     definition: "<value>",
     syntax: "lark",
   },
+  type: "grammar",
 };
 ```
 

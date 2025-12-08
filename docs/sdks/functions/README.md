@@ -1,5 +1,4 @@
 # Functions
-(*functions*)
 
 ## Overview
 

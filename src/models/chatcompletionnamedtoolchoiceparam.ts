@@ -15,7 +15,7 @@ import {
 
 export type ChatCompletionNamedToolChoiceParam = {
   function: OpenaiTypesChatChatCompletionNamedToolChoiceParamFunction;
-  type?: "function" | undefined;
+  type: "function";
 };
 
 /** @internal */
@@ -26,7 +26,7 @@ export const ChatCompletionNamedToolChoiceParam$inboundSchema: z.ZodType<
 > = z.object({
   function:
     OpenaiTypesChatChatCompletionNamedToolChoiceParamFunction$inboundSchema,
-  type: z.literal("function").default("function").optional(),
+  type: z.literal("function"),
 });
 /** @internal */
 export type ChatCompletionNamedToolChoiceParam$Outbound = {

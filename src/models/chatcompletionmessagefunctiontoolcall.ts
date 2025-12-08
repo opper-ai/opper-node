@@ -20,7 +20,7 @@ import {
 export type ChatCompletionMessageFunctionToolCall = {
   id: string;
   function: FunctionOutput;
-  type?: "function" | undefined;
+  type: "function";
   additionalProperties?: { [k: string]: any } | undefined;
 };
 
@@ -33,7 +33,7 @@ export const ChatCompletionMessageFunctionToolCall$inboundSchema: z.ZodType<
   z.object({
     id: z.string(),
     function: FunctionOutput$inboundSchema,
-    type: z.literal("function").default("function").optional(),
+    type: z.literal("function"),
   }).catchall(z.any()),
   "additionalProperties",
   true,

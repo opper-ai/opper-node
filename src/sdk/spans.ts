@@ -6,6 +6,7 @@ import { spansCreate } from "../funcs/spansCreate.js";
 import { spansDelete } from "../funcs/spansDelete.js";
 import { spansGet } from "../funcs/spansGet.js";
 import { spansSaveExamples } from "../funcs/spansSaveExamples.js";
+import { spansSubmitSpanFeedbackSpansSpanIdFeedbackPost } from "../funcs/spansSubmitSpanFeedbackSpansSpanIdFeedbackPost.js";
 import { spansUpdate } from "../funcs/spansUpdate.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
 import * as models from "../models/index.js";
@@ -95,6 +96,33 @@ export class Spans extends ClientSDK {
     return unwrapAsync(spansSaveExamples(
       this,
       spanId,
+      options,
+    ));
+  }
+
+  /**
+   * Submit Span Feedback
+   *
+   * @remarks
+   * Submit human feedback for a span.
+   *
+   * This endpoint allows you to provide feedback (thumbs up/down) on a span's output.
+   * The feedback is stored on the associated generation and can trigger auto-save
+   * to the function's dataset based on the observer's configuration.
+   *
+   * - score=1.0: Positive feedback (thumbs up)
+   * - score=0.0: Negative feedback (thumbs down)
+   * - Intermediate values (e.g., 0.5) are supported for nuanced feedback
+   */
+  async submitSpanFeedbackSpansSpanIdFeedbackPost(
+    spanId: string,
+    submitFeedbackRequest: models.SubmitFeedbackRequest,
+    options?: RequestOptions,
+  ): Promise<models.SubmitFeedbackResponse> {
+    return unwrapAsync(spansSubmitSpanFeedbackSpansSpanIdFeedbackPost(
+      this,
+      spanId,
+      submitFeedbackRequest,
       options,
     ));
   }

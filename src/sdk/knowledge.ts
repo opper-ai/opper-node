@@ -15,6 +15,7 @@ import { knowledgeList } from "../funcs/knowledgeList.js";
 import { knowledgeListFiles } from "../funcs/knowledgeListFiles.js";
 import { knowledgeQuery } from "../funcs/knowledgeQuery.js";
 import { knowledgeRegisterFileUpload } from "../funcs/knowledgeRegisterFileUpload.js";
+import { knowledgeUploadFileKnowledgeKnowledgeBaseIdUploadPost } from "../funcs/knowledgeUploadFileKnowledgeKnowledgeBaseIdUploadPost.js";
 import { ClientSDK, RequestOptions } from "../lib/sdks.js";
 import * as models from "../models/index.js";
 import { unwrapAsync } from "../types/fp.js";
@@ -151,6 +152,32 @@ export class Knowledge extends ClientSDK {
       this,
       knowledgeBaseId,
       registerFileUploadRequest,
+      options,
+    ));
+  }
+
+  /**
+   * Upload File
+   *
+   * @remarks
+   * Upload a file directly to a knowledge base.
+   *
+   * This is a simplified alternative to the three-step upload process
+   * (get_upload_url -> upload to S3 -> register_file). Use this endpoint
+   * for smaller files or when you prefer a simpler API.
+   *
+   * The file will be uploaded to S3 and queued for processing automatically.
+   */
+  async uploadFileKnowledgeKnowledgeBaseIdUploadPost(
+    knowledgeBaseId: string,
+    bodyUploadFileKnowledgeKnowledgeBaseIdUploadPost:
+      models.BodyUploadFileKnowledgeKnowledgeBaseIdUploadPost,
+    options?: RequestOptions,
+  ): Promise<models.UploadFileResponse> {
+    return unwrapAsync(knowledgeUploadFileKnowledgeKnowledgeBaseIdUploadPost(
+      this,
+      knowledgeBaseId,
+      bodyUploadFileKnowledgeKnowledgeBaseIdUploadPost,
       options,
     ));
   }

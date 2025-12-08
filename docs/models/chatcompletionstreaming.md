@@ -9,8 +9,10 @@ let value: ChatCompletionStreaming = {
   messages: [
     {
       content: "<value>",
+      role: "user",
     },
   ],
+  stream: true,
 };
 ```
 
@@ -51,6 +53,6 @@ let value: ChatCompletionStreaming = {
 | `user`                                                                                                               | *string*                                                                                                             | :heavy_minus_sign:                                                                                                   | N/A                                                                                                                  |
 | `verbosity`                                                                                                          | [models.ChatCompletionStreamingVerbosity](../models/chatcompletionstreamingverbosity.md)                             | :heavy_minus_sign:                                                                                                   | N/A                                                                                                                  |
 | `webSearchOptions`                                                                                                   | [models.WebSearchOptions](../models/websearchoptions.md)                                                             | :heavy_minus_sign:                                                                                                   | N/A                                                                                                                  |
-| `stream`                                                                                                             | *boolean*                                                                                                            | :heavy_check_mark:                                                                                                   | N/A                                                                                                                  |
+| `stream`                                                                                                             | *true*                                                                                                               | :heavy_check_mark:                                                                                                   | N/A                                                                                                                  |
 | `tags`                                                                                                               | Record<string, *any*>                                                                                                | :heavy_minus_sign:                                                                                                   | N/A                                                                                                                  |
 | `parentSpanId`                                                                                                       | *string*                                                                                                             | :heavy_minus_sign:                                                                                                   | N/A                                                                                                                  |

@@ -47,6 +47,7 @@ import { tool$knowledgeList } from "./tools/knowledgeList.js";
 import { tool$knowledgeListFiles } from "./tools/knowledgeListFiles.js";
 import { tool$knowledgeQuery } from "./tools/knowledgeQuery.js";
 import { tool$knowledgeRegisterFileUpload } from "./tools/knowledgeRegisterFileUpload.js";
+import { tool$knowledgeUploadFileKnowledgeKnowledgeBaseIdUploadPost } from "./tools/knowledgeUploadFileKnowledgeKnowledgeBaseIdUploadPost.js";
 import { tool$languageModelsDeleteCustom } from "./tools/languageModelsDeleteCustom.js";
 import { tool$languageModelsGetCustom } from "./tools/languageModelsGetCustom.js";
 import { tool$languageModelsGetCustomByName } from "./tools/languageModelsGetCustomByName.js";
@@ -72,6 +73,7 @@ import { tool$spansCreate } from "./tools/spansCreate.js";
 import { tool$spansDelete } from "./tools/spansDelete.js";
 import { tool$spansGet } from "./tools/spansGet.js";
 import { tool$spansSaveExamples } from "./tools/spansSaveExamples.js";
+import { tool$spansSubmitSpanFeedbackSpansSpanIdFeedbackPost } from "./tools/spansSubmitSpanFeedbackSpansSpanIdFeedbackPost.js";
 import { tool$spansUpdate } from "./tools/spansUpdate.js";
 import { tool$stream } from "./tools/stream.js";
 import { tool$tracesGet } from "./tools/tracesGet.js";
@@ -87,7 +89,7 @@ export function createMCPServer(deps: {
 }) {
   const server = new McpServer({
     name: "Opper",
-    version: "3.3.2",
+    version: "3.4.0",
   });
 
   const client = new OpperCore({
@@ -126,6 +128,7 @@ export function createMCPServer(deps: {
   tool(tool$knowledgeGetByName);
   tool(tool$knowledgeGetUploadUrl);
   tool(tool$knowledgeRegisterFileUpload);
+  tool(tool$knowledgeUploadFileKnowledgeKnowledgeBaseIdUploadPost);
   tool(tool$knowledgeDeleteFile);
   tool(tool$knowledgeGetFileDownloadUrl);
   tool(tool$knowledgeListFiles);
@@ -139,6 +142,7 @@ export function createMCPServer(deps: {
   tool(tool$spansUpdate);
   tool(tool$spansDelete);
   tool(tool$spansSaveExamples);
+  tool(tool$spansSubmitSpanFeedbackSpansSpanIdFeedbackPost);
   tool(tool$spanMetricsCreateMetric);
   tool(tool$spanMetricsList);
   tool(tool$spanMetricsGet);

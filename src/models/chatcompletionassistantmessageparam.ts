@@ -46,27 +46,27 @@ import {
 
 export type ChatCompletionAssistantMessageParamContent1 =
   | (ChatCompletionContentPartTextParam & { type: "text" })
-  | (ChatCompletionContentPartRefusalParam & { type: "refusal" });
+  | ChatCompletionContentPartRefusalParam;
 
 export type ChatCompletionAssistantMessageParamContent2 =
   | string
   | Array<
     | (ChatCompletionContentPartTextParam & { type: "text" })
-    | (ChatCompletionContentPartRefusalParam & { type: "refusal" })
+    | ChatCompletionContentPartRefusalParam
   >;
 
 export type ChatCompletionAssistantMessageParamToolCall =
-  | (ChatCompletionMessageFunctionToolCallParam & { type: "function" })
-  | (ChatCompletionMessageCustomToolCallParam & { type: "custom" });
+  | ChatCompletionMessageFunctionToolCallParam
+  | ChatCompletionMessageCustomToolCallParam;
 
 export type ChatCompletionAssistantMessageParam = {
-  role?: "assistant" | undefined;
+  role: "assistant";
   audio?: Audio | null | undefined;
   content?:
     | string
     | Array<
       | (ChatCompletionContentPartTextParam & { type: "text" })
-      | (ChatCompletionContentPartRefusalParam & { type: "refusal" })
+      | ChatCompletionContentPartRefusalParam
     >
     | null
     | undefined;
@@ -75,8 +75,8 @@ export type ChatCompletionAssistantMessageParam = {
   refusal?: string | null | undefined;
   toolCalls?:
     | Array<
-      | (ChatCompletionMessageFunctionToolCallParam & { type: "function" })
-      | (ChatCompletionMessageCustomToolCallParam & { type: "custom" })
+      | ChatCompletionMessageFunctionToolCallParam
+      | ChatCompletionMessageCustomToolCallParam
     >
     | undefined;
 };
@@ -91,14 +91,12 @@ export const ChatCompletionAssistantMessageParamContent1$inboundSchema:
     ChatCompletionContentPartTextParam$inboundSchema.and(
       z.object({ type: z.literal("text") }),
     ),
-    ChatCompletionContentPartRefusalParam$inboundSchema.and(
-      z.object({ type: z.literal("refusal") }),
-    ),
+    ChatCompletionContentPartRefusalParam$inboundSchema,
   ]);
 /** @internal */
 export type ChatCompletionAssistantMessageParamContent1$Outbound =
   | (ChatCompletionContentPartTextParam$Outbound & { type: "text" })
-  | (ChatCompletionContentPartRefusalParam$Outbound & { type: "refusal" });
+  | ChatCompletionContentPartRefusalParam$Outbound;
 
 /** @internal */
 export const ChatCompletionAssistantMessageParamContent1$outboundSchema:
@@ -110,9 +108,7 @@ export const ChatCompletionAssistantMessageParamContent1$outboundSchema:
     ChatCompletionContentPartTextParam$outboundSchema.and(
       z.object({ type: z.literal("text") }),
     ),
-    ChatCompletionContentPartRefusalParam$outboundSchema.and(
-      z.object({ type: z.literal("refusal") }),
-    ),
+    ChatCompletionContentPartRefusalParam$outboundSchema,
   ]);
 
 export function chatCompletionAssistantMessageParamContent1ToJSON(
@@ -154,9 +150,7 @@ export const ChatCompletionAssistantMessageParamContent2$inboundSchema:
         ChatCompletionContentPartTextParam$inboundSchema.and(
           z.object({ type: z.literal("text") }),
         ),
-        ChatCompletionContentPartRefusalParam$inboundSchema.and(
-          z.object({ type: z.literal("refusal") }),
-        ),
+        ChatCompletionContentPartRefusalParam$inboundSchema,
       ]),
     ),
   ]);
@@ -165,7 +159,7 @@ export type ChatCompletionAssistantMessageParamContent2$Outbound =
   | string
   | Array<
     | (ChatCompletionContentPartTextParam$Outbound & { type: "text" })
-    | (ChatCompletionContentPartRefusalParam$Outbound & { type: "refusal" })
+    | ChatCompletionContentPartRefusalParam$Outbound
   >;
 
 /** @internal */
@@ -181,9 +175,7 @@ export const ChatCompletionAssistantMessageParamContent2$outboundSchema:
         ChatCompletionContentPartTextParam$outboundSchema.and(
           z.object({ type: z.literal("text") }),
         ),
-        ChatCompletionContentPartRefusalParam$outboundSchema.and(
-          z.object({ type: z.literal("refusal") }),
-        ),
+        ChatCompletionContentPartRefusalParam$outboundSchema,
       ]),
     ),
   ]);
@@ -221,17 +213,13 @@ export const ChatCompletionAssistantMessageParamToolCall$inboundSchema:
     z.ZodTypeDef,
     unknown
   > = z.union([
-    ChatCompletionMessageFunctionToolCallParam$inboundSchema.and(
-      z.object({ type: z.literal("function") }),
-    ),
-    ChatCompletionMessageCustomToolCallParam$inboundSchema.and(
-      z.object({ type: z.literal("custom") }),
-    ),
+    ChatCompletionMessageFunctionToolCallParam$inboundSchema,
+    ChatCompletionMessageCustomToolCallParam$inboundSchema,
   ]);
 /** @internal */
 export type ChatCompletionAssistantMessageParamToolCall$Outbound =
-  | (ChatCompletionMessageFunctionToolCallParam$Outbound & { type: "function" })
-  | (ChatCompletionMessageCustomToolCallParam$Outbound & { type: "custom" });
+  | ChatCompletionMessageFunctionToolCallParam$Outbound
+  | ChatCompletionMessageCustomToolCallParam$Outbound;
 
 /** @internal */
 export const ChatCompletionAssistantMessageParamToolCall$outboundSchema:
@@ -240,12 +228,8 @@ export const ChatCompletionAssistantMessageParamToolCall$outboundSchema:
     z.ZodTypeDef,
     ChatCompletionAssistantMessageParamToolCall
   > = z.union([
-    ChatCompletionMessageFunctionToolCallParam$outboundSchema.and(
-      z.object({ type: z.literal("function") }),
-    ),
-    ChatCompletionMessageCustomToolCallParam$outboundSchema.and(
-      z.object({ type: z.literal("custom") }),
-    ),
+    ChatCompletionMessageFunctionToolCallParam$outboundSchema,
+    ChatCompletionMessageCustomToolCallParam$outboundSchema,
   ]);
 
 export function chatCompletionAssistantMessageParamToolCallToJSON(
@@ -280,7 +264,7 @@ export const ChatCompletionAssistantMessageParam$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.object({
-  role: z.literal("assistant").default("assistant").optional(),
+  role: z.literal("assistant"),
   audio: z.nullable(Audio$inboundSchema).optional(),
   content: z.nullable(
     z.union([
@@ -290,9 +274,7 @@ export const ChatCompletionAssistantMessageParam$inboundSchema: z.ZodType<
           ChatCompletionContentPartTextParam$inboundSchema.and(
             z.object({ type: z.literal("text") }),
           ),
-          ChatCompletionContentPartRefusalParam$inboundSchema.and(
-            z.object({ type: z.literal("refusal") }),
-          ),
+          ChatCompletionContentPartRefusalParam$inboundSchema,
         ]),
       ),
     ]),
@@ -302,12 +284,8 @@ export const ChatCompletionAssistantMessageParam$inboundSchema: z.ZodType<
   refusal: z.nullable(z.string()).optional(),
   tool_calls: z.array(
     z.union([
-      ChatCompletionMessageFunctionToolCallParam$inboundSchema.and(
-        z.object({ type: z.literal("function") }),
-      ),
-      ChatCompletionMessageCustomToolCallParam$inboundSchema.and(
-        z.object({ type: z.literal("custom") }),
-      ),
+      ChatCompletionMessageFunctionToolCallParam$inboundSchema,
+      ChatCompletionMessageCustomToolCallParam$inboundSchema,
     ]),
   ).optional(),
 }).transform((v) => {
@@ -324,7 +302,7 @@ export type ChatCompletionAssistantMessageParam$Outbound = {
     | string
     | Array<
       | (ChatCompletionContentPartTextParam$Outbound & { type: "text" })
-      | (ChatCompletionContentPartRefusalParam$Outbound & { type: "refusal" })
+      | ChatCompletionContentPartRefusalParam$Outbound
     >
     | null
     | undefined;
@@ -333,10 +311,8 @@ export type ChatCompletionAssistantMessageParam$Outbound = {
   refusal?: string | null | undefined;
   tool_calls?:
     | Array<
-      | (ChatCompletionMessageFunctionToolCallParam$Outbound & {
-        type: "function";
-      })
-      | (ChatCompletionMessageCustomToolCallParam$Outbound & { type: "custom" })
+      | ChatCompletionMessageFunctionToolCallParam$Outbound
+      | ChatCompletionMessageCustomToolCallParam$Outbound
     >
     | undefined;
 };
@@ -357,9 +333,7 @@ export const ChatCompletionAssistantMessageParam$outboundSchema: z.ZodType<
           ChatCompletionContentPartTextParam$outboundSchema.and(
             z.object({ type: z.literal("text") }),
           ),
-          ChatCompletionContentPartRefusalParam$outboundSchema.and(
-            z.object({ type: z.literal("refusal") }),
-          ),
+          ChatCompletionContentPartRefusalParam$outboundSchema,
         ]),
       ),
     ]),
@@ -369,12 +343,8 @@ export const ChatCompletionAssistantMessageParam$outboundSchema: z.ZodType<
   refusal: z.nullable(z.string()).optional(),
   toolCalls: z.array(
     z.union([
-      ChatCompletionMessageFunctionToolCallParam$outboundSchema.and(
-        z.object({ type: z.literal("function") }),
-      ),
-      ChatCompletionMessageCustomToolCallParam$outboundSchema.and(
-        z.object({ type: z.literal("custom") }),
-      ),
+      ChatCompletionMessageFunctionToolCallParam$outboundSchema,
+      ChatCompletionMessageCustomToolCallParam$outboundSchema,
     ]),
   ).optional(),
 }).transform((v) => {

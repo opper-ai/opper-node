@@ -7,6 +7,7 @@ import { WebSearchOptionsUserLocation } from "opperai/models";
 
 let value: WebSearchOptionsUserLocation = {
   approximate: {},
+  type: "approximate",
 };
 ```
 
@@ -15,4 +16,4 @@ let value: WebSearchOptionsUserLocation = {
 | Field                                                                                                  | Type                                                                                                   | Required                                                                                               | Description                                                                                            |
 | ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------ |
 | `approximate`                                                                                          | [models.WebSearchOptionsUserLocationApproximate](../models/websearchoptionsuserlocationapproximate.md) | :heavy_check_mark:                                                                                     | N/A                                                                                                    |
-| `type`                                                                                                 | *string*                                                                                               | :heavy_check_mark:                                                                                     | N/A                                                                                                    |
+| `type`                                                                                                 | *"approximate"*                                                                                        | :heavy_check_mark:                                                                                     | N/A                                                                                                    |

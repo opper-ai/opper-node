@@ -6,7 +6,9 @@
 ### `models.ResponseFormatText`
 
 ```typescript
-const value: models.ResponseFormatText = {};
+const value: models.ResponseFormatText = {
+  type: "text",
+};
 ```
 
 ### `models.ResponseFormatJSONSchema`
@@ -16,12 +18,15 @@ const value: models.ResponseFormatJSONSchema = {
   jsonSchema: {
     name: "<value>",
   },
+  type: "json_schema",
 };
 ```
 
 ### `models.ResponseFormatJSONObject`
 
 ```typescript
-const value: models.ResponseFormatJSONObject = {};
+const value: models.ResponseFormatJSONObject = {
+  type: "json_object",
+};
 ```
 

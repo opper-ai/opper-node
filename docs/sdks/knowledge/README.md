@@ -1,5 +1,4 @@
 # Knowledge
-(*knowledge*)
 
 ## Overview
 
@@ -12,6 +11,7 @@
 * [getByName](#getbyname) - Get Knowledge Base By Name
 * [getUploadUrl](#getuploadurl) - Get Upload Url
 * [registerFileUpload](#registerfileupload) - Register File Upload
+* [uploadFileKnowledgeKnowledgeBaseIdUploadPost](#uploadfileknowledgeknowledgebaseiduploadpost) - Upload File
 * [deleteFile](#deletefile) - Delete File From Knowledge Base
 * [getFileDownloadUrl](#getfiledownloadurl) - Get File Download Url
 * [listFiles](#listfiles) - List Files
@@ -552,6 +552,94 @@ run();
 ### Response
 
 **Promise\<[models.RegisterFileUploadResponse](../../models/registerfileuploadresponse.md)\>**
+
+### Errors
+
+| Error Type                    | Status Code                   | Content Type                  |
+| ----------------------------- | ----------------------------- | ----------------------------- |
+| errors.BadRequestError        | 400                           | application/json              |
+| errors.UnauthorizedError      | 401                           | application/json              |
+| errors.NotFoundError          | 404                           | application/json              |
+| errors.RequestValidationError | 422                           | application/json              |
+| errors.APIError               | 4XX, 5XX                      | \*/\*                         |
+
+## uploadFileKnowledgeKnowledgeBaseIdUploadPost
+
+Upload a file directly to a knowledge base.
+
+This is a simplified alternative to the three-step upload process
+(get_upload_url -> upload to S3 -> register_file). Use this endpoint
+for smaller files or when you prefer a simpler API.
+
+The file will be uploaded to S3 and queued for processing automatically.
+
+### Example Usage
+
+<!-- UsageSnippet language="typescript" operationID="upload_file_knowledge__knowledge_base_id__upload_post" method="post" path="/knowledge/{knowledge_base_id}/upload" -->
+```typescript
+import { openAsBlob } from "node:fs";
+import { Opper } from "opperai";
+
+const opper = new Opper({
+  httpBearer: process.env["OPPER_HTTP_BEARER"] ?? "",
+});
+
+async function run() {
+  const result = await opper.knowledge.uploadFileKnowledgeKnowledgeBaseIdUploadPost("68275f14-e70f-4536-be7e-03a877ce8be8", {
+    file: await openAsBlob("example.file"),
+    metadata: "{\"category\": \"legal\", \"client\": \"acme\"}",
+  });
+
+  console.log(result);
+}
+
+run();
+```
+
+### Standalone function
+
+The standalone function version of this method:
+
+```typescript
+import { openAsBlob } from "node:fs";
+import { OpperCore } from "opperai/core.js";
+import { knowledgeUploadFileKnowledgeKnowledgeBaseIdUploadPost } from "opperai/funcs/knowledgeUploadFileKnowledgeKnowledgeBaseIdUploadPost.js";
+
+// Use `OpperCore` for best tree-shaking performance.
+// You can create one instance of it to use across an application.
+const opper = new OpperCore({
+  httpBearer: process.env["OPPER_HTTP_BEARER"] ?? "",
+});
+
+async function run() {
+  const res = await knowledgeUploadFileKnowledgeKnowledgeBaseIdUploadPost(opper, "68275f14-e70f-4536-be7e-03a877ce8be8", {
+    file: await openAsBlob("example.file"),
+    metadata: "{\"category\": \"legal\", \"client\": \"acme\"}",
+  });
+  if (res.ok) {
+    const { value: result } = res;
+    console.log(result);
+  } else {
+    console.log("knowledgeUploadFileKnowledgeKnowledgeBaseIdUploadPost failed:", res.error);
+  }
+}
+
+run();
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `knowledgeBaseId`                                                                                                                                                              | *string*                                                                                                                                                                       | :heavy_check_mark:                                                                                                                                                             | The id of the knowledge base to upload the file to                                                                                                                             |
+| `bodyUploadFileKnowledgeKnowledgeBaseIdUploadPost`                                                                                                                             | [models.BodyUploadFileKnowledgeKnowledgeBaseIdUploadPost](../../models/bodyuploadfileknowledgeknowledgebaseiduploadpost.md)                                                    | :heavy_check_mark:                                                                                                                                                             | N/A                                                                                                                                                                            |
+| `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
+| `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+
+### Response
+
+**Promise\<[models.UploadFileResponse](../../models/uploadfileresponse.md)\>**
 
 ### Errors
 

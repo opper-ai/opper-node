@@ -20,7 +20,7 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 export type ChatCompletionMessageCustomToolCall = {
   id: string;
   custom: CustomOutput;
-  type?: "custom" | undefined;
+  type: "custom";
   additionalProperties?: { [k: string]: any } | undefined;
 };
 
@@ -33,7 +33,7 @@ export const ChatCompletionMessageCustomToolCall$inboundSchema: z.ZodType<
   z.object({
     id: z.string(),
     custom: CustomOutput$inboundSchema,
-    type: z.literal("custom").default("custom").optional(),
+    type: z.literal("custom"),
   }).catchall(z.any()),
   "additionalProperties",
   true,

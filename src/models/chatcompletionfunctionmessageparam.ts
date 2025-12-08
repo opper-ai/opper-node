@@ -10,7 +10,7 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 export type ChatCompletionFunctionMessageParam = {
   content: string | null;
   name: string;
-  role?: "function" | undefined;
+  role: "function";
 };
 
 /** @internal */
@@ -21,7 +21,7 @@ export const ChatCompletionFunctionMessageParam$inboundSchema: z.ZodType<
 > = z.object({
   content: z.nullable(z.string()),
   name: z.string(),
-  role: z.literal("function").default("function").optional(),
+  role: z.literal("function"),
 });
 /** @internal */
 export type ChatCompletionFunctionMessageParam$Outbound = {

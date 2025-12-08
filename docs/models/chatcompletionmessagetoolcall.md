@@ -12,6 +12,7 @@ const value: models.ChatCompletionMessageFunctionToolCall = {
     arguments: "<value>",
     name: "<value>",
   },
+  type: "function",
 };
 ```
 
@@ -24,6 +25,7 @@ const value: models.ChatCompletionMessageCustomToolCall = {
     input: "<value>",
     name: "<value>",
   },
+  type: "custom",
 };
 ```
 

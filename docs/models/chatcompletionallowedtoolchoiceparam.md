@@ -20,6 +20,7 @@ let value: ChatCompletionAllowedToolChoiceParam = {
       {},
     ],
   },
+  type: "allowed_tools",
 };
 ```
 
@@ -28,4 +29,4 @@ let value: ChatCompletionAllowedToolChoiceParam = {
 | Field                                                                                  | Type                                                                                   | Required                                                                               | Description                                                                            |
 | -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
 | `allowedTools`                                                                         | [models.ChatCompletionAllowedToolsParam](../models/chatcompletionallowedtoolsparam.md) | :heavy_check_mark:                                                                     | N/A                                                                                    |
-| `type`                                                                                 | *string*                                                                               | :heavy_check_mark:                                                                     | N/A                                                                                    |
+| `type`                                                                                 | *"allowed_tools"*                                                                      | :heavy_check_mark:                                                                     | N/A                                                                                    |

@@ -9,6 +9,7 @@ let value: ChatCompletionContentPartImageParam = {
   imageUrl: {
     url: "https://lustrous-mouser.org/",
   },
+  type: "image_url",
 };
 ```
 
@@ -17,4 +18,4 @@ let value: ChatCompletionContentPartImageParam = {
 | Field                                    | Type                                     | Required                                 | Description                              |
 | ---------------------------------------- | ---------------------------------------- | ---------------------------------------- | ---------------------------------------- |
 | `imageUrl`                               | [models.ImageURL](../models/imageurl.md) | :heavy_check_mark:                       | N/A                                      |
-| `type`                                   | *string*                                 | :heavy_check_mark:                       | N/A                                      |
+| `type`                                   | *"image_url"*                            | :heavy_check_mark:                       | N/A                                      |

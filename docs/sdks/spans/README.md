@@ -1,5 +1,4 @@
 # Spans
-(*spans*)
 
 ## Overview
 
@@ -10,6 +9,7 @@
 * [update](#update) - Update Span
 * [delete](#delete) - Delete Span
 * [saveExamples](#saveexamples) - Save To Dataset
+* [submitSpanFeedbackSpansSpanIdFeedbackPost](#submitspanfeedbackspansspanidfeedbackpost) - Submit Span Feedback
 
 ## create
 
@@ -204,9 +204,9 @@ const opper = new Opper({
 async function run() {
   const result = await opper.spans.update("77b258a2-45c1-4b87-a50c-9116bc8ed1d6", {
     name: "my span",
-    startTime: new Date("2025-11-28T13:52:33.685136Z"),
+    startTime: new Date("2025-12-08T03:07:13.594544Z"),
     type: "email_tool",
-    endTime: new Date("2025-11-28T13:52:33.685231Z"),
+    endTime: new Date("2025-12-08T03:07:13.594602Z"),
     input: "Hello, world!",
     output: "Hello, world!",
     error: "Exception: This is an error message",
@@ -239,9 +239,9 @@ const opper = new OpperCore({
 async function run() {
   const res = await spansUpdate(opper, "77b258a2-45c1-4b87-a50c-9116bc8ed1d6", {
     name: "my span",
-    startTime: new Date("2025-11-28T13:52:33.685136Z"),
+    startTime: new Date("2025-12-08T03:07:13.594544Z"),
     type: "email_tool",
-    endTime: new Date("2025-11-28T13:52:33.685231Z"),
+    endTime: new Date("2025-12-08T03:07:13.594602Z"),
     input: "Hello, world!",
     output: "Hello, world!",
     error: "Exception: This is an error message",
@@ -420,6 +420,94 @@ run();
 ### Response
 
 **Promise\<[models.SaveToDatasetResponse](../../models/savetodatasetresponse.md)\>**
+
+### Errors
+
+| Error Type                    | Status Code                   | Content Type                  |
+| ----------------------------- | ----------------------------- | ----------------------------- |
+| errors.BadRequestError        | 400                           | application/json              |
+| errors.UnauthorizedError      | 401                           | application/json              |
+| errors.NotFoundError          | 404                           | application/json              |
+| errors.RequestValidationError | 422                           | application/json              |
+| errors.APIError               | 4XX, 5XX                      | \*/\*                         |
+
+## submitSpanFeedbackSpansSpanIdFeedbackPost
+
+Submit human feedback for a span.
+
+This endpoint allows you to provide feedback (thumbs up/down) on a span's output.
+The feedback is stored on the associated generation and can trigger auto-save
+to the function's dataset based on the observer's configuration.
+
+- score=1.0: Positive feedback (thumbs up)
+- score=0.0: Negative feedback (thumbs down)
+- Intermediate values (e.g., 0.5) are supported for nuanced feedback
+
+### Example Usage
+
+<!-- UsageSnippet language="typescript" operationID="submit_span_feedback_spans__span_id__feedback_post" method="post" path="/spans/{span_id}/feedback" -->
+```typescript
+import { Opper } from "opperai";
+
+const opper = new Opper({
+  httpBearer: process.env["OPPER_HTTP_BEARER"] ?? "",
+});
+
+async function run() {
+  const result = await opper.spans.submitSpanFeedbackSpansSpanIdFeedbackPost("c1be9633-665b-418c-a08f-19cb9734dd23", {
+    score: 1,
+    comment: "Great output, exactly what I needed",
+  });
+
+  console.log(result);
+}
+
+run();
+```
+
+### Standalone function
+
+The standalone function version of this method:
+
+```typescript
+import { OpperCore } from "opperai/core.js";
+import { spansSubmitSpanFeedbackSpansSpanIdFeedbackPost } from "opperai/funcs/spansSubmitSpanFeedbackSpansSpanIdFeedbackPost.js";
+
+// Use `OpperCore` for best tree-shaking performance.
+// You can create one instance of it to use across an application.
+const opper = new OpperCore({
+  httpBearer: process.env["OPPER_HTTP_BEARER"] ?? "",
+});
+
+async function run() {
+  const res = await spansSubmitSpanFeedbackSpansSpanIdFeedbackPost(opper, "c1be9633-665b-418c-a08f-19cb9734dd23", {
+    score: 1,
+    comment: "Great output, exactly what I needed",
+  });
+  if (res.ok) {
+    const { value: result } = res;
+    console.log(result);
+  } else {
+    console.log("spansSubmitSpanFeedbackSpansSpanIdFeedbackPost failed:", res.error);
+  }
+}
+
+run();
+```
+
+### Parameters
+
+| Parameter                                                                                                                                                                      | Type                                                                                                                                                                           | Required                                                                                                                                                                       | Description                                                                                                                                                                    |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `spanId`                                                                                                                                                                       | *string*                                                                                                                                                                       | :heavy_check_mark:                                                                                                                                                             | The ID of the span to provide feedback on                                                                                                                                      |
+| `submitFeedbackRequest`                                                                                                                                                        | [models.SubmitFeedbackRequest](../../models/submitfeedbackrequest.md)                                                                                                          | :heavy_check_mark:                                                                                                                                                             | N/A                                                                                                                                                                            |
+| `options`                                                                                                                                                                      | RequestOptions                                                                                                                                                                 | :heavy_minus_sign:                                                                                                                                                             | Used to set various options for making HTTP requests.                                                                                                                          |
+| `options.fetchOptions`                                                                                                                                                         | [RequestInit](https://developer.mozilla.org/en-US/docs/Web/API/Request/Request#options)                                                                                        | :heavy_minus_sign:                                                                                                                                                             | Options that are passed to the underlying HTTP request. This can be used to inject extra headers for examples. All `Request` options, except `method` and `body`, are allowed. |
+| `options.retries`                                                                                                                                                              | [RetryConfig](../../lib/utils/retryconfig.md)                                                                                                                                  | :heavy_minus_sign:                                                                                                                                                             | Enables retrying HTTP requests under certain failure conditions.                                                                                                               |
+
+### Response
+
+**Promise\<[models.SubmitFeedbackResponse](../../models/submitfeedbackresponse.md)\>**
 
 ### Errors
 

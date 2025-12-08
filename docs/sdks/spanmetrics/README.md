@@ -1,5 +1,4 @@
 # SpanMetrics
-(*spanMetrics*)
 
 ## Overview
 

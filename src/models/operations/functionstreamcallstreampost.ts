@@ -50,9 +50,17 @@ export type StreamingChunk = {
    */
   spanId?: string | null | undefined;
   /**
-   * Indicates the streaming mode: 'text' for unstructured streaming, 'json' for structured streaming with output_schema. Only present when delta content is included.
+   * Indicates the streaming mode: 'text' for unstructured streaming, 'json' for structured streaming with output_schema, 'error' for error events. Only present when delta content is included.
    */
   chunkType?: string | null | undefined;
+  /**
+   * Error type when chunk_type is 'error'
+   */
+  errorType?: string | null | undefined;
+  /**
+   * Error message when chunk_type is 'error'
+   */
+  errorMessage?: string | null | undefined;
 };
 
 /**
@@ -139,11 +147,15 @@ export const StreamingChunk$inboundSchema: z.ZodType<
   json_path: z.nullable(z.string()).optional(),
   span_id: z.nullable(z.string()).optional(),
   chunk_type: z.nullable(z.string()).optional(),
+  error_type: z.nullable(z.string()).optional(),
+  error_message: z.nullable(z.string()).optional(),
 }).transform((v) => {
   return remap$(v, {
     "json_path": "jsonPath",
     "span_id": "spanId",
     "chunk_type": "chunkType",
+    "error_type": "errorType",
+    "error_message": "errorMessage",
   });
 });
 /** @internal */
@@ -152,6 +164,8 @@ export type StreamingChunk$Outbound = {
   json_path?: string | null | undefined;
   span_id?: string | null | undefined;
   chunk_type?: string | null | undefined;
+  error_type?: string | null | undefined;
+  error_message?: string | null | undefined;
 };
 
 /** @internal */
@@ -166,11 +180,15 @@ export const StreamingChunk$outboundSchema: z.ZodType<
   jsonPath: z.nullable(z.string()).optional(),
   spanId: z.nullable(z.string()).optional(),
   chunkType: z.nullable(z.string()).optional(),
+  errorType: z.nullable(z.string()).optional(),
+  errorMessage: z.nullable(z.string()).optional(),
 }).transform((v) => {
   return remap$(v, {
     jsonPath: "json_path",
     spanId: "span_id",
     chunkType: "chunk_type",
+    errorType: "error_type",
+    errorMessage: "error_message",
   });
 });
 

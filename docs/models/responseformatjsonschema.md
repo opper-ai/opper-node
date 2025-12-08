@@ -9,6 +9,7 @@ let value: ResponseFormatJSONSchema = {
   jsonSchema: {
     name: "<value>",
   },
+  type: "json_schema",
 };
 ```
 
@@ -17,4 +18,4 @@ let value: ResponseFormatJSONSchema = {
 | Field                                        | Type                                         | Required                                     | Description                                  |
 | -------------------------------------------- | -------------------------------------------- | -------------------------------------------- | -------------------------------------------- |
 | `jsonSchema`                                 | [models.JSONSchema](../models/jsonschema.md) | :heavy_check_mark:                           | N/A                                          |
-| `type`                                       | *string*                                     | :heavy_check_mark:                           | N/A                                          |
+| `type`                                       | *"json_schema"*                              | :heavy_check_mark:                           | N/A                                          |

@@ -18,7 +18,7 @@ import {
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export type Annotation = {
-  type?: "url_citation" | undefined;
+  type: "url_citation";
   urlCitation: AnnotationURLCitation;
   additionalProperties?: { [k: string]: any } | undefined;
 };
@@ -30,7 +30,7 @@ export const Annotation$inboundSchema: z.ZodType<
   unknown
 > = collectExtraKeys$(
   z.object({
-    type: z.literal("url_citation").default("url_citation").optional(),
+    type: z.literal("url_citation"),
     url_citation: AnnotationURLCitation$inboundSchema,
   }).catchall(z.any()),
   "additionalProperties",

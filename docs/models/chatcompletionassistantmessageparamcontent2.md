@@ -15,6 +15,7 @@ const value: string = "<value>";
 const value: models.ChatCompletionAssistantMessageParamContent1[] = [
   {
     text: "<value>",
+    type: "text",
   },
 ];
 ```

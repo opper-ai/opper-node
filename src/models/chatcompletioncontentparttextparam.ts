@@ -9,7 +9,7 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export type ChatCompletionContentPartTextParam = {
   text: string;
-  type?: "text" | undefined;
+  type: "text";
 };
 
 /** @internal */
@@ -19,7 +19,7 @@ export const ChatCompletionContentPartTextParam$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   text: z.string(),
-  type: z.literal("text").default("text").optional(),
+  type: z.literal("text"),
 });
 /** @internal */
 export type ChatCompletionContentPartTextParam$Outbound = {

@@ -40,7 +40,7 @@ export type ChatCompletion = {
   choices: Array<Choice>;
   created: number;
   model: string;
-  object?: "chat.completion" | undefined;
+  object: "chat.completion";
   serviceTier?: ChatCompletionServiceTier | null | undefined;
   systemFingerprint?: string | null | undefined;
   usage?: CompletionUsage | null | undefined;
@@ -67,7 +67,7 @@ export const ChatCompletion$inboundSchema: z.ZodType<
     choices: z.array(Choice$inboundSchema),
     created: z.number().int(),
     model: z.string(),
-    object: z.literal("chat.completion").default("chat.completion").optional(),
+    object: z.literal("chat.completion"),
     service_tier: z.nullable(ChatCompletionServiceTier$inboundSchema)
       .optional(),
     system_fingerprint: z.nullable(z.string()).optional(),

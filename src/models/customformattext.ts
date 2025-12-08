@@ -8,7 +8,7 @@ import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export type CustomFormatText = {
-  type?: "text" | undefined;
+  type: "text";
 };
 
 /** @internal */
@@ -17,7 +17,7 @@ export const CustomFormatText$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.object({
-  type: z.literal("text").default("text").optional(),
+  type: z.literal("text"),
 });
 /** @internal */
 export type CustomFormatText$Outbound = {
