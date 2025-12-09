@@ -15,7 +15,7 @@ import {
 
 export type WebSearchOptionsUserLocation = {
   approximate: WebSearchOptionsUserLocationApproximate;
-  type?: "approximate" | undefined;
+  type: "approximate";
 };
 
 /** @internal */
@@ -25,7 +25,7 @@ export const WebSearchOptionsUserLocation$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   approximate: WebSearchOptionsUserLocationApproximate$inboundSchema,
-  type: z.literal("approximate").default("approximate").optional(),
+  type: z.literal("approximate"),
 });
 /** @internal */
 export type WebSearchOptionsUserLocation$Outbound = {

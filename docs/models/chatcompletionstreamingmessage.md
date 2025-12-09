@@ -8,6 +8,7 @@
 ```typescript
 const value: models.ChatCompletionDeveloperMessageParam = {
   content: "<value>",
+  role: "developer",
 };
 ```
 
@@ -18,8 +19,10 @@ const value: models.ChatCompletionSystemMessageParam = {
   content: [
     {
       text: "<value>",
+      type: "text",
     },
   ],
+  role: "system",
 };
 ```
 
@@ -28,13 +31,16 @@ const value: models.ChatCompletionSystemMessageParam = {
 ```typescript
 const value: models.ChatCompletionUserMessageParam = {
   content: [],
+  role: "user",
 };
 ```
 
 ### `models.ChatCompletionAssistantMessageParam`
 
 ```typescript
-const value: models.ChatCompletionAssistantMessageParam = {};
+const value: models.ChatCompletionAssistantMessageParam = {
+  role: "assistant",
+};
 ```
 
 ### `models.ChatCompletionToolMessageParam`
@@ -44,8 +50,10 @@ const value: models.ChatCompletionToolMessageParam = {
   content: [
     {
       text: "<value>",
+      type: "text",
     },
   ],
+  role: "tool",
   toolCallId: "<id>",
 };
 ```
@@ -56,6 +64,7 @@ const value: models.ChatCompletionToolMessageParam = {
 const value: models.ChatCompletionFunctionMessageParam = {
   content: "<value>",
   name: "<value>",
+  role: "function",
 };
 ```
 

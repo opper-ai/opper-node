@@ -16,7 +16,7 @@ import {
 
 export type ChatCompletionContentPartImageParam = {
   imageUrl: ImageURL;
-  type?: "image_url" | undefined;
+  type: "image_url";
 };
 
 /** @internal */
@@ -26,7 +26,7 @@ export const ChatCompletionContentPartImageParam$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   image_url: ImageURL$inboundSchema,
-  type: z.literal("image_url").default("image_url").optional(),
+  type: z.literal("image_url"),
 }).transform((v) => {
   return remap$(v, {
     "image_url": "imageUrl",

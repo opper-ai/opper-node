@@ -16,7 +16,7 @@ import {
 export type ChatCompletionMessageFunctionToolCallParam = {
   id: string;
   function: OpenaiTypesChatChatCompletionMessageFunctionToolCallParamFunction;
-  type?: "function" | undefined;
+  type: "function";
 };
 
 /** @internal */
@@ -26,7 +26,7 @@ export const ChatCompletionMessageFunctionToolCallParam$inboundSchema:
       id: z.string(),
       function:
         OpenaiTypesChatChatCompletionMessageFunctionToolCallParamFunction$inboundSchema,
-      type: z.literal("function").default("function").optional(),
+      type: z.literal("function"),
     });
 /** @internal */
 export type ChatCompletionMessageFunctionToolCallParam$Outbound = {

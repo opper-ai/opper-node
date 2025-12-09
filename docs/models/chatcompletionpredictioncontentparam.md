@@ -9,8 +9,10 @@ let value: ChatCompletionPredictionContentParam = {
   content: [
     {
       text: "<value>",
+      type: "text",
     },
   ],
+  type: "content",
 };
 ```
 
@@ -19,4 +21,4 @@ let value: ChatCompletionPredictionContentParam = {
 | Field                                                | Type                                                 | Required                                             | Description                                          |
 | ---------------------------------------------------- | ---------------------------------------------------- | ---------------------------------------------------- | ---------------------------------------------------- |
 | `content`                                            | *models.ChatCompletionPredictionContentParamContent* | :heavy_check_mark:                                   | N/A                                                  |
-| `type`                                               | *string*                                             | :heavy_check_mark:                                   | N/A                                                  |
+| `type`                                               | *"content"*                                          | :heavy_check_mark:                                   | N/A                                                  |

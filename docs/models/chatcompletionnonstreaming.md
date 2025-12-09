@@ -7,7 +7,9 @@ import { ChatCompletionNonStreaming } from "opperai/models";
 
 let value: ChatCompletionNonStreaming = {
   messages: [
-    {},
+    {
+      role: "assistant",
+    },
   ],
 };
 ```
@@ -49,6 +51,6 @@ let value: ChatCompletionNonStreaming = {
 | `user`                                                                                                               | *string*                                                                                                             | :heavy_minus_sign:                                                                                                   | N/A                                                                                                                  |
 | `verbosity`                                                                                                          | [models.ChatCompletionNonStreamingVerbosity](../models/chatcompletionnonstreamingverbosity.md)                       | :heavy_minus_sign:                                                                                                   | N/A                                                                                                                  |
 | `webSearchOptions`                                                                                                   | [models.WebSearchOptions](../models/websearchoptions.md)                                                             | :heavy_minus_sign:                                                                                                   | N/A                                                                                                                  |
-| `stream`                                                                                                             | *boolean*                                                                                                            | :heavy_minus_sign:                                                                                                   | N/A                                                                                                                  |
+| `stream`                                                                                                             | *false*                                                                                                              | :heavy_minus_sign:                                                                                                   | N/A                                                                                                                  |
 | `tags`                                                                                                               | Record<string, *any*>                                                                                                | :heavy_minus_sign:                                                                                                   | N/A                                                                                                                  |
 | `parentSpanId`                                                                                                       | *string*                                                                                                             | :heavy_minus_sign:                                                                                                   | N/A                                                                                                                  |

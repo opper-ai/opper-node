@@ -11,6 +11,7 @@ let value: ChatCompletionMessageCustomToolCall = {
     input: "<value>",
     name: "<value>",
   },
+  type: "custom",
 };
 ```
 
@@ -20,5 +21,5 @@ let value: ChatCompletionMessageCustomToolCall = {
 | ------------------------------------------------ | ------------------------------------------------ | ------------------------------------------------ | ------------------------------------------------ |
 | `id`                                             | *string*                                         | :heavy_check_mark:                               | N/A                                              |
 | `custom`                                         | [models.CustomOutput](../models/customoutput.md) | :heavy_check_mark:                               | N/A                                              |
-| `type`                                           | *string*                                         | :heavy_check_mark:                               | N/A                                              |
+| `type`                                           | *"custom"*                                       | :heavy_check_mark:                               | N/A                                              |
 | `additionalProperties`                           | Record<string, *any*>                            | :heavy_minus_sign:                               | N/A                                              |

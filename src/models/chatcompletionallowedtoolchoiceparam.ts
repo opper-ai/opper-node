@@ -16,7 +16,7 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export type ChatCompletionAllowedToolChoiceParam = {
   allowedTools: ChatCompletionAllowedToolsParam;
-  type?: "allowed_tools" | undefined;
+  type: "allowed_tools";
 };
 
 /** @internal */
@@ -26,7 +26,7 @@ export const ChatCompletionAllowedToolChoiceParam$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   allowed_tools: ChatCompletionAllowedToolsParam$inboundSchema,
-  type: z.literal("allowed_tools").default("allowed_tools").optional(),
+  type: z.literal("allowed_tools"),
 }).transform((v) => {
   return remap$(v, {
     "allowed_tools": "allowedTools",

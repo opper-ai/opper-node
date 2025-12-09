@@ -27,6 +27,7 @@ const value: models.ChatCompletionAllowedToolChoiceParam = {
       {},
     ],
   },
+  type: "allowed_tools",
 };
 ```
 
@@ -37,6 +38,7 @@ const value: models.ChatCompletionNamedToolChoiceParam = {
   function: {
     name: "<value>",
   },
+  type: "function",
 };
 ```
 
@@ -47,6 +49,7 @@ const value: models.ChatCompletionNamedToolChoiceCustomParam = {
   custom: {
     name: "<value>",
   },
+  type: "custom",
 };
 ```
 

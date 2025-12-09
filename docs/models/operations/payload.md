@@ -8,7 +8,9 @@
 ```typescript
 const value: models.ChatCompletionNonStreaming = {
   messages: [
-    {},
+    {
+      role: "assistant",
+    },
   ],
 };
 ```
@@ -20,8 +22,10 @@ const value: models.ChatCompletionStreaming = {
   messages: [
     {
       content: "<value>",
+      role: "user",
     },
   ],
+  stream: true,
 };
 ```
 

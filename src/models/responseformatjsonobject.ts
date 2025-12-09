@@ -8,7 +8,7 @@ import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export type ResponseFormatJSONObject = {
-  type?: "json_object" | undefined;
+  type: "json_object";
 };
 
 /** @internal */
@@ -17,7 +17,7 @@ export const ResponseFormatJSONObject$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.object({
-  type: z.literal("json_object").default("json_object").optional(),
+  type: z.literal("json_object"),
 });
 /** @internal */
 export type ResponseFormatJSONObject$Outbound = {

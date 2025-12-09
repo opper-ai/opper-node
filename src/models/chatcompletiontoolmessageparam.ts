@@ -20,7 +20,7 @@ export type ChatCompletionToolMessageParamContent =
 
 export type ChatCompletionToolMessageParam = {
   content: string | Array<ChatCompletionContentPartTextParam>;
-  role?: "tool" | undefined;
+  role: "tool";
   toolCallId: string;
 };
 
@@ -78,7 +78,7 @@ export const ChatCompletionToolMessageParam$inboundSchema: z.ZodType<
     z.string(),
     z.array(ChatCompletionContentPartTextParam$inboundSchema),
   ]),
-  role: z.literal("tool").default("tool").optional(),
+  role: z.literal("tool"),
   tool_call_id: z.string(),
 }).transform((v) => {
   return remap$(v, {

@@ -8,6 +8,7 @@
 ```typescript
 const value: models.ChatCompletionContentPartTextParam = {
   text: "<value>",
+  type: "text",
 };
 ```
 
@@ -16,6 +17,7 @@ const value: models.ChatCompletionContentPartTextParam = {
 ```typescript
 const value: models.ChatCompletionContentPartRefusalParam = {
   refusal: "<value>",
+  type: "refusal",
 };
 ```
 

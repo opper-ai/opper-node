@@ -19,7 +19,7 @@ export type ChatCompletionPredictionContentParamContent =
 
 export type ChatCompletionPredictionContentParam = {
   content: string | Array<ChatCompletionContentPartTextParam>;
-  type?: "content" | undefined;
+  type: "content";
 };
 
 /** @internal */
@@ -84,7 +84,7 @@ export const ChatCompletionPredictionContentParam$inboundSchema: z.ZodType<
     z.string(),
     z.array(ChatCompletionContentPartTextParam$inboundSchema),
   ]),
-  type: z.literal("content").default("content").optional(),
+  type: z.literal("content"),
 });
 /** @internal */
 export type ChatCompletionPredictionContentParam$Outbound = {

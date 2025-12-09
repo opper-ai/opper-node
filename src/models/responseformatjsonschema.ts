@@ -16,7 +16,7 @@ import {
 
 export type ResponseFormatJSONSchema = {
   jsonSchema: JSONSchema;
-  type?: "json_schema" | undefined;
+  type: "json_schema";
 };
 
 /** @internal */
@@ -26,7 +26,7 @@ export const ResponseFormatJSONSchema$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   json_schema: JSONSchema$inboundSchema,
-  type: z.literal("json_schema").default("json_schema").optional(),
+  type: z.literal("json_schema"),
 }).transform((v) => {
   return remap$(v, {
     "json_schema": "jsonSchema",

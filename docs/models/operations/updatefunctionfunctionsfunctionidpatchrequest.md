@@ -48,7 +48,7 @@ let value: UpdateFunctionFunctionsFunctionIdPatchRequest = {
       "beta.invocation.input_validation.enabled": false,
       "beta.invocation.xml_mode.enabled": false,
       "invocation.cache.ttl": 0,
-      "invocation.few_shot.count": 0,
+      "invocation.few_shot.count": 3,
       "invocation.structured_generation.max_attempts": 5,
     },
   },

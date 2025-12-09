@@ -10,6 +10,7 @@ let value: ChatCompletionContentPartInputAudioParam = {
     data: "<value>",
     format: "wav",
   },
+  type: "input_audio",
 };
 ```
 
@@ -18,4 +19,4 @@ let value: ChatCompletionContentPartInputAudioParam = {
 | Field                                        | Type                                         | Required                                     | Description                                  |
 | -------------------------------------------- | -------------------------------------------- | -------------------------------------------- | -------------------------------------------- |
 | `inputAudio`                                 | [models.InputAudio](../models/inputaudio.md) | :heavy_check_mark:                           | N/A                                          |
-| `type`                                       | *string*                                     | :heavy_check_mark:                           | N/A                                          |
+| `type`                                       | *"input_audio"*                              | :heavy_check_mark:                           | N/A                                          |

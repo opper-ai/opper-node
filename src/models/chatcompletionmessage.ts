@@ -42,20 +42,20 @@ import {
 } from "./functioncalloutput.js";
 
 export type ChatCompletionMessageToolCall =
-  | (ChatCompletionMessageFunctionToolCall & { type: "function" })
-  | (ChatCompletionMessageCustomToolCall & { type: "custom" });
+  | ChatCompletionMessageFunctionToolCall
+  | ChatCompletionMessageCustomToolCall;
 
 export type ChatCompletionMessage = {
   content?: string | null | undefined;
   refusal?: string | null | undefined;
-  role?: "assistant" | undefined;
+  role: "assistant";
   annotations?: Array<Annotation> | null | undefined;
   audio?: ChatCompletionAudio | null | undefined;
   functionCall?: FunctionCallOutput | null | undefined;
   toolCalls?:
     | Array<
-      | (ChatCompletionMessageFunctionToolCall & { type: "function" })
-      | (ChatCompletionMessageCustomToolCall & { type: "custom" })
+      | ChatCompletionMessageFunctionToolCall
+      | ChatCompletionMessageCustomToolCall
     >
     | null
     | undefined;
@@ -68,17 +68,13 @@ export const ChatCompletionMessageToolCall$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.union([
-  ChatCompletionMessageFunctionToolCall$inboundSchema.and(
-    z.object({ type: z.literal("function") }),
-  ),
-  ChatCompletionMessageCustomToolCall$inboundSchema.and(
-    z.object({ type: z.literal("custom") }),
-  ),
+  ChatCompletionMessageFunctionToolCall$inboundSchema,
+  ChatCompletionMessageCustomToolCall$inboundSchema,
 ]);
 /** @internal */
 export type ChatCompletionMessageToolCall$Outbound =
-  | (ChatCompletionMessageFunctionToolCall$Outbound & { type: "function" })
-  | (ChatCompletionMessageCustomToolCall$Outbound & { type: "custom" });
+  | ChatCompletionMessageFunctionToolCall$Outbound
+  | ChatCompletionMessageCustomToolCall$Outbound;
 
 /** @internal */
 export const ChatCompletionMessageToolCall$outboundSchema: z.ZodType<
@@ -86,12 +82,8 @@ export const ChatCompletionMessageToolCall$outboundSchema: z.ZodType<
   z.ZodTypeDef,
   ChatCompletionMessageToolCall
 > = z.union([
-  ChatCompletionMessageFunctionToolCall$outboundSchema.and(
-    z.object({ type: z.literal("function") }),
-  ),
-  ChatCompletionMessageCustomToolCall$outboundSchema.and(
-    z.object({ type: z.literal("custom") }),
-  ),
+  ChatCompletionMessageFunctionToolCall$outboundSchema,
+  ChatCompletionMessageCustomToolCall$outboundSchema,
 ]);
 
 export function chatCompletionMessageToolCallToJSON(
@@ -122,19 +114,15 @@ export const ChatCompletionMessage$inboundSchema: z.ZodType<
   z.object({
     content: z.nullable(z.string()).optional(),
     refusal: z.nullable(z.string()).optional(),
-    role: z.literal("assistant").default("assistant").optional(),
+    role: z.literal("assistant"),
     annotations: z.nullable(z.array(Annotation$inboundSchema)).optional(),
     audio: z.nullable(ChatCompletionAudio$inboundSchema).optional(),
     function_call: z.nullable(FunctionCallOutput$inboundSchema).optional(),
     tool_calls: z.nullable(
       z.array(
         z.union([
-          ChatCompletionMessageFunctionToolCall$inboundSchema.and(
-            z.object({ type: z.literal("function") }),
-          ),
-          ChatCompletionMessageCustomToolCall$inboundSchema.and(
-            z.object({ type: z.literal("custom") }),
-          ),
+          ChatCompletionMessageFunctionToolCall$inboundSchema,
+          ChatCompletionMessageCustomToolCall$inboundSchema,
         ]),
       ),
     ).optional(),
@@ -157,8 +145,8 @@ export type ChatCompletionMessage$Outbound = {
   function_call?: FunctionCallOutput$Outbound | null | undefined;
   tool_calls?:
     | Array<
-      | (ChatCompletionMessageFunctionToolCall$Outbound & { type: "function" })
-      | (ChatCompletionMessageCustomToolCall$Outbound & { type: "custom" })
+      | ChatCompletionMessageFunctionToolCall$Outbound
+      | ChatCompletionMessageCustomToolCall$Outbound
     >
     | null
     | undefined;
@@ -180,12 +168,8 @@ export const ChatCompletionMessage$outboundSchema: z.ZodType<
   toolCalls: z.nullable(
     z.array(
       z.union([
-        ChatCompletionMessageFunctionToolCall$outboundSchema.and(
-          z.object({ type: z.literal("function") }),
-        ),
-        ChatCompletionMessageCustomToolCall$outboundSchema.and(
-          z.object({ type: z.literal("custom") }),
-        ),
+        ChatCompletionMessageFunctionToolCall$outboundSchema,
+        ChatCompletionMessageCustomToolCall$outboundSchema,
       ]),
     ),
   ).optional(),

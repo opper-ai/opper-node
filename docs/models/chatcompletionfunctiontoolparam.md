@@ -9,6 +9,7 @@ let value: ChatCompletionFunctionToolParam = {
   function: {
     name: "<value>",
   },
+  type: "function",
 };
 ```
 
@@ -17,4 +18,4 @@ let value: ChatCompletionFunctionToolParam = {
 | Field                                                        | Type                                                         | Required                                                     | Description                                                  |
 | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | `function`                                                   | [models.FunctionDefinition](../models/functiondefinition.md) | :heavy_check_mark:                                           | N/A                                                          |
-| `type`                                                       | *string*                                                     | :heavy_check_mark:                                           | N/A                                                          |
+| `type`                                                       | *"function"*                                                 | :heavy_check_mark:                                           | N/A                                                          |
