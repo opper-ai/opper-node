@@ -19,7 +19,7 @@ export type ChatCompletionDeveloperMessageParamContent =
 
 export type ChatCompletionDeveloperMessageParam = {
   content: string | Array<ChatCompletionContentPartTextParam>;
-  role?: "developer" | undefined;
+  role: "developer";
   name?: string | undefined;
 };
 
@@ -82,7 +82,7 @@ export const ChatCompletionDeveloperMessageParam$inboundSchema: z.ZodType<
     z.string(),
     z.array(ChatCompletionContentPartTextParam$inboundSchema),
   ]),
-  role: z.literal("developer").default("developer").optional(),
+  role: z.literal("developer"),
   name: z.string().optional(),
 });
 /** @internal */

@@ -8,7 +8,9 @@ import { Choice } from "opperai/models";
 let value: Choice = {
   finishReason: "length",
   index: 194692,
-  message: {},
+  message: {
+    role: "assistant",
+  },
 };
 ```
 

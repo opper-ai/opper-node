@@ -745,3 +745,98 @@ actions:
       created_at: 1732872000000
       reviewed_at: 1732872000000
       type: method-name
+  - target: $["paths"]["/models/aliases/{alias_id}"]["delete"]
+    update:
+      x-speakeasy-group: languageModels
+      x-speakeasy-name-override: deleteAlias
+    x-speakeasy-metadata:
+      after: sdk.languageModels.deleteAlias()
+      before: sdk.models.delete_model_alias_models_aliases__alias_id__delete()
+      created_at: 1762265966139
+      reviewed_at: 1762265978991
+      type: method-name
+  - target: $["paths"]["/models/aliases"]["get"]
+    update:
+      x-speakeasy-group: languageModels
+      x-speakeasy-name-override: listAliases
+    x-speakeasy-metadata:
+      after: sdk.languageModels.listAliases()
+      before: sdk.models.list_model_aliases_models_aliases_get()
+      created_at: 1762265966139
+      reviewed_at: 1762265978991
+      type: method-name
+  - target: $["paths"]["/models/aliases/{alias_id}"]["patch"]
+    update:
+      x-speakeasy-group: languageModels
+      x-speakeasy-name-override: updateAlias
+    x-speakeasy-metadata:
+      after: sdk.languageModels.updateAlias()
+      before: sdk.models.update_model_alias_models_aliases__alias_id__patch()
+      created_at: 1762265966139
+      reviewed_at: 1762265978991
+      type: method-name
+  - target: $["paths"]["/models/aliases/by-name/{name}"]["get"]
+    update:
+      x-speakeasy-group: languageModels
+      x-speakeasy-name-override: getAliasByName
+    x-speakeasy-metadata:
+      after: sdk.languageModels.getAliasByName()
+      before: sdk.models.get_model_alias_by_name_models_aliases_by_name__name__get()
+      created_at: 1762265966139
+      reviewed_at: 1762265978991
+      type: method-name
+  - target: $["paths"]["/models/aliases"]["post"]
+    update:
+      x-speakeasy-group: languageModels
+      x-speakeasy-name-override: createAlias
+    x-speakeasy-metadata:
+      after: sdk.languageModels.createAlias()
+      before: sdk.models.create_model_alias_models_aliases_post()
+      created_at: 1762265966139
+      reviewed_at: 1762265978991
+      type: method-name
+  - target: $["paths"]["/models/aliases/{alias_id}"]["get"]
+    update:
+      x-speakeasy-group: languageModels
+      x-speakeasy-name-override: getAlias
+    x-speakeasy-metadata:
+      after: sdk.languageModels.getAlias()
+      before: sdk.models.get_model_alias_models_aliases__alias_id__get()
+      created_at: 1762265966139
+      reviewed_at: 1762265978991
+      type: method-name
+  - target: $["paths"]["/rerank"]["post"]
+    update:
+      x-speakeasy-name-override: documents
+    x-speakeasy-metadata:
+      after: sdk.rerank.documents()
+      before: sdk.rerank.rerank_documents_rerank_post()
+      created_at: 1762265966139
+      reviewed_at: 1762265978991
+      type: method-name
+  - target: $["paths"]["/rerank/models"]["get"]
+    update:
+      x-speakeasy-name-override: listModels
+    x-speakeasy-metadata:
+      after: sdk.rerank.listModels()
+      before: sdk.rerank.list_rerank_models_rerank_models_get()
+      created_at: 1762265966139
+      reviewed_at: 1762265978991
+      type: method-name
+  - target: $["paths"]["/knowledge/{knowledge_base_id}/upload"]["post"]
+    update:
+      x-speakeasy-name-override: uploadFile
+    x-speakeasy-metadata:
+      after: sdk.knowledge.uploadFile()
+      before: sdk.knowledge.upload_file_knowledge__knowledge_base_id__upload_post()
+      created_at: 1765275433136
+      type: method-name
+  - target: $["paths"]["/spans/{span_id}/feedback"]["post"]
+    update:
+      x-speakeasy-name-override: submitFeedback
+    x-speakeasy-metadata:
+      after: sdk.spans.submitFeedback()
+      before: sdk.spans.submit_span_feedback_spans__span_id__feedback_post()
+      created_at: 1765275433136
+      reviewed_at: 1765276561875
+      type: method-name

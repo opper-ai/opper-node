@@ -10,6 +10,7 @@ let value: ChatCompletion = {
   choices: [],
   created: 676471,
   model: "Altima",
+  object: "chat.completion",
 };
 ```
 
@@ -21,7 +22,7 @@ let value: ChatCompletion = {
 | `choices`                                                                  | [models.Choice](../models/choice.md)[]                                     | :heavy_check_mark:                                                         | N/A                                                                        |
 | `created`                                                                  | *number*                                                                   | :heavy_check_mark:                                                         | N/A                                                                        |
 | `model`                                                                    | *string*                                                                   | :heavy_check_mark:                                                         | N/A                                                                        |
-| `object`                                                                   | *string*                                                                   | :heavy_check_mark:                                                         | N/A                                                                        |
+| `object`                                                                   | *"chat.completion"*                                                        | :heavy_check_mark:                                                         | N/A                                                                        |
 | `serviceTier`                                                              | [models.ChatCompletionServiceTier](../models/chatcompletionservicetier.md) | :heavy_minus_sign:                                                         | N/A                                                                        |
 | `systemFingerprint`                                                        | *string*                                                                   | :heavy_minus_sign:                                                         | N/A                                                                        |
 | `usage`                                                                    | [models.CompletionUsage](../models/completionusage.md)                     | :heavy_minus_sign:                                                         | N/A                                                                        |

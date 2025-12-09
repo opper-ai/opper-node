@@ -5,11 +5,13 @@
 ```typescript
 import { ResponseFormatText } from "opperai/models";
 
-let value: ResponseFormatText = {};
+let value: ResponseFormatText = {
+  type: "text",
+};
 ```
 
 ## Fields
 
 | Field              | Type               | Required           | Description        |
 | ------------------ | ------------------ | ------------------ | ------------------ |
-| `type`             | *string*           | :heavy_check_mark: | N/A                |
+| `type`             | *"text"*           | :heavy_check_mark: | N/A                |

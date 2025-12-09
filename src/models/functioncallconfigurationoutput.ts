@@ -10,7 +10,9 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export type FunctionCallConfigurationOutput = {
   /**
-   * The number of few-shot examples to use for the call. The examples are selected using nearest neighbor search of the function's dataset for items that are similar to the input.
+   * [DEPRECATED via /call] This field is ignored when passed via /call endpoint. The system enforces a default of 3. Configure via PATCH /v2/functions/{uuid} or the Platform UI instead. The number of few-shot examples to use for the call, selected using nearest neighbor search of the function's dataset.
+   *
+   * @deprecated field: This will be removed in a future release, please migrate away from it as soon as possible.
    */
   invocationFewShotCount?: number | undefined;
   /**
@@ -37,7 +39,7 @@ export const FunctionCallConfigurationOutput$inboundSchema: z.ZodType<
   z.ZodTypeDef,
   unknown
 > = z.object({
-  "invocation.few_shot.count": z.number().int().default(0),
+  "invocation.few_shot.count": z.number().int().default(3),
   "invocation.structured_generation.max_attempts": z.number().int().default(5),
   "invocation.cache.ttl": z.number().int().default(0),
   "beta.invocation.input_validation.enabled": z.boolean().default(false),
@@ -68,7 +70,7 @@ export const FunctionCallConfigurationOutput$outboundSchema: z.ZodType<
   z.ZodTypeDef,
   FunctionCallConfigurationOutput
 > = z.object({
-  invocationFewShotCount: z.number().int().default(0),
+  invocationFewShotCount: z.number().int().default(3),
   invocationStructuredGenerationMaxAttempts: z.number().int().default(5),
   invocationCacheTtl: z.number().int().default(0),
   betaInvocationInputValidationEnabled: z.boolean().default(false),

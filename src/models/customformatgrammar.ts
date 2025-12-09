@@ -15,7 +15,7 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export type CustomFormatGrammar = {
   grammar: CustomFormatGrammarGrammar;
-  type?: "grammar" | undefined;
+  type: "grammar";
 };
 
 /** @internal */
@@ -25,7 +25,7 @@ export const CustomFormatGrammar$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   grammar: CustomFormatGrammarGrammar$inboundSchema,
-  type: z.literal("grammar").default("grammar").optional(),
+  type: z.literal("grammar"),
 });
 /** @internal */
 export type CustomFormatGrammar$Outbound = {

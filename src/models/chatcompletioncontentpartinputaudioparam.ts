@@ -16,7 +16,7 @@ import {
 
 export type ChatCompletionContentPartInputAudioParam = {
   inputAudio: InputAudio;
-  type?: "input_audio" | undefined;
+  type: "input_audio";
 };
 
 /** @internal */
@@ -26,7 +26,7 @@ export const ChatCompletionContentPartInputAudioParam$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   input_audio: InputAudio$inboundSchema,
-  type: z.literal("input_audio").default("input_audio").optional(),
+  type: z.literal("input_audio"),
 }).transform((v) => {
   return remap$(v, {
     "input_audio": "inputAudio",

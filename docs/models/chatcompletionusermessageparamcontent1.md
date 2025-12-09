@@ -8,6 +8,7 @@
 ```typescript
 const value: models.ChatCompletionContentPartTextParam = {
   text: "<value>",
+  type: "text",
 };
 ```
 
@@ -18,6 +19,7 @@ const value: models.ChatCompletionContentPartImageParam = {
   imageUrl: {
     url: "https://lustrous-mouser.org/",
   },
+  type: "image_url",
 };
 ```
 
@@ -29,6 +31,7 @@ const value: models.ChatCompletionContentPartInputAudioParam = {
     data: "<value>",
     format: "wav",
   },
+  type: "input_audio",
 };
 ```
 
@@ -37,6 +40,7 @@ const value: models.ChatCompletionContentPartInputAudioParam = {
 ```typescript
 const value: models.FileT = {
   file: {},
+  type: "file",
 };
 ```
 

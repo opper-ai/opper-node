@@ -19,31 +19,21 @@ import {
 } from "./customformattext.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
-export type Format =
-  | (CustomFormatGrammar & { type: "grammar" })
-  | (CustomFormatText & { type: "text" });
+export type Format = CustomFormatText | CustomFormatGrammar;
 
 export type OpenaiTypesChatChatCompletionCustomToolParamCustom = {
   name: string;
   description?: string | undefined;
-  format?:
-    | (CustomFormatGrammar & { type: "grammar" })
-    | (CustomFormatText & { type: "text" })
-    | undefined;
+  format?: CustomFormatText | CustomFormatGrammar | undefined;
 };
 
 /** @internal */
 export const Format$inboundSchema: z.ZodType<Format, z.ZodTypeDef, unknown> = z
-  .union([
-    CustomFormatGrammar$inboundSchema.and(
-      z.object({ type: z.literal("grammar") }),
-    ),
-    CustomFormatText$inboundSchema.and(z.object({ type: z.literal("text") })),
-  ]);
+  .union([CustomFormatText$inboundSchema, CustomFormatGrammar$inboundSchema]);
 /** @internal */
 export type Format$Outbound =
-  | (CustomFormatGrammar$Outbound & { type: "grammar" })
-  | (CustomFormatText$Outbound & { type: "text" });
+  | CustomFormatText$Outbound
+  | CustomFormatGrammar$Outbound;
 
 /** @internal */
 export const Format$outboundSchema: z.ZodType<
@@ -51,10 +41,8 @@ export const Format$outboundSchema: z.ZodType<
   z.ZodTypeDef,
   Format
 > = z.union([
-  CustomFormatGrammar$outboundSchema.and(
-    z.object({ type: z.literal("grammar") }),
-  ),
-  CustomFormatText$outboundSchema.and(z.object({ type: z.literal("text") })),
+  CustomFormatText$outboundSchema,
+  CustomFormatGrammar$outboundSchema,
 ]);
 
 export function formatToJSON(format: Format): string {
@@ -80,20 +68,15 @@ export const OpenaiTypesChatChatCompletionCustomToolParamCustom$inboundSchema:
     name: z.string(),
     description: z.string().optional(),
     format: z.union([
-      CustomFormatGrammar$inboundSchema.and(
-        z.object({ type: z.literal("grammar") }),
-      ),
-      CustomFormatText$inboundSchema.and(z.object({ type: z.literal("text") })),
+      CustomFormatText$inboundSchema,
+      CustomFormatGrammar$inboundSchema,
     ]).optional(),
   });
 /** @internal */
 export type OpenaiTypesChatChatCompletionCustomToolParamCustom$Outbound = {
   name: string;
   description?: string | undefined;
-  format?:
-    | (CustomFormatGrammar$Outbound & { type: "grammar" })
-    | (CustomFormatText$Outbound & { type: "text" })
-    | undefined;
+  format?: CustomFormatText$Outbound | CustomFormatGrammar$Outbound | undefined;
 };
 
 /** @internal */
@@ -106,12 +89,8 @@ export const OpenaiTypesChatChatCompletionCustomToolParamCustom$outboundSchema:
     name: z.string(),
     description: z.string().optional(),
     format: z.union([
-      CustomFormatGrammar$outboundSchema.and(
-        z.object({ type: z.literal("grammar") }),
-      ),
-      CustomFormatText$outboundSchema.and(
-        z.object({ type: z.literal("text") }),
-      ),
+      CustomFormatText$outboundSchema,
+      CustomFormatGrammar$outboundSchema,
     ]).optional(),
   });
 

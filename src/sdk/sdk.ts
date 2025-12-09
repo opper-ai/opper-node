@@ -14,7 +14,6 @@ import { Embeddings } from "./embeddings.js";
 import { Functions } from "./functions.js";
 import { Knowledge } from "./knowledge.js";
 import { LanguageModels } from "./languagemodels.js";
-import { Models } from "./models.js";
 import { Openai } from "./openai.js";
 import { Rerank } from "./rerank.js";
 import { SpanMetrics } from "./spanmetrics.js";
@@ -60,11 +59,6 @@ export class Opper extends ClientSDK {
   private _languageModels?: LanguageModels;
   get languageModels(): LanguageModels {
     return (this._languageModels ??= new LanguageModels(this._options));
-  }
-
-  private _models?: Models;
-  get models(): Models {
-    return (this._models ??= new Models(this._options));
   }
 
   private _openai?: Openai;

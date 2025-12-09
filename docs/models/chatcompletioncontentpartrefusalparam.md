@@ -7,6 +7,7 @@ import { ChatCompletionContentPartRefusalParam } from "opperai/models";
 
 let value: ChatCompletionContentPartRefusalParam = {
   refusal: "<value>",
+  type: "refusal",
 };
 ```
 
@@ -15,4 +16,4 @@ let value: ChatCompletionContentPartRefusalParam = {
 | Field              | Type               | Required           | Description        |
 | ------------------ | ------------------ | ------------------ | ------------------ |
 | `refusal`          | *string*           | :heavy_check_mark: | N/A                |
-| `type`             | *string*           | :heavy_check_mark: | N/A                |
+| `type`             | *"refusal"*        | :heavy_check_mark: | N/A                |

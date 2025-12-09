@@ -24,12 +24,13 @@ generation:
   schemas:
     allOfMergeStrategy: shallowMerge
   requestBodyFieldName: ""
+  persistentEdits: {}
   tests:
     generateTests: true
     generateNewTests: false
     skipResponseBodyAssertions: false
 typescript:
-  version: 3.3.2
+  version: 3.4.0
   acceptHeaderEnum: true
   additionalDependencies:
     dependencies: {}
@@ -44,7 +45,7 @@ typescript:
   author: Speakeasy
   baseErrorName: OpperError
   clientServerStatusCodesAsErrors: true
-  constFieldsAlwaysOptional: true
+  constFieldsAlwaysOptional: false
   defaultErrorName: APIError
   enableCustomCodeRegions: false
   enableMCPServer: true
@@ -77,6 +78,7 @@ typescript:
   multipartArrayFormat: legacy
   outputModelSuffix: output
   packageName: opperai
+  preApplyUnionDiscriminators: true
   responseFormat: flat
   sseFlatResponse: false
   templateVersion: v2

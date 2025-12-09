@@ -17,6 +17,7 @@ const value: models.ChatCompletionUserMessageParamContent1[] = [
     imageUrl: {
       url: "https://lustrous-mouser.org/",
     },
+    type: "image_url",
   },
 ];
 ```

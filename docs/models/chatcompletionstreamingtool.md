@@ -10,6 +10,7 @@ const value: models.ChatCompletionFunctionToolParam = {
   function: {
     name: "<value>",
   },
+  type: "function",
 };
 ```
 
@@ -20,6 +21,7 @@ const value: models.ChatCompletionCustomToolParam = {
   custom: {
     name: "<value>",
   },
+  type: "custom",
 };
 ```
 

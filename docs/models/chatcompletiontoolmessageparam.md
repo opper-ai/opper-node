@@ -9,8 +9,10 @@ let value: ChatCompletionToolMessageParam = {
   content: [
     {
       text: "<value>",
+      type: "text",
     },
   ],
+  role: "tool",
   toolCallId: "<id>",
 };
 ```
@@ -20,5 +22,5 @@ let value: ChatCompletionToolMessageParam = {
 | Field                                          | Type                                           | Required                                       | Description                                    |
 | ---------------------------------------------- | ---------------------------------------------- | ---------------------------------------------- | ---------------------------------------------- |
 | `content`                                      | *models.ChatCompletionToolMessageParamContent* | :heavy_check_mark:                             | N/A                                            |
-| `role`                                         | *string*                                       | :heavy_check_mark:                             | N/A                                            |
+| `role`                                         | *"tool"*                                       | :heavy_check_mark:                             | N/A                                            |
 | `toolCallId`                                   | *string*                                       | :heavy_check_mark:                             | N/A                                            |

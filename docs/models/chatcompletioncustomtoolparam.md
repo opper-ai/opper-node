@@ -9,6 +9,7 @@ let value: ChatCompletionCustomToolParam = {
   custom: {
     name: "<value>",
   },
+  type: "custom",
 };
 ```
 
@@ -17,4 +18,4 @@ let value: ChatCompletionCustomToolParam = {
 | Field                                                                                                                        | Type                                                                                                                         | Required                                                                                                                     | Description                                                                                                                  |
 | ---------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
 | `custom`                                                                                                                     | [models.OpenaiTypesChatChatCompletionCustomToolParamCustom](../models/openaitypeschatchatcompletioncustomtoolparamcustom.md) | :heavy_check_mark:                                                                                                           | N/A                                                                                                                          |
-| `type`                                                                                                                       | *string*                                                                                                                     | :heavy_check_mark:                                                                                                           | N/A                                                                                                                          |
+| `type`                                                                                                                       | *"custom"*                                                                                                                   | :heavy_check_mark:                                                                                                           | N/A                                                                                                                          |

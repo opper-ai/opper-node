@@ -15,7 +15,7 @@ import {
 
 export type ChatCompletionFunctionToolParam = {
   function: FunctionDefinition;
-  type?: "function" | undefined;
+  type: "function";
 };
 
 /** @internal */
@@ -25,7 +25,7 @@ export const ChatCompletionFunctionToolParam$inboundSchema: z.ZodType<
   unknown
 > = z.object({
   function: FunctionDefinition$inboundSchema,
-  type: z.literal("function").default("function").optional(),
+  type: z.literal("function"),
 });
 /** @internal */
 export type ChatCompletionFunctionToolParam$Outbound = {

@@ -7,6 +7,7 @@ import { FileT } from "opperai/models";
 
 let value: FileT = {
   file: {},
+  type: "file",
 };
 ```
 
@@ -15,4 +16,4 @@ let value: FileT = {
 | Field                                    | Type                                     | Required                                 | Description                              |
 | ---------------------------------------- | ---------------------------------------- | ---------------------------------------- | ---------------------------------------- |
 | `file`                                   | [models.FileFile](../models/filefile.md) | :heavy_check_mark:                       | N/A                                      |
-| `type`                                   | *string*                                 | :heavy_check_mark:                       | N/A                                      |
+| `type`                                   | *"file"*                                 | :heavy_check_mark:                       | N/A                                      |

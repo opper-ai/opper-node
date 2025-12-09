@@ -11,6 +11,7 @@ let value: ChatCompletionMessageFunctionToolCall = {
     arguments: "<value>",
     name: "<value>",
   },
+  type: "function",
 };
 ```
 
@@ -20,5 +21,5 @@ let value: ChatCompletionMessageFunctionToolCall = {
 | ---------------------------------------------------- | ---------------------------------------------------- | ---------------------------------------------------- | ---------------------------------------------------- |
 | `id`                                                 | *string*                                             | :heavy_check_mark:                                   | N/A                                                  |
 | `function`                                           | [models.FunctionOutput](../models/functionoutput.md) | :heavy_check_mark:                                   | N/A                                                  |
-| `type`                                               | *string*                                             | :heavy_check_mark:                                   | N/A                                                  |
+| `type`                                               | *"function"*                                         | :heavy_check_mark:                                   | N/A                                                  |
 | `additionalProperties`                               | Record<string, *any*>                                | :heavy_minus_sign:                                   | N/A                                                  |

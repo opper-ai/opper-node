@@ -15,14 +15,14 @@ import {
 
 export type FileT = {
   file: FileFile;
-  type?: "file" | undefined;
+  type: "file";
 };
 
 /** @internal */
 export const FileT$inboundSchema: z.ZodType<FileT, z.ZodTypeDef, unknown> = z
   .object({
     file: FileFile$inboundSchema,
-    type: z.literal("file").default("file").optional(),
+    type: z.literal("file"),
   });
 /** @internal */
 export type FileT$Outbound = {

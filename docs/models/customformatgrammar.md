@@ -10,6 +10,7 @@ let value: CustomFormatGrammar = {
     definition: "<value>",
     syntax: "lark",
   },
+  type: "grammar",
 };
 ```
 
@@ -18,4 +19,4 @@ let value: CustomFormatGrammar = {
 | Field                                                                        | Type                                                                         | Required                                                                     | Description                                                                  |
 | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
 | `grammar`                                                                    | [models.CustomFormatGrammarGrammar](../models/customformatgrammargrammar.md) | :heavy_check_mark:                                                           | N/A                                                                          |
-| `type`                                                                       | *string*                                                                     | :heavy_check_mark:                                                           | N/A                                                                          |
+| `type`                                                                       | *"grammar"*                                                                  | :heavy_check_mark:                                                           | N/A                                                                          |

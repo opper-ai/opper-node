@@ -7,6 +7,12 @@ import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
+import {
+  FeedbackInfo,
+  FeedbackInfo$inboundSchema,
+  FeedbackInfo$Outbound,
+  FeedbackInfo$outboundSchema,
+} from "./feedbackinfo.js";
 
 export type GetSpanResponse = {
   /**
@@ -54,6 +60,10 @@ export type GetSpanResponse = {
    * The score of the span
    */
   score?: number | null | undefined;
+  /**
+   * Human feedback if submitted
+   */
+  feedback?: FeedbackInfo | null | undefined;
 };
 
 /** @internal */
@@ -78,6 +88,7 @@ export const GetSpanResponse$inboundSchema: z.ZodType<
   error: z.nullable(z.string()).optional(),
   meta: z.nullable(z.record(z.any())).optional(),
   score: z.nullable(z.number().int()).optional(),
+  feedback: z.nullable(FeedbackInfo$inboundSchema).optional(),
 }).transform((v) => {
   return remap$(v, {
     "start_time": "startTime",
@@ -100,6 +111,7 @@ export type GetSpanResponse$Outbound = {
   error?: string | null | undefined;
   meta?: { [k: string]: any } | null | undefined;
   score?: number | null | undefined;
+  feedback?: FeedbackInfo$Outbound | null | undefined;
 };
 
 /** @internal */
@@ -120,6 +132,7 @@ export const GetSpanResponse$outboundSchema: z.ZodType<
   error: z.nullable(z.string()).optional(),
   meta: z.nullable(z.record(z.any())).optional(),
   score: z.nullable(z.number().int()).optional(),
+  feedback: z.nullable(FeedbackInfo$outboundSchema).optional(),
 }).transform((v) => {
   return remap$(v, {
     startTime: "start_time",

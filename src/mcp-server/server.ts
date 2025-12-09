@@ -47,22 +47,23 @@ import { tool$knowledgeList } from "./tools/knowledgeList.js";
 import { tool$knowledgeListFiles } from "./tools/knowledgeListFiles.js";
 import { tool$knowledgeQuery } from "./tools/knowledgeQuery.js";
 import { tool$knowledgeRegisterFileUpload } from "./tools/knowledgeRegisterFileUpload.js";
+import { tool$knowledgeUploadFile } from "./tools/knowledgeUploadFile.js";
+import { tool$languageModelsCreateAlias } from "./tools/languageModelsCreateAlias.js";
+import { tool$languageModelsDeleteAlias } from "./tools/languageModelsDeleteAlias.js";
 import { tool$languageModelsDeleteCustom } from "./tools/languageModelsDeleteCustom.js";
+import { tool$languageModelsGetAlias } from "./tools/languageModelsGetAlias.js";
+import { tool$languageModelsGetAliasByName } from "./tools/languageModelsGetAliasByName.js";
 import { tool$languageModelsGetCustom } from "./tools/languageModelsGetCustom.js";
 import { tool$languageModelsGetCustomByName } from "./tools/languageModelsGetCustomByName.js";
 import { tool$languageModelsList } from "./tools/languageModelsList.js";
+import { tool$languageModelsListAliases } from "./tools/languageModelsListAliases.js";
 import { tool$languageModelsListCustom } from "./tools/languageModelsListCustom.js";
 import { tool$languageModelsRegisterCustom } from "./tools/languageModelsRegisterCustom.js";
+import { tool$languageModelsUpdateAlias } from "./tools/languageModelsUpdateAlias.js";
 import { tool$languageModelsUpdateCustom } from "./tools/languageModelsUpdateCustom.js";
-import { tool$modelsCreateModelAliasModelsAliasesPost } from "./tools/modelsCreateModelAliasModelsAliasesPost.js";
-import { tool$modelsDeleteModelAliasModelsAliasesAliasIdDelete } from "./tools/modelsDeleteModelAliasModelsAliasesAliasIdDelete.js";
-import { tool$modelsGetModelAliasByNameModelsAliasesByNameNameGet } from "./tools/modelsGetModelAliasByNameModelsAliasesByNameNameGet.js";
-import { tool$modelsGetModelAliasModelsAliasesAliasIdGet } from "./tools/modelsGetModelAliasModelsAliasesAliasIdGet.js";
-import { tool$modelsListModelAliasesModelsAliasesGet } from "./tools/modelsListModelAliasesModelsAliasesGet.js";
-import { tool$modelsUpdateModelAliasModelsAliasesAliasIdPatch } from "./tools/modelsUpdateModelAliasModelsAliasesAliasIdPatch.js";
 import { tool$openaiCreateChatCompletion } from "./tools/openaiCreateChatCompletion.js";
-import { tool$rerankListRerankModelsRerankModelsGet } from "./tools/rerankListRerankModelsRerankModelsGet.js";
-import { tool$rerankRerankDocumentsRerankPost } from "./tools/rerankRerankDocumentsRerankPost.js";
+import { tool$rerankDocuments } from "./tools/rerankDocuments.js";
+import { tool$rerankListModels } from "./tools/rerankListModels.js";
 import { tool$spanMetricsCreateMetric } from "./tools/spanMetricsCreateMetric.js";
 import { tool$spanMetricsDelete } from "./tools/spanMetricsDelete.js";
 import { tool$spanMetricsGet } from "./tools/spanMetricsGet.js";
@@ -72,6 +73,7 @@ import { tool$spansCreate } from "./tools/spansCreate.js";
 import { tool$spansDelete } from "./tools/spansDelete.js";
 import { tool$spansGet } from "./tools/spansGet.js";
 import { tool$spansSaveExamples } from "./tools/spansSaveExamples.js";
+import { tool$spansSubmitFeedback } from "./tools/spansSubmitFeedback.js";
 import { tool$spansUpdate } from "./tools/spansUpdate.js";
 import { tool$stream } from "./tools/stream.js";
 import { tool$tracesGet } from "./tools/tracesGet.js";
@@ -87,7 +89,7 @@ export function createMCPServer(deps: {
 }) {
   const server = new McpServer({
     name: "Opper",
-    version: "3.3.2",
+    version: "3.4.0",
   });
 
   const client = new OpperCore({
@@ -126,6 +128,7 @@ export function createMCPServer(deps: {
   tool(tool$knowledgeGetByName);
   tool(tool$knowledgeGetUploadUrl);
   tool(tool$knowledgeRegisterFileUpload);
+  tool(tool$knowledgeUploadFile);
   tool(tool$knowledgeDeleteFile);
   tool(tool$knowledgeGetFileDownloadUrl);
   tool(tool$knowledgeListFiles);
@@ -139,6 +142,7 @@ export function createMCPServer(deps: {
   tool(tool$spansUpdate);
   tool(tool$spansDelete);
   tool(tool$spansSaveExamples);
+  tool(tool$spansSubmitFeedback);
   tool(tool$spanMetricsCreateMetric);
   tool(tool$spanMetricsList);
   tool(tool$spanMetricsGet);
@@ -168,15 +172,15 @@ export function createMCPServer(deps: {
   tool(tool$languageModelsUpdateCustom);
   tool(tool$languageModelsDeleteCustom);
   tool(tool$languageModelsGetCustomByName);
-  tool(tool$modelsCreateModelAliasModelsAliasesPost);
-  tool(tool$modelsListModelAliasesModelsAliasesGet);
-  tool(tool$modelsGetModelAliasModelsAliasesAliasIdGet);
-  tool(tool$modelsUpdateModelAliasModelsAliasesAliasIdPatch);
-  tool(tool$modelsDeleteModelAliasModelsAliasesAliasIdDelete);
-  tool(tool$modelsGetModelAliasByNameModelsAliasesByNameNameGet);
+  tool(tool$languageModelsCreateAlias);
+  tool(tool$languageModelsListAliases);
+  tool(tool$languageModelsGetAlias);
+  tool(tool$languageModelsUpdateAlias);
+  tool(tool$languageModelsDeleteAlias);
+  tool(tool$languageModelsGetAliasByName);
   tool(tool$openaiCreateChatCompletion);
-  tool(tool$rerankRerankDocumentsRerankPost);
-  tool(tool$rerankListRerankModelsRerankModelsGet);
+  tool(tool$rerankDocuments);
+  tool(tool$rerankListModels);
   tool(tool$analyticsGetUsage);
   tool(tool$datasetsEntriesUpdate);
   tool(tool$functionsRevisionsList);
