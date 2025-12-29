@@ -24,20 +24,20 @@ import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
 
 /**
- * List Rerank Models
+ * List Ocr Models
  *
  * @remarks
- * List all available reranking models.
+ * List all available OCR models.
  *
- * Returns a list of all reranking models available on the Opper platform,
+ * Returns a list of all OCR models available on the Opper platform,
  * including their hosting providers, locations, and pricing information.
  */
-export function rerankListRerankModelsRerankModelsGet(
+export function ocrListOcrModelsOcrModelsGet(
   client: OpperCore,
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    models.PaginatedResponseListRerankModelsResponse,
+    models.PaginatedResponseListOCRModelsResponse,
     | errors.BadRequestError
     | errors.UnauthorizedError
     | errors.NotFoundError
@@ -64,7 +64,7 @@ async function $do(
 ): Promise<
   [
     Result<
-      models.PaginatedResponseListRerankModelsResponse,
+      models.PaginatedResponseListOCRModelsResponse,
       | errors.BadRequestError
       | errors.UnauthorizedError
       | errors.NotFoundError
@@ -81,7 +81,7 @@ async function $do(
     APICall,
   ]
 > {
-  const path = pathToFunc("/rerank/models")();
+  const path = pathToFunc("/ocr/models")();
 
   const headers = new Headers(compactMap({
     Accept: "application/json",
@@ -94,7 +94,7 @@ async function $do(
   const context = {
     options: client._options,
     baseURL: options?.serverURL ?? client._baseURL ?? "",
-    operationID: "list_rerank_models_rerank_models_get",
+    operationID: "list_ocr_models_ocr_models_get",
     oAuth2Scopes: null,
 
     resolvedSecurity: requestSecurity,
@@ -136,7 +136,7 @@ async function $do(
   };
 
   const [result] = await M.match<
-    models.PaginatedResponseListRerankModelsResponse,
+    models.PaginatedResponseListOCRModelsResponse,
     | errors.BadRequestError
     | errors.UnauthorizedError
     | errors.NotFoundError
@@ -150,7 +150,7 @@ async function $do(
     | UnexpectedClientError
     | SDKValidationError
   >(
-    M.json(200, models.PaginatedResponseListRerankModelsResponse$inboundSchema),
+    M.json(200, models.PaginatedResponseListOCRModelsResponse$inboundSchema),
     M.jsonErr(400, errors.BadRequestError$inboundSchema),
     M.jsonErr(401, errors.UnauthorizedError$inboundSchema),
     M.jsonErr(404, errors.NotFoundError$inboundSchema),

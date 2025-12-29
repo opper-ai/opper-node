@@ -61,6 +61,8 @@ import { tool$languageModelsListCustom } from "./tools/languageModelsListCustom.
 import { tool$languageModelsRegisterCustom } from "./tools/languageModelsRegisterCustom.js";
 import { tool$languageModelsUpdateAlias } from "./tools/languageModelsUpdateAlias.js";
 import { tool$languageModelsUpdateCustom } from "./tools/languageModelsUpdateCustom.js";
+import { tool$ocrListOcrModelsOcrModelsGet } from "./tools/ocrListOcrModelsOcrModelsGet.js";
+import { tool$ocrProcessOcrOcrPost } from "./tools/ocrProcessOcrOcrPost.js";
 import { tool$openaiCreateChatCompletion } from "./tools/openaiCreateChatCompletion.js";
 import { tool$rerankDocuments } from "./tools/rerankDocuments.js";
 import { tool$rerankListModels } from "./tools/rerankListModels.js";
@@ -89,7 +91,7 @@ export function createMCPServer(deps: {
 }) {
   const server = new McpServer({
     name: "Opper",
-    version: "3.4.0",
+    version: "3.4.1",
   });
 
   const client = new OpperCore({
@@ -178,6 +180,8 @@ export function createMCPServer(deps: {
   tool(tool$languageModelsUpdateAlias);
   tool(tool$languageModelsDeleteAlias);
   tool(tool$languageModelsGetAliasByName);
+  tool(tool$ocrProcessOcrOcrPost);
+  tool(tool$ocrListOcrModelsOcrModelsGet);
   tool(tool$openaiCreateChatCompletion);
   tool(tool$rerankDocuments);
   tool(tool$rerankListModels);

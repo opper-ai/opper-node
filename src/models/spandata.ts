@@ -49,6 +49,10 @@ export type SpanData = {
    * The observations of the span in case of a generation span
    */
   observations?: string | null | undefined;
+  /**
+   * Detailed scorer breakdown with individual scorer results for expandable view
+   */
+  scorerContext?: { [k: string]: any } | null | undefined;
 };
 
 /** @internal */
@@ -67,10 +71,12 @@ export const SpanData$inboundSchema: z.ZodType<
   score: z.nullable(z.number().int()).optional(),
   generation_id: z.nullable(z.string()).optional(),
   observations: z.nullable(z.string()).optional(),
+  scorer_context: z.nullable(z.record(z.any())).optional(),
 }).transform((v) => {
   return remap$(v, {
     "total_tokens": "totalTokens",
     "generation_id": "generationId",
+    "scorer_context": "scorerContext",
   });
 });
 /** @internal */
@@ -85,6 +91,7 @@ export type SpanData$Outbound = {
   score?: number | null | undefined;
   generation_id?: string | null | undefined;
   observations?: string | null | undefined;
+  scorer_context?: { [k: string]: any } | null | undefined;
 };
 
 /** @internal */
@@ -103,10 +110,12 @@ export const SpanData$outboundSchema: z.ZodType<
   score: z.nullable(z.number().int()).optional(),
   generationId: z.nullable(z.string()).optional(),
   observations: z.nullable(z.string()).optional(),
+  scorerContext: z.nullable(z.record(z.any())).optional(),
 }).transform((v) => {
   return remap$(v, {
     totalTokens: "total_tokens",
     generationId: "generation_id",
+    scorerContext: "scorer_context",
   });
 });
 
