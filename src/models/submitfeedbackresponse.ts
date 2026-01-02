@@ -18,6 +18,10 @@ export type SubmitFeedbackResponse = {
    */
   score: number;
   /**
+   * The feedback comment that was submitted
+   */
+  comment?: string | null | undefined;
+  /**
    * Whether the example was saved to the dataset
    */
   exampleSaved: boolean;
@@ -31,6 +35,7 @@ export const SubmitFeedbackResponse$inboundSchema: z.ZodType<
 > = z.object({
   span_id: z.string(),
   score: z.number(),
+  comment: z.nullable(z.string()).optional(),
   example_saved: z.boolean(),
 }).transform((v) => {
   return remap$(v, {
@@ -42,6 +47,7 @@ export const SubmitFeedbackResponse$inboundSchema: z.ZodType<
 export type SubmitFeedbackResponse$Outbound = {
   span_id: string;
   score: number;
+  comment?: string | null | undefined;
   example_saved: boolean;
 };
 
@@ -53,6 +59,7 @@ export const SubmitFeedbackResponse$outboundSchema: z.ZodType<
 > = z.object({
   spanId: z.string(),
   score: z.number(),
+  comment: z.nullable(z.string()).optional(),
   exampleSaved: z.boolean(),
 }).transform((v) => {
   return remap$(v, {

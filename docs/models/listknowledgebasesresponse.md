@@ -8,7 +8,7 @@ import { ListKnowledgeBasesResponse } from "opperai/models";
 let value: ListKnowledgeBasesResponse = {
   id: "0afb978f-cbd9-4686-b16e-d5c075f8cfa4",
   name: "<value>",
-  createdAt: new Date("2023-08-01T21:02:38.714Z"),
+  createdAt: new Date("2024-07-31T21:02:38.714Z"),
   embeddingModel: "<value>",
 };
 ```

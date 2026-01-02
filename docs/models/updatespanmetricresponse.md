@@ -10,7 +10,7 @@ let value: UpdateSpanMetricResponse = {
   value: 5618.82,
   id: "806b7081-e7a4-4171-9d1b-faac2dcd0772",
   spanId: "17dfd351-45d2-4891-89ef-388e11706ffc",
-  createdAt: new Date("2024-10-21T17:44:25.601Z"),
+  createdAt: new Date("2025-10-21T17:44:25.601Z"),
 };
 ```
 

@@ -6,7 +6,7 @@
 import { GetUsageResultItem } from "opperai/models";
 
 let value: GetUsageResultItem = {
-  timeBucket: new Date("2025-04-06T02:05:28.462Z"),
+  timeBucket: new Date("2026-04-06T02:05:28.462Z"),
   cost: "997.89",
 };
 ```

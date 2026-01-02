@@ -18,4 +18,5 @@ let value: SubmitFeedbackResponse = {
 | -------------------------------------------- | -------------------------------------------- | -------------------------------------------- | -------------------------------------------- |
 | `spanId`                                     | *string*                                     | :heavy_check_mark:                           | The ID of the span                           |
 | `score`                                      | *number*                                     | :heavy_check_mark:                           | The feedback score that was submitted        |
+| `comment`                                    | *string*                                     | :heavy_minus_sign:                           | The feedback comment that was submitted      |
 | `exampleSaved`                               | *boolean*                                    | :heavy_check_mark:                           | Whether the example was saved to the dataset |

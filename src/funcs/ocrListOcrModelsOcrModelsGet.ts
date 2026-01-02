@@ -3,10 +3,8 @@
  */
 
 import { OpperCore } from "../core.js";
-import { encodeSimple } from "../lib/encodings.js";
 import * as M from "../lib/matchers.js";
 import { compactMap } from "../lib/primitives.js";
-import { safeParse } from "../lib/schemas.js";
 import { RequestOptions } from "../lib/sdks.js";
 import { extractSecurity, resolveGlobalSecurity } from "../lib/security.js";
 import { pathToFunc } from "../lib/url.js";
@@ -22,23 +20,24 @@ import { OpperError } from "../models/errors/oppererror.js";
 import { ResponseValidationError } from "../models/errors/responsevalidationerror.js";
 import { SDKValidationError } from "../models/errors/sdkvalidationerror.js";
 import * as models from "../models/index.js";
-import * as operations from "../models/operations/index.js";
 import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
 
 /**
- * Get Model Alias By Name
+ * List Ocr Models
  *
  * @remarks
- * Get a model alias by its name.
+ * List all available OCR models.
+ *
+ * Returns a list of all OCR models available on the Opper platform,
+ * including their hosting providers, locations, and pricing information.
  */
-export function modelsGetModelAliasByNameModelsAliasesByNameNameGet(
+export function ocrListOcrModelsOcrModelsGet(
   client: OpperCore,
-  name: string,
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    models.GetModelAliasResponse,
+    models.PaginatedResponseListOCRModelsResponse,
     | errors.BadRequestError
     | errors.UnauthorizedError
     | errors.NotFoundError
@@ -55,19 +54,17 @@ export function modelsGetModelAliasByNameModelsAliasesByNameNameGet(
 > {
   return new APIPromise($do(
     client,
-    name,
     options,
   ));
 }
 
 async function $do(
   client: OpperCore,
-  name: string,
   options?: RequestOptions,
 ): Promise<
   [
     Result<
-      models.GetModelAliasResponse,
+      models.PaginatedResponseListOCRModelsResponse,
       | errors.BadRequestError
       | errors.UnauthorizedError
       | errors.NotFoundError
@@ -84,33 +81,7 @@ async function $do(
     APICall,
   ]
 > {
-  const input: operations.GetModelAliasByNameModelsAliasesByNameNameGetRequest =
-    {
-      name: name,
-    };
-
-  const parsed = safeParse(
-    input,
-    (value) =>
-      operations
-        .GetModelAliasByNameModelsAliasesByNameNameGetRequest$outboundSchema
-        .parse(value),
-    "Input validation failed",
-  );
-  if (!parsed.ok) {
-    return [parsed, { status: "invalid" }];
-  }
-  const payload = parsed.value;
-  const body = null;
-
-  const pathParams = {
-    name: encodeSimple("name", payload.name, {
-      explode: false,
-      charEncoding: "percent",
-    }),
-  };
-
-  const path = pathToFunc("/models/aliases/by-name/{name}")(pathParams);
+  const path = pathToFunc("/ocr/models")();
 
   const headers = new Headers(compactMap({
     Accept: "application/json",
@@ -123,7 +94,7 @@ async function $do(
   const context = {
     options: client._options,
     baseURL: options?.serverURL ?? client._baseURL ?? "",
-    operationID: "get_model_alias_by_name_models_aliases_by_name__name__get",
+    operationID: "list_ocr_models_ocr_models_get",
     oAuth2Scopes: null,
 
     resolvedSecurity: requestSecurity,
@@ -141,7 +112,6 @@ async function $do(
     baseURL: options?.serverURL,
     path: path,
     headers: headers,
-    body: body,
     userAgent: client._options.userAgent,
     timeoutMs: options?.timeoutMs || client._options.timeoutMs || -1,
   }, options);
@@ -166,7 +136,7 @@ async function $do(
   };
 
   const [result] = await M.match<
-    models.GetModelAliasResponse,
+    models.PaginatedResponseListOCRModelsResponse,
     | errors.BadRequestError
     | errors.UnauthorizedError
     | errors.NotFoundError
@@ -180,7 +150,7 @@ async function $do(
     | UnexpectedClientError
     | SDKValidationError
   >(
-    M.json(200, models.GetModelAliasResponse$inboundSchema),
+    M.json(200, models.PaginatedResponseListOCRModelsResponse$inboundSchema),
     M.jsonErr(400, errors.BadRequestError$inboundSchema),
     M.jsonErr(401, errors.UnauthorizedError$inboundSchema),
     M.jsonErr(404, errors.NotFoundError$inboundSchema),

@@ -9,6 +9,7 @@ import { knowledgeDeleteDocuments } from "../funcs/knowledgeDeleteDocuments.js";
 import { knowledgeDeleteFile } from "../funcs/knowledgeDeleteFile.js";
 import { knowledgeGet } from "../funcs/knowledgeGet.js";
 import { knowledgeGetByName } from "../funcs/knowledgeGetByName.js";
+import { knowledgeGetDocumentByKeyKnowledgeKnowledgeBaseIdDocumentsDocumentKeyGet } from "../funcs/knowledgeGetDocumentByKeyKnowledgeKnowledgeBaseIdDocumentsDocumentKeyGet.js";
 import { knowledgeGetFileDownloadUrl } from "../funcs/knowledgeGetFileDownloadUrl.js";
 import { knowledgeGetUploadUrl } from "../funcs/knowledgeGetUploadUrl.js";
 import { knowledgeList } from "../funcs/knowledgeList.js";
@@ -299,5 +300,26 @@ export class Knowledge extends ClientSDK {
       addRequest,
       options,
     ));
+  }
+
+  /**
+   * Get Document By Key
+   *
+   * @remarks
+   * Get a document from a knowledge base by its key
+   */
+  async getDocumentByKeyKnowledgeKnowledgeBaseIdDocumentsDocumentKeyGet(
+    knowledgeBaseId: string,
+    documentKey: string,
+    options?: RequestOptions,
+  ): Promise<models.GetDocumentResponse> {
+    return unwrapAsync(
+      knowledgeGetDocumentByKeyKnowledgeKnowledgeBaseIdDocumentsDocumentKeyGet(
+        this,
+        knowledgeBaseId,
+        documentKey,
+        options,
+      ),
+    );
   }
 }

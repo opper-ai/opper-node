@@ -15,7 +15,7 @@ let value: PaginatedResponseListSpanMetricsResponse = {
       value: 1150.55,
       id: "2455fb48-2f2d-4038-a90a-5d43495b69a5",
       spanId: "17b6d38b-3087-40ad-a74f-95e23ab72796",
-      createdAt: new Date("2023-06-08T06:42:57.566Z"),
+      createdAt: new Date("2024-06-07T06:42:57.566Z"),
     },
   ],
 };

@@ -9,7 +9,7 @@ let value: SpanMetricData = {
   id: "de116402-1961-4e94-a679-5e1364da7d48",
   dimension: "latency",
   value: 4435.14,
-  createdAt: new Date("2023-03-01T12:20:58.468Z"),
+  createdAt: new Date("2024-02-29T12:20:58.468Z"),
   comment: "Expert feedback",
 };
 ```
