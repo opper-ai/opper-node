@@ -173,28 +173,6 @@ async function $do(
     );
   }
   if (
-    payload.Body_upload_file_knowledge__knowledge_base_id__upload_post
-      .chunk_overlap !== undefined
-  ) {
-    appendForm(
-      body,
-      "chunk_overlap",
-      payload.Body_upload_file_knowledge__knowledge_base_id__upload_post
-        .chunk_overlap,
-    );
-  }
-  if (
-    payload.Body_upload_file_knowledge__knowledge_base_id__upload_post
-      .chunk_size !== undefined
-  ) {
-    appendForm(
-      body,
-      "chunk_size",
-      payload.Body_upload_file_knowledge__knowledge_base_id__upload_post
-        .chunk_size,
-    );
-  }
-  if (
     payload.Body_upload_file_knowledge__knowledge_base_id__upload_post.metadata
       !== undefined
   ) {
@@ -203,6 +181,36 @@ async function $do(
       "metadata",
       payload.Body_upload_file_knowledge__knowledge_base_id__upload_post
         .metadata,
+    );
+  }
+  if (
+    payload
+      .Body_upload_file_knowledge__knowledge_base_id__upload_post[
+        "text_processing.chunk_overlap"
+      ] !== undefined
+  ) {
+    appendForm(
+      body,
+      "text_processing.chunk_overlap",
+      payload
+        .Body_upload_file_knowledge__knowledge_base_id__upload_post[
+          "text_processing.chunk_overlap"
+        ],
+    );
+  }
+  if (
+    payload
+      .Body_upload_file_knowledge__knowledge_base_id__upload_post[
+        "text_processing.chunk_size"
+      ] !== undefined
+  ) {
+    appendForm(
+      body,
+      "text_processing.chunk_size",
+      payload
+        .Body_upload_file_knowledge__knowledge_base_id__upload_post[
+          "text_processing.chunk_size"
+        ],
     );
   }
 

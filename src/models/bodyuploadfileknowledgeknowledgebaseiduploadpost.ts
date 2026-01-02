@@ -22,11 +22,11 @@ export type BodyUploadFileKnowledgeKnowledgeBaseIdUploadPost = {
   /**
    * The chunk size to use for the document (number of characters)
    */
-  chunkSize?: number | undefined;
+  textProcessingChunkSize?: number | undefined;
   /**
    * The chunk overlap to use for the document (number of characters)
    */
-  chunkOverlap?: number | undefined;
+  textProcessingChunkOverlap?: number | undefined;
   /**
    * Optional JSON object metadata to attach to the file
    */
@@ -106,20 +106,20 @@ export const BodyUploadFileKnowledgeKnowledgeBaseIdUploadPost$inboundSchema:
     file: z.lazy(() =>
       BodyUploadFileKnowledgeKnowledgeBaseIdUploadPostFile$inboundSchema
     ),
-    chunk_size: z.number().int().default(2000),
-    chunk_overlap: z.number().int().default(200),
+    "text_processing.chunk_size": z.number().int().default(2000),
+    "text_processing.chunk_overlap": z.number().int().default(200),
     metadata: z.nullable(z.string()).optional(),
   }).transform((v) => {
     return remap$(v, {
-      "chunk_size": "chunkSize",
-      "chunk_overlap": "chunkOverlap",
+      "text_processing.chunk_size": "textProcessingChunkSize",
+      "text_processing.chunk_overlap": "textProcessingChunkOverlap",
     });
   });
 /** @internal */
 export type BodyUploadFileKnowledgeKnowledgeBaseIdUploadPost$Outbound = {
   file: BodyUploadFileKnowledgeKnowledgeBaseIdUploadPostFile$Outbound | Blob;
-  chunk_size: number;
-  chunk_overlap: number;
+  "text_processing.chunk_size": number;
+  "text_processing.chunk_overlap": number;
   metadata?: string | null | undefined;
 };
 
@@ -133,13 +133,13 @@ export const BodyUploadFileKnowledgeKnowledgeBaseIdUploadPost$outboundSchema:
     file: z.lazy(() =>
       BodyUploadFileKnowledgeKnowledgeBaseIdUploadPostFile$outboundSchema
     ).or(blobLikeSchema),
-    chunkSize: z.number().int().default(2000),
-    chunkOverlap: z.number().int().default(200),
+    textProcessingChunkSize: z.number().int().default(2000),
+    textProcessingChunkOverlap: z.number().int().default(200),
     metadata: z.nullable(z.string()).optional(),
   }).transform((v) => {
     return remap$(v, {
-      chunkSize: "chunk_size",
-      chunkOverlap: "chunk_overlap",
+      textProcessingChunkSize: "text_processing.chunk_size",
+      textProcessingChunkOverlap: "text_processing.chunk_overlap",
     });
   });
 

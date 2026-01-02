@@ -1,10 +1,10 @@
 {
   "name": "opperai",
-  "version": "3.4.0",
+  "version": "3.4.1",
   "author": "Speakeasy",
   "repository": {
-    "url": "https://github.com/opper-ai/opper-node",
-    "type": "git"
+    "type": "git",
+    "url": "https://github.com/opper-ai/opper-node"
   },
   "type": "module",
   "bin": {
@@ -47,7 +47,7 @@
     "typescript-eslint": "^8.26.0"
   },
   "dependencies": {
-    "@modelcontextprotocol/sdk": ">=1.5.0 <1.10.0",
+    "@modelcontextprotocol/sdk": "^1.24.0",
     "zod": "^3.25.0 || ^4.0.0"
   },
   "exports": {

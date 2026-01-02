@@ -26,26 +26,28 @@ import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
 
 /**
- * Create Model Alias
+ * Process Ocr
  *
  * @remarks
- * Create a model alias with fallback models for the organization that owns the API key.
+ * Process a document using OCR (Optical Character Recognition).
  *
- * A model alias allows you to define a name that resolves to an ordered list of fallback models.
- * For example, you could create an alias called "sonnet-4" that falls back to
- * ["anthropic/claude-3-5-sonnet-latest", "anthropic/claude-3-5-sonnet-20241022"].
+ * This endpoint extracts text and structure from documents (PDFs, images) and
+ * returns the content in markdown format. It supports multiple document types
+ * and can extract images embedded within documents.
+ *
+ * The extracted markdown preserves document structure including headings,
+ * tables, lists, and other formatting.
  */
-export function modelsCreateModelAliasModelsAliasesPost(
+export function ocrProcessOcrOcrPost(
   client: OpperCore,
-  request: models.CreateModelAliasRequest,
+  request: models.OCRRequestModel,
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    models.CreateModelAliasResponse,
+    models.OCRResponseModel,
     | errors.BadRequestError
     | errors.UnauthorizedError
     | errors.NotFoundError
-    | errors.ConflictError
     | errors.RequestValidationError
     | OpperError
     | ResponseValidationError
@@ -66,16 +68,15 @@ export function modelsCreateModelAliasModelsAliasesPost(
 
 async function $do(
   client: OpperCore,
-  request: models.CreateModelAliasRequest,
+  request: models.OCRRequestModel,
   options?: RequestOptions,
 ): Promise<
   [
     Result<
-      models.CreateModelAliasResponse,
+      models.OCRResponseModel,
       | errors.BadRequestError
       | errors.UnauthorizedError
       | errors.NotFoundError
-      | errors.ConflictError
       | errors.RequestValidationError
       | OpperError
       | ResponseValidationError
@@ -91,7 +92,7 @@ async function $do(
 > {
   const parsed = safeParse(
     request,
-    (value) => models.CreateModelAliasRequest$outboundSchema.parse(value),
+    (value) => models.OCRRequestModel$outboundSchema.parse(value),
     "Input validation failed",
   );
   if (!parsed.ok) {
@@ -100,7 +101,7 @@ async function $do(
   const payload = parsed.value;
   const body = encodeJSON("body", payload, { explode: true });
 
-  const path = pathToFunc("/models/aliases")();
+  const path = pathToFunc("/ocr")();
 
   const headers = new Headers(compactMap({
     "Content-Type": "application/json",
@@ -114,7 +115,7 @@ async function $do(
   const context = {
     options: client._options,
     baseURL: options?.serverURL ?? client._baseURL ?? "",
-    operationID: "create_model_alias_models_aliases_post",
+    operationID: "process_ocr_ocr_post",
     oAuth2Scopes: null,
 
     resolvedSecurity: requestSecurity,
@@ -143,7 +144,7 @@ async function $do(
 
   const doResult = await client._do(req, {
     context,
-    errorCodes: ["400", "401", "404", "409", "422", "4XX", "5XX"],
+    errorCodes: ["400", "401", "404", "422", "4XX", "5XX"],
     retryConfig: context.retryConfig,
     retryCodes: context.retryCodes,
   });
@@ -157,11 +158,10 @@ async function $do(
   };
 
   const [result] = await M.match<
-    models.CreateModelAliasResponse,
+    models.OCRResponseModel,
     | errors.BadRequestError
     | errors.UnauthorizedError
     | errors.NotFoundError
-    | errors.ConflictError
     | errors.RequestValidationError
     | OpperError
     | ResponseValidationError
@@ -172,11 +172,10 @@ async function $do(
     | UnexpectedClientError
     | SDKValidationError
   >(
-    M.json(200, models.CreateModelAliasResponse$inboundSchema),
+    M.json(200, models.OCRResponseModel$inboundSchema),
     M.jsonErr(400, errors.BadRequestError$inboundSchema),
     M.jsonErr(401, errors.UnauthorizedError$inboundSchema),
     M.jsonErr(404, errors.NotFoundError$inboundSchema),
-    M.jsonErr(409, errors.ConflictError$inboundSchema),
     M.jsonErr(422, errors.RequestValidationError$inboundSchema),
     M.fail("4XX"),
     M.fail("5XX"),

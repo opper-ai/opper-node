@@ -12,7 +12,7 @@ let value: SpanSchema = {
       id: "7c30bc51-75f2-4d69-84d0-fd8c43254c6d",
       dimension: "latency",
       value: 3100.96,
-      createdAt: new Date("2023-07-25T05:44:26.599Z"),
+      createdAt: new Date("2024-07-24T05:44:26.599Z"),
       comment: "Expert feedback",
     },
   ],

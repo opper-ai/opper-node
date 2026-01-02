@@ -8,7 +8,7 @@ import { CreateKnowledgeBaseResponse } from "opperai/models";
 let value: CreateKnowledgeBaseResponse = {
   id: "dda25771-93c9-4727-ba6b-4a19837a9192",
   name: "<value>",
-  createdAt: new Date("2023-06-07T23:06:57.436Z"),
+  createdAt: new Date("2024-06-06T23:06:57.436Z"),
   embeddingModel: "<value>",
 };
 ```

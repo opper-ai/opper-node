@@ -3,8 +3,10 @@
  */
 
 import { OpperCore } from "../core.js";
+import { encodeSimple } from "../lib/encodings.js";
 import * as M from "../lib/matchers.js";
 import { compactMap } from "../lib/primitives.js";
+import { safeParse } from "../lib/schemas.js";
 import { RequestOptions } from "../lib/sdks.js";
 import { extractSecurity, resolveGlobalSecurity } from "../lib/security.js";
 import { pathToFunc } from "../lib/url.js";
@@ -20,24 +22,24 @@ import { OpperError } from "../models/errors/oppererror.js";
 import { ResponseValidationError } from "../models/errors/responsevalidationerror.js";
 import { SDKValidationError } from "../models/errors/sdkvalidationerror.js";
 import * as models from "../models/index.js";
+import * as operations from "../models/operations/index.js";
 import { APICall, APIPromise } from "../types/async.js";
 import { Result } from "../types/fp.js";
 
 /**
- * List Rerank Models
+ * Get Document By Key
  *
  * @remarks
- * List all available reranking models.
- *
- * Returns a list of all reranking models available on the Opper platform,
- * including their hosting providers, locations, and pricing information.
+ * Get a document from a knowledge base by its key
  */
-export function rerankListRerankModelsRerankModelsGet(
+export function knowledgeGetDocumentByKeyKnowledgeKnowledgeBaseIdDocumentsDocumentKeyGet(
   client: OpperCore,
+  knowledgeBaseId: string,
+  documentKey: string,
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    models.PaginatedResponseListRerankModelsResponse,
+    models.GetDocumentResponse,
     | errors.BadRequestError
     | errors.UnauthorizedError
     | errors.NotFoundError
@@ -54,17 +56,21 @@ export function rerankListRerankModelsRerankModelsGet(
 > {
   return new APIPromise($do(
     client,
+    knowledgeBaseId,
+    documentKey,
     options,
   ));
 }
 
 async function $do(
   client: OpperCore,
+  knowledgeBaseId: string,
+  documentKey: string,
   options?: RequestOptions,
 ): Promise<
   [
     Result<
-      models.PaginatedResponseListRerankModelsResponse,
+      models.GetDocumentResponse,
       | errors.BadRequestError
       | errors.UnauthorizedError
       | errors.NotFoundError
@@ -81,7 +87,42 @@ async function $do(
     APICall,
   ]
 > {
-  const path = pathToFunc("/rerank/models")();
+  const input:
+    operations.GetDocumentByKeyKnowledgeKnowledgeBaseIdDocumentsDocumentKeyGetRequest =
+      {
+        knowledgeBaseId: knowledgeBaseId,
+        documentKey: documentKey,
+      };
+
+  const parsed = safeParse(
+    input,
+    (value) =>
+      operations
+        .GetDocumentByKeyKnowledgeKnowledgeBaseIdDocumentsDocumentKeyGetRequest$outboundSchema
+        .parse(value),
+    "Input validation failed",
+  );
+  if (!parsed.ok) {
+    return [parsed, { status: "invalid" }];
+  }
+  const payload = parsed.value;
+  const body = null;
+
+  const pathParams = {
+    document_key: encodeSimple("document_key", payload.document_key, {
+      explode: false,
+      charEncoding: "percent",
+    }),
+    knowledge_base_id: encodeSimple(
+      "knowledge_base_id",
+      payload.knowledge_base_id,
+      { explode: false, charEncoding: "percent" },
+    ),
+  };
+
+  const path = pathToFunc(
+    "/knowledge/{knowledge_base_id}/documents/{document_key}",
+  )(pathParams);
 
   const headers = new Headers(compactMap({
     Accept: "application/json",
@@ -94,7 +135,8 @@ async function $do(
   const context = {
     options: client._options,
     baseURL: options?.serverURL ?? client._baseURL ?? "",
-    operationID: "list_rerank_models_rerank_models_get",
+    operationID:
+      "get_document_by_key_knowledge__knowledge_base_id__documents__document_key__get",
     oAuth2Scopes: null,
 
     resolvedSecurity: requestSecurity,
@@ -112,6 +154,7 @@ async function $do(
     baseURL: options?.serverURL,
     path: path,
     headers: headers,
+    body: body,
     userAgent: client._options.userAgent,
     timeoutMs: options?.timeoutMs || client._options.timeoutMs || -1,
   }, options);
@@ -136,7 +179,7 @@ async function $do(
   };
 
   const [result] = await M.match<
-    models.PaginatedResponseListRerankModelsResponse,
+    models.GetDocumentResponse,
     | errors.BadRequestError
     | errors.UnauthorizedError
     | errors.NotFoundError
@@ -150,7 +193,7 @@ async function $do(
     | UnexpectedClientError
     | SDKValidationError
   >(
-    M.json(200, models.PaginatedResponseListRerankModelsResponse$inboundSchema),
+    M.json(200, models.GetDocumentResponse$inboundSchema),
     M.jsonErr(400, errors.BadRequestError$inboundSchema),
     M.jsonErr(401, errors.UnauthorizedError$inboundSchema),
     M.jsonErr(404, errors.NotFoundError$inboundSchema),
