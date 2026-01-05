@@ -90,9 +90,9 @@ export class Opper extends ClientSDK {
    * It is a declarative interface with input and output schemas that supports text, image, audio inputs and outputs and is highly model agnostic.
    */
   async call(
-    request: models.AppApiPublicV2FunctionCallCallFunctionRequest,
+    request: models.CallFunctionRequest,
     options?: RequestOptions,
-  ): Promise<models.AppApiPublicV2FunctionCallCallFunctionResponse> {
+  ): Promise<models.CallFunctionResponse> {
     return unwrapAsync(call(
       this,
       request,
@@ -174,7 +174,7 @@ export class Opper extends ClientSDK {
    * ```
    */
   async stream(
-    request: models.AppApiPublicV2FunctionCallCallFunctionRequest,
+    request: models.CallFunctionRequest,
     options?: RequestOptions,
   ): Promise<operations.FunctionStreamCallStreamPostResponse> {
     return unwrapAsync(stream(

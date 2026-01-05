@@ -13,7 +13,7 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
  */
 export type JsonPayload = { [k: string]: any } | Array<any> | any;
 
-export type AppApiPublicV2FunctionCallCallFunctionResponse = {
+export type CallFunctionResponse = {
   /**
    * The ID of the span of the call
    */
@@ -74,29 +74,28 @@ export function jsonPayloadFromJSON(
 }
 
 /** @internal */
-export const AppApiPublicV2FunctionCallCallFunctionResponse$inboundSchema:
-  z.ZodType<
-    AppApiPublicV2FunctionCallCallFunctionResponse,
-    z.ZodTypeDef,
-    unknown
-  > = z.object({
-    span_id: z.string(),
-    message: z.nullable(z.string()).optional(),
-    json_payload: z.nullable(
-      z.union([z.record(z.any()), z.array(z.any()), z.any()]),
-    ).optional(),
-    cached: z.nullable(z.boolean()).optional(),
-    images: z.nullable(z.array(z.string())).optional(),
-    usage: z.nullable(z.record(z.any())).optional(),
-    cost: z.nullable(z.record(z.any())).optional(),
-  }).transform((v) => {
-    return remap$(v, {
-      "span_id": "spanId",
-      "json_payload": "jsonPayload",
-    });
+export const CallFunctionResponse$inboundSchema: z.ZodType<
+  CallFunctionResponse,
+  z.ZodTypeDef,
+  unknown
+> = z.object({
+  span_id: z.string(),
+  message: z.nullable(z.string()).optional(),
+  json_payload: z.nullable(
+    z.union([z.record(z.any()), z.array(z.any()), z.any()]),
+  ).optional(),
+  cached: z.nullable(z.boolean()).optional(),
+  images: z.nullable(z.array(z.string())).optional(),
+  usage: z.nullable(z.record(z.any())).optional(),
+  cost: z.nullable(z.record(z.any())).optional(),
+}).transform((v) => {
+  return remap$(v, {
+    "span_id": "spanId",
+    "json_payload": "jsonPayload",
   });
+});
 /** @internal */
-export type AppApiPublicV2FunctionCallCallFunctionResponse$Outbound = {
+export type CallFunctionResponse$Outbound = {
   span_id: string;
   message?: string | null | undefined;
   json_payload?: { [k: string]: any } | Array<any> | any | null | undefined;
@@ -107,50 +106,40 @@ export type AppApiPublicV2FunctionCallCallFunctionResponse$Outbound = {
 };
 
 /** @internal */
-export const AppApiPublicV2FunctionCallCallFunctionResponse$outboundSchema:
-  z.ZodType<
-    AppApiPublicV2FunctionCallCallFunctionResponse$Outbound,
-    z.ZodTypeDef,
-    AppApiPublicV2FunctionCallCallFunctionResponse
-  > = z.object({
-    spanId: z.string(),
-    message: z.nullable(z.string()).optional(),
-    jsonPayload: z.nullable(
-      z.union([z.record(z.any()), z.array(z.any()), z.any()]),
-    ).optional(),
-    cached: z.nullable(z.boolean()).optional(),
-    images: z.nullable(z.array(z.string())).optional(),
-    usage: z.nullable(z.record(z.any())).optional(),
-    cost: z.nullable(z.record(z.any())).optional(),
-  }).transform((v) => {
-    return remap$(v, {
-      spanId: "span_id",
-      jsonPayload: "json_payload",
-    });
+export const CallFunctionResponse$outboundSchema: z.ZodType<
+  CallFunctionResponse$Outbound,
+  z.ZodTypeDef,
+  CallFunctionResponse
+> = z.object({
+  spanId: z.string(),
+  message: z.nullable(z.string()).optional(),
+  jsonPayload: z.nullable(
+    z.union([z.record(z.any()), z.array(z.any()), z.any()]),
+  ).optional(),
+  cached: z.nullable(z.boolean()).optional(),
+  images: z.nullable(z.array(z.string())).optional(),
+  usage: z.nullable(z.record(z.any())).optional(),
+  cost: z.nullable(z.record(z.any())).optional(),
+}).transform((v) => {
+  return remap$(v, {
+    spanId: "span_id",
+    jsonPayload: "json_payload",
   });
+});
 
-export function appApiPublicV2FunctionCallCallFunctionResponseToJSON(
-  appApiPublicV2FunctionCallCallFunctionResponse:
-    AppApiPublicV2FunctionCallCallFunctionResponse,
+export function callFunctionResponseToJSON(
+  callFunctionResponse: CallFunctionResponse,
 ): string {
   return JSON.stringify(
-    AppApiPublicV2FunctionCallCallFunctionResponse$outboundSchema.parse(
-      appApiPublicV2FunctionCallCallFunctionResponse,
-    ),
+    CallFunctionResponse$outboundSchema.parse(callFunctionResponse),
   );
 }
-export function appApiPublicV2FunctionCallCallFunctionResponseFromJSON(
+export function callFunctionResponseFromJSON(
   jsonString: string,
-): SafeParseResult<
-  AppApiPublicV2FunctionCallCallFunctionResponse,
-  SDKValidationError
-> {
+): SafeParseResult<CallFunctionResponse, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) =>
-      AppApiPublicV2FunctionCallCallFunctionResponse$inboundSchema.parse(
-        JSON.parse(x),
-      ),
-    `Failed to parse 'AppApiPublicV2FunctionCallCallFunctionResponse' from JSON`,
+    (x) => CallFunctionResponse$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'CallFunctionResponse' from JSON`,
   );
 }

@@ -1,11 +1,11 @@
-# AppApiPublicV2FunctionCallCallFunctionRequest
+# CallFunctionRequest
 
 ## Example Usage
 
 ```typescript
-import { AppApiPublicV2FunctionCallCallFunctionRequest } from "opperai/models";
+import { CallFunctionRequest } from "opperai/models";
 
-let value: AppApiPublicV2FunctionCallCallFunctionRequest = {
+let value: CallFunctionRequest = {
   name: "add_numbers",
   instructions: "Calculate the sum of two numbers",
   inputSchema: {

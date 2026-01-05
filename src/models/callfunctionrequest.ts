@@ -26,7 +26,7 @@ import {
   TModel$outboundSchema,
 } from "./tmodel.js";
 
-export type AppApiPublicV2FunctionCallCallFunctionRequest = {
+export type CallFunctionRequest = {
   /**
    * Provide a unique name of the task. A function with this name will be created in the project. Functions configuration is overridden by the request parameters.
    */
@@ -71,32 +71,31 @@ export type AppApiPublicV2FunctionCallCallFunctionRequest = {
 };
 
 /** @internal */
-export const AppApiPublicV2FunctionCallCallFunctionRequest$inboundSchema:
-  z.ZodType<
-    AppApiPublicV2FunctionCallCallFunctionRequest,
-    z.ZodTypeDef,
-    unknown
-  > = z.object({
-    name: z.string(),
-    instructions: z.nullable(z.string()).optional(),
-    input_schema: z.nullable(z.record(z.any())).optional(),
-    output_schema: z.nullable(z.record(z.any())).optional(),
-    input: z.nullable(z.any()).optional(),
-    model: TModel$inboundSchema.optional(),
-    examples: z.nullable(z.array(Example$inboundSchema)).optional(),
-    parent_span_id: z.nullable(z.string()).optional(),
-    tags: z.nullable(z.record(z.string())).optional(),
-    configuration: z.nullable(FunctionCallConfigurationInput$inboundSchema)
-      .optional(),
-  }).transform((v) => {
-    return remap$(v, {
-      "input_schema": "inputSchema",
-      "output_schema": "outputSchema",
-      "parent_span_id": "parentSpanId",
-    });
+export const CallFunctionRequest$inboundSchema: z.ZodType<
+  CallFunctionRequest,
+  z.ZodTypeDef,
+  unknown
+> = z.object({
+  name: z.string(),
+  instructions: z.nullable(z.string()).optional(),
+  input_schema: z.nullable(z.record(z.any())).optional(),
+  output_schema: z.nullable(z.record(z.any())).optional(),
+  input: z.nullable(z.any()).optional(),
+  model: TModel$inboundSchema.optional(),
+  examples: z.nullable(z.array(Example$inboundSchema)).optional(),
+  parent_span_id: z.nullable(z.string()).optional(),
+  tags: z.nullable(z.record(z.string())).optional(),
+  configuration: z.nullable(FunctionCallConfigurationInput$inboundSchema)
+    .optional(),
+}).transform((v) => {
+  return remap$(v, {
+    "input_schema": "inputSchema",
+    "output_schema": "outputSchema",
+    "parent_span_id": "parentSpanId",
   });
+});
 /** @internal */
-export type AppApiPublicV2FunctionCallCallFunctionRequest$Outbound = {
+export type CallFunctionRequest$Outbound = {
   name: string;
   instructions?: string | null | undefined;
   input_schema?: { [k: string]: any } | null | undefined;
@@ -110,53 +109,43 @@ export type AppApiPublicV2FunctionCallCallFunctionRequest$Outbound = {
 };
 
 /** @internal */
-export const AppApiPublicV2FunctionCallCallFunctionRequest$outboundSchema:
-  z.ZodType<
-    AppApiPublicV2FunctionCallCallFunctionRequest$Outbound,
-    z.ZodTypeDef,
-    AppApiPublicV2FunctionCallCallFunctionRequest
-  > = z.object({
-    name: z.string(),
-    instructions: z.nullable(z.string()).optional(),
-    inputSchema: z.nullable(z.record(z.any())).optional(),
-    outputSchema: z.nullable(z.record(z.any())).optional(),
-    input: z.nullable(z.any()).optional(),
-    model: TModel$outboundSchema.optional(),
-    examples: z.nullable(z.array(Example$outboundSchema)).optional(),
-    parentSpanId: z.nullable(z.string()).optional(),
-    tags: z.nullable(z.record(z.string())).optional(),
-    configuration: z.nullable(FunctionCallConfigurationInput$outboundSchema)
-      .optional(),
-  }).transform((v) => {
-    return remap$(v, {
-      inputSchema: "input_schema",
-      outputSchema: "output_schema",
-      parentSpanId: "parent_span_id",
-    });
+export const CallFunctionRequest$outboundSchema: z.ZodType<
+  CallFunctionRequest$Outbound,
+  z.ZodTypeDef,
+  CallFunctionRequest
+> = z.object({
+  name: z.string(),
+  instructions: z.nullable(z.string()).optional(),
+  inputSchema: z.nullable(z.record(z.any())).optional(),
+  outputSchema: z.nullable(z.record(z.any())).optional(),
+  input: z.nullable(z.any()).optional(),
+  model: TModel$outboundSchema.optional(),
+  examples: z.nullable(z.array(Example$outboundSchema)).optional(),
+  parentSpanId: z.nullable(z.string()).optional(),
+  tags: z.nullable(z.record(z.string())).optional(),
+  configuration: z.nullable(FunctionCallConfigurationInput$outboundSchema)
+    .optional(),
+}).transform((v) => {
+  return remap$(v, {
+    inputSchema: "input_schema",
+    outputSchema: "output_schema",
+    parentSpanId: "parent_span_id",
   });
+});
 
-export function appApiPublicV2FunctionCallCallFunctionRequestToJSON(
-  appApiPublicV2FunctionCallCallFunctionRequest:
-    AppApiPublicV2FunctionCallCallFunctionRequest,
+export function callFunctionRequestToJSON(
+  callFunctionRequest: CallFunctionRequest,
 ): string {
   return JSON.stringify(
-    AppApiPublicV2FunctionCallCallFunctionRequest$outboundSchema.parse(
-      appApiPublicV2FunctionCallCallFunctionRequest,
-    ),
+    CallFunctionRequest$outboundSchema.parse(callFunctionRequest),
   );
 }
-export function appApiPublicV2FunctionCallCallFunctionRequestFromJSON(
+export function callFunctionRequestFromJSON(
   jsonString: string,
-): SafeParseResult<
-  AppApiPublicV2FunctionCallCallFunctionRequest,
-  SDKValidationError
-> {
+): SafeParseResult<CallFunctionRequest, SDKValidationError> {
   return safeParse(
     jsonString,
-    (x) =>
-      AppApiPublicV2FunctionCallCallFunctionRequest$inboundSchema.parse(
-        JSON.parse(x),
-      ),
-    `Failed to parse 'AppApiPublicV2FunctionCallCallFunctionRequest' from JSON`,
+    (x) => CallFunctionRequest$inboundSchema.parse(JSON.parse(x)),
+    `Failed to parse 'CallFunctionRequest' from JSON`,
   );
 }

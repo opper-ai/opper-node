@@ -92,7 +92,7 @@ export function createMCPServer(deps: {
 }) {
   const server = new McpServer({
     name: "Opper",
-    version: "3.4.1",
+    version: "3.4.2",
   });
 
   const client = new OpperCore({
