@@ -1,12 +1,12 @@
-# AppApiPublicV2FunctionCallCallFunctionResponse
+# CallFunctionResponse
 
 ## Example Usage
 
 ```typescript
-import { AppApiPublicV2FunctionCallCallFunctionResponse } from "opperai/models";
+import { CallFunctionResponse } from "opperai/models";
 
-let value: AppApiPublicV2FunctionCallCallFunctionResponse = {
-  spanId: "fe8c2e6e-0531-4ec9-92e0-5633b8cd9b3a",
+let value: CallFunctionResponse = {
+  spanId: "e9cdfdda-24c9-49c9-b80b-1a2728c3f909",
   message: "The sum of 1 and 3 is 4",
   jsonPayload: {
     "sum": 4,

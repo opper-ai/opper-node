@@ -7,7 +7,7 @@ import * as models from "../../models/index.js";
 import { formatResult, ToolDefinition } from "../tools.js";
 
 const args = {
-  request: models.AppApiPublicV2FunctionCallCallFunctionRequest$inboundSchema,
+  request: models.CallFunctionRequest$inboundSchema,
 };
 
 export const tool$stream: ToolDefinition<typeof args> = {

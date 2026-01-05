@@ -34,11 +34,11 @@ import { Result } from "../types/fp.js";
  */
 export function call(
   client: OpperCore,
-  request: models.AppApiPublicV2FunctionCallCallFunctionRequest,
+  request: models.CallFunctionRequest,
   options?: RequestOptions,
 ): APIPromise<
   Result<
-    models.AppApiPublicV2FunctionCallCallFunctionResponse,
+    models.CallFunctionResponse,
     | errors.BadRequestError
     | errors.UnauthorizedError
     | errors.NotFoundError
@@ -62,12 +62,12 @@ export function call(
 
 async function $do(
   client: OpperCore,
-  request: models.AppApiPublicV2FunctionCallCallFunctionRequest,
+  request: models.CallFunctionRequest,
   options?: RequestOptions,
 ): Promise<
   [
     Result<
-      models.AppApiPublicV2FunctionCallCallFunctionResponse,
+      models.CallFunctionResponse,
       | errors.BadRequestError
       | errors.UnauthorizedError
       | errors.NotFoundError
@@ -86,10 +86,7 @@ async function $do(
 > {
   const parsed = safeParse(
     request,
-    (value) =>
-      models.AppApiPublicV2FunctionCallCallFunctionRequest$outboundSchema.parse(
-        value,
-      ),
+    (value) => models.CallFunctionRequest$outboundSchema.parse(value),
     "Input validation failed",
   );
   if (!parsed.ok) {
@@ -155,7 +152,7 @@ async function $do(
   };
 
   const [result] = await M.match<
-    models.AppApiPublicV2FunctionCallCallFunctionResponse,
+    models.CallFunctionResponse,
     | errors.BadRequestError
     | errors.UnauthorizedError
     | errors.NotFoundError
@@ -169,10 +166,7 @@ async function $do(
     | UnexpectedClientError
     | SDKValidationError
   >(
-    M.json(
-      200,
-      models.AppApiPublicV2FunctionCallCallFunctionResponse$inboundSchema,
-    ),
+    M.json(200, models.CallFunctionResponse$inboundSchema),
     M.jsonErr(400, errors.BadRequestError$inboundSchema),
     M.jsonErr(401, errors.UnauthorizedError$inboundSchema),
     M.jsonErr(404, errors.NotFoundError$inboundSchema),
