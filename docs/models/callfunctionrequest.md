@@ -1,11 +1,11 @@
-# AppApiPublicV2FunctionsCallFunctionRequest
+# CallFunctionRequest
 
 ## Example Usage
 
 ```typescript
-import { AppApiPublicV2FunctionsCallFunctionRequest } from "opperai/models";
+import { CallFunctionRequest } from "opperai/models";
 
-let value: AppApiPublicV2FunctionsCallFunctionRequest = {
+let value: CallFunctionRequest = {
   input: {
     "x": 4,
     "y": 5,

@@ -20,8 +20,7 @@ export type StreamFunctionRevisionFunctionsFunctionIdCallStreamRevisionIdPostReq
      * The id of the revision to call
      */
     revisionId: string;
-    appApiPublicV2FunctionsCallFunctionRequest:
-      models.AppApiPublicV2FunctionsCallFunctionRequest;
+    callFunctionRequest: models.CallFunctionRequest;
   };
 
 /**
@@ -79,14 +78,12 @@ export const StreamFunctionRevisionFunctionsFunctionIdCallStreamRevisionIdPostRe
   > = z.object({
     function_id: z.string(),
     revision_id: z.string(),
-    app__api__public__v2__functions__CallFunctionRequest:
-      models.AppApiPublicV2FunctionsCallFunctionRequest$inboundSchema,
+    CallFunctionRequest: models.CallFunctionRequest$inboundSchema,
   }).transform((v) => {
     return remap$(v, {
       "function_id": "functionId",
       "revision_id": "revisionId",
-      "app__api__public__v2__functions__CallFunctionRequest":
-        "appApiPublicV2FunctionsCallFunctionRequest",
+      "CallFunctionRequest": "callFunctionRequest",
     });
   });
 /** @internal */
@@ -94,8 +91,7 @@ export type StreamFunctionRevisionFunctionsFunctionIdCallStreamRevisionIdPostReq
   {
     function_id: string;
     revision_id: string;
-    app__api__public__v2__functions__CallFunctionRequest:
-      models.AppApiPublicV2FunctionsCallFunctionRequest$Outbound;
+    CallFunctionRequest: models.CallFunctionRequest$Outbound;
   };
 
 /** @internal */
@@ -107,14 +103,12 @@ export const StreamFunctionRevisionFunctionsFunctionIdCallStreamRevisionIdPostRe
   > = z.object({
     functionId: z.string(),
     revisionId: z.string(),
-    appApiPublicV2FunctionsCallFunctionRequest:
-      models.AppApiPublicV2FunctionsCallFunctionRequest$outboundSchema,
+    callFunctionRequest: models.CallFunctionRequest$outboundSchema,
   }).transform((v) => {
     return remap$(v, {
       functionId: "function_id",
       revisionId: "revision_id",
-      appApiPublicV2FunctionsCallFunctionRequest:
-        "app__api__public__v2__functions__CallFunctionRequest",
+      callFunctionRequest: "CallFunctionRequest",
     });
   });
 

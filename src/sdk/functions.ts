@@ -162,14 +162,13 @@ export class Functions extends ClientSDK {
    */
   async call(
     functionId: string,
-    appApiPublicV2FunctionsCallFunctionRequest:
-      models.AppApiPublicV2FunctionsCallFunctionRequest,
+    callFunctionRequest: models.CallFunctionRequest,
     options?: RequestOptions,
   ): Promise<models.AppApiPublicV2FunctionsCallFunctionResponse> {
     return unwrapAsync(functionsCall(
       this,
       functionId,
-      appApiPublicV2FunctionsCallFunctionRequest,
+      callFunctionRequest,
       options,
     ));
   }
@@ -196,8 +195,7 @@ export class Functions extends ClientSDK {
    */
   async stream(
     functionId: string,
-    appApiPublicV2FunctionsCallFunctionRequest:
-      models.AppApiPublicV2FunctionsCallFunctionRequest,
+    callFunctionRequest: models.CallFunctionRequest,
     options?: RequestOptions,
   ): Promise<
     operations.StreamFunctionFunctionsFunctionIdCallStreamPostResponse
@@ -205,7 +203,7 @@ export class Functions extends ClientSDK {
     return unwrapAsync(functionsStream(
       this,
       functionId,
-      appApiPublicV2FunctionsCallFunctionRequest,
+      callFunctionRequest,
       options,
     ));
   }
@@ -219,15 +217,14 @@ export class Functions extends ClientSDK {
   async callRevision(
     functionId: string,
     revisionId: string,
-    appApiPublicV2FunctionsCallFunctionRequest:
-      models.AppApiPublicV2FunctionsCallFunctionRequest,
+    callFunctionRequest: models.CallFunctionRequest,
     options?: RequestOptions,
   ): Promise<models.AppApiPublicV2FunctionsCallFunctionResponse> {
     return unwrapAsync(functionsCallRevision(
       this,
       functionId,
       revisionId,
-      appApiPublicV2FunctionsCallFunctionRequest,
+      callFunctionRequest,
       options,
     ));
   }
@@ -255,8 +252,7 @@ export class Functions extends ClientSDK {
   async streamRevision(
     functionId: string,
     revisionId: string,
-    appApiPublicV2FunctionsCallFunctionRequest:
-      models.AppApiPublicV2FunctionsCallFunctionRequest,
+    callFunctionRequest: models.CallFunctionRequest,
     options?: RequestOptions,
   ): Promise<
     operations.StreamFunctionRevisionFunctionsFunctionIdCallStreamRevisionIdPostResponse
@@ -265,7 +261,7 @@ export class Functions extends ClientSDK {
       this,
       functionId,
       revisionId,
-      appApiPublicV2FunctionsCallFunctionRequest,
+      callFunctionRequest,
       options,
     ));
   }

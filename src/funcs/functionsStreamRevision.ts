@@ -50,8 +50,7 @@ export function functionsStreamRevision(
   client: OpperCore,
   functionId: string,
   revisionId: string,
-  appApiPublicV2FunctionsCallFunctionRequest:
-    models.AppApiPublicV2FunctionsCallFunctionRequest,
+  callFunctionRequest: models.CallFunctionRequest,
   options?: RequestOptions,
 ): APIPromise<
   Result<
@@ -74,7 +73,7 @@ export function functionsStreamRevision(
     client,
     functionId,
     revisionId,
-    appApiPublicV2FunctionsCallFunctionRequest,
+    callFunctionRequest,
     options,
   ));
 }
@@ -83,8 +82,7 @@ async function $do(
   client: OpperCore,
   functionId: string,
   revisionId: string,
-  appApiPublicV2FunctionsCallFunctionRequest:
-    models.AppApiPublicV2FunctionsCallFunctionRequest,
+  callFunctionRequest: models.CallFunctionRequest,
   options?: RequestOptions,
 ): Promise<
   [
@@ -111,8 +109,7 @@ async function $do(
       {
         functionId: functionId,
         revisionId: revisionId,
-        appApiPublicV2FunctionsCallFunctionRequest:
-          appApiPublicV2FunctionsCallFunctionRequest,
+        callFunctionRequest: callFunctionRequest,
       };
 
   const parsed = safeParse(
@@ -127,11 +124,9 @@ async function $do(
     return [parsed, { status: "invalid" }];
   }
   const payload = parsed.value;
-  const body = encodeJSON(
-    "body",
-    payload.app__api__public__v2__functions__CallFunctionRequest,
-    { explode: true },
-  );
+  const body = encodeJSON("body", payload.CallFunctionRequest, {
+    explode: true,
+  });
 
   const pathParams = {
     function_id: encodeSimple("function_id", payload.function_id, {

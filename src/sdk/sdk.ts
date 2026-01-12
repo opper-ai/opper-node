@@ -92,7 +92,7 @@ export class Opper extends ClientSDK {
   async call(
     request: models.AppApiPublicV2FunctionCallCallFunctionRequest,
     options?: RequestOptions,
-  ): Promise<models.AppApiPublicV2FunctionCallCallFunctionResponse> {
+  ): Promise<models.CallFunctionResponse> {
     return unwrapAsync(call(
       this,
       request,
