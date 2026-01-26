@@ -165,7 +165,7 @@ export class Functions extends ClientSDK {
     appApiPublicV2FunctionsCallFunctionRequest:
       models.AppApiPublicV2FunctionsCallFunctionRequest,
     options?: RequestOptions,
-  ): Promise<models.AppApiPublicV2FunctionsCallFunctionResponse> {
+  ): Promise<models.CallFunctionResponse> {
     return unwrapAsync(functionsCall(
       this,
       functionId,
@@ -222,7 +222,7 @@ export class Functions extends ClientSDK {
     appApiPublicV2FunctionsCallFunctionRequest:
       models.AppApiPublicV2FunctionsCallFunctionRequest,
     options?: RequestOptions,
-  ): Promise<models.AppApiPublicV2FunctionsCallFunctionResponse> {
+  ): Promise<models.CallFunctionResponse> {
     return unwrapAsync(functionsCallRevision(
       this,
       functionId,
