@@ -1,5 +1,7 @@
 # ChatCompletionAllowedToolsParam
 
+Constrains the tools available to the model to a pre-defined set.
+
 ## Example Usage
 
 ```typescript

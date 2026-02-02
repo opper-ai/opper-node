@@ -11,6 +11,9 @@ import {
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
+/**
+ * The function that the model called.
+ */
 export type FunctionOutput = {
   arguments: string;
   name: string;

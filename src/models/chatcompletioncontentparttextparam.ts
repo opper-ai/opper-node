@@ -7,6 +7,9 @@ import { safeParse } from "../lib/schemas.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
+/**
+ * Learn about [text inputs](https://platform.openai.com/docs/guides/text-generation).
+ */
 export type ChatCompletionContentPartTextParam = {
   text: string;
   type: "text";
