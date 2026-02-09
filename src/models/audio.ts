@@ -7,6 +7,12 @@ import { safeParse } from "../lib/schemas.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
+/**
+ * Data about a previous audio response from the model.
+ *
+ * @remarks
+ * [Learn more](https://platform.openai.com/docs/guides/audio).
+ */
 export type Audio = {
   id: string;
 };

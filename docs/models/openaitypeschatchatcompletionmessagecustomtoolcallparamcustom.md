@@ -1,5 +1,7 @@
 # OpenaiTypesChatChatCompletionMessageCustomToolCallParamCustom
 
+The custom tool that the model called.
+
 ## Example Usage
 
 ```typescript

@@ -5,11 +5,11 @@
 ```typescript
 import { ChatCompletionNonStreamingReasoningEffort } from "opperai/models";
 
-let value: ChatCompletionNonStreamingReasoningEffort = "high";
+let value: ChatCompletionNonStreamingReasoningEffort = "xhigh";
 ```
 
 ## Values
 
 ```typescript
-"minimal" | "low" | "medium" | "high"
+"none" | "minimal" | "low" | "medium" | "high" | "xhigh"
 ```
