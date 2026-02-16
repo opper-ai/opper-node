@@ -1,5 +1,7 @@
 # FunctionOutput
 
+The function that the model called.
+
 ## Example Usage
 
 ```typescript

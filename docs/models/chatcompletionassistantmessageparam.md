@@ -1,5 +1,7 @@
 # ChatCompletionAssistantMessageParam
 
+Messages sent by the model in response to user messages.
+
 ## Example Usage
 
 ```typescript

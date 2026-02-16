@@ -1,5 +1,7 @@
 # ChatCompletionAllowedToolChoiceParam
 
+Constrains the tools available to the model to a pre-defined set.
+
 ## Example Usage
 
 ```typescript
@@ -28,5 +30,5 @@ let value: ChatCompletionAllowedToolChoiceParam = {
 
 | Field                                                                                  | Type                                                                                   | Required                                                                               | Description                                                                            |
 | -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
-| `allowedTools`                                                                         | [models.ChatCompletionAllowedToolsParam](../models/chatcompletionallowedtoolsparam.md) | :heavy_check_mark:                                                                     | N/A                                                                                    |
+| `allowedTools`                                                                         | [models.ChatCompletionAllowedToolsParam](../models/chatcompletionallowedtoolsparam.md) | :heavy_check_mark:                                                                     | Constrains the tools available to the model to a pre-defined set.                      |
 | `type`                                                                                 | *"allowed_tools"*                                                                      | :heavy_check_mark:                                                                     | N/A                                                                                    |

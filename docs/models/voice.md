@@ -12,6 +12,6 @@ const value: string = "<value>";
 ### `models.VoiceEnum`
 
 ```typescript
-const value: models.VoiceEnum = "shimmer";
+const value: models.VoiceEnum = "marin";
 ```
 
