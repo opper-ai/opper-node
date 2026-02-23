@@ -11,6 +11,9 @@ import {
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
+/**
+ * A URL citation when using web search.
+ */
 export type AnnotationURLCitation = {
   endIndex: number;
   startIndex: number;

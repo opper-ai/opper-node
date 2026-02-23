@@ -1,5 +1,7 @@
 # OpenaiTypesChatChatCompletionCustomToolParamCustom
 
+Properties of the custom tool.
+
 ## Example Usage
 
 ```typescript

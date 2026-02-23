@@ -17,9 +17,9 @@ const value: { [k: string]: any } = {
 
 ```typescript
 const value: any[] = [
-  {
-    "sum": 4,
-  },
+  "<value 1>",
+  "<value 2>",
+  "<value 3>",
 ];
 ```
 
