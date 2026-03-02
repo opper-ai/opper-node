@@ -1,5 +1,7 @@
 # ChatCompletionContentPartInputAudioParam
 
+Learn about [audio inputs](https://platform.openai.com/docs/guides/audio).
+
 ## Example Usage
 
 ```typescript

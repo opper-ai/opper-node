@@ -17,6 +17,12 @@ export type ChatCompletionPredictionContentParamContent =
   | string
   | Array<ChatCompletionContentPartTextParam>;
 
+/**
+ * Static predicted output content, such as the content of a text file that is
+ *
+ * @remarks
+ * being regenerated.
+ */
 export type ChatCompletionPredictionContentParam = {
   content: string | Array<ChatCompletionContentPartTextParam>;
   type: "content";
