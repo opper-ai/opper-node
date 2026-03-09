@@ -280,6 +280,7 @@ export const FunctionStreamCallStreamPostResponse$inboundSchema: z.ZodType<
     .transform(stream => {
       return new EventStream(stream, rawEvent => {
         return {
+          done: false,
           value: z.lazy(() =>
             FunctionStreamCallStreamPostResponseBody$inboundSchema
           ).parse(rawEvent),
