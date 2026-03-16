@@ -31,6 +31,9 @@ import { Result } from "../types/fp.js";
  *
  * @remarks
  * Update a custom language model.
+ *
+ * If identifier, api_key, or extra are changed, the model configuration
+ * is validated by making a test API call before saving.
  */
 export function languageModelsUpdateCustom(
   client: OpperCore,

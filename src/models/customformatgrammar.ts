@@ -13,7 +13,13 @@ import {
 } from "./customformatgrammargrammar.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
+/**
+ * A grammar defined by the user.
+ */
 export type CustomFormatGrammar = {
+  /**
+   * Your chosen grammar.
+   */
   grammar: CustomFormatGrammarGrammar;
   type: "grammar";
 };

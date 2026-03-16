@@ -14,6 +14,9 @@ export const Syntax = {
 } as const;
 export type Syntax = ClosedEnum<typeof Syntax>;
 
+/**
+ * Your chosen grammar.
+ */
 export type CustomFormatGrammarGrammar = {
   definition: string;
   syntax: Syntax;

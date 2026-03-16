@@ -46,6 +46,8 @@ export class LanguageModels extends ClientSDK {
    *
    * @remarks
    * Register a custom language model with the organization that owns the API key.
+   *
+   * The model configuration is validated by making a test API call before saving.
    */
   async registerCustom(
     request: models.RegisterCustomModelRequest,
@@ -99,6 +101,9 @@ export class LanguageModels extends ClientSDK {
    *
    * @remarks
    * Update a custom language model.
+   *
+   * If identifier, api_key, or extra are changed, the model configuration
+   * is validated by making a test API call before saving.
    */
   async updateCustom(
     modelId: string,

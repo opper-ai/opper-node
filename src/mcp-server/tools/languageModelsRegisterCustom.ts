@@ -14,7 +14,9 @@ export const tool$languageModelsRegisterCustom: ToolDefinition<typeof args> = {
   name: "language-models-register-custom",
   description: `Register Custom Model
 
-Register a custom language model with the organization that owns the API key.`,
+Register a custom language model with the organization that owns the API key.
+
+The model configuration is validated by making a test API call before saving.`,
   args,
   tool: async (client, args, ctx) => {
     const [result, apiCall] = await languageModelsRegisterCustom(
