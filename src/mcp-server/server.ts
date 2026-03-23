@@ -22,6 +22,10 @@ import { tool$datasetsGetEntry } from "./tools/datasetsGetEntry.js";
 import { tool$datasetsListEntries } from "./tools/datasetsListEntries.js";
 import { tool$datasetsQueryEntries } from "./tools/datasetsQueryEntries.js";
 import { tool$embeddingsCreate } from "./tools/embeddingsCreate.js";
+import { tool$functionConfigGetFunctionConfigFunctionsFunctionIdConfigGet } from "./tools/functionConfigGetFunctionConfigFunctionsFunctionIdConfigGet.js";
+import { tool$functionConfigPutGuardrailsFunctionsFunctionIdConfigGuardrailsPut } from "./tools/functionConfigPutGuardrailsFunctionsFunctionIdConfigGuardrailsPut.js";
+import { tool$functionConfigPutModelAllowlistFunctionsFunctionIdConfigModelAllowlistPut } from "./tools/functionConfigPutModelAllowlistFunctionsFunctionIdConfigModelAllowlistPut.js";
+import { tool$functionConfigPutSteeringFunctionsFunctionIdConfigSteeringPut } from "./tools/functionConfigPutSteeringFunctionsFunctionIdConfigSteeringPut.js";
 import { tool$functionsCall } from "./tools/functionsCall.js";
 import { tool$functionsCallRevision } from "./tools/functionsCallRevision.js";
 import { tool$functionsCreate } from "./tools/functionsCreate.js";
@@ -92,7 +96,7 @@ export function createMCPServer(deps: {
 }) {
   const server = new McpServer({
     name: "Opper",
-    version: "3.4.1",
+    version: "3.5.0",
   });
 
   const client = new OpperCore({
@@ -170,6 +174,12 @@ export function createMCPServer(deps: {
   tool(tool$functionsStream);
   tool(tool$functionsCallRevision);
   tool(tool$functionsStreamRevision);
+  tool(tool$functionConfigGetFunctionConfigFunctionsFunctionIdConfigGet);
+  tool(tool$functionConfigPutGuardrailsFunctionsFunctionIdConfigGuardrailsPut);
+  tool(
+    tool$functionConfigPutModelAllowlistFunctionsFunctionIdConfigModelAllowlistPut,
+  );
+  tool(tool$functionConfigPutSteeringFunctionsFunctionIdConfigSteeringPut);
   tool(tool$embeddingsCreate);
   tool(tool$languageModelsList);
   tool(tool$languageModelsRegisterCustom);

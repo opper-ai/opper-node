@@ -1,5 +1,7 @@
 # ChatCompletionStreamOptionsParam
 
+Options for streaming response. Only set this when you set `stream: true`.
+
 ## Example Usage
 
 ```typescript

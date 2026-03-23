@@ -110,7 +110,6 @@ async function $do(
       charEncoding: "percent",
     }),
   };
-
   const path = pathToFunc("/spans/{span_id}")(pathParams);
 
   const headers = new Headers(compactMap({

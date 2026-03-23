@@ -292,6 +292,7 @@ export const StreamFunctionRevisionFunctionsFunctionIdCallStreamRevisionIdPostRe
       .transform(stream => {
         return new EventStream(stream, rawEvent => {
           return {
+            done: false,
             value: z.lazy(() =>
               StreamFunctionRevisionFunctionsFunctionIdCallStreamRevisionIdPostResponseBody$inboundSchema
             ).parse(rawEvent),

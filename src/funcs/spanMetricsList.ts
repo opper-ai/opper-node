@@ -116,7 +116,6 @@ async function $do(
       charEncoding: "percent",
     }),
   };
-
   const path = pathToFunc("/spans/{span_id}/metrics")(pathParams);
 
   const query = encodeFormQuery({
