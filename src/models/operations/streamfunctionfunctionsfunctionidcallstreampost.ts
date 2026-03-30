@@ -273,6 +273,7 @@ export const StreamFunctionFunctionsFunctionIdCallStreamPostResponse$inboundSche
       .transform(stream => {
         return new EventStream(stream, rawEvent => {
           return {
+            done: false,
             value: z.lazy(() =>
               StreamFunctionFunctionsFunctionIdCallStreamPostResponseBody$inboundSchema
             ).parse(rawEvent),

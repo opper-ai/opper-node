@@ -107,7 +107,6 @@ async function $do(
       charEncoding: "percent",
     }),
   };
-
   const path = pathToFunc("/spans/{span_id}/save_examples")(pathParams);
 
   const headers = new Headers(compactMap({

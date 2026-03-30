@@ -119,7 +119,6 @@ async function $do(
       { explode: false, charEncoding: "percent" },
     ),
   };
-
   const path = pathToFunc(
     "/knowledge/{knowledge_base_id}/documents/{document_key}",
   )(pathParams);

@@ -7,6 +7,9 @@ import { safeParse } from "../lib/schemas.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
+/**
+ * Approximate location parameters for the search.
+ */
 export type WebSearchOptionsUserLocationApproximate = {
   city?: string | undefined;
   country?: string | undefined;

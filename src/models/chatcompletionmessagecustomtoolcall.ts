@@ -17,8 +17,14 @@ import {
 } from "./customoutput.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
+/**
+ * A call to a custom tool created by the model.
+ */
 export type ChatCompletionMessageCustomToolCall = {
   id: string;
+  /**
+   * The custom tool that the model called.
+   */
   custom: CustomOutput;
   type: "custom";
   additionalProperties?: { [k: string]: any } | undefined;
