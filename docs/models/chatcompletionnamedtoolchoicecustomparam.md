@@ -1,5 +1,9 @@
 # ChatCompletionNamedToolChoiceCustomParam
 
+Specifies a tool the model should use.
+
+Use to force the model to call a specific custom tool.
+
 ## Example Usage
 
 ```typescript

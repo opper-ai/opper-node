@@ -113,7 +113,6 @@ async function $do(
       charEncoding: "percent",
     }),
   };
-
   const path = pathToFunc("/models/aliases/{alias_id}")(pathParams);
 
   const headers = new Headers(compactMap({

@@ -119,7 +119,6 @@ async function $do(
       { explode: false, charEncoding: "percent" },
     ),
   };
-
   const path = pathToFunc(
     "/knowledge/{knowledge_base_id}/files/{file_id}/download_url",
   )(pathParams);

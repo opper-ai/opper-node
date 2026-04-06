@@ -29,11 +29,21 @@ export const VoiceEnum = {
   Sage: "sage",
   Shimmer: "shimmer",
   Verse: "verse",
+  Marin: "marin",
+  Cedar: "cedar",
 } as const;
 export type VoiceEnum = ClosedEnum<typeof VoiceEnum>;
 
 export type Voice = string | VoiceEnum;
 
+/**
+ * Parameters for audio output.
+ *
+ * @remarks
+ *
+ * Required when audio output is requested with
+ * `modalities: ["audio"]`. [Learn more](https://platform.openai.com/docs/guides/audio).
+ */
 export type ChatCompletionAudioParam = {
   format: ChatCompletionAudioParamFormat;
   voice: string | VoiceEnum;

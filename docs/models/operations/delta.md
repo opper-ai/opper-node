@@ -14,13 +14,13 @@ const value: string = "Hello";
 ### `number`
 
 ```typescript
-const value: number = NaN;
+const value: number = 42;
 ```
 
 ### `number`
 
 ```typescript
-const value: number = NaN;
+const value: number = 42;
 ```
 
 ### `boolean`
