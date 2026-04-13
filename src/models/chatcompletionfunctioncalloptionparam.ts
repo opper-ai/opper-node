@@ -7,6 +7,9 @@ import { safeParse } from "../lib/schemas.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
+/**
+ * Specifying a particular function via `{"name": "my_function"}` forces the model to call that function.
+ */
 export type ChatCompletionFunctionCallOptionParam = {
   name: string;
 };
