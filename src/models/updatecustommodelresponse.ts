@@ -21,7 +21,15 @@ export type UpdateCustomModelResponse = {
    */
   identifier: string;
   /**
-   * Extra metadata about the custom language model
+   * Provider name
+   */
+  provider?: string | null | undefined;
+  /**
+   * Model type: llm, embedding, or image
+   */
+  type?: string | null | undefined;
+  /**
+   * Provider-specific configuration
    */
   extra?: { [k: string]: any } | undefined;
 };
@@ -35,6 +43,8 @@ export const UpdateCustomModelResponse$inboundSchema: z.ZodType<
   id: z.string(),
   name: z.string(),
   identifier: z.string(),
+  provider: z.nullable(z.string()).optional(),
+  type: z.nullable(z.string()).optional(),
   extra: z.record(z.any()).optional(),
 });
 /** @internal */
@@ -42,6 +52,8 @@ export type UpdateCustomModelResponse$Outbound = {
   id: string;
   name: string;
   identifier: string;
+  provider?: string | null | undefined;
+  type?: string | null | undefined;
   extra?: { [k: string]: any } | undefined;
 };
 
@@ -54,6 +66,8 @@ export const UpdateCustomModelResponse$outboundSchema: z.ZodType<
   id: z.string(),
   name: z.string(),
   identifier: z.string(),
+  provider: z.nullable(z.string()).optional(),
+  type: z.nullable(z.string()).optional(),
   extra: z.record(z.any()).optional(),
 });
 
