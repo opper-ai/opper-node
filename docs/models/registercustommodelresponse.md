@@ -14,9 +14,11 @@ let value: RegisterCustomModelResponse = {
 
 ## Fields
 
-| Field                                          | Type                                           | Required                                       | Description                                    |
-| ---------------------------------------------- | ---------------------------------------------- | ---------------------------------------------- | ---------------------------------------------- |
-| `id`                                           | *string*                                       | :heavy_check_mark:                             | The ID of the custom language model            |
-| `name`                                         | *string*                                       | :heavy_check_mark:                             | The name of the custom language model          |
-| `identifier`                                   | *string*                                       | :heavy_check_mark:                             | The identifier of the custom language model    |
-| `extra`                                        | Record<string, *any*>                          | :heavy_minus_sign:                             | Extra metadata about the custom language model |
+| Field                                       | Type                                        | Required                                    | Description                                 |
+| ------------------------------------------- | ------------------------------------------- | ------------------------------------------- | ------------------------------------------- |
+| `id`                                        | *string*                                    | :heavy_check_mark:                          | The ID of the custom language model         |
+| `name`                                      | *string*                                    | :heavy_check_mark:                          | The name of the custom language model       |
+| `identifier`                                | *string*                                    | :heavy_check_mark:                          | The identifier of the custom language model |
+| `provider`                                  | *string*                                    | :heavy_minus_sign:                          | Provider name                               |
+| `type`                                      | *string*                                    | :heavy_minus_sign:                          | Model type: llm, embedding, or image        |
+| `extra`                                     | Record<string, *any*>                       | :heavy_minus_sign:                          | Provider-specific configuration             |
