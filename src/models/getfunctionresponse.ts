@@ -62,6 +62,10 @@ export type GetFunctionResponse = {
    * Whether the observer is enabled for this function. When enabled, the observer monitors and evaluates all generations.
    */
   observerEnabled?: boolean | undefined;
+  /**
+   * Whether this function has been executed through the v3 API
+   */
+  isV3?: boolean | undefined;
 };
 
 /** @internal */
@@ -81,7 +85,8 @@ export const GetFunctionResponse$inboundSchema: z.ZodType<
   id: z.string(),
   dataset_id: z.nullable(z.string()).optional(),
   revision_id: z.nullable(z.string()).optional(),
-  observer_enabled: z.boolean().default(true),
+  observer_enabled: z.boolean().default(false),
+  is_v3: z.boolean().default(false),
 }).transform((v) => {
   return remap$(v, {
     "input_schema": "inputSchema",
@@ -89,6 +94,7 @@ export const GetFunctionResponse$inboundSchema: z.ZodType<
     "dataset_id": "datasetId",
     "revision_id": "revisionId",
     "observer_enabled": "observerEnabled",
+    "is_v3": "isV3",
   });
 });
 /** @internal */
@@ -104,6 +110,7 @@ export type GetFunctionResponse$Outbound = {
   dataset_id?: string | null | undefined;
   revision_id?: string | null | undefined;
   observer_enabled: boolean;
+  is_v3: boolean;
 };
 
 /** @internal */
@@ -123,7 +130,8 @@ export const GetFunctionResponse$outboundSchema: z.ZodType<
   id: z.string(),
   datasetId: z.nullable(z.string()).optional(),
   revisionId: z.nullable(z.string()).optional(),
-  observerEnabled: z.boolean().default(true),
+  observerEnabled: z.boolean().default(false),
+  isV3: z.boolean().default(false),
 }).transform((v) => {
   return remap$(v, {
     inputSchema: "input_schema",
@@ -131,6 +139,7 @@ export const GetFunctionResponse$outboundSchema: z.ZodType<
     datasetId: "dataset_id",
     revisionId: "revision_id",
     observerEnabled: "observer_enabled",
+    isV3: "is_v3",
   });
 });
 
