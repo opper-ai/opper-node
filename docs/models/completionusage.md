@@ -1,5 +1,7 @@
 # CompletionUsage
 
+Usage statistics for the completion request.
+
 ## Example Usage
 
 ```typescript

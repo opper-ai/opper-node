@@ -8,6 +8,9 @@ import { safeParse } from "../lib/schemas.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
+/**
+ * Options for streaming response. Only set this when you set `stream: true`.
+ */
 export type ChatCompletionStreamOptionsParam = {
   includeObfuscation?: boolean | undefined;
   includeUsage?: boolean | undefined;

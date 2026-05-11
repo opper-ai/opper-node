@@ -23,6 +23,9 @@ import {
   PromptTokensDetails$outboundSchema,
 } from "./prompttokensdetails.js";
 
+/**
+ * Usage statistics for the completion request.
+ */
 export type CompletionUsage = {
   completionTokens: number;
   promptTokens: number;

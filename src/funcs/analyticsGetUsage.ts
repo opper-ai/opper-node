@@ -5,6 +5,7 @@
 import * as z from "zod/v3";
 import { OpperCore } from "../core.js";
 import { encodeFormQuery } from "../lib/encodings.js";
+import { matchStatusCode } from "../lib/http.js";
 import * as M from "../lib/matchers.js";
 import { compactMap } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
@@ -37,6 +38,7 @@ export function analyticsGetUsage(
   granularity?: models.Granularity | null | undefined,
   fields?: Array<string> | null | undefined,
   groupBy?: Array<string> | null | undefined,
+  sessionId?: string | null | undefined,
   options?: RequestOptions,
 ): APIPromise<
   Result<
@@ -62,6 +64,7 @@ export function analyticsGetUsage(
     granularity,
     fields,
     groupBy,
+    sessionId,
     options,
   ));
 }
@@ -73,6 +76,7 @@ async function $do(
   granularity?: models.Granularity | null | undefined,
   fields?: Array<string> | null | undefined,
   groupBy?: Array<string> | null | undefined,
+  sessionId?: string | null | undefined,
   options?: RequestOptions,
 ): Promise<
   [
@@ -100,6 +104,7 @@ async function $do(
     granularity: granularity,
     fields: fields,
     groupBy: groupBy,
+    sessionId: sessionId,
   };
 
   const parsed = safeParse(
@@ -121,6 +126,7 @@ async function $do(
     "from_date": payload.from_date,
     "granularity": payload.granularity,
     "group_by": payload.group_by,
+    "session_id": payload.session_id,
     "to_date": payload.to_date,
   });
 
@@ -165,7 +171,8 @@ async function $do(
 
   const doResult = await client._do(req, {
     context,
-    errorCodes: ["400", "401", "404", "422", "4XX", "5XX"],
+    isErrorStatusCode: (statusCode: number) =>
+      matchStatusCode({ status: statusCode } as Response, ["4XX", "5XX"]),
     retryConfig: context.retryConfig,
     retryCodes: context.retryCodes,
   });
