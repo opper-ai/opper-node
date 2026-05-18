@@ -22,6 +22,12 @@ export const SearchContextSize = {
 } as const;
 export type SearchContextSize = ClosedEnum<typeof SearchContextSize>;
 
+/**
+ * This tool searches the web for relevant results to use in a response.
+ *
+ * @remarks
+ * Learn more about the [web search tool](https://platform.openai.com/docs/guides/tools-web-search?api-mode=chat).
+ */
 export type WebSearchOptions = {
   searchContextSize?: SearchContextSize | undefined;
   userLocation?: WebSearchOptionsUserLocation | null | undefined;

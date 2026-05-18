@@ -11,6 +11,7 @@ import { unwrapAsync } from "../types/fp.js";
 import { Analytics } from "./analytics.js";
 import { Datasets } from "./datasets.js";
 import { Embeddings } from "./embeddings.js";
+import { FunctionConfig } from "./functionconfig.js";
 import { Functions } from "./functions.js";
 import { Knowledge } from "./knowledge.js";
 import { LanguageModels } from "./languagemodels.js";
@@ -50,6 +51,11 @@ export class Opper extends ClientSDK {
   private _functions?: Functions;
   get functions(): Functions {
     return (this._functions ??= new Functions(this._options));
+  }
+
+  private _functionConfig?: FunctionConfig;
+  get functionConfig(): FunctionConfig {
+    return (this._functionConfig ??= new FunctionConfig(this._options));
   }
 
   private _embeddings?: Embeddings;

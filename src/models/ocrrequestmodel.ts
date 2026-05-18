@@ -6,6 +6,12 @@ import * as z from "zod/v3";
 import { remap as remap$ } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
 import { Result as SafeParseResult } from "../types/fp.js";
+import {
+  DoclingOCRExtra,
+  DoclingOCRExtra$inboundSchema,
+  DoclingOCRExtra$Outbound,
+  DoclingOCRExtra$outboundSchema,
+} from "./doclingocrextra.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 import {
   MistralOCRExtra,
@@ -52,6 +58,10 @@ export type OCRRequestModel = {
    * Mistral-specific OCR parameters
    */
   mistralExtra?: MistralOCRExtra | null | undefined;
+  /**
+   * Docling-specific OCR parameters (output_format, ocr_engine, force_ocr, table_mode)
+   */
+  doclingExtra?: DoclingOCRExtra | null | undefined;
 };
 
 /** @internal */
@@ -67,12 +77,14 @@ export const OCRRequestModel$inboundSchema: z.ZodType<
   image_limit: z.nullable(z.number().int()).optional(),
   image_min_size: z.nullable(z.number().int()).optional(),
   mistral_extra: z.nullable(MistralOCRExtra$inboundSchema).optional(),
+  docling_extra: z.nullable(DoclingOCRExtra$inboundSchema).optional(),
 }).transform((v) => {
   return remap$(v, {
     "include_image_base64": "includeImageBase64",
     "image_limit": "imageLimit",
     "image_min_size": "imageMinSize",
     "mistral_extra": "mistralExtra",
+    "docling_extra": "doclingExtra",
   });
 });
 /** @internal */
@@ -84,6 +96,7 @@ export type OCRRequestModel$Outbound = {
   image_limit?: number | null | undefined;
   image_min_size?: number | null | undefined;
   mistral_extra?: MistralOCRExtra$Outbound | null | undefined;
+  docling_extra?: DoclingOCRExtra$Outbound | null | undefined;
 };
 
 /** @internal */
@@ -99,12 +112,14 @@ export const OCRRequestModel$outboundSchema: z.ZodType<
   imageLimit: z.nullable(z.number().int()).optional(),
   imageMinSize: z.nullable(z.number().int()).optional(),
   mistralExtra: z.nullable(MistralOCRExtra$outboundSchema).optional(),
+  doclingExtra: z.nullable(DoclingOCRExtra$outboundSchema).optional(),
 }).transform((v) => {
   return remap$(v, {
     includeImageBase64: "include_image_base64",
     imageLimit: "image_limit",
     imageMinSize: "image_min_size",
     mistralExtra: "mistral_extra",
+    doclingExtra: "docling_extra",
   });
 });
 

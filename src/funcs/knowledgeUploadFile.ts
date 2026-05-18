@@ -3,11 +3,13 @@
  */
 
 import { OpperCore } from "../core.js";
-import { appendForm, encodeSimple } from "../lib/encodings.js";
+import { appendForm, encodeSimple, normalizeBlob } from "../lib/encodings.js";
 import {
+  bytesToBlob,
   getContentTypeFromFileName,
   readableStreamToArrayBuffer,
 } from "../lib/files.js";
+import { matchStatusCode } from "../lib/http.js";
 import * as M from "../lib/matchers.js";
 import { compactMap } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
@@ -127,11 +129,11 @@ async function $do(
       payload.Body_upload_file_knowledge__knowledge_base_id__upload_post.file,
     )
   ) {
-    appendForm(
-      body,
-      "file",
-      payload.Body_upload_file_knowledge__knowledge_base_id__upload_post.file,
-    );
+    const file =
+      payload.Body_upload_file_knowledge__knowledge_base_id__upload_post.file;
+    const blob = await normalizeBlob(file);
+    const name = "name" in file ? (file.name as string) : undefined;
+    appendForm(body, "file", blob, name);
   } else if (
     isReadableStream(
       payload.Body_upload_file_knowledge__knowledge_base_id__upload_post.file
@@ -147,11 +149,10 @@ async function $do(
         payload.Body_upload_file_knowledge__knowledge_base_id__upload_post.file
           .fileName,
       ) || "application/octet-stream";
-    const blob = new Blob([buffer], { type: contentType });
     appendForm(
       body,
       "file",
-      blob,
+      bytesToBlob(buffer, contentType),
       payload.Body_upload_file_knowledge__knowledge_base_id__upload_post.file
         .fileName,
     );
@@ -164,10 +165,11 @@ async function $do(
     appendForm(
       body,
       "file",
-      new Blob([
+      bytesToBlob(
         payload.Body_upload_file_knowledge__knowledge_base_id__upload_post.file
           .content,
-      ], { type: contentType }),
+        contentType,
+      ),
       payload.Body_upload_file_knowledge__knowledge_base_id__upload_post.file
         .fileName,
     );
@@ -221,7 +223,6 @@ async function $do(
       { explode: false, charEncoding: "percent" },
     ),
   };
-
   const path = pathToFunc("/knowledge/{knowledge_base_id}/upload")(pathParams);
 
   const headers = new Headers(compactMap({
@@ -264,7 +265,8 @@ async function $do(
 
   const doResult = await client._do(req, {
     context,
-    errorCodes: ["400", "401", "404", "422", "4XX", "5XX"],
+    isErrorStatusCode: (statusCode: number) =>
+      matchStatusCode({ status: statusCode } as Response, ["4XX", "5XX"]),
     retryConfig: context.retryConfig,
     retryCodes: context.retryCodes,
   });
