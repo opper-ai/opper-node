@@ -1,5 +1,7 @@
 # AnnotationURLCitation
 
+A URL citation when using web search.
+
 ## Example Usage
 
 ```typescript

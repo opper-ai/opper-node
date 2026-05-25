@@ -14,6 +14,9 @@ export const Mode = {
 } as const;
 export type Mode = ClosedEnum<typeof Mode>;
 
+/**
+ * Constrains the tools available to the model to a pre-defined set.
+ */
 export type ChatCompletionAllowedToolsParam = {
   mode: Mode;
   tools: Array<{ [k: string]: any }>;

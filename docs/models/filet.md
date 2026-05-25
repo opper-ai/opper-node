@@ -1,5 +1,7 @@
 # FileT
 
+Learn about [file inputs](https://platform.openai.com/docs/guides/text) for text generation.
+
 ## Example Usage
 
 ```typescript

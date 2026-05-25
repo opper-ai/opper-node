@@ -17,6 +17,9 @@ import {
 } from "./chatcompletiontokenlogprob.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
+/**
+ * Log probability information for the choice.
+ */
 export type ChoiceLogprobs = {
   content?: Array<ChatCompletionTokenLogprob> | null | undefined;
   refusal?: Array<ChatCompletionTokenLogprob> | null | undefined;
