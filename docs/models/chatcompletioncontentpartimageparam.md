@@ -1,5 +1,7 @@
 # ChatCompletionContentPartImageParam
 
+Learn about [image inputs](https://platform.openai.com/docs/guides/vision).
+
 ## Example Usage
 
 ```typescript

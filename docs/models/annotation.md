@@ -1,5 +1,7 @@
 # Annotation
 
+A URL citation when using web search.
+
 ## Example Usage
 
 ```typescript
@@ -21,5 +23,5 @@ let value: Annotation = {
 | Field                                                              | Type                                                               | Required                                                           | Description                                                        |
 | ------------------------------------------------------------------ | ------------------------------------------------------------------ | ------------------------------------------------------------------ | ------------------------------------------------------------------ |
 | `type`                                                             | *"url_citation"*                                                   | :heavy_check_mark:                                                 | N/A                                                                |
-| `urlCitation`                                                      | [models.AnnotationURLCitation](../models/annotationurlcitation.md) | :heavy_check_mark:                                                 | N/A                                                                |
+| `urlCitation`                                                      | [models.AnnotationURLCitation](../models/annotationurlcitation.md) | :heavy_check_mark:                                                 | A URL citation when using web search.                              |
 | `additionalProperties`                                             | Record<string, *any*>                                              | :heavy_minus_sign:                                                 | N/A                                                                |
