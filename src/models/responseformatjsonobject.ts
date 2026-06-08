@@ -7,6 +7,16 @@ import { safeParse } from "../lib/schemas.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
+/**
+ * JSON object response format.
+ *
+ * @remarks
+ *
+ * An older method of generating JSON responses.
+ * Using `json_schema` is recommended for models that support it. Note that the
+ * model will not generate JSON without a system or user message instructing it
+ * to do so.
+ */
 export type ResponseFormatJSONObject = {
   type: "json_object";
 };
