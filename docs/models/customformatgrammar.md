@@ -1,5 +1,7 @@
 # CustomFormatGrammar
 
+A grammar defined by the user.
+
 ## Example Usage
 
 ```typescript
@@ -18,5 +20,5 @@ let value: CustomFormatGrammar = {
 
 | Field                                                                        | Type                                                                         | Required                                                                     | Description                                                                  |
 | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
-| `grammar`                                                                    | [models.CustomFormatGrammarGrammar](../models/customformatgrammargrammar.md) | :heavy_check_mark:                                                           | N/A                                                                          |
+| `grammar`                                                                    | [models.CustomFormatGrammarGrammar](../models/customformatgrammargrammar.md) | :heavy_check_mark:                                                           | Your chosen grammar.                                                         |
 | `type`                                                                       | *"grammar"*                                                                  | :heavy_check_mark:                                                           | N/A                                                                          |

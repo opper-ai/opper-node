@@ -4,6 +4,7 @@
 
 import { OpperCore } from "../core.js";
 import { encodeSimple } from "../lib/encodings.js";
+import { matchStatusCode } from "../lib/http.js";
 import * as M from "../lib/matchers.js";
 import { compactMap } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
@@ -30,7 +31,14 @@ import { Result } from "../types/fp.js";
  * Get Function By Revision
  *
  * @remarks
- * Get a function by ID with a specific revision
+ * Get a function by ID with a specific revision.
+ *
+ * **Deprecated.** Use ``GET /v2/functions/{function_id}`` to fetch the
+ * latest revision. Pinning to a specific revision is no longer supported;
+ * ``revision_id`` is accepted for backwards compatibility but ignored —
+ * the latest revision is always returned.
+ *
+ * @deprecated method: This will be removed in a future release, please migrate away from it as soon as possible.
  */
 export function functionsGetByRevision(
   client: OpperCore,
@@ -118,7 +126,6 @@ async function $do(
       charEncoding: "percent",
     }),
   };
-
   const path = pathToFunc("/functions/{function_id}/revisions/{revision_id}")(
     pathParams,
   );
@@ -164,7 +171,8 @@ async function $do(
 
   const doResult = await client._do(req, {
     context,
-    errorCodes: ["400", "401", "404", "422", "4XX", "5XX"],
+    isErrorStatusCode: (statusCode: number) =>
+      matchStatusCode({ status: statusCode } as Response, ["4XX", "5XX"]),
     retryConfig: context.retryConfig,
     retryCodes: context.retryCodes,
   });
@@ -197,7 +205,7 @@ async function $do(
     M.jsonErr(401, errors.UnauthorizedError$inboundSchema),
     M.jsonErr(404, errors.NotFoundError$inboundSchema),
     M.jsonErr(422, errors.RequestValidationError$inboundSchema),
-    M.fail("4XX"),
+    M.fail([402, "4XX"]),
     M.fail("5XX"),
   )(response, req, { extraFields: responseFields });
   if (!result.ok) {

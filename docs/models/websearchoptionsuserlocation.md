@@ -1,5 +1,7 @@
 # WebSearchOptionsUserLocation
 
+Approximate location parameters for the search.
+
 ## Example Usage
 
 ```typescript
@@ -15,5 +17,5 @@ let value: WebSearchOptionsUserLocation = {
 
 | Field                                                                                                  | Type                                                                                                   | Required                                                                                               | Description                                                                                            |
 | ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------ |
-| `approximate`                                                                                          | [models.WebSearchOptionsUserLocationApproximate](../models/websearchoptionsuserlocationapproximate.md) | :heavy_check_mark:                                                                                     | N/A                                                                                                    |
+| `approximate`                                                                                          | [models.WebSearchOptionsUserLocationApproximate](../models/websearchoptionsuserlocationapproximate.md) | :heavy_check_mark:                                                                                     | Approximate location parameters for the search.                                                        |
 | `type`                                                                                                 | *"approximate"*                                                                                        | :heavy_check_mark:                                                                                     | N/A                                                                                                    |

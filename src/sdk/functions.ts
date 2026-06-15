@@ -139,7 +139,14 @@ export class Functions extends ClientSDK {
    * Get Function By Revision
    *
    * @remarks
-   * Get a function by ID with a specific revision
+   * Get a function by ID with a specific revision.
+   *
+   * **Deprecated.** Use ``GET /v2/functions/{function_id}`` to fetch the
+   * latest revision. Pinning to a specific revision is no longer supported;
+   * ``revision_id`` is accepted for backwards compatibility but ignored —
+   * the latest revision is always returned.
+   *
+   * @deprecated method: This will be removed in a future release, please migrate away from it as soon as possible.
    */
   async getByRevision(
     functionId: string,
@@ -214,7 +221,15 @@ export class Functions extends ClientSDK {
    * Call Function Revision
    *
    * @remarks
-   * Call a function
+   * Call a function at a specific revision.
+   *
+   * **Deprecated.** Pinning a call to a historical revision is no longer
+   * supported; ``revision_id`` is accepted for backwards compatibility but
+   * ignored — the latest revision is always executed. Use ``POST /v2/call``
+   * or the per-function call endpoint instead. This endpoint will be
+   * removed in a future release.
+   *
+   * @deprecated method: This will be removed in a future release, please migrate away from it as soon as possible.
    */
   async callRevision(
     functionId: string,
@@ -238,6 +253,12 @@ export class Functions extends ClientSDK {
    * @remarks
    * Stream a function revision call execution in real-time using Server-Sent Events (SSE).
    *
+   * **Deprecated.** Pinning a streamed call to a historical revision is no
+   * longer supported; ``revision_id`` is accepted for backwards
+   * compatibility but ignored — the latest revision is always streamed. Use
+   * the non-revision stream endpoint instead. This endpoint will be removed
+   * in a future release.
+   *
    * This endpoint returns a continuous stream of Server-Sent Event objects as the function executes,
    * allowing for real-time streaming of responses. The response follows the Server-Sent Events
    * specification with proper event structure for SDK compatibility.
@@ -251,6 +272,8 @@ export class Functions extends ClientSDK {
    * The data payload includes:
    * - `delta`: Incremental text content (if any)
    * - `span_id`: Unique identifier for the execution span (when available)
+   *
+   * @deprecated method: This will be removed in a future release, please migrate away from it as soon as possible.
    */
   async streamRevision(
     functionId: string,

@@ -1,5 +1,7 @@
 # PromptTokensDetails
 
+Breakdown of tokens used in the prompt.
+
 ## Example Usage
 
 ```typescript
