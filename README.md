@@ -1,5 +1,11 @@
 # opperai
 
+> [!IMPORTANT]
+> **This SDK has moved.** Opper's SDKs now live at
+> **https://github.com/opper-ai/opper-sdks**.
+> Please use that repository for the latest versions, issues, and contributions.
+> This repository is no longer actively maintained.
+
 Developer-friendly & type-safe Typescript SDK specifically catered to leverage *opperai* API.
 
 <div align="left">
