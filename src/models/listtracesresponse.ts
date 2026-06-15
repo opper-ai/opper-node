@@ -45,6 +45,22 @@ export type ListTracesResponse = {
    * The total tokens of the trace
    */
   totalTokens?: number | null | undefined;
+  /**
+   * Total number of spans in the trace
+   */
+  spanCount?: number | null | undefined;
+  /**
+   * Number of LLM generation spans in the trace
+   */
+  generationCount?: number | null | undefined;
+  /**
+   * Number of tool/function call spans in the trace
+   */
+  toolCount?: number | null | undefined;
+  /**
+   * Whether any span in the trace has an error
+   */
+  hasError?: boolean | null | undefined;
 };
 
 /** @internal */
@@ -66,12 +82,20 @@ export const ListTracesResponse$inboundSchema: z.ZodType<
   input: z.nullable(z.string()).optional(),
   output: z.nullable(z.string()).optional(),
   total_tokens: z.nullable(z.number().int()).optional(),
+  span_count: z.nullable(z.number().int()).optional(),
+  generation_count: z.nullable(z.number().int()).optional(),
+  tool_count: z.nullable(z.number().int()).optional(),
+  has_error: z.nullable(z.boolean()).optional(),
 }).transform((v) => {
   return remap$(v, {
     "start_time": "startTime",
     "end_time": "endTime",
     "duration_ms": "durationMs",
     "total_tokens": "totalTokens",
+    "span_count": "spanCount",
+    "generation_count": "generationCount",
+    "tool_count": "toolCount",
+    "has_error": "hasError",
   });
 });
 /** @internal */
@@ -85,6 +109,10 @@ export type ListTracesResponse$Outbound = {
   input?: string | null | undefined;
   output?: string | null | undefined;
   total_tokens?: number | null | undefined;
+  span_count?: number | null | undefined;
+  generation_count?: number | null | undefined;
+  tool_count?: number | null | undefined;
+  has_error?: boolean | null | undefined;
 };
 
 /** @internal */
@@ -102,12 +130,20 @@ export const ListTracesResponse$outboundSchema: z.ZodType<
   input: z.nullable(z.string()).optional(),
   output: z.nullable(z.string()).optional(),
   totalTokens: z.nullable(z.number().int()).optional(),
+  spanCount: z.nullable(z.number().int()).optional(),
+  generationCount: z.nullable(z.number().int()).optional(),
+  toolCount: z.nullable(z.number().int()).optional(),
+  hasError: z.nullable(z.boolean()).optional(),
 }).transform((v) => {
   return remap$(v, {
     startTime: "start_time",
     endTime: "end_time",
     durationMs: "duration_ms",
     totalTokens: "total_tokens",
+    spanCount: "span_count",
+    generationCount: "generation_count",
+    toolCount: "tool_count",
+    hasError: "has_error",
   });
 });
 
