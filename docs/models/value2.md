@@ -14,20 +14,18 @@ const value: string = "product";
 ### `number`
 
 ```typescript
-const value: number = NaN;
+const value: number = 128403;
 ```
 
 ### `number`
 
 ```typescript
-const value: number = NaN;
+const value: number = 1284.03;
 ```
 
 ### `models.Value1[]`
 
 ```typescript
-const value: models.Value1[] = [
-  "product",
-];
+const value: models.Value1[] = [];
 ```
 

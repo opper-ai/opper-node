@@ -1,5 +1,7 @@
 # ResponseFormatText
 
+Default response format. Used to generate text responses.
+
 ## Example Usage
 
 ```typescript

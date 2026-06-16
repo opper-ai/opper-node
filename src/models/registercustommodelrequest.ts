@@ -14,15 +14,23 @@ export type RegisterCustomModelRequest = {
    */
   name: string;
   /**
-   * The identifier of the custom language model
+   * The identifier of the custom language model (e.g. openai/gpt-4o, azure/gpt-5)
    */
   identifier: string;
   /**
-   * Extra metadata about the custom language model
+   * Provider name (auto-detected from identifier if not specified)
+   */
+  provider?: string | null | undefined;
+  /**
+   * Model type: 'llm' (default), 'embedding', or 'image'
+   */
+  type?: string | null | undefined;
+  /**
+   * Provider-specific configuration (e.g. api_base, api_version, region)
    */
   extra?: { [k: string]: any } | undefined;
   /**
-   * The API key of the custom language model
+   * The API key or credentials for the model
    */
   apiKey?: string | null | undefined;
 };
@@ -35,6 +43,8 @@ export const RegisterCustomModelRequest$inboundSchema: z.ZodType<
 > = z.object({
   name: z.string(),
   identifier: z.string(),
+  provider: z.nullable(z.string()).optional(),
+  type: z.nullable(z.string()).optional(),
   extra: z.record(z.any()).optional(),
   api_key: z.nullable(z.string()).optional(),
 }).transform((v) => {
@@ -46,6 +56,8 @@ export const RegisterCustomModelRequest$inboundSchema: z.ZodType<
 export type RegisterCustomModelRequest$Outbound = {
   name: string;
   identifier: string;
+  provider?: string | null | undefined;
+  type?: string | null | undefined;
   extra?: { [k: string]: any } | undefined;
   api_key?: string | null | undefined;
 };
@@ -58,6 +70,8 @@ export const RegisterCustomModelRequest$outboundSchema: z.ZodType<
 > = z.object({
   name: z.string(),
   identifier: z.string(),
+  provider: z.nullable(z.string()).optional(),
+  type: z.nullable(z.string()).optional(),
   extra: z.record(z.any()).optional(),
   apiKey: z.nullable(z.string()).optional(),
 }).transform((v) => {

@@ -46,6 +46,12 @@ export type ChatCompletionUserMessageParamContent2 =
     | FileT
   >;
 
+/**
+ * Messages sent by an end user, containing prompts or additional context
+ *
+ * @remarks
+ * information.
+ */
 export type ChatCompletionUserMessageParam = {
   content:
     | string

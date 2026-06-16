@@ -35,6 +35,9 @@ export type ChatCompletionServiceTier = ClosedEnum<
   typeof ChatCompletionServiceTier
 >;
 
+/**
+ * Represents a chat completion response returned by model, based on the provided input.
+ */
 export type ChatCompletion = {
   id: string;
   choices: Array<Choice>;

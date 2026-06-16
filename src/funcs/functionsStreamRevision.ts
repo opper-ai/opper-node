@@ -143,7 +143,6 @@ async function $do(
       charEncoding: "percent",
     }),
   };
-
   const path = pathToFunc("/functions/{function_id}/call/stream/{revision_id}")(
     pathParams,
   );
