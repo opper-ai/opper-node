@@ -114,7 +114,6 @@ async function $do(
       { explode: false, charEncoding: "percent" },
     ),
   };
-
   const path = pathToFunc("/knowledge/{knowledge_base_id}/add")(pathParams);
 
   const headers = new Headers(compactMap({

@@ -59,6 +59,9 @@ export type ChatCompletionAssistantMessageParamToolCall =
   | ChatCompletionMessageFunctionToolCallParam
   | ChatCompletionMessageCustomToolCallParam;
 
+/**
+ * Messages sent by the model in response to user messages.
+ */
 export type ChatCompletionAssistantMessageParam = {
   role: "assistant";
   audio?: Audio | null | undefined;
