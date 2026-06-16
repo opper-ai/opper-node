@@ -13,6 +13,13 @@ import {
   OpenaiTypesChatChatCompletionNamedToolChoiceParamFunction$outboundSchema,
 } from "./openaitypeschatchatcompletionnamedtoolchoiceparamfunction.js";
 
+/**
+ * Specifies a tool the model should use.
+ *
+ * @remarks
+ *
+ * Use to force the model to call a specific function.
+ */
 export type ChatCompletionNamedToolChoiceParam = {
   function: OpenaiTypesChatChatCompletionNamedToolChoiceParamFunction;
   type: "function";

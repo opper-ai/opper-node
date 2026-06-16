@@ -30,6 +30,8 @@ import { Result } from "../types/fp.js";
  *
  * @remarks
  * Register a custom language model with the organization that owns the API key.
+ *
+ * The model configuration is validated by making a test API call before saving.
  */
 export function languageModelsRegisterCustom(
   client: OpperCore,
