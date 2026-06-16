@@ -120,7 +120,6 @@ async function $do(
       charEncoding: "percent",
     }),
   };
-
   const path = pathToFunc("/functions/{function_id}/revisions")(pathParams);
 
   const query = encodeFormQuery({

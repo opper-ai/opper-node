@@ -134,7 +134,6 @@ async function $do(
       charEncoding: "percent",
     }),
   };
-
   const path = pathToFunc("/functions/{function_id}/call/stream")(pathParams);
 
   const headers = new Headers(compactMap({

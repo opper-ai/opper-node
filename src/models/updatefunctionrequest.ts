@@ -39,18 +39,18 @@ export type UpdateFunctionRequest = {
    * Optionally provide a model to use for completing the task.
    *
    * @remarks
-   * If not provided, a default model will be used. Currently the default model is `azure/gpt-4o-eu`
+   * If not provided, a default model will be used (e.g. `azure/gpt-4o-eu`).
    *
    * To specify options for the model, use a dictionary of key-value pairs. The options are passed to the model on invocation.
    * An example of passing temperature to `gpt-4o-mini` hosted on OpenAI is shown below.
    *
    * ```json
-   * {
+   * {{
    *     "model": "openai/gpt-4o-mini", # the model name
-   *     "options": {
+   *     "options": {{
    *         "temperature": 0.5 # the options for the model
-   *     }
-   * }
+   *     }}
+   * }}
    * ```
    *
    * To specify a fallback model, use a list of models. The models will then be tried in order.
