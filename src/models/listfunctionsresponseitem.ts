@@ -39,6 +39,10 @@ export type ListFunctionsResponseItem = {
    * The ID of the latest revision of the function
    */
   revisionId: string;
+  /**
+   * Whether this function has been executed through the v3 API
+   */
+  isV3?: boolean | undefined;
 };
 
 /** @internal */
@@ -53,9 +57,11 @@ export const ListFunctionsResponseItem$inboundSchema: z.ZodType<
   instructions: z.nullable(z.string()).optional(),
   model: z.nullable(TModel$inboundSchema).optional(),
   revision_id: z.string(),
+  is_v3: z.boolean().default(false),
 }).transform((v) => {
   return remap$(v, {
     "revision_id": "revisionId",
+    "is_v3": "isV3",
   });
 });
 /** @internal */
@@ -66,6 +72,7 @@ export type ListFunctionsResponseItem$Outbound = {
   instructions?: string | null | undefined;
   model?: TModel$Outbound | null | undefined;
   revision_id: string;
+  is_v3: boolean;
 };
 
 /** @internal */
@@ -80,9 +87,11 @@ export const ListFunctionsResponseItem$outboundSchema: z.ZodType<
   instructions: z.nullable(z.string()).optional(),
   model: z.nullable(TModel$outboundSchema).optional(),
   revisionId: z.string(),
+  isV3: z.boolean().default(false),
 }).transform((v) => {
   return remap$(v, {
     revisionId: "revision_id",
+    isV3: "is_v3",
   });
 });
 

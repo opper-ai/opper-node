@@ -12,6 +12,12 @@ let value: OCRRequestModel = {
   document: {
     type: "document_url",
   },
+  doclingExtra: {
+    outputFormat: "markdown",
+    ocrEngine: "easyocr",
+    tableMode: "fast",
+    imagesScale: 1,
+  },
 };
 ```
 
@@ -26,3 +32,4 @@ let value: OCRRequestModel = {
 | `imageLimit`                                                                           | *number*                                                                               | :heavy_minus_sign:                                                                     | Maximum number of images to extract per page                                           |                                                                                        |
 | `imageMinSize`                                                                         | *number*                                                                               | :heavy_minus_sign:                                                                     | Minimum size (width or height in pixels) for images to be included                     |                                                                                        |
 | `mistralExtra`                                                                         | [models.MistralOCRExtra](../models/mistralocrextra.md)                                 | :heavy_minus_sign:                                                                     | Mistral-specific OCR parameters                                                        |                                                                                        |
+| `doclingExtra`                                                                         | [models.DoclingOCRExtra](../models/doclingocrextra.md)                                 | :heavy_minus_sign:                                                                     | Docling-specific OCR parameters (output_format, ocr_engine, force_ocr, table_mode)     |                                                                                        |
