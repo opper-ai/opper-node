@@ -1,5 +1,7 @@
 # WebSearchOptionsUserLocationApproximate
 
+Approximate location parameters for the search.
+
 ## Example Usage
 
 ```typescript

@@ -16,10 +16,16 @@ export const tool$functionsRevisionsList: ToolDefinition<typeof args> = {
   name: "functions-revisions-list",
   description: `List Function Revisions
 
-Get all revisions for a function with pagination
+Get all revisions for a function with pagination.
 
-Returns a list of revisions for the function with the given function id
-revisions are sorted by created_at in descending order ergo the latest revision is the first one`,
+**Deprecated.** Revision history is no longer a supported part of the
+public API; clients should always use the latest revision via the
+standard function endpoints. This endpoint will be removed in a future
+release.
+
+Returns a single-item list containing the latest revision of the
+function. \`\`offset\`\` and \`\`limit\`\` are accepted for backwards
+compatibility but ignored.`,
   args,
   tool: async (client, args, ctx) => {
     const [result, apiCall] = await functionsRevisionsList(

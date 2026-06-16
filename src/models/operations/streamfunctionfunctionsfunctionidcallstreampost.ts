@@ -199,7 +199,8 @@ export const StreamFunctionFunctionsFunctionIdCallStreamPostResponseBody$inbound
   > = z.object({
     id: z.string().optional(),
     event: z.string().optional(),
-    data: z.string().transform((v, ctx) => {
+    data: z.unknown().transform((v, ctx) => {
+      if (typeof v !== "string") return v;
       try {
         return JSON.parse(v);
       } catch (err) {
@@ -273,6 +274,7 @@ export const StreamFunctionFunctionsFunctionIdCallStreamPostResponse$inboundSche
       .transform(stream => {
         return new EventStream(stream, rawEvent => {
           return {
+            done: false,
             value: z.lazy(() =>
               StreamFunctionFunctionsFunctionIdCallStreamPostResponseBody$inboundSchema
             ).parse(rawEvent),
