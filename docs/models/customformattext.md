@@ -1,5 +1,7 @@
 # CustomFormatText
 
+Unconstrained free-form text.
+
 ## Example Usage
 
 ```typescript

@@ -1,5 +1,8 @@
 # ChatCompletionUserMessageParam
 
+Messages sent by an end user, containing prompts or additional context
+information.
+
 ## Example Usage
 
 ```typescript

@@ -13,7 +13,13 @@ import {
   WebSearchOptionsUserLocationApproximate$outboundSchema,
 } from "./websearchoptionsuserlocationapproximate.js";
 
+/**
+ * Approximate location parameters for the search.
+ */
 export type WebSearchOptionsUserLocation = {
+  /**
+   * Approximate location parameters for the search.
+   */
   approximate: WebSearchOptionsUserLocationApproximate;
   type: "approximate";
 };

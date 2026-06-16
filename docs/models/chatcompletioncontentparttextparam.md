@@ -1,5 +1,7 @@
 # ChatCompletionContentPartTextParam
 
+Learn about [text inputs](https://platform.openai.com/docs/guides/text-generation).
+
 ## Example Usage
 
 ```typescript
