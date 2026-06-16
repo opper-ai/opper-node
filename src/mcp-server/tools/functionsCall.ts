@@ -9,8 +9,7 @@ import { formatResult, ToolDefinition } from "../tools.js";
 
 const args = {
   functionId: z.string(),
-  appApiPublicV2FunctionsCallFunctionRequest:
-    models.AppApiPublicV2FunctionsCallFunctionRequest$inboundSchema,
+  callFunctionRequest: models.CallFunctionRequest$inboundSchema,
 };
 
 export const tool$functionsCall: ToolDefinition<typeof args> = {
@@ -23,7 +22,7 @@ Call a function`,
     const [result, apiCall] = await functionsCall(
       client,
       args.functionId,
-      args.appApiPublicV2FunctionsCallFunctionRequest,
+      args.callFunctionRequest,
       { fetchOptions: { signal: ctx.signal } },
     ).$inspect();
 

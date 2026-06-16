@@ -14,8 +14,7 @@ export type CallFunctionFunctionsFunctionIdCallPostRequest = {
    * The id of the function to call
    */
   functionId: string;
-  appApiPublicV2FunctionsCallFunctionRequest:
-    models.AppApiPublicV2FunctionsCallFunctionRequest;
+  callFunctionRequest: models.CallFunctionRequest;
 };
 
 /** @internal */
@@ -26,20 +25,17 @@ export const CallFunctionFunctionsFunctionIdCallPostRequest$inboundSchema:
     unknown
   > = z.object({
     function_id: z.string(),
-    app__api__public__v2__functions__CallFunctionRequest:
-      models.AppApiPublicV2FunctionsCallFunctionRequest$inboundSchema,
+    CallFunctionRequest: models.CallFunctionRequest$inboundSchema,
   }).transform((v) => {
     return remap$(v, {
       "function_id": "functionId",
-      "app__api__public__v2__functions__CallFunctionRequest":
-        "appApiPublicV2FunctionsCallFunctionRequest",
+      "CallFunctionRequest": "callFunctionRequest",
     });
   });
 /** @internal */
 export type CallFunctionFunctionsFunctionIdCallPostRequest$Outbound = {
   function_id: string;
-  app__api__public__v2__functions__CallFunctionRequest:
-    models.AppApiPublicV2FunctionsCallFunctionRequest$Outbound;
+  CallFunctionRequest: models.CallFunctionRequest$Outbound;
 };
 
 /** @internal */
@@ -50,13 +46,11 @@ export const CallFunctionFunctionsFunctionIdCallPostRequest$outboundSchema:
     CallFunctionFunctionsFunctionIdCallPostRequest
   > = z.object({
     functionId: z.string(),
-    appApiPublicV2FunctionsCallFunctionRequest:
-      models.AppApiPublicV2FunctionsCallFunctionRequest$outboundSchema,
+    callFunctionRequest: models.CallFunctionRequest$outboundSchema,
   }).transform((v) => {
     return remap$(v, {
       functionId: "function_id",
-      appApiPublicV2FunctionsCallFunctionRequest:
-        "app__api__public__v2__functions__CallFunctionRequest",
+      callFunctionRequest: "CallFunctionRequest",
     });
   });
 
