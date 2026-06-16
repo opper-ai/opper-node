@@ -10,8 +10,7 @@ import { formatResult, ToolDefinition } from "../tools.js";
 const args = {
   functionId: z.string(),
   revisionId: z.string(),
-  appApiPublicV2FunctionsCallFunctionRequest:
-    models.AppApiPublicV2FunctionsCallFunctionRequest$inboundSchema,
+  callFunctionRequest: models.CallFunctionRequest$inboundSchema,
 };
 
 export const tool$functionsCallRevision: ToolDefinition<typeof args> = {
@@ -25,7 +24,7 @@ Call a function`,
       client,
       args.functionId,
       args.revisionId,
-      args.appApiPublicV2FunctionsCallFunctionRequest,
+      args.callFunctionRequest,
       { fetchOptions: { signal: ctx.signal } },
     ).$inspect();
 

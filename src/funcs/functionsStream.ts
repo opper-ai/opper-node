@@ -49,8 +49,7 @@ import { Result } from "../types/fp.js";
 export function functionsStream(
   client: OpperCore,
   functionId: string,
-  appApiPublicV2FunctionsCallFunctionRequest:
-    models.AppApiPublicV2FunctionsCallFunctionRequest,
+  callFunctionRequest: models.CallFunctionRequest,
   options?: RequestOptions,
 ): APIPromise<
   Result<
@@ -72,7 +71,7 @@ export function functionsStream(
   return new APIPromise($do(
     client,
     functionId,
-    appApiPublicV2FunctionsCallFunctionRequest,
+    callFunctionRequest,
     options,
   ));
 }
@@ -80,8 +79,7 @@ export function functionsStream(
 async function $do(
   client: OpperCore,
   functionId: string,
-  appApiPublicV2FunctionsCallFunctionRequest:
-    models.AppApiPublicV2FunctionsCallFunctionRequest,
+  callFunctionRequest: models.CallFunctionRequest,
   options?: RequestOptions,
 ): Promise<
   [
@@ -106,8 +104,7 @@ async function $do(
   const input:
     operations.StreamFunctionFunctionsFunctionIdCallStreamPostRequest = {
       functionId: functionId,
-      appApiPublicV2FunctionsCallFunctionRequest:
-        appApiPublicV2FunctionsCallFunctionRequest,
+      callFunctionRequest: callFunctionRequest,
     };
 
   const parsed = safeParse(
@@ -122,11 +119,9 @@ async function $do(
     return [parsed, { status: "invalid" }];
   }
   const payload = parsed.value;
-  const body = encodeJSON(
-    "body",
-    payload.app__api__public__v2__functions__CallFunctionRequest,
-    { explode: true },
-  );
+  const body = encodeJSON("body", payload.CallFunctionRequest, {
+    explode: true,
+  });
 
   const pathParams = {
     function_id: encodeSimple("function_id", payload.function_id, {
