@@ -34,7 +34,7 @@ import { Result } from "../types/fp.js";
  */
 export function call(
   client: OpperCore,
-  request: models.AppApiPublicV2FunctionCallCallFunctionRequest,
+  request: models.CallFunctionRequest,
   options?: RequestOptions,
 ): APIPromise<
   Result<
@@ -62,7 +62,7 @@ export function call(
 
 async function $do(
   client: OpperCore,
-  request: models.AppApiPublicV2FunctionCallCallFunctionRequest,
+  request: models.CallFunctionRequest,
   options?: RequestOptions,
 ): Promise<
   [
@@ -86,10 +86,7 @@ async function $do(
 > {
   const parsed = safeParse(
     request,
-    (value) =>
-      models.AppApiPublicV2FunctionCallCallFunctionRequest$outboundSchema.parse(
-        value,
-      ),
+    (value) => models.CallFunctionRequest$outboundSchema.parse(value),
     "Input validation failed",
   );
   if (!parsed.ok) {
