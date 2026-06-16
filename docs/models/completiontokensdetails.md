@@ -1,5 +1,7 @@
 # CompletionTokensDetails
 
+Breakdown of tokens used in a completion.
+
 ## Example Usage
 
 ```typescript

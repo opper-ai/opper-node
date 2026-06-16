@@ -1,5 +1,8 @@
 # ChatCompletionPredictionContentParam
 
+Static predicted output content, such as the content of a text file that is
+being regenerated.
+
 ## Example Usage
 
 ```typescript
