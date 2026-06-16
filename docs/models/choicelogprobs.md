@@ -1,5 +1,7 @@
 # ChoiceLogprobs
 
+Log probability information for the choice.
+
 ## Example Usage
 
 ```typescript

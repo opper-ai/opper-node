@@ -13,8 +13,14 @@ import {
   OpenaiTypesChatChatCompletionMessageCustomToolCallParamCustom$outboundSchema,
 } from "./openaitypeschatchatcompletionmessagecustomtoolcallparamcustom.js";
 
+/**
+ * A call to a custom tool created by the model.
+ */
 export type ChatCompletionMessageCustomToolCallParam = {
   id: string;
+  /**
+   * The custom tool that the model called.
+   */
   custom: OpenaiTypesChatChatCompletionMessageCustomToolCallParamCustom;
   type: "custom";
 };
