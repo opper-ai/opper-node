@@ -25,6 +25,7 @@ export * from "./getdocumentbykeyknowledgeknowledgebaseiddocumentsdocumentkeyget
 export * from "./getfiledownloadurlknowledgeknowledgebaseidfilesfileiddownloadurlget.js";
 export * from "./getfunctionbynamefunctionsbynamenameget.js";
 export * from "./getfunctionbyrevisionfunctionsfunctionidrevisionsrevisionidget.js";
+export * from "./getfunctionconfigfunctionsfunctionidconfigget.js";
 export * from "./getfunctionfunctionsfunctionidget.js";
 export * from "./getknowledgebasebynameknowledgebynameknowledgebasenameget.js";
 export * from "./getknowledgebaseknowledgeknowledgebaseidget.js";
@@ -44,6 +45,7 @@ export * from "./listmetricsspansspanidmetricsget.js";
 export * from "./listmodelaliasesmodelsaliasesget.js";
 export * from "./listmodelsmodelsget.js";
 export * from "./listtracestracesget.js";
+export * from "./putsteeringfunctionsfunctionidconfigsteeringput.js";
 export * from "./querydatasetentriesdatasetsdatasetidentriesquerypost.js";
 export * from "./queryknowledgebaseknowledgeknowledgebaseidquerypost.js";
 export * from "./registerfileuploadknowledgeknowledgebaseidregisterfilepost.js";

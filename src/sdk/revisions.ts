@@ -12,10 +12,18 @@ export class Revisions extends ClientSDK {
    * List Function Revisions
    *
    * @remarks
-   * Get all revisions for a function with pagination
+   * Get all revisions for a function with pagination.
    *
-   * Returns a list of revisions for the function with the given function id
-   * revisions are sorted by created_at in descending order ergo the latest revision is the first one
+   * **Deprecated.** Revision history is no longer a supported part of the
+   * public API; clients should always use the latest revision via the
+   * standard function endpoints. This endpoint will be removed in a future
+   * release.
+   *
+   * Returns a single-item list containing the latest revision of the
+   * function. ``offset`` and ``limit`` are accepted for backwards
+   * compatibility but ignored.
+   *
+   * @deprecated method: This will be removed in a future release, please migrate away from it as soon as possible.
    */
   async list(
     functionId: string,

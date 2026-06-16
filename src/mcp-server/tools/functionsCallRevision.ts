@@ -18,7 +18,13 @@ export const tool$functionsCallRevision: ToolDefinition<typeof args> = {
   name: "functions-call-revision",
   description: `Call Function Revision
 
-Call a function`,
+Call a function at a specific revision.
+
+**Deprecated.** Pinning a call to a historical revision is no longer
+supported; \`\`revision_id\`\` is accepted for backwards compatibility but
+ignored — the latest revision is always executed. Use \`\`POST /v2/call\`\`
+or the per-function call endpoint instead. This endpoint will be
+removed in a future release.`,
   args,
   tool: async (client, args, ctx) => {
     const [result, apiCall] = await functionsCallRevision(

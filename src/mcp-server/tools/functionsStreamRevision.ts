@@ -20,6 +20,12 @@ export const tool$functionsStreamRevision: ToolDefinition<typeof args> = {
 
 Stream a function revision call execution in real-time using Server-Sent Events (SSE).
 
+**Deprecated.** Pinning a streamed call to a historical revision is no
+longer supported; \`\`revision_id\`\` is accepted for backwards
+compatibility but ignored — the latest revision is always streamed. Use
+the non-revision stream endpoint instead. This endpoint will be removed
+in a future release.
+
 This endpoint returns a continuous stream of Server-Sent Event objects as the function executes,
 allowing for real-time streaming of responses. The response follows the Server-Sent Events
 specification with proper event structure for SDK compatibility.

@@ -14,6 +14,9 @@ import {
   InputAudio$outboundSchema,
 } from "./inputaudio.js";
 
+/**
+ * Learn about [audio inputs](https://platform.openai.com/docs/guides/audio).
+ */
 export type ChatCompletionContentPartInputAudioParam = {
   inputAudio: InputAudio;
   type: "input_audio";
