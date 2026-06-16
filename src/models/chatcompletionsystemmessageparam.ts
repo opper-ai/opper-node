@@ -17,6 +17,13 @@ export type ChatCompletionSystemMessageParamContent =
   | string
   | Array<ChatCompletionContentPartTextParam>;
 
+/**
+ * Developer-provided instructions that the model should follow, regardless of
+ *
+ * @remarks
+ * messages sent by the user. With o1 models and newer, use `developer` messages
+ * for this purpose instead.
+ */
 export type ChatCompletionSystemMessageParam = {
   content: string | Array<ChatCompletionContentPartTextParam>;
   role: "system";
