@@ -13,6 +13,9 @@ import {
   FileFile$outboundSchema,
 } from "./filefile.js";
 
+/**
+ * Learn about [file inputs](https://platform.openai.com/docs/guides/text) for text generation.
+ */
 export type FileT = {
   file: FileFile;
   type: "file";

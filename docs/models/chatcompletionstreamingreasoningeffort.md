@@ -11,5 +11,5 @@ let value: ChatCompletionStreamingReasoningEffort = "low";
 ## Values
 
 ```typescript
-"minimal" | "low" | "medium" | "high"
+"none" | "minimal" | "low" | "medium" | "high" | "xhigh"
 ```
