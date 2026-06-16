@@ -17,8 +17,14 @@ import {
 } from "./annotationurlcitation.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
+/**
+ * A URL citation when using web search.
+ */
 export type Annotation = {
   type: "url_citation";
+  /**
+   * A URL citation when using web search.
+   */
   urlCitation: AnnotationURLCitation;
   additionalProperties?: { [k: string]: any } | undefined;
 };

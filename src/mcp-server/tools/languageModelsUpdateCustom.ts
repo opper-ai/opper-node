@@ -16,7 +16,10 @@ export const tool$languageModelsUpdateCustom: ToolDefinition<typeof args> = {
   name: "language-models-update-custom",
   description: `Update Custom Model
 
-Update a custom language model.`,
+Update a custom language model.
+
+If identifier, api_key, or extra are changed, the model configuration
+is validated by making a test API call before saving.`,
   args,
   tool: async (client, args, ctx) => {
     const [result, apiCall] = await languageModelsUpdateCustom(

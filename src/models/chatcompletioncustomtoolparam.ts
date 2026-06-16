@@ -13,7 +13,13 @@ import {
   OpenaiTypesChatChatCompletionCustomToolParamCustom$outboundSchema,
 } from "./openaitypeschatchatcompletioncustomtoolparamcustom.js";
 
+/**
+ * A custom tool that processes input using a specified format.
+ */
 export type ChatCompletionCustomToolParam = {
+  /**
+   * Properties of the custom tool.
+   */
   custom: OpenaiTypesChatChatCompletionCustomToolParamCustom;
   type: "custom";
 };

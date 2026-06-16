@@ -7,6 +7,9 @@ import { safeParse } from "../lib/schemas.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
+/**
+ * Structured Outputs configuration options, including a JSON Schema.
+ */
 export type JSONSchema = {
   name: string;
   description?: string | undefined;
