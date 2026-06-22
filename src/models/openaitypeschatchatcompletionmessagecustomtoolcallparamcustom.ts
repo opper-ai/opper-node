@@ -7,6 +7,9 @@ import { safeParse } from "../lib/schemas.js";
 import { Result as SafeParseResult } from "../types/fp.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
+/**
+ * The custom tool that the model called.
+ */
 export type OpenaiTypesChatChatCompletionMessageCustomToolCallParamCustom = {
   input: string;
   name: string;

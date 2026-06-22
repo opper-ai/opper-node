@@ -13,8 +13,14 @@ import {
   OpenaiTypesChatChatCompletionMessageFunctionToolCallParamFunction$outboundSchema,
 } from "./openaitypeschatchatcompletionmessagefunctiontoolcallparamfunction.js";
 
+/**
+ * A call to a function tool created by the model.
+ */
 export type ChatCompletionMessageFunctionToolCallParam = {
   id: string;
+  /**
+   * The function that the model called.
+   */
   function: OpenaiTypesChatChatCompletionMessageFunctionToolCallParamFunction;
   type: "function";
 };

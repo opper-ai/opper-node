@@ -17,6 +17,7 @@ const args = {
   granularity: z.nullable(models.Granularity$inboundSchema).optional(),
   fields: z.nullable(z.array(z.string())).optional(),
   groupBy: z.nullable(z.array(z.string())).optional(),
+  sessionId: z.nullable(z.string()).optional(),
 };
 
 export const tool$analyticsGetUsage: ToolDefinition<typeof args> = {
@@ -31,6 +32,7 @@ export const tool$analyticsGetUsage: ToolDefinition<typeof args> = {
       args.granularity,
       args.fields,
       args.groupBy,
+      args.sessionId,
       { fetchOptions: { signal: ctx.signal } },
     ).$inspect();
 

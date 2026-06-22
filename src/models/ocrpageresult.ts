@@ -13,6 +13,12 @@ import {
   OCRPageDimensions$outboundSchema,
 } from "./ocrpagedimensions.js";
 import {
+  OCRPageElement,
+  OCRPageElement$inboundSchema,
+  OCRPageElement$Outbound,
+  OCRPageElement$outboundSchema,
+} from "./ocrpageelement.js";
+import {
   OCRPageImage,
   OCRPageImage$inboundSchema,
   OCRPageImage$Outbound,
@@ -39,6 +45,10 @@ export type OCRPageResult = {
    * Extracted images from the page
    */
   images?: Array<OCRPageImage> | null | undefined;
+  /**
+   * Document elements with bounding boxes and labels (only returned when using Docling with output_format='json')
+   */
+  elements?: Array<OCRPageElement> | null | undefined;
 };
 
 /** @internal */
@@ -51,6 +61,7 @@ export const OCRPageResult$inboundSchema: z.ZodType<
   markdown: z.string(),
   dimensions: z.nullable(OCRPageDimensions$inboundSchema).optional(),
   images: z.nullable(z.array(OCRPageImage$inboundSchema)).optional(),
+  elements: z.nullable(z.array(OCRPageElement$inboundSchema)).optional(),
 });
 /** @internal */
 export type OCRPageResult$Outbound = {
@@ -58,6 +69,7 @@ export type OCRPageResult$Outbound = {
   markdown: string;
   dimensions?: OCRPageDimensions$Outbound | null | undefined;
   images?: Array<OCRPageImage$Outbound> | null | undefined;
+  elements?: Array<OCRPageElement$Outbound> | null | undefined;
 };
 
 /** @internal */
@@ -70,6 +82,7 @@ export const OCRPageResult$outboundSchema: z.ZodType<
   markdown: z.string(),
   dimensions: z.nullable(OCRPageDimensions$outboundSchema).optional(),
   images: z.nullable(z.array(OCRPageImage$outboundSchema)).optional(),
+  elements: z.nullable(z.array(OCRPageElement$outboundSchema)).optional(),
 });
 
 export function ocrPageResultToJSON(ocrPageResult: OCRPageResult): string {

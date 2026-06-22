@@ -30,6 +30,10 @@ export type UsageAnalyticsUsageGetRequest = {
    * Fields from tags to group by
    */
   groupBy?: Array<string> | null | undefined;
+  /**
+   * If provided, narrow the result to events tagged with this session_id (set by the URL-session prefix /v3/session/<sid>). Useful for `opper launch` style accounting.
+   */
+  sessionId?: string | null | undefined;
 };
 
 /** @internal */
@@ -47,11 +51,13 @@ export const UsageAnalyticsUsageGetRequest$inboundSchema: z.ZodType<
   granularity: z.nullable(models.Granularity$inboundSchema).optional(),
   fields: z.nullable(z.array(z.string())).optional(),
   group_by: z.nullable(z.array(z.string())).optional(),
+  session_id: z.nullable(z.string()).optional(),
 }).transform((v) => {
   return remap$(v, {
     "from_date": "fromDate",
     "to_date": "toDate",
     "group_by": "groupBy",
+    "session_id": "sessionId",
   });
 });
 /** @internal */
@@ -61,6 +67,7 @@ export type UsageAnalyticsUsageGetRequest$Outbound = {
   granularity?: string | null | undefined;
   fields?: Array<string> | null | undefined;
   group_by?: Array<string> | null | undefined;
+  session_id?: string | null | undefined;
 };
 
 /** @internal */
@@ -74,11 +81,13 @@ export const UsageAnalyticsUsageGetRequest$outboundSchema: z.ZodType<
   granularity: z.nullable(models.Granularity$outboundSchema).optional(),
   fields: z.nullable(z.array(z.string())).optional(),
   groupBy: z.nullable(z.array(z.string())).optional(),
+  sessionId: z.nullable(z.string()).optional(),
 }).transform((v) => {
   return remap$(v, {
     fromDate: "from_date",
     toDate: "to_date",
     groupBy: "group_by",
+    sessionId: "session_id",
   });
 });
 

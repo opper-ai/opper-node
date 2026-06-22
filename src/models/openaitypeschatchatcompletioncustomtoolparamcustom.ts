@@ -21,6 +21,9 @@ import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
 export type Format = CustomFormatText | CustomFormatGrammar;
 
+/**
+ * Properties of the custom tool.
+ */
 export type OpenaiTypesChatChatCompletionCustomToolParamCustom = {
   name: string;
   description?: string | undefined;

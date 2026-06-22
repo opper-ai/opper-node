@@ -17,6 +17,7 @@ export class Analytics extends ClientSDK {
     granularity?: models.Granularity | null | undefined,
     fields?: Array<string> | null | undefined,
     groupBy?: Array<string> | null | undefined,
+    sessionId?: string | null | undefined,
     options?: RequestOptions,
   ): Promise<Array<models.GetUsageResultItem>> {
     return unwrapAsync(analyticsGetUsage(
@@ -26,6 +27,7 @@ export class Analytics extends ClientSDK {
       granularity,
       fields,
       groupBy,
+      sessionId,
       options,
     ));
   }
