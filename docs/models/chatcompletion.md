@@ -1,5 +1,7 @@
 # ChatCompletion
 
+Represents a chat completion response returned by model, based on the provided input.
+
 ## Example Usage
 
 ```typescript

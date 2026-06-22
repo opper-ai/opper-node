@@ -15,7 +15,12 @@ export const tool$functionsGetByRevision: ToolDefinition<typeof args> = {
   name: "functions-get-by-revision",
   description: `Get Function By Revision
 
-Get a function by ID with a specific revision`,
+Get a function by ID with a specific revision.
+
+**Deprecated.** Use \`\`GET /v2/functions/{function_id}\`\` to fetch the
+latest revision. Pinning to a specific revision is no longer supported;
+\`\`revision_id\`\` is accepted for backwards compatibility but ignored —
+the latest revision is always returned.`,
   args,
   tool: async (client, args, ctx) => {
     const [result, apiCall] = await functionsGetByRevision(
