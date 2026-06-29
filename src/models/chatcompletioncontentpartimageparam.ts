@@ -14,6 +14,9 @@ import {
   ImageURL$outboundSchema,
 } from "./imageurl.js";
 
+/**
+ * Learn about [image inputs](https://platform.openai.com/docs/guides/vision).
+ */
 export type ChatCompletionContentPartImageParam = {
   imageUrl: ImageURL;
   type: "image_url";

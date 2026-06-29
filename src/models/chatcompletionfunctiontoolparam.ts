@@ -13,6 +13,9 @@ import {
   FunctionDefinition$outboundSchema,
 } from "./functiondefinition.js";
 
+/**
+ * A function tool that can be used to generate a response.
+ */
 export type ChatCompletionFunctionToolParam = {
   function: FunctionDefinition;
   type: "function";
