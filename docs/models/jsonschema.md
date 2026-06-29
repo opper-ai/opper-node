@@ -1,5 +1,7 @@
 # JSONSchema
 
+Structured Outputs configuration options, including a JSON Schema.
+
 ## Example Usage
 
 ```typescript

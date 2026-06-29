@@ -14,7 +14,18 @@ import {
   JSONSchema$outboundSchema,
 } from "./jsonschema.js";
 
+/**
+ * JSON Schema response format.
+ *
+ * @remarks
+ *
+ * Used to generate structured JSON responses.
+ * Learn more about [Structured Outputs](https://platform.openai.com/docs/guides/structured-outputs).
+ */
 export type ResponseFormatJSONSchema = {
+  /**
+   * Structured Outputs configuration options, including a JSON Schema.
+   */
   jsonSchema: JSONSchema;
   type: "json_schema";
 };

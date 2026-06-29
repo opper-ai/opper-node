@@ -4,6 +4,7 @@
 
 import { OpperCore } from "../core.js";
 import { encodeJSON, encodeSimple } from "../lib/encodings.js";
+import { matchStatusCode } from "../lib/http.js";
 import * as M from "../lib/matchers.js";
 import { compactMap } from "../lib/primitives.js";
 import { safeParse } from "../lib/schemas.js";
@@ -32,6 +33,12 @@ import { Result } from "../types/fp.js";
  * @remarks
  * Stream a function revision call execution in real-time using Server-Sent Events (SSE).
  *
+ * **Deprecated.** Pinning a streamed call to a historical revision is no
+ * longer supported; ``revision_id`` is accepted for backwards
+ * compatibility but ignored — the latest revision is always streamed. Use
+ * the non-revision stream endpoint instead. This endpoint will be removed
+ * in a future release.
+ *
  * This endpoint returns a continuous stream of Server-Sent Event objects as the function executes,
  * allowing for real-time streaming of responses. The response follows the Server-Sent Events
  * specification with proper event structure for SDK compatibility.
@@ -45,6 +52,8 @@ import { Result } from "../types/fp.js";
  * The data payload includes:
  * - `delta`: Incremental text content (if any)
  * - `span_id`: Unique identifier for the execution span (when available)
+ *
+ * @deprecated method: This will be removed in a future release, please migrate away from it as soon as possible.
  */
 export function functionsStreamRevision(
   client: OpperCore,
@@ -143,7 +152,6 @@ async function $do(
       charEncoding: "percent",
     }),
   };
-
   const path = pathToFunc("/functions/{function_id}/call/stream/{revision_id}")(
     pathParams,
   );
@@ -190,7 +198,8 @@ async function $do(
 
   const doResult = await client._do(req, {
     context,
-    errorCodes: ["400", "401", "404", "422", "4XX", "5XX"],
+    isErrorStatusCode: (statusCode: number) =>
+      matchStatusCode({ status: statusCode } as Response, ["4XX", "5XX"]),
     retryConfig: context.retryConfig,
     retryCodes: context.retryCodes,
   });
@@ -228,7 +237,7 @@ async function $do(
     M.jsonErr(401, errors.UnauthorizedError$inboundSchema),
     M.jsonErr(404, errors.NotFoundError$inboundSchema),
     M.jsonErr(422, errors.RequestValidationError$inboundSchema),
-    M.fail("4XX"),
+    M.fail([402, "4XX"]),
     M.fail("5XX"),
   )(response, req, { extraFields: responseFields });
   if (!result.ok) {

@@ -163,11 +163,21 @@ export type ChatCompletionStreamingModality = ClosedEnum<
   typeof ChatCompletionStreamingModality
 >;
 
+export const ChatCompletionStreamingPromptCacheRetention = {
+  InMemory: "in-memory",
+  TwentyFourh: "24h",
+} as const;
+export type ChatCompletionStreamingPromptCacheRetention = ClosedEnum<
+  typeof ChatCompletionStreamingPromptCacheRetention
+>;
+
 export const ChatCompletionStreamingReasoningEffort = {
+  None: "none",
   Minimal: "minimal",
   Low: "low",
   Medium: "medium",
   High: "high",
+  Xhigh: "xhigh",
 } as const;
 export type ChatCompletionStreamingReasoningEffort = ClosedEnum<
   typeof ChatCompletionStreamingReasoningEffort
@@ -247,6 +257,10 @@ export type ChatCompletionStreaming = {
   prediction?: ChatCompletionPredictionContentParam | null | undefined;
   presencePenalty?: number | null | undefined;
   promptCacheKey?: string | undefined;
+  promptCacheRetention?:
+    | ChatCompletionStreamingPromptCacheRetention
+    | null
+    | undefined;
   reasoningEffort?: ChatCompletionStreamingReasoningEffort | null | undefined;
   responseFormat?:
     | ResponseFormatText
@@ -273,6 +287,12 @@ export type ChatCompletionStreaming = {
   topP?: number | null | undefined;
   user?: string | undefined;
   verbosity?: ChatCompletionStreamingVerbosity | null | undefined;
+  /**
+   * This tool searches the web for relevant results to use in a response.
+   *
+   * @remarks
+   * Learn more about the [web search tool](https://platform.openai.com/docs/guides/tools-web-search?api-mode=chat).
+   */
   webSearchOptions?: WebSearchOptions | undefined;
   stream: true;
   tags?: { [k: string]: any } | null | undefined;
@@ -401,6 +421,15 @@ export const ChatCompletionStreamingModality$inboundSchema: z.ZodNativeEnum<
 export const ChatCompletionStreamingModality$outboundSchema: z.ZodNativeEnum<
   typeof ChatCompletionStreamingModality
 > = ChatCompletionStreamingModality$inboundSchema;
+
+/** @internal */
+export const ChatCompletionStreamingPromptCacheRetention$inboundSchema:
+  z.ZodNativeEnum<typeof ChatCompletionStreamingPromptCacheRetention> = z
+    .nativeEnum(ChatCompletionStreamingPromptCacheRetention);
+/** @internal */
+export const ChatCompletionStreamingPromptCacheRetention$outboundSchema:
+  z.ZodNativeEnum<typeof ChatCompletionStreamingPromptCacheRetention> =
+    ChatCompletionStreamingPromptCacheRetention$inboundSchema;
 
 /** @internal */
 export const ChatCompletionStreamingReasoningEffort$inboundSchema:
@@ -655,6 +684,9 @@ export const ChatCompletionStreaming$inboundSchema: z.ZodType<
     .optional(),
   presence_penalty: z.nullable(z.number()).optional(),
   prompt_cache_key: z.string().optional(),
+  prompt_cache_retention: z.nullable(
+    ChatCompletionStreamingPromptCacheRetention$inboundSchema,
+  ).optional(),
   reasoning_effort: z.nullable(
     ChatCompletionStreamingReasoningEffort$inboundSchema,
   ).optional(),
@@ -703,6 +735,7 @@ export const ChatCompletionStreaming$inboundSchema: z.ZodType<
     "parallel_tool_calls": "parallelToolCalls",
     "presence_penalty": "presencePenalty",
     "prompt_cache_key": "promptCacheKey",
+    "prompt_cache_retention": "promptCacheRetention",
     "reasoning_effort": "reasoningEffort",
     "response_format": "responseFormat",
     "safety_identifier": "safetyIdentifier",
@@ -746,6 +779,7 @@ export type ChatCompletionStreaming$Outbound = {
   prediction?: ChatCompletionPredictionContentParam$Outbound | null | undefined;
   presence_penalty?: number | null | undefined;
   prompt_cache_key?: string | undefined;
+  prompt_cache_retention?: string | null | undefined;
   reasoning_effort?: string | null | undefined;
   response_format?:
     | ResponseFormatText$Outbound
@@ -821,6 +855,9 @@ export const ChatCompletionStreaming$outboundSchema: z.ZodType<
     .optional(),
   presencePenalty: z.nullable(z.number()).optional(),
   promptCacheKey: z.string().optional(),
+  promptCacheRetention: z.nullable(
+    ChatCompletionStreamingPromptCacheRetention$outboundSchema,
+  ).optional(),
   reasoningEffort: z.nullable(
     ChatCompletionStreamingReasoningEffort$outboundSchema,
   ).optional(),
@@ -869,6 +906,7 @@ export const ChatCompletionStreaming$outboundSchema: z.ZodType<
     parallelToolCalls: "parallel_tool_calls",
     presencePenalty: "presence_penalty",
     promptCacheKey: "prompt_cache_key",
+    promptCacheRetention: "prompt_cache_retention",
     reasoningEffort: "reasoning_effort",
     responseFormat: "response_format",
     safetyIdentifier: "safety_identifier",
