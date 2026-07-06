@@ -1,5 +1,7 @@
 # CustomFormatGrammarGrammar
 
+Your chosen grammar.
+
 ## Example Usage
 
 ```typescript

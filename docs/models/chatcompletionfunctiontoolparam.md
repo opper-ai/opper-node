@@ -1,5 +1,7 @@
 # ChatCompletionFunctionToolParam
 
+A function tool that can be used to generate a response.
+
 ## Example Usage
 
 ```typescript
