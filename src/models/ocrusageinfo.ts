@@ -20,6 +20,18 @@ export type OCRUsageInfo = {
    * Size of the document in bytes
    */
   docSizeBytes?: number | null | undefined;
+  /**
+   * Total processing time in seconds
+   */
+  processingTimeSeconds?: number | null | undefined;
+  /**
+   * Average processing time per page in seconds
+   */
+  timePerPageSeconds?: number | null | undefined;
+  /**
+   * Settings used for processing
+   */
+  appliedSettings?: { [k: string]: any } | null | undefined;
 };
 
 /** @internal */
@@ -30,16 +42,25 @@ export const OCRUsageInfo$inboundSchema: z.ZodType<
 > = z.object({
   pages_processed: z.number().int(),
   doc_size_bytes: z.nullable(z.number().int()).optional(),
+  processing_time_seconds: z.nullable(z.number()).optional(),
+  time_per_page_seconds: z.nullable(z.number()).optional(),
+  applied_settings: z.nullable(z.record(z.any())).optional(),
 }).transform((v) => {
   return remap$(v, {
     "pages_processed": "pagesProcessed",
     "doc_size_bytes": "docSizeBytes",
+    "processing_time_seconds": "processingTimeSeconds",
+    "time_per_page_seconds": "timePerPageSeconds",
+    "applied_settings": "appliedSettings",
   });
 });
 /** @internal */
 export type OCRUsageInfo$Outbound = {
   pages_processed: number;
   doc_size_bytes?: number | null | undefined;
+  processing_time_seconds?: number | null | undefined;
+  time_per_page_seconds?: number | null | undefined;
+  applied_settings?: { [k: string]: any } | null | undefined;
 };
 
 /** @internal */
@@ -50,10 +71,16 @@ export const OCRUsageInfo$outboundSchema: z.ZodType<
 > = z.object({
   pagesProcessed: z.number().int(),
   docSizeBytes: z.nullable(z.number().int()).optional(),
+  processingTimeSeconds: z.nullable(z.number()).optional(),
+  timePerPageSeconds: z.nullable(z.number()).optional(),
+  appliedSettings: z.nullable(z.record(z.any())).optional(),
 }).transform((v) => {
   return remap$(v, {
     pagesProcessed: "pages_processed",
     docSizeBytes: "doc_size_bytes",
+    processingTimeSeconds: "processing_time_seconds",
+    timePerPageSeconds: "time_per_page_seconds",
+    appliedSettings: "applied_settings",
   });
 });
 

@@ -17,8 +17,14 @@ import {
   FunctionOutput$outboundSchema,
 } from "./functionoutput.js";
 
+/**
+ * A call to a function tool created by the model.
+ */
 export type ChatCompletionMessageFunctionToolCall = {
   id: string;
+  /**
+   * The function that the model called.
+   */
   function: FunctionOutput;
   type: "function";
   additionalProperties?: { [k: string]: any } | undefined;

@@ -14,7 +14,13 @@ import {
 } from "./chatcompletionallowedtoolsparam.js";
 import { SDKValidationError } from "./errors/sdkvalidationerror.js";
 
+/**
+ * Constrains the tools available to the model to a pre-defined set.
+ */
 export type ChatCompletionAllowedToolChoiceParam = {
+  /**
+   * Constrains the tools available to the model to a pre-defined set.
+   */
   allowedTools: ChatCompletionAllowedToolsParam;
   type: "allowed_tools";
 };

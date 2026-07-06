@@ -16,6 +16,7 @@ const value: string = "Hello, world!";
 ```typescript
 const value: string[] = [
   "Hello, world!",
+  "Hello, world!",
 ];
 ```
 

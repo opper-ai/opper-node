@@ -1,5 +1,8 @@
 # Audio
 
+Data about a previous audio response from the model.
+[Learn more](https://platform.openai.com/docs/guides/audio).
+
 ## Example Usage
 
 ```typescript
