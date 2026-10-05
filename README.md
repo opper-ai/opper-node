@@ -3,8 +3,8 @@
 > [!IMPORTANT]
 > **This SDK has moved.** Opper's SDKs now live at
 > **https://github.com/opper-ai/opper-sdks**.
-> Please use that repository for the latest versions, issues, and contributions.
-> This repository is no longer actively maintained.
+> See **https://docs.opper.ai** for current best practices on using Opper.
+> This repository is archived and will not receive new patches or releases.
 
 Developer-friendly & type-safe Typescript SDK specifically catered to leverage *opperai* API.
 
